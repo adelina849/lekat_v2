@@ -1,0 +1,126 @@
+ <title>DataTransaksiPerKasir</title>
+ 
+ <?php
+ $title = "DataPenerimaanProduk";
+ header("Content-type: application/vnd-ms-excel");
+ header("Content-Disposition: attachment; filename=$title.xls");
+ header("Pragma: no-cache");
+ header("Expires: 0");
+ 
+ ?>
+
+<?php
+	//TABLE
+	if(!empty($list_penjualan_by_kasir))
+	{
+		//$sum_laporan_h_penjualan = $sum_laporan_h_penjualan->row();
+		
+		echo'<table width="100%" id="example2" class="table table-hover hoverTable">';
+			echo '<thead>';
+			
+			echo '<tbody>
+				<tr>
+					<td colspan="7" style="text-align:center;">
+						<b>LAPORAN TRANSAKSI PER KASIR</b>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="7" style="text-align:center;">
+						<b>'.$this->session->userdata('ses_nama_kantor').'</b>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="7" style="text-align:center;">
+						'.$this->session->userdata('ses_alamat_kantor').'
+					</td>
+				</tr>
+				<tr>
+					<td colspan="7" style="text-align:center;">
+						<b>Per '.$dari.' Sampai '.$sampai.'</b>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="7" style="text-align:center;">
+						<br/>
+					</td>
+				</tr>
+			
+			';
+			
+			echo'
+					<tr>';
+						echo '<th width="5%" style="background-color:green;">NO</th>';
+						echo '<th width="30%" style="background-color:green;">NAMA KARYAWAN/KASIR</th>';
+						echo '<th width="5%" style="background-color:green;">TRANSAKSI</th>';
+						echo '<th width="10%" style="background-color:green;">NOMINAL</th>';
+						echo '<th width="10%" style="background-color:green;">TUNAI</th>';
+						echo '<th width="10%" style="background-color:green;">NON TUNAI</th>';
+						//echo '<th width="20%">BANK</th>';
+						echo '<th width="15%" style="background-color:green;">BAYAR</th>';
+						echo '<th width="15%" style="background-color:green;">SISA</th>';
+			echo '</tr>
+				</thead>';
+			$list_result = $list_penjualan_by_kasir->result();
+			
+			
+			$no = 1;
+			$nominal = 0;
+			$tunai = 0;
+			$non_tunai = 0;
+			$total_bayar = 0;
+			$grand_total = 0;
+			$sisa = 0;
+			
+			echo '<tbody>';
+			
+			foreach($list_result as $row)
+			{
+				echo'<tr class="tr_utama">';
+					echo'<td>'.$no.'</td>';
+					echo'<td>'.$row->NAMA_KASIR.'</td>';
+					echo'<td>'.$row->TR.'</td>';
+					
+					$nominal = $nominal + $row->NOMINAL;
+					echo'<td style="text-align:right;">'. $row->NOMINAL .'</td>';
+					//echo'<td style="text-align:right;">'.$row->NOMINAL.'</td>';
+					
+					$tunai = $tunai + $row->TUNAI;
+					echo'<td style="text-align:right;">'. $row->TUNAI .'</td>';
+					
+					$non_tunai = $non_tunai + $row->NONTUNAI;
+					echo'<td style="text-align:right;">'. $row->NONTUNAI .'</td>';
+					
+					//echo'<td>'.$row->nama_bank.'</td>';
+					
+					$total_bayar = $total_bayar + ($row->TUNAI + $row->NONTUNAI);
+					$view_total_bayar = ($row->TUNAI + $row->NONTUNAI);
+					echo'<td style="text-align:right;">'. $view_total_bayar .'</td>';
+					
+					$sisa = $sisa + ($row->NOMINAL - ($row->TUNAI + $row->NONTUNAI));
+					$view_sisa = ($row->NOMINAL - ($row->TUNAI + $row->NONTUNAI));
+					echo'<td style="text-align:right;">'. $view_sisa .'</td>';
+					
+				echo'</tr>';
+				$no++;
+				$grand_total = $grand_total + ($row->NOMINAL - ($row->TUNAI + $row->NONTUNAI));
+			}		
+			
+				echo'<tr>';
+					echo'<td colspan="3" style="text-align:right;font-weight:bold;">GRAND TOTAL</td>';
+					echo'<td style="text-align:right;font-weight:bold;">'. $nominal.'</td>';
+					echo'<td style="text-align:right;font-weight:bold;">'. $tunai.'</td>';
+					echo'<td style="text-align:right;font-weight:bold;">'. $non_tunai.'</td>';
+					echo'<td style="text-align:right;font-weight:bold;">'. $total_bayar.'</td>';
+					echo'<td style="text-align:right;font-weight:bold;">'. $grand_total.'</td>';
+				echo'</tr>';
+			echo '</tbody>';
+		echo'</table>';
+	}
+	else
+	{
+		echo'<center>';
+		echo'Tidak Ada Data Yang Ditampilkan !';
+		echo'</center>';
+	}
+	//TABLE
+?>

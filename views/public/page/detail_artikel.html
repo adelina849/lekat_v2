@@ -1,0 +1,189 @@
+			<section>
+				<div class="container">
+					
+					<div class="row">
+					
+						<div class="col-lg-3 col-md-3 col-sm-3">
+
+							<!-- OWL SLIDER -->
+							
+							<!-- <div class="owl-carousel buttons-autohide controlls-over m-0 box-shadow-1" data-plugin-options='{"items": 1, "autoHeight": true, "navigation": true, "pagination": true, "transitionStyle":"fade", "progressBar":"true"}'> -->
+							
+								<?php
+									$list_images_artikel = $this->M_public->list_images(" WHERE A.IMG_GRUP = 'artikel' AND A.ID = '".$data_artikel->ART_ID."' ",0,10);
+									if(!empty($list_images_artikel)) 
+									{
+										if($list_images_artikel->num_rows() > 1)
+										{
+										?>
+											<div class="owl-carousel buttons-autohide controlls-over m-0 box-shadow-1" data-plugin-options='{"items": 1, "autoHeight": true, "navigation": true, "pagination": true, "transitionStyle":"fade", "progressBar":"true"}'>
+										<?php
+										}
+										else
+										{
+											echo'<div>';
+										}
+										
+										$list_result = $list_images_artikel->result();
+										foreach($list_result as $row)
+										{
+								?>
+											<div>
+												<img class="img-fluid" src="<?php echo $row->IMG_LINK;?>" alt="<?php echo $row->IMG_NAMA;?>">
+											</div>
+								<?php
+										}
+									}
+									else
+									{
+									?>
+										<div>
+									<?php
+										echo'
+										<div>
+											<img class="img-fluid" src="http://maestroselectronics.com/wp-content/uploads/2017/12/No_Image_Available.jpg" alt="No Images">
+										</div>
+										';
+										
+									}
+								?>
+							
+							</div>
+							<!-- /OWL SLIDER -->
+
+						</div>
+
+						<div class="col-lg-9 col-md-9 col-sm-9">
+							<!-- <div class="heading-title heading-border-bottom"> -->
+								<!-- <h3><?php echo $data_artikel->ART_NAMA;?></h3> -->
+							<!-- </div> -->
+							
+							<div class="heading-title heading-border">
+								<h3><span><?php echo $data_artikel->ART_NAMA;?></span></h3>
+								<!-- <p class="font-lato fs-14">Menampilkan Artikel - Artikel terkait Zakat, Infaq dan Sadaqah BAZNAS Kab.Sukabumi.</p> -->
+								<br/>
+								<p class="font-lato fs-14">
+									<ul class="blog-post-info list-inline">
+										<li>
+											<a href="#">
+												<i class="fa fa-clock-o"></i> 
+												<span class="font-lato"><?php echo $data_artikel->ART_DTINS;?></span>
+											</a>
+										</li>
+										<li>
+											<a href="#">
+												<i class="fa fa-comment-o"></i> 
+												<span class="font-lato">0 Comments</span>
+											</a>
+										</li>
+									</ul>
+								</p>
+							</div>
+							
+							<!-- Go to www.addthis.com/dashboard to customize your tools --> 
+							<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a9379b24addc28a">
+							</script>
+							
+							<?php echo $data_artikel->ART_ISI;?>
+							
+							<!-- <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique excepturi voluptates placeat ducimus delectus magnam tempore dolore dolorem quisquam porro modi voluptatum eum saepe dolorum.</p> -->
+							<!-- <blockquote> -->
+								<!-- <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas metus nulla, commodo a sodales sed, dignissim pretium nunc.</p> -->
+								<!-- <cite>Albert Einstein</cite> -->
+							<!-- </blockquote> -->
+
+						</div>
+
+					</div>
+					
+				</div>
+			</section>
+			
+			<?php $uri = $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI']; ?>
+			<!-- LIKE -->
+				<div id="fb-root"></div>
+				<script>(function(d, s, id) {
+				  var js, fjs = d.getElementsByTagName(s)[0];
+				  if (d.getElementById(id)) return;
+				  js = d.createElement(s); js.id = id;
+				  js.src = 'https://connect.facebook.net/id_ID/sdk.js#xfbml=1&version=v2.12&appId=1547596675454558&autoLogAppEvents=1';
+				  fjs.parentNode.insertBefore(js, fjs);
+				}(document, 'script', 'facebook-jssdk'));</script>
+				
+				
+				
+				<!-- <div class="fb-like" data-href="https://developers.facebook.com/docs/plugins/" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div> -->
+				
+				<div class="fb-like" data-href="<?php echo $uri; ?>" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+			<!-- LIKE -->
+			
+			<!-- COMMENTS -->
+				<div id="fb-root"></div>
+				<script>(function(d, s, id) {
+				  var js, fjs = d.getElementsByTagName(s)[0];
+				  if (d.getElementById(id)) return;
+				  js = d.createElement(s); js.id = id;
+				  js.src = 'https://connect.facebook.net/id_ID/sdk.js#xfbml=1&version=v2.12&appId=1547596675454558&autoLogAppEvents=1';
+				  fjs.parentNode.insertBefore(js, fjs);
+				}(document, 'script', 'facebook-jssdk'));</script>
+
+				
+				<!-- <div class="fb-comments" data-href="https://developers.facebook.com/docs/plugins/comments#configurator" data-width="100%" data-numposts="30"></div> -->
+				
+				
+				<div class="fb-comments" data-href="<?php echo $uri; ?>" data-width="100%" data-numposts="30">
+				</div>
+			<!-- /COMMENTS -->
+			
+			<div class="text-center">
+				<div class="owl-carousel owl-padding-1 m-0 buttons-autohide controlls-over" data-plugin-options='{"singleItem": false, "items": "4", "autoPlay": 3500, "navigation": true, "pagination": false}'>
+					<?php
+						$list_images = $this->M_images->list_images_limit(" WHERE A.IMG_GRUP = 'images' AND B.KIMG_NAMA <> 'Slider' ",20,0);
+						if(!empty($list_images)) 
+						{  
+							$list_result = $list_images->result();
+							foreach($list_result as $row2)
+							{
+					?>
+						<!-- item -->
+						<div class="item-box">
+							<figure>
+								<span class="item-hover">
+									<span class="overlay dark-5"></span>
+									<span class="inner">
+
+										<!-- lightbox -->
+										<a class="ico-rounded lightbox" href="<?php echo $row2->IMG_LINK;?>" data-plugin-options='{"type":"image"}'>
+											<span class="fa fa-plus fs-20"></span>
+										</a>
+
+										<!-- details -->
+										<!-- <a class="ico-rounded" href="portfolio-single-slider.html"> -->
+											<!-- <span class="glyphicon glyphicon-option-horizontal fs-20"></span> -->
+										<!-- </a> -->
+
+									</span>
+								</span>
+
+								<img class="img-fluid" src="<?php echo $row2->IMG_LINK;?>" width="600" height="399" alt="<?php echo $row2->IMG_NAMA;?>">
+							</figure>
+
+							<div class="item-box-desc">
+								<h3><?php echo $row2->IMG_NAMA;?></h3>
+								<ul class="list-inline categories m-0">
+									<li><a href="#"><?php echo $row2->KIMG_NAMA;?></a></li>
+									<li><a href="#"><?php echo $row2->IMG_DTINS;?></a></li>
+								</ul>
+							</div>
+
+						</div>
+						<!-- /item -->
+					
+					<?php
+							}
+						}
+					?>
+				</div>
+			</div>
+			
+			

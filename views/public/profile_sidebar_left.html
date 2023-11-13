@@ -1,0 +1,47 @@
+<!-- LEFT -->
+	<div class="col-lg-3 col-md-3 col-sm-4 pull-lg-9 pull-md-9 pull-sm-8">
+	
+		<div class="thumbnail text-center">
+			<?php 
+				if( $this->session->userdata('ses_MUZ_AVATARLINK') == "")
+				{
+					?>
+						<img class="img-fluid" src="<?php echo base_url();?>assets/global/karyawan/loading.gif" alt="<?php echo $this->session->userdata('ses_MUZ_NAMA');?>" />
+					<?php
+				}
+				else
+				{
+					?>
+						<img class="img-fluid" src="<?php echo $this->session->userdata('ses_MUZ_AVATARLINK');?>" alt="<?php echo $this->session->userdata('ses_MUZ_NAMA');?>" />
+					<?php
+				}
+			?>
+			
+			<h2 class="fs-18 mt-10 mb-0"><?php echo $this->session->userdata('ses_MUZ_NAMA');?></h2>
+			<h3 class="fs-11 mt-0 mb-10 text-muted"><?php echo $this->session->userdata('ses_PROF_NAMA');?></h3>
+		</div>
+
+		<!-- completed -->
+		<!-- <div class="mb-30"> -->
+			<!-- <label>88% completed profile</label> -->
+			<!-- <div class="progress progress-xxs"> -->
+				<!-- <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="88" aria-valuemin="0" aria-valuemax="100" style="width: 88%; min-width: 2em;"></div> -->
+			<!-- </div> -->
+		<!-- </div> -->
+		<!-- /completed -->
+
+		<!-- SIDE NAV -->
+		<ul class="side-nav list-group mb-60" id="sidebar-nav">
+			<li id="profile-left-menu-profile" class="list-group-item"><a href="<?php echo base_url();?>public-profile"><i class="fa fa-eye"></i> PROFILE</a></li>
+			<!-- <li class="list-group-item"><a href="page-profile-projects.html"><i class="fa fa-tasks"></i> PROJECTS</a></li> -->
+			<!-- <li class="list-group-item"><a href="page-profile-comments.html"><i class="fa fa-comments-o"></i> COMMENTS</a></li> -->
+			<li id="profile-left-menu-history" class="list-group-item"><a href="page-profile-history.html"><i class="fa fa-history"></i> HISTORY</a></li>
+			<!-- <li id="profile-left-menu-setting" class="list-group-item active"><a href="page-profile-settings.html"><i class="fa fa-gears"></i> SETTINGS</a></li> -->
+			<li class="list-group-item"><a href="<?php echo base_url();?>muzaqi-logout"><i class="glyphicon glyphicon-off"></i> KELUAR</a></li>
+
+			
+		</ul>
+<!-- /SIDE NAV -->
+
+
+	</div>

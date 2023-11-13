@@ -1,0 +1,281 @@
+<html>
+	<head>
+		<?php
+			echo '<title>'.$this->session->userdata('ses_gnl_nama_aplikasi').'</title>';
+		?>
+		
+		<!-- @page { size: auto;  margin: 0mm; } -->
+		<style>
+			@page { size: auto; margin-top:0mm;margin-bottom:0mm; }	
+		</style>
+	</head>
+	<body onload="window.print();" style="font-family:tahoma;font-size:11px;">
+	<!-- <body style="font-family:tahoma;font-size:11px;"> -->
+		<table width="100%" style="font-family:tahoma;font-size:12px;">
+			<!--
+			<tr>
+				<td width="45%"></td>
+				<td width="10%"></td>
+				<td width="45%" rowspan="2" style="text-align:left;"><b>FAKTUR PENJUALAN</b><br/><font style="font-size:15px;"><?php echo 'Tanggal Transaksi : '.$data_h_penjualan->tgl_h_penjualan;?></font></td>
+			</tr>
+			-->
+			<tr>
+				<td colspan="3">.<br/></td>
+			</tr>
+			<tr>
+				<td width="65%"><b><?php echo $this->session->userdata('ses_nama_kantor') .'';?></b></td>
+				<td width="10%"></td>
+				<td width="25%" style="text-align:center;border-bottom:black solid 1px;"><b>FAKTUR PENJUALAN</b></td>
+			</tr>
+			<tr>
+				<td width="65%" rowspan="1" style="vertical-align: text-top;">
+					<?php echo $this->session->userdata('ses_alamat_kantor') .'';?>
+					<?php echo $this->session->userdata('ses_tlp');?>
+				</td>
+				<td width="10%"></td>
+				<td width="25%"  style="text-align:center;">
+					<b><?php echo $data_h_penjualan->no_faktur;?></b>
+					<br/>
+					Tanggal : <?php echo $data_h_penjualan->tgl_h_penjualan;?>
+					<br/>
+				</td>
+			</tr>
+			
+			<tr>
+				<td width="65%" rowspan="1" style="">
+					No Pelanggan : <?php echo $data_h_penjualan->no_costmer;?>
+				</td>
+				<td width="10%"></td>
+				<td width="25%" colspan="2" style="text-align:center;">
+					
+				</td>
+			</tr>
+			<tr>
+				<td width="45%" rowspan="1" style="">
+					Nama Pelanggan : <?php $nama = strtolower($data_costumer->nama_lengkap); echo ucwords($nama);?>
+				</td>
+				<td width="10%" colspan="2"></td>
+			</tr>
+			<tr>
+				<td width="45%" rowspan="1" style="">
+					Kasir : <?php $nama_karyawan = strtolower($data_h_penjualan->nama_karyawan) ; echo ucwords($nama_karyawan);?>
+				</td>
+				<td width="10%" colspan="2"> Sales : <?php $nama_karyawan = strtolower($data_h_penjualan->nama_sales) ; echo ucwords($nama_karyawan);?></td>
+			</tr>
+			<tr>
+				<td width="45%" rowspan="1" style="">
+					Alamat : <?php $alamat = strtolower($data_costumer->alamat_rumah_sekarang); echo ucwords($alamat);?>
+				</td>
+				<td width="10%" colspan="2"></td>
+			</tr>
+			
+			
+			
+		</table>
+	
+			
+			<div class="box-body table-responsive no-padding" style="font-family:tahoma;font-size:9px;">
+				<table width="100%" id="table_transaksi" class="table table-hover">
+					<thead>
+						<tr style="background-color:white;color:black;text-align:center;font-size:11px;">
+							<th width="5%" style="text-align:center;border-bottom:1px solid black;border-top:1px solid black;">NO</th>
+							<th width="15%" style="text-align:center;border-bottom:1px solid black;border-top:1px solid black;">KODE</th>
+							<th width="35%" style="text-align:center;border-bottom:1px solid black;border-top:1px solid black;">NAMA</th>
+							<th width="5%" style="text-align:center;border-bottom:1px solid black;border-top:1px solid black;">JUMLAH</th>
+							<th width="5%" style="text-align:center;border-bottom:1px solid black;border-top:1px solid black;">KONVERSI</th>
+							<th width="10%" style="text-align:center;border-bottom:1px solid black;border-top:1px solid black;">HARGA</th>
+							<th width="10%" style="text-align:center;border-bottom:1px solid black;border-top:1px solid black;">DISKON</th>
+							<!-- <th width="15%" style="text-align:right;">HARGA</th> -->
+							<th width="15%" style="text-align:center;border-bottom:1px solid black;border-top:1px solid black;">SUBTOTAL</th>
+						</tr>
+					</thead>
+			<?php
+			
+				/*
+				if((!empty($_POST['cari'])) && ($_POST['cari']!= "")  )
+				{
+					$cari = "WHERE A.kode_kantor = '".$this->session->userdata('ses_kode_kantor')."' 
+							AND A.id_h_penjualan = '".$_POST['id_h_penjualan']."'
+							AND (B.kode_produk LIKE '%".str_replace("'","",$_POST['cari'])."%' OR B.nama_produk LIKE '%".str_replace("'","",$_POST['cari'])."%')";
+				}
+				else
+				{
+				*/
+					$cari = "
+							WHERE A.kode_kantor = '".$this->session->userdata('ses_kode_kantor')."' 
+							AND A.id_h_penjualan = '".$data_h_penjualan->id_h_penjualan."'
+							-- AND A.isProduk <> 'CONSUMABLE'
+							AND A.id_d_penerimaan  = ''
+							";
+				//}
+				
+				$order_by = " ORDER BY A.tgl_ins DESC ";
+				
+				$list_d_penjualan = $this->M_gl_h_penjualan->list_d_penjualan_faktur($cari,$order_by,1000,0);
+				//($cari,$_POST['limit'],$_POST['offset']);
+				
+				if(!empty($list_d_penjualan))
+				{
+					$list_result = $list_d_penjualan->result();
+					//$no =$this->uri->segment(2,0)+1;
+					$total = 0;
+					$no = 1;
+					foreach($list_result as $row)
+					{
+						//echo'<tr id="tr_'.$no.'">';
+						
+						echo'<tr id="tr_list_transaksi-'.$row->id_produk.'-'.$row->id_h_diskon.'" style="font-family:tahoma;font-size:11px" >';
+							
+							echo'<td width="5%" style="text-align:left;width:5%;font-family:tahoma;font-size:11px;border-bottom:1px black solid;">'.$no.'</td>';
+							echo'<td width="15%" style="text-align:left;width:15%;font-family:tahoma;font-size:11px;border-bottom:1px black solid;">'.$row->kode_produk.'</td>';
+							echo'<td width="40%" style="text-align:left;width:40%;font-family:tahoma;font-size:11px;border-bottom:1px black solid;">'.$row->nama_produk.'</td>';
+							echo'<td width="15%" style="text-align:center;width:15%;font-family:tahoma;font-size:11px;border-bottom:1px black solid;">'.$row->jumlah.' '.$row->satuan_jual.'</td>';
+							
+							echo'<td width="15%" style="text-align:center;width:15%;font-family:tahoma;font-size:11px;border-bottom:1px black solid;">'.$row->konversi.'</td>';
+							echo'<td width="15%" style="text-align:right;width:15%;font-family:tahoma;font-size:11px;border-bottom:1px black solid;">'.number_format($row->harga,0,'.',',').'</td>';
+							
+							if(($row->optr_diskon == '%') && ($row->diskon > 0))
+							{
+								echo'<td width="10%" style="text-align:center;width:15%;font-family:tahoma;font-size:11px;border-bottom:1px black solid;">'.$row->diskon.' '.$row->optr_diskon.'</td>';
+							}
+							else
+							{
+								echo'<td width="10%" style="text-align:center;width:15%;font-family:tahoma;font-size:11px;border-bottom:1px black solid;">'.$row->diskon.'</td>';
+							}
+							
+							echo'<td width="15%" style="text-align:right;width:15%;font-family:tahoma;font-size:11px;border-bottom:1px black solid;">'.number_format( ($row->harga- $row->besar_diskon_ori) * $row->jumlah,0,'.',',').'</td>';
+						echo'</tr>';
+						$total = $total + ( ($row->harga- $row->besar_diskon_ori) * $row->jumlah);
+						$no++;
+					}
+					
+					
+					echo'
+						
+						<tr style="border-bottom:1px solid black;">
+							<td colspan="3" rowspan="2" style="font-family:tahoma;font-size:11px;">Terbilang : '.ucwords( strtolower(Terbilang($total)) ).' Rupiah</td>
+							<td colspan="4" style="text-align:right;font-family:tahoma;font-size:11px;">TOTAL</td>
+							<td style="text-align:right;font-size:12px;font-family:tahoma;font-size:11px;">'.number_format($total,0,'.',',').'</td>
+						</tr>
+						<tr>
+							<td colspan="4" style="text-align:right;font-family:tahoma;font-size:11px;">DISKON</td>
+							<td style="text-align:right;font-size:12px;font-family:tahoma;font-size:11px;">'.number_format($data_h_penjualan->diskon,0,'.',',').'</td>
+						</tr>
+					';
+					
+					//if( ($this->session->userdata('ses_gnl_pajak_transaksi')) > 0)
+					//{
+						echo'
+						<tr>
+							<td colspan="3"></td>
+							<td colspan="4" style="text-align:right;font-family:tahoma;font-size:11px;">BIAYA</td>
+							<td style="text-align:right;font-size:12px;font-family:tahoma;font-size:11px;">'.number_format($data_h_penjualan->pajak,0,'.',',').'</td>
+						</tr>
+						';
+					//}
+					
+					if(!empty($data_pembayaran_bank))
+					{
+						//$data_pembayaran_bank = $data_pembayaran_bank->row();
+						$bayar_bank = $data_pembayaran_bank->nominal;
+					}
+					else
+					{
+						$bayar_bank = 0;
+					}
+					
+					if(!empty($data_pembayaran_cash))
+					{
+						//$data_pembayaran_cash = $data_pembayaran_cash->row();
+						$bayar_cash = $data_pembayaran_cash->nominal;
+					}
+					else
+					{
+						$bayar_cash = 0;
+					}
+					
+					$bayar_all = $bayar_bank + $bayar_cash;
+					
+					echo'
+					<tr>
+						<td colspan="7" style="text-align:right;font-family:tahoma;font-size:11px;">BAYAR</td>
+						<td style="text-align:right;font-size:12px;font-family:tahoma;font-size:11px;">'.number_format($bayar_all,0,'.',',').'</td>
+					</tr>
+					';
+					
+					$kembalian = $bayar_all - (($total + $data_h_penjualan->pajak) - $data_h_penjualan->diskon);
+					
+					echo'
+					<tr>
+						<td colspan="7" style="text-align:right;font-family:tahoma;font-size:11px;">KEMBALI</td>
+						<td style="text-align:right;font-size:12px;font-family:tahoma;font-size:11px;">'.number_format($kembalian,0,'.',',').'   </td>
+					</tr>
+					';
+					
+					
+					
+					//if($this->session->userdata('ses_kode_kantor') == 'PST')
+					//{
+						echo'
+						<!--
+						<tr>
+							<td colspan="7" style="text-align:center;font-family:tahoma;font-size:11px;border:0px black solid;">
+						-->
+							<table width="100%" style="width="100%;text-align:center;">
+								<tr>
+									<td width="15%" style="text-align:center;font-family:tahoma;font-size:11px">Konsumen</td>
+									<td width="5%" style="text-align:center;"></td>
+									<td width="20%" style="text-align:center;font-family:tahoma;font-size:11px">Kasir</td>
+									<td width="5%" style="text-align:center;"></td>
+									<td width="20%" style="text-align:center;font-family:tahoma;font-size:11px">Kepala</td>
+									<td width="5%" style="text-align:center;"></td>
+									<td width="20%" style="text-align:center;"></td>
+								</tr>
+								<tr><td colspan="4"><br/></td></tr>
+								<tr>
+									<td width="15%" style="text-align:center;border-bottom:1px solid black;"></td>
+									<td width="5%" style="text-align:center;"></td>
+									<td width="20%" style="text-align:center;border-bottom:1px solid black;"></td>
+									<td width="5%" style="text-align:center;"></td>
+									<td width="20%" style="text-align:center;border-bottom:1px solid black;"></td>
+									<td width="5%" style="text-align:center;"></td>
+									<td width="20%" style="text-align:center;border-bottom:0px solid black;"></td>
+								</tr>
+								<tr>
+									<td colspan="7" style="text-align:center;font-family:tahoma;font-size:11px"><br/>NB: Barang yang sudah dibeli tidak bisa dikembalikan</td>
+								</tr>
+							</table>
+						<!--
+							</td>
+						</tr>
+						-->
+						';
+						
+						
+					//}
+					
+						
+						
+				}
+				else
+				{
+					//echo "TIDAK ADA DATA YANG DITAMPILKAN";
+				}
+			
+			?>
+				</table>
+			</div>
+			
+		
+		
+		
+		<center>
+			<?php
+				//echo '<br/>'.$data_h_penjualan->type_h_penjualan;
+			?>
+			
+			
+			
+		</center>
+	</body>
+</html>

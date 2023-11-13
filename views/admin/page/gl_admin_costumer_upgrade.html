@@ -1,0 +1,557 @@
+	<!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.4 -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/dist/css/AdminLTE.min.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/dist/css/skins/_all-skins.min.css">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/plugins/select2/select2.min.css">
+	<link rel="stylesheet" href="<?=base_url();?>assets/adminlte/bower_components/bootstrap-daterangepicker/daterangepicker.css">
+	<link rel="stylesheet" href="<?=base_url();?>assets/adminlte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+	<link rel="stylesheet" href="<?=base_url();?>assets/adminlte/bower_components/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css">
+	<link rel="stylesheet" href="<?=base_url();?>assets/adminlte/plugins/timepicker/bootstrap-timepicker.min.css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+		
+		
+			<style type="text/css">
+			.labelfrm {
+				display:block;
+				font-size:small;
+				margin-top:5px;
+			}
+			.error {
+				font-size:small;
+				color:red;
+			}
+			</style>
+			
+			<script type="text/javascript" src="<?=base_url();?>assets/admin/js/jquery.validate.min.js"></script>
+			
+			<script type="text/javascript">
+			$(document).ready(function() {
+				$('.frm-input').validate
+                (
+                    {
+        				rules: 
+                        {
+        					pass2: 
+                            {
+        						equalTo: "#pass"
+        					}
+        				},
+        				messages: 
+                        {
+        					pass2: {
+        						equalTo: "Password tidak sama"
+        					}
+        				}
+        			}
+                );
+				$('.confirm-btn').click(function(){
+				var answer = confirm(jQuery(this).attr('title'));
+				return answer;
+				});
+			});
+			</script>
+			
+			<script type="text/javascript">
+				var htmlobjek;
+				$(document).ready(function()
+				{	
+					$('#2_basis_data').attr('class', 'active treeview');
+					$('#23_basis_data_pasien').attr('class', 'active treeview');
+					$('#232_basis_data_pasien_pasien').attr('class', 'active treeview');
+					
+					$('body').attr('class', 'hold-transition skin-purple sidebar-collapse sidebar-mini');
+					
+					
+				});
+			</script>
+			
+	<div class="content-wrapper">
+		<!-- Content Header (Page header) -->
+		<section class="content-header">
+		
+		<h1>
+			<?php
+				echo $this->session->userdata('ses_gnl_nama_aplikasi');
+				/*
+				if(!empty($this->M_gl_pengaturan->get_data_by_id(1))) 
+				{
+					//echo $this->M_gl_pengaturan->get_data_by_id(1)->nilai; 
+					echo $this->M_gl_pengaturan->get_data_by_id(1)->nilai;
+				}
+				else
+				{
+					echo "Aplikasi Sistem Informasi dan Maagement Klinik 1.0";
+				} 
+				*/
+			?>
+			<?php 
+				//echo $msgbox_title;
+			?> 
+			<?php 
+				//echo $this->session->userdata("ses_nama_kantor"); 
+			?>
+		</h1>
+		
+		
+		
+		<ol class="breadcrumb">
+			<li><a href="<?php echo base_url()?>gl-admin"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+			<li><a href="#"><i class="fa fa-dashboard"></i> Data Dasar</a></li>
+			<li class="active"><i class="fa fa-edit"></i> Pasien</li>
+			
+		</ol>
+		</section>
+
+		<!-- Main content -->
+		<section class="content">
+		<!-- =========================================================== -->
+
+		<div class="row">
+			<div class="col-md-12">
+				  <!-- <div class="box box-warning collapsed-box box-solid"> -->
+				<!-- <div class="callout callout-info"> -->
+				<div class="alert alert-info alert-dismissible">
+					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+					<h4><?php echo $msgbox_title;?></h4>
+					<p>
+						Pada halaman ini menampilkan detail tentang pasien, informasi yang ditampilkan antara lain biodata pasien lengkap, riwayat kunjungan dan rekam medis pasien. Anda juga bisa melihat foto perubahan atau transisi dari setiap kunjungan pasien.
+					</P>
+					<!-- <p style="color:red;"><?php //echo $sum_pesan; ?></p> -->
+				</div>
+			  <!-- Perbatasan table dan form -->
+			</div><!-- /.col -->
+			
+			<div class="col-md-12">
+			<!-- <div class="box box-warning collapsed-box box-solid"> -->
+			
+				<?php
+				
+					if((empty($data_costumer)) && ($data_costumer->avatar == ""))
+					{
+						$src = base_url().'assets/global/costumer/loading.gif';
+					}
+					else
+					{
+						if($data_costumer->avatar == "")
+						{
+							$src = base_url().'assets/global/costumer/loading.gif';
+						}
+						else
+						{
+							$src = base_url().''.$data_costumer->avatar_url.''.$data_costumer->avatar;
+						}
+					}
+				
+				?>
+			
+				<!-- <div class="col-md-6"> -->
+				  <!-- <div class="box box-primary"> -->
+					<!-- <div class="box-body box-profile"> -->
+						
+						<!-- <small style="text-align:center;color:red;font-size:10px;">.</small> -->
+					
+					  <!-- <img class="profile-user-img img-responsive img-circle" src="<?php echo $src; ?>" alt="User profile picture"> -->
+
+					  <!-- <h3 class="profile-username text-center"><?php if(!empty($data_costumer)) { echo $data_costumer->nama_lengkap;} ?></h3> -->
+
+					  <!-- <p class="text-muted text-center"><?php if(!empty($data_costumer)) { echo $data_costumer->no_costumer;} ?></p> -->
+					  <!-- <a href="<?php echo base_url();?>gl-admin-penjualan-langsung-proses?token=<?php if(!empty($data_costumer)) { echo md5($data_costumer->id_costumer);} ?>" class="btn btn-primary btn-flat btn-block"><b>PROSES TANPA PASIEN</b></a> -->
+					<!-- </div> -->
+				  <!-- </div> -->
+				<!-- </div> -->
+				
+				<div class="col-md-3">
+				  <!-- Profile Image -->
+				  <div class="box box-primary">
+					<div class="box-body box-profile">
+						<!-- <form method="post" action="<?php echo base_url();?>gl-admin-penjualan-langsung-proses"> -->
+							<span id="img_edit">
+								<img class="profile-user-img img-responsive img-circle" src="<?php echo $src; ?>" data-toggle="modal" data-target="#myModal_pasien" onclick="list_pasien()" alt="User profile picture">
+							</span>
+							<input type="hidden" name="id_costumer" id="id_costumer" value="<?php if(!empty($data_costumer)) { echo $data_costumer->id_costumer;} ?>" />
+							<h3 class="profile-username text-center" id="nama_costumer"><?php if(!empty($data_costumer)) { echo $data_costumer->nama_lengkap;} ?></h3>
+							
+							<p class="text-muted text-center" id="no_costumer"><?php if(!empty($data_costumer)) { echo $data_costumer->no_costumer;} ?></p>
+							
+							<ul class="list-group list-group-unbordered">
+								<li class="list-group-item">
+								  <b>MEMBER</b> <a class="pull-right"><span id="nama_kat_costumer"><?php if(!empty($data_costumer)) { echo $data_costumer->nama_kat_costumer; }else{echo"-";}?></span><span id="tgl_registrasi"><?php if(!empty($data_costumer)) { echo "(".$data_costumer->tgl_registrasi.")"; }else{echo"";}?></span></a>
+								</li>
+								<li class="list-group-item">
+								  <b>NIK</b> <a class="pull-right"><span id="nik"><?php if(!empty($data_costumer)) { echo $data_costumer->nik; }else{echo"-";}?></span></a>
+								</li>
+								<li class="list-group-item">
+								  <b>NAMA</b> <a class="pull-right"><span id="nama_lengkap2"><?php if(!empty($data_costumer)) { echo $data_costumer->nama_lengkap; }else{echo"-";}?></span></a>
+								</li>
+								<li class="list-group-item">
+								  <b>JENIS KELAMIN</b> <a class="pull-right"><span id="jenis_kelamin"><?php if(!empty($data_costumer)) { echo $data_costumer->jenis_kelamin; }else{echo"-";}?></span></a>
+								</li>
+								<li class="list-group-item">
+								  <b>PENDIDIKAN</b> <a class="pull-right"><span id="pendidikan"><?php if(!empty($data_costumer)) { echo $data_costumer->pendidikan; }else{echo"-";}?></span></a>
+								</li>
+								<li class="list-group-item">
+								  <b>PEKERJAAN</b> <a class="pull-right"><span id="pekerjaan"><?php if(!empty($data_costumer)) { echo $data_costumer->pekerjaan; }else{echo"-";}?></span></a>
+								</li>
+								<li class="list-group-item">
+								  <b>TELPON</b> <a class="pull-right"><span id="hp"><?php if(!empty($data_costumer)) { echo $data_costumer->hp; }else{echo"-";}?></span></a>
+								</li>
+								<li class="list-group-item">
+								  <b>ALAMAT</b> <p><span id="alamat_rumah_sekarang"><?php if(!empty($data_costumer)) { echo $data_costumer->alamat_rumah_sekarang; }else{echo"-";}?></span></p>
+								</li>
+							</ul>
+							
+							
+							<!-- <input type="submit" alt="Apakah anda yakin akan melanjutkan transaksi ini ?" title="Apakah anda yakin akan melanjutkan transaksi ini ?" class="confirm-btn btn btn-primary btn-flat btn-block" value="PROSES" /> -->
+						<!-- </form> -->
+					</div>
+					<!-- /.box-body -->
+				  </div>
+				</div>
+				
+				<div class="col-md-9">
+				
+						
+					<!-- REKAM MEDIS -->
+					<div  class="box box-warning ellapsed-box box-solid" id="frame_rekam_medis">
+						<div class="box-header with-border">
+							<h3 class="box-title">Formulir Upgrade Member <span id="nama_lengkap3"></span></h3>
+							<div class="box-tools pull-right">
+								<button class="btn btn-box-tool" data-widget="collapse"><i id="icon_form" class="fa fa-minus"></i></button>
+							</div><!-- /.box-tools -->
+						</div><!-- /.box-header -->
+						<div class="box-body">
+						
+							<div class="box-body">
+							<!-- ISI FORM -->
+									<form role="form" action="<?php echo base_url();?>gl-admin-pasien-upgrade-simpan" method="post" class="frm-input">
+									<input type="hidden" name="stat_edit" id="stat_edit"/>
+									<input type="hidden" name="id_costumer" id="id_costumer" value="<?php echo $data_costumer->id_costumer; ?>"/>
+									<div class="box-body">
+									
+										<div class="form-group">
+										  <label for="id_kat_costumer">Kategori Pasien</label>
+										  <select name="id_kat_costumer" id="id_kat_costumer" class="required form-control select2" title="Pasien">
+													<option value="">== Pilih Kategori Pasien ==</option>
+											<?php
+												if(!empty($list_kat_costumer))
+												{
+													$list_result = $list_kat_costumer->result();
+													foreach($list_result as $row)
+													{
+										echo'<option value="'.$row->id_kat_costumer.'">'.$row->nama_kat_costumer.'</option>';
+													}
+												}
+											?>
+										   </select>
+										</div>
+										
+										<div class="form-group">
+											<label>Mulai Aktif</label>
+											<div class="input-group date">
+											  <div class="input-group-addon">
+												<i class="fa fa-calendar"></i>
+											  </div>
+											  <input name="tgl_aktif" id="tgl_aktif" type="text" class="required form-control pull-right settingDate" alt="Tanggal Lahir" title="Tanggal Lahir" value="<?php echo date("Y-m-d"); ?>" data-date-format="yyyy-mm-dd">
+											</div>
+											<!-- /.input group -->
+										</div>
+										
+										
+										<div class="form-group">
+										  <label for="ket_upgrade">Keterangan</label>
+										  <textarea name="ket_upgrade" id="ket_upgrade" class="required form-control" title="Isikan lengkap tentang Upgrade Member" placeholder="*Isikan lengkap tentang Upgrade Member"></textarea>
+										</div>
+										
+									</div><!-- /.box-body -->
+					
+									<div class="box-footer">
+										<button type="reset" id="btnbatal" class="btn btn-default">Batal</button>
+										<button type="submit" id="btnsimpan" class="confirm-btn btn btn-primary" title="Simpan Data <?php echo $msgbox_title;?> ?">Simpan</button>
+									</div>
+									</form>
+								<!-- ISI FORM -->
+							
+							
+							</div><!-- /.box-body -->
+						
+							<div class="box-header">
+								<h3 class="box-title"><?php echo $msgbox_title;?> <?php echo $this->session->userdata("ses_nama_kantor"); ?>
+								</h3>
+									
+									
+									<br/>
+									<br/>
+							</div><!-- /.box-header -->
+							
+							<div class="box-body table-responsive no-padding">
+							<!-- TAMPUNG AJAX REKAM MEDIS -->
+							<?php
+								if(!empty($list_upgrade))
+								{
+									
+									echo'<table width="100%" id="example2" class="table table-hover">';
+										echo '<thead>
+	<tr>';
+													echo '<th width="5%">NO</th>';
+													echo '<th width="15%">UPGRADE</th>';
+													echo '<th width="15%">TGL AKTIF</th>';
+													echo '<th width="35%">KETERANGAN</th>';
+													echo '<th width="30%">AKSI</th>';
+										echo '</tr>
+	</thead>';
+								
+									$no = 1;
+									$list_result = $list_upgrade->result();
+									foreach($list_result as $row)
+									{
+										if($row->isAktif == 1)
+										{
+											echo'<tr>';
+										}
+										else
+										{
+											echo'<tr style="color:red;">';
+										}
+										
+											echo'<td>'.$no.'</td>';
+											
+											echo '<td>'.$row->nama_kat_costumer.'</td>';
+											echo '<td>'.$row->tgl_aktif.'</td>';
+											echo '<td>'.$row->ket_upgrade.'</td>';
+											
+											echo'<input type="hidden" id="id_upgrade_'.$no.'" name="id_upgrade_'.$no.'" value="'.$row->id_upgrade.'" />';
+											echo'<input type="hidden" id="id_kat_costumer_'.$no.'" name="id_kat_costumer_'.$no.'" value="'.$row->id_kat_costumer.'" />';
+											echo'<input type="hidden" id="nama_kat_costumer_'.$no.'" name="nama_kat_costumer_'.$no.'" value="'.$row->nama_kat_costumer.'" />';
+											
+											echo'<input type="hidden" id="tgl_aktif_'.$no.'" name="tgl_aktif_'.$no.'" value="'.$row->tgl_aktif.'" />';
+											
+											echo'<input type="hidden" id="isAktif_'.$no.'" name="isAktif_'.$no.'" value="'.$row->isAktif.'" />';
+											
+											echo'<input type="hidden" id="ket_upgrade_'.$no.'" name="ket_upgrade_'.$no.'" value="'.$row->ket_upgrade.'" />';
+											
+											
+											echo'<input type="hidden" id="tgl_ins_'.$no.'" name="tgl_ins_'.$no.'" value="'.$row->tgl_ins.'" />';
+											echo'<input type="hidden" id="tgl_updt_'.$no.'" name="tgl_updt_'.$no.'" value="'.$row->tgl_updt.'" />';
+											echo'<input type="hidden" id="user_ins_'.$no.'" name="user_ins_'.$no.'" value="'.$row->user_ins.'" />';
+											echo'<input type="hidden" id="user_updt_'.$no.'" name="user_updt_'.$no.'" value="'.$row->user_updt.'" />';
+											
+											echo'<input type="hidden" id="kode_kantor_'.$no.'" name="kode_kantor_'.$no.'" value="'.$row->kode_kantor.'" />';
+
+											
+											
+											echo'<td>
+											
+	<a href="javascript:void(0)" class="btn btn-warning btn-sm" onclick="edit('.$no.')" title = "Ubah Data '.$row->nama_kat_costumer.'" alt = "Ubah Data '.$row->nama_kat_costumer.'">Edit</a>
+
+	<a class="confirm-btn btn btn-danger btn-sm" href="'.base_url().'gl-admin-pasien-upgrade-hapus/'.md5($row->id_costumer).'/'.($row->id_upgrade).'" title = "Hapus Data '.$row->nama_kat_costumer.'" alt = "Hapus Data '.$row->nama_kat_costumer.'">Hapus</a>
+											</td>';
+											
+										echo'</tr>';
+										$no++;
+									}
+								}
+								else
+								{
+									echo'<center><font style="color:red;font-weight:bold;">Belum ada rekam medis</font></center>';
+								}
+							?>
+
+							
+							<center>
+							<!-- <div class="halaman"><?php echo $halaman;?></div> -->
+							</center>
+							</div>
+						</div><!-- /.box-body -->
+					</div><!-- /.box -->
+					<!-- REKAM MEDIS -->
+					</div>
+				</div>
+				</div>		
+			</div><!-- /.box-body -->
+		</div><!-- /.box -->
+					
+		<!-- =========================================================== -->
+		</section><!-- /.content -->
+	</div><!-- /.content-wrapper -->
+			
+			
+		
+<script type='text/javascript'>
+	function edit(id)
+	{
+		
+		$('input[name=stat_edit]').val($('#id_upgrade_'+id).val());
+		$('input[name=tgl_aktif]').val($('#tgl_aktif_'+id).val());
+		$('input[name=id_karyawan]').val($('#id_karyawan_'+id).val());
+		document.getElementById("ket_upgrade").value = $('#ket_upgrade_'+id).val();
+		
+		//$('input[name=id_kat_costumer]').val($('#id_kat_costumer_'+id).val());
+		document.getElementById("id_kat_costumer").options.item(0).text = $('#nama_kat_costumer_'+id).val();
+		document.getElementById("id_kat_costumer").options.item(0).value = $('#id_kat_costumer_'+id).val();
+		
+		alert("Mode Perubahan Aktif Untuk Data "+ $('#nama_lengkap_'+id).val());
+		
+		/*Buka Form*/
+			//$('#icon_form').attr('class', 'fa fa-minus');
+			//$('#box-form').attr('class', 'box box-warning ellapsed-box box-solid');
+		/*Buka Form*/
+	}
+
+	$('#btnbatal').click(function(){
+		$('input[name=stat_edit]').val("");
+		
+		
+		/*Tutup Dulu Form*/
+			$('#icon_form').attr('class', 'fa fa-plus');
+			$('#box-form').attr('class', 'box box-warning collapsed-box box-solid');
+		/*Tutup Dulu Form*/
+	});
+	
+	
+	function isNumberKey(evt)
+	{
+    	var charCode = (evt.which) ? evt.which : event.keyCode
+    	if (charCode > 31 && (charCode < 48 || charCode > 57))
+    	
+    	return false;
+    	return true;
+	}
+	
+	
+	function FormatCurrency(objNum)
+	{
+	   var num = objNum.value
+	   var ent, dec;
+	   if (num != '' && num != objNum.oldvalue)
+	   {
+		 num = HapusTitik(num);
+		 if (isNaN(num))
+		 {
+		   objNum.value = (objNum.oldvalue)?objNum.oldvalue:'';
+		 } else {
+		   var ev = (navigator.appName.indexOf('Netscape') != -1)?Event:event;
+		   if (ev.keyCode == 190 || !isNaN(num.split('.')[1]))
+		   {
+			 alert(num.split('.')[1]);
+			 objNum.value = TambahTitik(num.split('.')[0])+'.'+num.split('.')[1];
+		   }
+		   else
+		   {
+			 objNum.value = TambahTitik(num.split('.')[0]);
+		   }
+		   objNum.oldvalue = objNum.value;
+		 }
+	   }
+	}
+	function HapusTitik(num)
+	{
+	   return (num.replace(/\./g, ''));
+	}
+
+	function TambahTitik(num)
+	{
+	   numArr=new String(num).split('').reverse();
+	   for (i=3;i<numArr.length;i+=3)
+	   {
+		 numArr[i]+='.';
+	   }
+	   return numArr.reverse().join('');
+	} 
+			
+	function formatCurrency(num) {
+	   num = num.toString().replace(/\$|\./g,'');
+	   if(isNaN(num))
+	   num = "0";
+	   sign = (num == (num = Math.abs(num)));
+	   num = Math.floor(num*100+0.50000000001);
+	   cents = num0;
+	   num = Math.floor(num/100).toString();
+	   for (var i = 0; i < Math.floor((num.length-(1+i))/3); i++)
+	   num = num.substring(0,num.length-(4*i+3))+'.'+
+	   num.substring(num.length-(4*i+3));
+	   return (((sign)?'':'-') + num);
+	}
+</script>
+      
+    <!-- Bootstrap 3.3.4 -->
+	<script src="<?=base_url();?>assets/adminlte/bootstrap/js/bootstrap.min.js"></script>
+	<!-- Slimscroll -->
+	<script src="<?=base_url();?>assets/adminlte/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+	<!-- FastClick -->
+	<script src="<?=base_url();?>assets/adminlte/plugins/fastclick/fastclick.min.js"></script>
+	<!-- AdminLTE App -->
+	<script src="<?=base_url();?>assets/adminlte/dist/js/app.min.js"></script>
+	<!-- Page script -->
+    <!-- InputMask -->
+    <script src="<?=base_url();?>/assets/adminlte/plugins/input-mask/jquery.inputmask.js"></script>
+    <script src="<?=base_url();?>/assets/adminlte/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+    <script src="<?=base_url();?>/assets/adminlte/plugins/input-mask/jquery.inputmask.extensions.js"></script>
+	
+	<!-- bootstrap datepicker -->
+	<script src="<?=base_url();?>/assets/adminlte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+    
+    <script>
+      $(function () {
+		//Date picker
+		$('.settingDate').datepicker({
+			autoclose: true
+		});
+		
+		
+        //Initialize Select2 Elements
+        //$(".select2").select2();
+
+        //Datemask yyyy-mm-dd
+        $(".datemask_mysql").inputmask("yyyy-mm-dd", {"placeholder": "yyyy-mm-dd"});
+        //Datemask dd/mm/yyyy
+        //$("#datemask").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});
+        //Datemask2 mm/dd/yyyy
+        //$("#datemask2").inputmask("mm/dd/yyyy", {"placeholder": "mm/dd/yyyy"});
+        //TimeMask hh:mm:ss
+        $(".time_mysql").inputmask("hh:mm:ss", {"placeholder": "hh:mm:ss"});
+        //Money Euro
+        //$("[data-mask]").inputmask();
+
+        //iCheck for checkbox and radio inputs
+        $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+          checkboxClass: 'icheckbox_minimal-blue',
+          radioClass: 'iradio_minimal-blue'
+        });
+        //Red color scheme for iCheck
+        $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
+          checkboxClass: 'icheckbox_minimal-red',
+          radioClass: 'iradio_minimal-red'
+        });
+        //Flat red color scheme for iCheck
+        $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+          checkboxClass: 'icheckbox_flat-green',
+          radioClass: 'iradio_flat-green'
+        });
+
+        //Colorpicker
+        $(".my-colorpicker1").colorpicker();
+        //color picker with addon
+        $(".my-colorpicker2").colorpicker();
+
+        //Timepicker
+        $(".timepicker").timepicker({
+          showInputs: false
+        });
+      });
+    </script>
+	

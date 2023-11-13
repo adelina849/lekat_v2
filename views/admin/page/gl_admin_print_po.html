@@ -1,0 +1,312 @@
+<html>
+	<head>
+		<?php
+			echo '<title>'.$this->session->userdata('ses_gnl_nama_aplikasi').'</title>';
+		?>
+		
+		<!-- @page { size: auto;  margin: 0mm; } -->
+		<style>
+			@page { size: auto; margin-top:0mm;margin-bottom:0mm; }	
+		</style>
+	</head>
+	<body onload="window.print();">
+	<!-- <body> -->
+		<center style="margin:0;font-size:12px;">
+			<!--
+			<img class="profile-user-img img-responsive" style="border:0px;width:50%;" src= "<?php echo base_url().'/'.$this->session->userdata('ses_gnl_logo_aplikasi_besar');?>" alt="User profile picture">
+			<br/>
+			-->
+			<?php //echo 'PURCHASE ORDER<br/>';?>
+			<?php //echo $this->session->userdata('ses_alamat_kantor') .'<br/>';?>
+			<?php //echo $this->session->userdata('ses_alamat_kantor') .'<br/><font style="font-size:60px;font-weight:bold;">'.$data_h_penjualan->no_antrian.'</font>';?>
+			<?php //echo '<h1 style="font-size:60px;">'.$data_h_penjualan->no_antrian.'</h1>';?>
+			<?php //echo $this->session->userdata('ses_alamat_kantor');?>
+		</center>
+			<?php
+				/*
+				echo '</br>
+						<font style="float:left;font-size:12px;">No Faktur : '.$data_h_penjualan->no_faktur.' </font> <font  style="float:right;font-size:12px;"> '.($data_h_penjualan->tgl_ins).'</font>';
+				*/
+						
+				//echo '<br/><b>Dokter : </b>'.$data_dokter->nama_karyawan;
+				
+				/*
+				if(!empty($data_costumer))
+				{
+					echo '<br/><font style="float:left;font-size:12px;">Pasien : '.$data_costumer->nama_lengkap.'</font>';
+				}
+				if(!empty($data_dokter))
+				{
+					echo '<br/><font style="float:left;font-size:12px;">Dokter : '.$data_dokter->nama_karyawan.'</font>';
+				}
+				*/
+			?>
+		
+			
+			<div class="box-body table-responsive no-padding" style="font-size:12px;">
+				<table width="100%" id="table_transaksi" class="table table-hover">
+					<!-- <thead> -->
+						<tr>
+							<td colspan ="7" style="text-align:center;font-weight:bold;">PURCHASE ORDER</td>
+						</tr>
+						<tr>
+							<td colspan="3"><?php echo $this->session->userdata('ses_nama_kantor'); ?></td>
+							<!-- <td></td> -->
+							<td colspan="1">NO PO</td>
+							<td colspan="3">: <?php echo $cek_h_pembelian->no_h_pembelian; ?></td>
+						</tr>
+						<tr>
+							<td colspan="3"><?php echo $this->session->userdata('ses_tlp_kantor'); ?></td>
+							<!-- <td></td> -->
+							<td colspan="1">Supplier</td>
+							<td colspan="3">: <?php echo $cek_h_pembelian->nama_supplier; ?></td>
+						</tr>
+						<tr style="vertical-align:top;">
+							
+							<!-- <td colspan="3" rowspan="2"><?php echo $this->session->userdata('ses_alamat_kantor'); ?></td> -->
+							
+							<td colspan="3"></td>
+							<td colspan="1">Telpon</td>
+							<td colspan="3">: <?php echo $cek_h_pembelian->tlp_supplier; ?></td>
+						</tr>
+						<tr style="vertical-align:top;">
+							<td colspan="3"></td>
+							<!-- <td></td> -->
+							<td colspan="1">Alamat</td>
+							<td colspan="3">: <?php echo $cek_h_pembelian->alamat_supplier; ?></td>
+						</tr>
+						<tr style="background-color:black;color:white;text-align:center;font-size:12px;">
+							<th width="5%" style="text-align:center;">NO</th>
+							<th width="15%" style="text-align:center;">KODE PRODUK</th>
+							<th width="30%" style="text-align:center;">NAMA PRODUK</th>
+							<th width="10%" style="text-align:right;">JUMLAH</th>
+							<th width="10%" style="text-align:right;">HARGA</th>
+							<th width="10%" style="text-align:right;">DISKON</th>
+							<th width="20%" style="text-align:right;">SUBTOTAL</th>
+						</tr>
+					<!-- </thead> -->
+			<?php
+			
+				/*
+				if((!empty($_POST['cari'])) && ($_POST['cari']!= "")  )
+				{
+					$cari = "WHERE A.kode_kantor = '".$this->session->userdata('ses_kode_kantor')."' 
+							AND A.id_h_penjualan = '".$_POST['id_h_penjualan']."'
+							AND (B.kode_produk LIKE '%".str_replace("'","",$_POST['cari'])."%' OR B.nama_produk LIKE '%".str_replace("'","",$_POST['cari'])."%')";
+				}
+				else
+				{
+				
+					$cari = "WHERE A.kode_kantor = '".$this->session->userdata('ses_kode_kantor')."' 
+							AND A.id_h_penjualan = '".$data_h_penjualan->id_h_penjualan."'
+							AND A.isProduk <> 'CONSUMABLE'
+							";
+				}
+				$order_by = " ORDER BY A.tgl_ins DESC ";
+				*/
+				
+				if(!empty($cek_d_pembelian))
+				{
+						$list_result = $cek_d_pembelian->result();
+						//$no =$this->uri->segment(2,0)+1;
+						$total = 0;
+						$pembayaran = "";
+						$no = 1;
+						foreach($list_result as $row)
+						{
+							//echo'<tr id="tr_'.$no.'">';
+							
+							echo'<tr id="tr_list_transaksi-'.$row->id_produk.'" >';
+							
+								echo'<td width="5%" style="text-align:left;width:5%;font-size:12px;">'.$no.'</td>';
+								echo'<td width="15%" style="text-align:left;width:15%;font-size:12px;">'.$row->kode_produk.'</td>';
+								echo'<td width="30%" style="text-align:left;width:35%;font-size:12px;">'.$row->nama_produk.'</td>';
+								echo'<td width="10%" style="text-align:center;width:10%;font-size:12px;">'.$row->jumlah.' '.$row->kode_satuan.'</td>';
+								echo'<td width="10%" style="text-align:right;width:10%;font-size:12px;">'.number_format($row->harga,2,'.',',').'</td>';
+								echo'<td width="10%" style="text-align:right;width:10%;font-size:12px;">'.number_format($row->besar_diskon_ori,2,'.',',').'</td>';
+								echo'<td width="20%" style="text-align:right;width:20%;font-size:12px;">'.number_format( ($row->harga - $row->besar_diskon_ori) * $row->jumlah,2,'.',',').'</td>';
+							echo'</tr>';
+							$total = $total + ( ($row->harga- $row->besar_diskon_ori) * $row->jumlah);
+							$no++;
+						}
+						/*
+						echo'
+							
+							<tr style="border-bottom:1px solid black;">
+								<td colspan="2" style="text-align:right;font-size:12px;">TOTAL</td><td style="text-align:right;font-size:12px;">'.number_format($total,0,'.',',').'</td>
+							</tr>
+							<tr>
+								<td colspan="2" style="text-align:right;font-size:12px;">DISKON</td><td style="text-align:right;font-size:12px;">'.number_format($data_h_penjualan->diskon,0,'.',',').'</td>
+							</tr>
+						';
+						*/
+						
+						echo'
+							<tr>
+								<td colspan ="6" style="text-align:right;font-size:12px;font-weight:bold;">GRAND TOTAL :</td>
+								<td colspan ="1" style="text-align:right;font-size:12px;font-weight:bold;">'.number_format($total,2,'.',',').'</td>
+							</tr>
+						';
+						
+						
+						if(!empty($cek_d_pembelian_bayar))
+						{
+							$list_result_bayar = $cek_d_pembelian_bayar->result();
+							//$no =$this->uri->segment(2,0)+1;
+							$pembayaran = 0;
+							foreach($list_result_bayar as $row_bayar)
+							{
+								echo'
+									<tr>
+										<td colspan ="6" style="text-align:right;font-size:12px;font-weight:bold;">PEMBAYARAN ('.$row_bayar->bank.') :</td>
+										<td colspan ="1" style="text-align:right;font-size:12px;font-weight:bold;">'.number_format($row_bayar->nominal,2,'.',',').'</td>
+									</tr>
+								';
+								
+								$pembayaran = $pembayaran + $row_bayar->nominal;
+							}
+						}
+						
+						echo'
+							<tr>
+								<td colspan ="6" style="text-align:right;font-size:12px;font-weight:bold;">SISA :</td>
+								<td colspan ="1" style="text-align:right;font-size:12px;font-weight:bold;">'.number_format($total - $pembayaran,2,'.',',').'</td>
+							</tr>
+						';
+						
+						echo'<tr><td colspan="7"><br/></td></tr>';
+						echo'
+							<tr>
+								<td colspan ="3" style="text-align:center;font-weight:normal;"></td>
+								<td></td>
+								<td colspan ="3" style="text-align:center;font-weight:normal;">'.$this->session->userdata('ses_kota_kantor').', '.date('d F Y', strtotime($cek_h_pembelian->tgl_h_pembelian)).'</td>
+							</tr>
+						';
+						
+					echo'</table>';
+					echo'<table width="100%">';
+						
+						if($this->session->userdata('ses_kode_kantor') == 'PST')
+						{
+							echo'
+								<tr>
+									
+									<td style="text-align:center;font-weight:normal;">Dibuat Oleh</td>
+									<td style="text-align:center;font-weight:normal;">Mengetahui<br/>Apoteker</td>
+									<td style="text-align:center;font-weight:normal;">Mengetahui<br/>Akunting</td>
+									<td style="text-align:center;font-weight:normal;">Disetujui</td>
+									
+								</tr>
+							';
+							
+							echo'
+								<tr>
+									
+									<td style="text-align:center;font-weight:normal;"></br></br></br></td>
+									<td style="text-align:center;font-weight:normal;"></br></br></br></td>
+									<td style="text-align:center;font-weight:normal;"></br></br></br></td>
+									<td style="text-align:center;font-weight:normal;"></br></br></br></td>
+									
+								</tr>
+							';
+							
+							echo'
+								<tr>
+									
+									<td style="text-align:center;font-weight:normal;"></td>
+									<!-- <td style="text-align:center;font-weight:normal;">Ikhsan Permana S.Farm Apt</td> -->
+									<td style="text-align:center;font-weight:normal;">Apt. Yuni Dwi Mulyaningsih S.Farm</td>
+									<td style="text-align:center;font-weight:normal;">Hetty Sigarlaki,SE</td>
+									<td style="text-align:center;font-weight:normal;">dr. Attaubah Mufid</td>
+									
+								</tr>
+							';
+						}
+						else
+						{
+							echo'
+								<tr>
+									
+									<td style="text-align:center;font-weight:normal;">Dibuat Oleh</td>
+									<td style="text-align:center;font-weight:normal;"></td>
+									<td style="text-align:center;font-weight:normal;"></td>
+									<td style="text-align:center;font-weight:normal;">APJ</td>
+									
+								</tr>
+							';
+							
+							echo'
+								<tr>
+									
+									<td style="text-align:center;font-weight:normal;"></br></br></br></td>
+									<td style="text-align:center;font-weight:normal;"></br></br></br></td>
+									<td style="text-align:center;font-weight:normal;"></br></br></br></td>
+									<td style="text-align:center;font-weight:normal;"></br></br></br></td>
+									
+								</tr>
+							';
+							
+							echo'
+								<tr>
+									
+									<td style="text-align:center;font-weight:normal;">Date</td>
+									<td style="text-align:center;font-weight:normal;"></td>
+									<td style="text-align:center;font-weight:normal;"></td>
+									<td style="text-align:center;font-weight:normal;">Date</td>
+									
+								</tr>
+							';
+						}
+						
+						echo'
+							<tr>
+								<td colspan ="4" style="text-align:center;font-size:10px;;font-weight:normal;">Print At '.date("d F, Y h:i:s").'</td>
+							</tr>
+						';
+					echo'</table>';
+						
+						
+						
+						
+						//$kembalian = $bayar_all - (($total + $data_h_penjualan->pajak) - $data_h_penjualan->diskon);
+						
+						/*
+						echo'
+						<tr>
+							<td colspan="2" style="text-align:right;font-size:12px;">KEMBALI</td><td style="text-align:right;font-size:12px;">'.number_format($kembalian,0,'.',',').'</td>
+						</tr>
+						';
+						*/
+						
+						
+				}
+				else
+				{
+					//echo "TIDAK ADA DATA YANG DITAMPILKAN";
+				}
+			
+			?>
+				
+			</div>
+			
+		
+		
+		
+		<center>
+			<?php
+				//echo '<br/>'.$data_h_penjualan->type_h_penjualan;
+			?>
+			<!--
+			<table style="width:100%; text-align:center;">
+				<tr><td>
+					<font style="text-align:right;font-size:10px;">TERIMA KASIH TELAH BERKUNJUNG, KAMI TUNGGU KEDATANGAN ANDA SELANJUTNYA</font>
+				</td></tr>
+				
+				<tr><td>
+					<img class="profile-user-img img-responsive" style="border:0px;width:25%;" src= "<?php echo base_url().'/assets/global/images/qrcode/'.$data_h_penjualan->no_faktur.'.png';?>" alt="User profile picture">
+				</td></tr>
+			</table>
+			-->
+		</center>
+	</body>
+</html>

@@ -1,0 +1,424 @@
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.4 -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/dist/css/AdminLTE.min.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/dist/css/skins/_all-skins.min.css">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/plugins/select2/select2.min.css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+        
+		
+    		<style type="text/css">
+    		.labelfrm {
+    			display:block;
+    			font-size:small;
+    			margin-top:5px;
+    		}
+    		.error {
+    			font-size:small;
+    			color:red;
+    		}
+    		</style>
+    		
+    		<script type="text/javascript" src="<?=base_url();?>assets/admin/js/jquery.validate.min.js"></script>
+    		
+    		<script type="text/javascript">
+    		$(document).ready(function() {
+    			$('.frm-input').validate();
+                
+                $('.confirm-btn').click(function(){
+    			var answer = confirm(jQuery(this).attr('title'));
+                return answer;
+                });
+    		});
+            </script>
+            
+            <script type="text/javascript">
+                var htmlobjek;
+                $(document).ready(function()
+                {	
+					$('#hasil-laporan').attr('class', 'active treeview');
+					$('#cetak-hasil-laporan-akum').attr('class', 'active treeview');
+					
+					$("#cbKecPilihAll").change(function() {
+						if(this.checked) {
+							//Do stuff
+							//$('.cbKecPilih').attr('checked', true);
+							$('.cbKecPilih').prop('checked', true);
+						}
+						else
+						{
+							//$('.cbKecPilih').attr('checked', false);
+							$('.cbKecPilih').prop('checked', false);
+						}
+					});
+                });
+            </script>
+            
+     <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+		  <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+			<li><a href="#"><i class="fa fa-dashboard"></i> Kecamatan</a></li>
+            <li class="active">Input</li>
+            
+          </ol>
+          <h1>
+            Cetak Laporan Akumulasi Kecamatan
+          </h1>
+          <p>
+              Laporan Akumulasi Kecamatan adalah laporan yang menampilkan akumulasi laporan kecamatan per item/jenis laporan. Untuk menampilkan akumulasi laporan anda harus melakukan pemilihan pada beberapa variable, diantaranya : 
+			  <ul>
+				<li> 1. Pilih Jenis Laporan (<?php echo $data_laporan->LAP_NAMA;?>)</li>
+				<li> 2. Pilih Periode Laporan </li>
+				<li> 3. Pilih Kecamatan </li>
+			  <ul>
+          </p>
+          
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+          <!-- =========================================================== -->
+		<form action="<?=base_url();?>akumulasi-laporan-kecamatan-periode-proses-cetak" method="post" class="frm-input" enctype="multipart/form-data">
+		<div class="box-footer">
+			<button type="submit" id="btnsimpan" class="confirm-btn btn btn-primary" title="Proses Laporan ?">Proses Laporan</button>
+		</div>
+		<input type="hidden" name="LAP_ID" id="LAP_ID" value="<?php echo $this->uri->segment(2,0);?>"/>
+		<input type="hidden" name="jum_periode" id="jum_periode" value="<?php echo $jum_periode;?>"/>
+		<input type="hidden" name="jum_kecamatan" id="jum_kecamatan" value="<?php echo $jum_kecamatan;?>"/>
+		<div class="row">
+            <div class="col-md-12">
+              <!-- <div class="box box-warning collapsed-box box-solid"> -->
+			  <div  id="box-form" class="box box-warning ellapsed-box box-solid">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Pilih Periode untuk laporan <?php echo $data_laporan->LAP_NAMA;?></h3>
+                  <div class="box-tools pull-right">
+                    <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                  </div><!-- /.box-tools -->
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                  
+					<div class="box">
+						<div class="box-header">
+						<h3 class="box-title">Periode laporan</h3>
+						</div><!-- /.box-header -->
+						<div class="box-body">
+						
+						
+						
+						<?php
+								if(!empty($list_periode))
+								{
+									echo'<table width="100%" id="example2" class="table table-bordered table-hover">';
+										echo '<thead>
+												<tr>';
+													echo '<th width="5%">No</th>';
+													echo '<th width="5%">Pilih</th>';
+													echo '<th width="15%">Kode</th>';
+													echo '<th width="30%">Nama Periode</th>';
+													echo '<th width="15%">KATEGORI</th>';
+													echo '<th width="35%">Berlaku/Aktif</th>';
+										echo '</tr>
+										</thead>';
+										$list_result = $list_periode->result();
+										$no =1;
+										echo '<tbody>';
+										foreach($list_result as $row)
+										{
+											
+											echo'
+												<tr>
+													<td>'.$no.'</td>
+													<td>
+														<input type="checkbox" id="per_'.$no.'" name="per_'.$no.'" class="cbPerPilih"  value="'.$row->PER_KODE.'"/>
+														<input type="hidden" id="perNama_'.$no.'" name="perNama_'.$no.'" class="cbPerNamaPilih"  value="'.$row->PER_NAMA.'"/>
+													</td>
+													<td>'.$row->PER_KODE.'</td>
+													<td>'.$row->PER_NAMA.'</td>
+													<td>'.$row->PER_KATEGORI.'</td>
+													<td>'.$row->PER_DARI.' - '.$row->PER_SAMPAI.'</td>
+												</tr>
+											';
+											$no++;
+										}
+										
+										echo '</tbody>';
+									echo'</table>';
+								}
+								else
+								{
+									echo'<center>';
+									echo'Tidak Ada Data Yang Ditampilkan !';
+									echo'</center>';
+								}
+							?>
+						<center>
+						<div class="halaman"><?php //echo $halaman;?></div>
+						</center>
+						</div><!-- /.box-body -->
+					</div><!-- /.box -->
+                    
+                  
+                  
+                </div><!-- /.box-body -->
+              </div><!-- /.box -->
+              
+					
+			</div><!-- /.col -->
+		</div><!-- /.row -->
+
+		<div class="row">
+            <div class="col-md-12">
+              <!-- <div class="box box-warning collapsed-box box-solid"> -->
+			  <div  id="box-form" class="box box-warning ellapsed-box box-solid">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Pilih Kecamatan</h3>
+                  <div class="box-tools pull-right">
+                    <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                  </div><!-- /.box-tools -->
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                  
+                  
+                    <!-- Perbatasan table dan form -->
+					<div  id="box-form" class="box ellapsed-box box-solid">
+					<!-- <div class="box"> -->
+						
+						<div class="box-body">
+						
+						
+						<?php
+								if(!empty($list_kecamatan))
+								{
+									echo'<table width="100%" id="example2" class="table table-bordered table-hover">';
+										echo '<thead style="background-color:green;">
+	<tr>';
+													echo '<th width="5%">No</th>';
+													echo '<th width="10%"><input id="cbKecPilihAll" class="cbKecPilihAll" type="checkbox"> Pilih</th>';
+													echo '<th width="40%">DATA</th>';
+													echo '<th width="45%">LOKASI</th>';
+													//echo '<th width="10%">Aksi</th>';
+										echo '</tr>
+	</thead>';
+										$list_result = $list_kecamatan->result();
+										$no =1;
+										echo '<tbody>';
+										foreach($list_result as $row)
+										{
+                                            IF($row->KEC_CAMIMG != "")
+                                            {
+                                                $URL_IMG = base_url().'assets/global/images/'.$row->KEC_CAMIMG;
+                                            }
+                                            else
+                                            {
+                                                $URL_IMG = base_url().'assets/global/karyawan/loading.gif';
+                                            }
+
+
+                                            echo'<input type="hidden" name="KEC_ID_'.$no.'" id="KEC_ID_'.$no.'" value="'.$row->KEC_ID.'"/>';
+                                            echo'<input type="hidden" name="KEC_KODE_'.$no.'" id="KEC_KODE_'.$no.'" value="'.$row->KEC_KODE.'"/>';
+                                            echo'<input type="hidden" name="KEC_NAMA_'.$no.'" id="KEC_NAMA_'.$no.'" value="'.$row->KEC_NAMA.'"/>';
+                                            echo'<input type="hidden" name="KEC_CAMAT_'.$no.'" id="KEC_CAMAT_'.$no.'" value="'.$row->KEC_CAMAT.'"/>';
+                                            echo'<input type="hidden" name="KEC_SEKWILMAT_'.$no.'" id="KEC_SEKWILMAT_'.$no.'" value="'.$row->KEC_SEKWILMAT.'"/>';
+                                            echo'<input type="hidden" name="KEC_TLP_'.$no.'" id="KEC_TLP_'.$no.'" value="'.$row->KEC_TLP.'"/>';
+                                            echo'<input type="hidden" name="KEC_EMAIL_'.$no.'" id="KEC_EMAIL_'.$no.'" value="'.$row->KEC_EMAIL.'"/>';
+                                            echo'<input type="hidden" name="KEC_ALAMAT_'.$no.'" id="KEC_ALAMAT_'.$no.'" value="'.$row->KEC_ALAMAT.'"/>';
+                                            echo'<input type="hidden" name="KEC_KET_'.$no.'" id="KEC_KET_'.$no.'" value="'.$row->KEC_KET.'"/>';
+                                            echo'<input type="hidden" name="KEC_LONGI_'.$no.'" id="KEC_LONGI_'.$no.'" value="'.$row->KEC_LONGI.'"/>';
+                                            echo'<input type="hidden" name="KEC_LATI_'.$no.'" id="KEC_LATI_'.$no.'" value="'.$row->KEC_LATI.'"/>';
+
+                                            if($row->KEC_IMG != "")
+                                            {
+                                                echo'<input type="hidden" name="KEC_IMG_'.$no.'" id="KEC_IMG_'.$no.'" value="'.base_url().'assets/global/images/'.$row->KEC_IMG.'"/>';
+                                            }
+                                            else
+                                            {
+                                                echo'<input type="hidden" name="KEC_IMG_'.$no.'" id="KEC_IMG_'.$no.'" value="'.base_url().'assets/global/karyawan/loading.gif"/>';
+                                            }
+
+                                            if($row->KEC_CAMIMG != "")
+                                            {
+                                                echo'<input type="hidden" name="KEC_CAMIMG_'.$no.'" id="KEC_CAMIMG_'.$no.'" value="'.base_url().'assets/global/images/'.$row->KEC_CAMIMG.'"/>';
+                                            }
+                                            else
+                                            {
+                                                echo'<input type="hidden" name="KEC_CAMIMG_'.$no.'" id="KEC_CAMIMG_'.$no.'" value="'.base_url().'assets/global/karyawan/loading.gif"/>';
+                                            }
+                                            
+
+                                            echo'<tr>
+                                                <td>'.$no.'</td>
+												<td>
+													<input id="kec_'.$no.'" name="kec_'.$no.'" class="cbKecPilih" type="checkbox" value="'.$row->KEC_ID.'">
+													<input id="kecNama_'.$no.'" name="kecNama_'.$no.'" class="cbKecNamaPilih" type="hidden" value="'.$row->KEC_NAMA.'">
+												
+												</td>												
+                                                <td>
+                                                    <table>
+                                                        <tr>
+                                                            <td rowspan="3"><img id="img_'.$no.'"  width="100px" height="100px" style="border:1px solid #C8C8C8; padding:5px; float:left; margin-right:20px;" src="'.$URL_IMG.'" /></td>
+                                                            <td>Kode : '.$row->KEC_KODE.'</td>
+                                                        </tr>
+                                                        <tr><td>Nama : '.$row->KEC_NAMA.'</td></tr>
+                                                        <tr><td>Camat : '.$row->KEC_CAMAT.'</td></tr>
+                                                    </table>
+                                                </td>
+                                                <td>
+                                                    '.$row->KEC_ALAMAT.' - ('.$row->KEC_TLP.') - Jumlah Desa : '.$row->JUMLAH.'
+                                                </td>
+                                                <!--<td>
+                                                    <button type="button" onclick="view('.$no.')" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">
+                                                        view
+                                                    </button>
+                                                </td>-->
+                                            </tr>';
+                                            
+											$no++;
+										}
+										
+										echo '</tbody>';
+									echo'</table>';
+								}
+								else
+								{
+									echo'<center>';
+									echo'Tidak Ada Data Yang Ditampilkan !';
+									echo'</center>';
+								}
+							?>
+						<center>
+                        <div class="halaman"><?php //echo $halaman;?></div>
+                        </center>
+						</div><!-- /.box-body -->
+					</div><!-- /.box -->
+					
+					
+					<!-- Show MOdal -->
+                      <div class="modal fade modal-primary" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="myModalLabel">Profile Kecamatan</h4>
+                              </div>
+                              <div class="modal-body">
+                                <center>
+                                    <span id="img2"></span>
+                                </center>
+                                <table>
+                                    <tr>
+                                        <td></td><td></td><td></span></td>
+                                    </tr>
+									<tr>
+                                        <td>Kode Kecamatan</td><td>:</td><td><span id="KEC_KODE2"></span></td>
+                                    </tr>
+									<tr>
+                                        <td>Nama Kecamatan</td><td>:</td><td><span id="KEC_NAMA2"></span></td>
+                                    </tr>
+									<tr>
+                                        <td>Nama Camat</td><td>:</td><td><span id="KEC_CAMAT2"></span></td>
+                                    </tr>
+									<tr>
+                                        <td>Nama Sekwilmat</td><td>:</td><td><span id="KEC_SEKWILMAT2"></span></td>
+                                    </tr>
+									<tr>
+                                        <td>Telpon</td><td>:</td><td><span id="KEC_TLP2"></span></td>
+                                    </tr>
+									<tr>
+                                        <td>Email</td><td>:</td><td><span id="KEC_EMAIL2"></span></td>
+                                    </tr>
+									<tr>
+                                        <td>Alamat</td><td>:</td><td><span id="KEC_ALAMAT2"></span></td>
+                                    </tr>
+									<tr>
+                                        <td>Keterangan</td><td>:</td><td><span id="KEC_KET2"></span></td>
+                                    </tr>
+									<tr>
+                                        <td>Longitude</td><td>:</td><td><span id="KEC_LONGI2"></span></td>
+                                    </tr>
+									<tr>
+                                        <td>Latitude</td><td>:</td><td><span id="KEC_LATI2"></span></td>
+                                    </tr>
+                                    
+                                </table>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                    <!-- Show MOdal -->
+                  
+                  
+                </div><!-- /.box-body -->
+              </div><!-- /.box -->
+              
+              
+              
+					
+					
+			</div><!-- /.col -->
+		</div><!-- /.row -->
+		</form>
+		
+          <!-- =========================================================== -->
+        </section><!-- /.content -->
+      </div><!-- /.content-wrapper -->
+            
+    		
+		
+<script type='text/javascript'>
+	function view(id)
+	{
+        $("#img2").html("<img style='border:1px solid #C8C8C8; padding:5px; float:left; margin-right:20px;' src='"+$('#KEC_CAMIMG_'+id).val()+"' width='100px' height='100px'>");
+		$('#KEC_KODE2').html($('#KEC_KODE_'+id).val());
+		$('#KEC_NAMA2').html($('#KEC_NAMA_'+id).val());
+		$('#KEC_CAMAT2').html($('#KEC_CAMAT_'+id).val());
+		$('#KEC_SEKWILMAT2').html($('#KEC_SEKWILMAT_'+id).val());
+		$('#KEC_TLP2').html($('#KEC_TLP_'+id).val());
+		$('#KEC_EMAIL2').html($('#KEC_EMAIL_'+id).val());
+		$('#KEC_ALAMAT2').html($('#KEC_ALAMAT_'+id).val());
+		$('#KEC_KET2').html($('#KEC_KET_'+id).val());
+		$('#KEC_LONGI2').html($('#KEC_LONGI_'+id).val());
+		$('#KEC_LATI2').html($('#KEC_LATI_'+id).val());
+        
+	}
+	
+	function isNumberKey(evt)
+	{
+    	var charCode = (evt.which) ? evt.which : event.keyCode
+    	if (charCode > 31 && (charCode < 48 || charCode > 57))
+    	
+    	return false;
+    	return true;
+	}
+</script>
+      
+    <!-- Bootstrap 3.3.4 -->
+    <script src="<?=base_url();?>assets/adminlte/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Slimscroll -->
+    <script src="<?=base_url();?>assets/adminlte/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+    <!-- FastClick -->
+    <script src="<?=base_url();?>assets/adminlte/plugins/fastclick/fastclick.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="<?=base_url();?>assets/adminlte/dist/js/app.min.js"></script>
+    <!-- Page script -->
+    

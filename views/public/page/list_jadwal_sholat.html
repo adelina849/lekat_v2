@@ -1,0 +1,153 @@
+			<div class="heading-title heading-border">
+				<h3><span>Jadwal Sholat dan Imsyakiyah <?php echo $this->M_jadwal_sholat->konvhijriah(date("Y-m-d")); ?> </span></h3>
+				<p class="font-lato fs-14">Menampilkan jadwal sholat dan imsakiyah</p>
+			</div>
+			
+			
+			<div class="row box-gradient box-green">
+				<div class="col-xs-12 col-sm-12">
+					<!-- <i class="fa fa-child fa-4x"></i> -->
+					<!-- <p>IMSAK</p> -->
+					<h2>
+						<?php
+							echo $this->M_jadwal_sholat->konvhijriah(date("Y-m-d"));
+						?>
+					</h2>
+					<!-- <p>HAPPY CUSTOMERS</p> -->
+				</div>
+			</div>
+			<br/>
+			<div class="row box-gradient box-gray">
+				<div class="col-xs-6 col-sm-3">
+					<!-- <i class="fa fa-child fa-4x"></i> -->
+					<p>IMSAK</p>
+					<h2>
+						<?php
+							echo substr($getJadwalSholatToday->JSHT_IMSAK,0,5);
+						?>
+					</h2>
+					<!-- <p>HAPPY CUSTOMERS</p> -->
+				</div>
+
+				<div class="col-xs-6 col-sm-3">
+					<!-- <i class="fa fa-smile-o fa-4x"></i> -->
+					<!-- <h2 class="countTo font-raleway" data-speed="3000">1033</h2> -->
+					<!-- <p>FACIALS</p> -->
+					<p>SUBUH</p>
+					<h2>
+						<?php
+							echo substr($getJadwalSholatToday->JSHT_SUBUH,0,5);
+						?>
+					</h2>
+				</div>
+
+				<div class="col-xs-6 col-sm-3">
+					<!-- <i class="fa fa-heart fa-4x"></i> -->
+					<p>TERBIT MATAHARI</p>
+					<h2>
+						<?php
+							echo substr($getJadwalSholatToday->JSHT_TERBIT,0,5);
+						?>
+					</h2>
+				</div>
+
+				<div class="col-xs-6 col-sm-3">
+					<!-- <i class="fa fa-female fa-4x"></i> -->
+					<p>DZUHUR</p>
+					<h2>
+						<?php
+							echo substr($getJadwalSholatToday->JSHT_DZUHUR,0,5);
+						?>
+					</h2>
+				</div>
+			</div>
+			<br/>
+			<div class="row box-gradient box-gray">
+				<div class="col-xs-6 col-sm-4">
+					<!-- <i class="fa fa-child fa-4x"></i> -->
+					<p>ASHAR</p>
+					<h2>
+						<?php
+							echo substr($getJadwalSholatToday->JSHT_ASHAR,0,5);
+						?>
+					</h2>
+					<!-- <p>HAPPY CUSTOMERS</p> -->
+				</div>
+
+				<div class="col-xs-6 col-sm-4">
+					<!-- <i class="fa fa-smile-o fa-4x"></i> -->
+					<!-- <h2 class="countTo font-raleway" data-speed="3000">1033</h2> -->
+					<!-- <p>FACIALS</p> -->
+					<p>MAGHRIB</p>
+					<h2>
+						<?php
+							echo substr($getJadwalSholatToday->JSHT_MAGRIB,0,5);
+						?>
+					</h2>
+				</div>
+
+				<div class="col-xs-6 col-sm-4">
+					<!-- <i class="fa fa-heart fa-4x"></i> -->
+					<p>ISYA</p>
+					<h2>
+						<?php
+							echo substr($getJadwalSholatToday->JSHT_ISYA,0,5);
+						?>
+					</h2>
+				</div>
+
+			</div>
+			
+			<?php
+				if(!empty($list_video)) 
+				{  
+					$list_result = $list_video->result();
+					foreach($list_result as $row)
+					{
+			?>
+					<!-- POST ITEM -->
+						<div class="blog-post-item">
+
+							<!-- VIDEO -->
+							<div class="mb-20">
+								<div class="embed-responsive embed-responsive-16by9">
+									<?php echo $row->VID_LINK;?>
+								</div>
+							</div>
+
+							<h2><a href="blog-single-default.html"><?php echo $row->VID_NAMA;?></a></h2>
+
+							<ul class="blog-post-info list-inline">
+								<li>
+									<a href="#">
+										<i class="fa fa-clock-o"></i> 
+										<span class="font-lato"><?php echo $row->VID_DTINS;?></span>
+									</a>
+								</li>
+								<li>
+									<a href="#">
+										<i class="fa fa-comment-o"></i> 
+										<span class="font-lato">0 Comments</span>
+									</a>
+								</li>
+								<li>
+									<a href="#">
+										<i class="fa fa-user"></i> 
+										<span class="font-lato">Administartor</span>
+									</a>
+								</li>
+							</ul>
+
+							<p><?php echo $row->VID_KET;?></p>
+						</div>
+						<!-- /POST ITEM -->
+			<?php
+					}
+				}
+			?>
+			
+			<center>
+				<?php
+					echo $halaman;
+				?>
+			</center>

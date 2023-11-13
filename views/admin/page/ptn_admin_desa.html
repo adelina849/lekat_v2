@@ -1,0 +1,378 @@
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.4 -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/dist/css/AdminLTE.min.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/dist/css/skins/_all-skins.min.css">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/plugins/select2/select2.min.css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+        
+		
+    		<style type="text/css">
+    		.labelfrm {
+    			display:block;
+    			font-size:small;
+    			margin-top:5px;
+    		}
+    		.error {
+    			font-size:small;
+    			color:red;
+    		}
+    		</style>
+    		
+    		<script type="text/javascript" src="<?=base_url();?>assets/admin/js/jquery.validate.min.js"></script>
+    		
+    		<script type="text/javascript">
+    		$(document).ready(function() {
+    			$('.frm-input').validate();
+                
+                $('.confirm-btn').click(function(){
+    			var answer = confirm(jQuery(this).attr('title'));
+                return answer;
+                });
+    		});
+            </script>
+            
+            <script type="text/javascript">
+                var htmlobjek;
+                $(document).ready(function()
+                {	
+					$('#inputdata').attr('class', 'active treeview');
+					$('#input-data-kecamatan').attr('class', 'active treeview');
+					$('#input-data-kecamatan-desa').attr('class', 'active treeview');
+					
+                    $("#DES_NAMA").change(function()
+                    //$("#simpan").click(function()
+                    {  
+                
+                        var DES_NAMA = $("#DES_NAMA").val();
+						var KEC_ID = $("#KEC_ID").val();
+                        $("#pesan").html("<img src='<?=base_url();?>assets/global/loading.gif'>Cek Nama ...");
+                
+                        if(DES_NAMA=='')
+                        {
+                          $("#pesan").html('<img src="<?=base_url();?>assets/global/salah.png"> Nama tidak boleh kosong');
+                          $("#DES_NAMA").css('border', '3px #C33 solid');
+                        }
+						else
+						$.ajax({type: "POST", url: "<?=base_url();?>index.php/C_admin_desa/cek_desa/", data: "KEC_ID="+KEC_ID+"&DES_NAMA="+DES_NAMA, success:function(data)
+                        { 
+                        	if(data==0 || ($("#DES_NAMA").val() == $("#cek_DES_NAMA").val()))
+                            //if(data==0)
+                        	  {
+                        	  	$("#pesan").html('<img src="<?=base_url();?>assets/global/true.png">');
+                                $("#DES_NAMA").css('border', '3px #090 solid');
+								$("#DES_KADES").attr("disabled", false);
+								$("#DES_TLP").attr("disabled", false);
+								$("#DES_EMAIL").attr("disabled", false);
+                                $("#DES_KET").attr("disabled", false);
+								$("#DES_ALAMAT").attr("disabled", false);
+								$("#DES_LONGI").attr("disabled", false);
+								$("#DES_LATI").attr("disabled", false);
+                                $("#btnsimpan").attr("disabled", false);
+                            }
+                              else
+                              {
+                              	$("#pesan").html('<img src="<?=base_url();?>assets/global/salah.png"> Nama Kategori Tampilan telah digunakan');
+                				//$("#pesan").html(data); 
+                              	$("#DES_NAMA").css('border', '3px #C33 solid');
+                                $("#DES_KADES").attr("disabled", true);
+								$("#DES_TLP").attr("disabled", true);
+								$("#DES_EMAIL").attr("disabled", true);
+                                $("#DES_KET").attr("disabled", true);
+								$("#DES_ALAMAT").attr("disabled", true);
+								$("#DES_LONGI").attr("disabled", true);
+								$("#DES_LATI").attr("disabled", true);
+                                $("#btnsimpan").attr("disabled", true);
+                              }
+                              
+                        } 
+                        });
+                     });
+                });
+            </script>
+            
+     <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+          <h1>
+            Kecamatan <?php echo $data_kecamatan->KEC_NAMA; ?> - Desa
+          </h1>
+		  
+		  <p>
+			Berikut merupakan data desa dari kecamatan <?php echo $data_kecamatan->KEC_NAMA; ?> dengan kepala kecamatan <?php echo $data_kecamatan->KEC_CAMAT; ?>
+		  </p>
+		  <?php
+		  
+			if($data_kecamatan->KEC_CAMIMG != "")
+			{
+				$BASE_IMGURL = base_url().'assets/global/images/'.$data_kecamatan->KEC_CAMIMG;
+			}
+			else
+			{
+				$BASE_IMGURL =  base_url().'assets/global/karyawan/loading.gif';
+			}
+			
+			//echo'<img id="img"  width="100px" height="100px" style="border:1px solid #C8C8C8; padding:5px; float:left; margin-right:20px;" src="'.$BASE_IMGURL.'" />';
+			
+			echo'
+				<table>
+					<tr>
+						<td rowspan="3"><img id="img"  width="100px" height="100px" style="border:1px solid #C8C8C8; padding:5px; float:left; margin-right:20px;" src="'.$BASE_IMGURL.'" /></td>
+						<td>Nama Kecamatan </td><td> : </td><td> '.$data_kecamatan->KEC_NAMA.'</td>
+					</tr>
+					<tr><td>Kepala Kecamatan </td><td> : </td><td> '.$data_kecamatan->KEC_CAMAT.'</td></tr>
+					<tr><td>Alamat Kecamatan </td><td> : </td><td> '.$data_kecamatan->KEC_ALAMAT.'</td></tr>
+				</table>
+			';
+		  
+		  ?>
+		  
+          <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+			<li><a href="#"><i class="fa fa-dashboard"></i> Kecamatan</a></li>
+            <li class="active">Desa</li>
+            
+          </ol>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+          <!-- =========================================================== -->
+
+          <div class="row">
+            <div class="col-md-12">
+              <!-- <div class="box box-warning collapsed-box box-solid"> -->
+			  <div  id="box-form" class="box box-warning collapsed-box box-solid">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Formulir Input Desa</h3>
+                  <div class="box-tools pull-right">
+                    <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+                  </div><!-- /.box-tools -->
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                  
+                  
+                  <!-- ISI FORM -->
+						<form role="form" action="<?=base_url();?>kecamatan-desa-simpan" method="post" class="frm-input">
+						<input type="hidden" name="stat_edit" id="stat_edit"/>
+						<input type="hidden" name="KEC_ID" id="KEC_ID" value="<?php echo $data_kecamatan->KEC_ID; ?>" />
+						
+						<div class="box-body">
+							<div class="form-group">
+							<label for="DES_NAMA">Nama Desa</label>
+							<input type="hidden" id="cek_DES_NAMA" name="cek_DES_NAMA" />
+							<input type="text" id="DES_NAMA" name="DES_NAMA"  maxlength="35" class="required form-control" size="35" alt="Nama Desa" title="Nama Desa" placeholder="*Nama Desa"/><span id="pesan"></span>
+							</div>
+							
+							<div class="form-group">
+							<label for="DES_KADES">Nama Kepala Desa</label>
+							<input type="text" id="DES_KADES" name="DES_KADES"  maxlength="35" class="required form-control" size="35" alt="Nama Kepada Desa" title="Nama Kepada Desa" placeholder="*Nama Kepada Desa"/><span id="pesan"></span>
+							</div>
+							
+							<div class="form-group">
+                                <label for="DES_TLP">No Tlp</label>
+                                <input type="text" id="DES_TLP" name="DES_TLP"  maxlength="35" onkeypress="return isNumberKey(event)" class="required form-control" size="35" alt="tlp" title="No Telpon" placeholder="*No Tlp"/>
+                            </div>
+                            
+                            <div class="form-group">
+                                <!-- <input type="hidden" id="cek_email" name="cek_email" /> -->
+                                <label for="DES_EMAIL">Email</label>
+                                <input type="text" id="DES_EMAIL" name="DES_EMAIL"  maxlength="35" class="email form-control" size="35" alt="Email" title="Email" placeholder="Email"/> <span id="pesan2"></span>
+                            </div>
+							
+							<div class="form-group">
+                                <label for="DES_ALAMAT">Alamat Lengkap</label>
+                                <textarea name="DES_ALAMAT" id="DES_ALAMAT" class="required form-control" title="Alamat Lengkap" placeholder="*Alamat Lengkap"></textarea>
+                            </div>
+                                  
+                            <div class="form-group">
+                                <label for="DES_KET">Keterangan</label>
+                                <textarea name="DES_KET" id="DES_KET" class="required form-control" title="keterangan Lengkap" placeholder="*keterangan"></textarea>
+                            </div>
+                            
+							<div class="form-group">
+							  <label for="DES_LONGI">Longitude</label>
+                              <input type="text" id="DES_LONGI" name="DES_LONGI"  maxlength="35" class="form-control" size="35" alt="Longitude" title="Longitude" placeholder="*Longitude"/>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="DES_LATI">Latitude</label>
+                                <input type="text" id="DES_LATI" name="DES_LATI"  maxlength="35" class="form-control" size="35" alt="Latitude" title="Latitude" placeholder="*Latitude"/>
+                            </div>
+							
+							
+						</div><!-- /.box-body -->
+		
+						<div class="box-footer">
+							<button type="reset" class="btn btn-default">Batal</button>
+							<button type="submit" id="btnsimpan" class="confirm-btn btn btn-primary" title="Simpan Data ?">Submit</button>
+						</div>
+						</form>
+					<!-- ISI FORM -->
+                  
+                  
+                </div><!-- /.box-body -->
+              </div><!-- /.box -->
+              
+              
+              <!-- Perbatasan table dan form -->
+					
+					<div class="box">
+						<div class="box-header">
+						<h3 class="box-title">Table Desa Kecamatan <?php echo $data_kecamatan->KEC_NAMA; ?></h3>
+							<div class="pull-right">
+								<!-- <form action="<?=base_url();?>admin/pendaftaran-klinik-cari" method="post" class="frm-cari"> -->
+								<form action="<?=base_url();?>kecamatan-desa/<?php echo $data_kecamatan->KEC_ID; ?>" method="get" class="frm-cari">
+									<table>
+										<tr>
+											<!-- <td>Berdasarkan</td><td>:</td> -->
+											<!-- <td>
+												<select name="berdasarkan" title="Cari Berdasarkan" class="form-control">
+													<option value=""><?php if (!empty($_GET['berdasarkan'])){echo $_GET['berdasarkan'];} ?></option>
+													<option value="spesialisasi">Spesialisasi</option>
+													<option value="pendidikan">Pendidikan</option>
+												</select>
+											</td> -->
+											<td>
+												<!-- <input type="text" name="cari"  maxlength="35" class="text form-control" size="35" alt="tlp" title="Cari data" placeholder="...Cari" value="<?php if (!empty($_GET['berdasarkan'])){echo $_GET['cari'];} ?>"/> -->
+												<input type="text" name="cari"  maxlength="35" class="text form-control" size="35" alt="tlp" title="Cari data" placeholder="...Cari" value="<?php if (!empty($_GET['cari'])){echo $_GET['cari'];} ?>"/>
+											</td>
+										</tr>
+									</table>
+								</form>
+							</div>
+						</div><!-- /.box-header -->
+						<div class="box-body">
+						
+						
+						<?php
+								if(!empty($list_desa))
+								{
+									echo'<table width="100%" id="example2" class="table table-bordered table-hover">';
+										echo '<thead>
+	<tr>';
+													echo '<th width="5%">No</th>';
+													echo '<th width="20%">Desa</th>';
+													echo '<th width="20%">Kepala Desa</th>';
+													echo '<th width="35%">Alamat</th>';
+													echo '<th width="20%">Aksi</th>';
+										echo '</tr>
+	</thead>';
+										$list_result = $list_desa->result();
+										$no =$this->uri->segment(3,0)+1;
+										echo '<tbody>';
+										foreach($list_result as $row)
+										{
+										
+											echo'<input type="hidden" name="DES_ID_'.$no.'" id="DES_ID_'.$no.'" value="'.$row->DES_ID.'" />';
+											echo'<input type="hidden" name="KEC_ID_'.$no.'" id="KEC_ID_'.$no.'" value="'.$row->KEC_ID.'" />';
+											echo'<input type="hidden" name="DES_KODE_'.$no.'" id="DES_KODE_'.$no.'" value="'.$row->DES_KODE.'" />';
+											echo'<input type="hidden" name="DES_NAMA_'.$no.'" id="DES_NAMA_'.$no.'" value="'.$row->DES_NAMA.'" />';
+											echo'<input type="hidden" name="DES_KADES_'.$no.'" id="DES_KADES_'.$no.'" value="'.$row->DES_KADES.'" />';
+											echo'<input type="hidden" name="DES_TLP_'.$no.'" id="DES_TLP_'.$no.'" value="'.$row->DES_TLP.'" />';
+											echo'<input type="hidden" name="DES_EMAIL_'.$no.'" id="DES_EMAIL_'.$no.'" value="'.$row->DES_EMAIL.'" />';
+											echo'<input type="hidden" name="DES_KET_'.$no.'" id="DES_KET_'.$no.'" value="'.$row->DES_KET.'" />';
+											echo'<input type="hidden" name="DES_ALAMAT_'.$no.'" id="DES_ALAMAT_'.$no.'" value="'.$row->DES_ALAMAT.'" />';
+											echo'<input type="hidden" name="DES_LONGI_'.$no.'" id="DES_LONGI_'.$no.'" value="'.$row->DES_LONGI.'" />';
+											echo'<input type="hidden" name="DES_LATI_'.$no.'" id="DES_LATI_'.$no.'" value="'.$row->DES_LATI.'" />';
+										
+											echo'<tr>
+												<td>'.$no.'</td>
+												<td>'.$row->DES_NAMA.'</td>
+												<td>'.$row->DES_KADES.'</td>
+												<td>'.$row->DES_ALAMAT.'</td>
+												<td>
+													<a href="javascript:void(0)" class="btn btn-warning btn-sm" onclick="edit('.$no.')" title = "Ubah Data '.$row->DES_NAMA.'" alt = "Ubah Data '.$row->DES_NAMA.'">Edit</a>
+	
+													<a class="confirm-btn btn btn-danger btn-sm" href="'.base_url().'kecamatan-desa-hapus/'.$row->KEC_ID.'/'.$row->DES_ID.'" title = "Hapus Data '.$row->DES_NAMA.'" alt = "Hapus Data '.$row->DES_NAMA.'">Hapus</a>
+												</td>
+											</tr>';
+											
+											$no++;
+										}
+										
+										echo '</tbody>';
+									echo'</table>';
+								}
+								else
+								{
+									echo'<center>';
+									echo'Tidak Ada Data Yang Ditampilkan !';
+									echo'</center>';
+								}
+							?>
+						<center>
+                        <div class="halaman"><?php echo $halaman;?></div>
+                        </center>
+						</div><!-- /.box-body -->
+					</div><!-- /.box -->
+					
+					
+			</div><!-- /.col -->
+		</div><!-- /.row -->
+          <!-- =========================================================== -->
+        </section><!-- /.content -->
+      </div><!-- /.content-wrapper -->
+            
+    		
+		
+<script type='text/javascript'>
+	function edit(id)
+	{
+		alert("Mode Perubahan Data, Silahkan Cek Formulir Isian !");
+		$('input[name=stat_edit]').val($('#DES_ID_'+id).val());
+		$('input[name=DES_ID]').val($('#DES_ID_'+id).val());
+		$('input[name=DES_KODE]').val($('#DES_KODE_'+id).val());
+		$('input[name=DES_NAMA]').val($('#DES_NAMA_'+id).val());
+		$('input[name=cek_DES_NAMA]').val($('#DES_NAMA_'+id).val());
+		$('input[name=DES_KADES]').val($('#DES_KADES_'+id).val());
+		$('input[name=DES_TLP]').val($('#DES_TLP_'+id).val());
+		$('input[name=DES_EMAIL]').val($('#DES_EMAIL_'+id).val());
+		$('input[name=DES_LONGI]').val($('#DES_LONGI_'+id).val());
+		$('input[name=DES_LATI]').val($('#DES_LATI_'+id).val());
+		document.getElementById("DES_KET").value = $('#DES_KET_'+id).val();
+		document.getElementById("DES_ALAMAT").value = $('#DES_ALAMAT_'+id).val();
+		
+        /*$('input[name=cek_nama]').val($('#nama_'+id).val());
+		$('input[name=nama]').val($('#nama_'+id).val());
+		document.getElementById("ket").value = $('#ket_'+id).val();*/
+        //$('input[name=ket]').val($('#ket_'+id).val());
+		
+		
+		$('#box-form').attr('class', 'box box-warning ellapsed-box box-solid');
+	}
+	
+	function isNumberKey(evt)
+	{
+    	var charCode = (evt.which) ? evt.which : event.keyCode
+    	if (charCode > 31 && (charCode < 48 || charCode > 57))
+    	
+    	return false;
+    	return true;
+	}
+</script>
+      
+    <!-- Bootstrap 3.3.4 -->
+    <script src="<?=base_url();?>assets/adminlte/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Slimscroll -->
+    <script src="<?=base_url();?>assets/adminlte/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+    <!-- FastClick -->
+    <script src="<?=base_url();?>assets/adminlte/plugins/fastclick/fastclick.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="<?=base_url();?>assets/adminlte/dist/js/app.min.js"></script>
+    <!-- Page script -->
+    

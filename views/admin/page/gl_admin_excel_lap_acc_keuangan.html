@@ -1,0 +1,172 @@
+ <title>LaporanBukuBesar</title>
+ 
+ <?php
+ 
+ $title = "LaporanAkuntingKeuangan";
+ header("Content-type: application/vnd-ms-excel");
+ header("Content-Disposition: attachment; filename=$title.xls");
+ header("Pragma: no-cache");
+ header("Expires: 0");
+ 
+ ?>
+
+<?php
+	//TABLE
+	if(!empty($list_acc_buku_besar))
+		{
+			//echo gethostname();
+			//echo $this->M_gl_pengaturan->getUserIpAddr();
+			//$sts_query = strpos(base_url(),"localhost");
+			//echo $sts_query;
+			//$nama = "Mulyana Yusuf";
+			//echo str_replace("f","849",$nama);
+			echo'<center>';
+			//echo'<table width="75%" id="example2" class="table table-hover">';
+			echo'<table style="width:90%;" class="table table-hover">;';
+				
+				if((!empty($_GET['dari'])) && ($_GET['dari']!= "")  )
+				{
+					$dari = $_GET['dari'];
+					$sampai = $_GET['sampai'];
+				}
+				else
+				{
+					$dari = date("Y-m-d");
+					$sampai = date("Y-m-d");
+				}
+				
+				echo'
+					<tr>
+						<td colspan="8" style="text-align:center;font-weight:bold;">BUKU BESAR '.$this->session->userdata("ses_nama_kantor").'</td>
+					</tr>
+					<tr>
+						<td colspan="8" style="text-align:center;font-weight:bold;">PER '.$dari.' SAMPAI '.$sampai.'</td>
+					</tr>
+					
+				';
+				
+				$list_result = $list_acc_buku_besar->result();
+				$no =$this->uri->segment(2,0)+1;
+				
+				$kode_akun_old = "";
+				$kode_akun_cur = "";
+				
+				$subtotal_debet = 0;
+				$subtotal_kredit = 0;
+				$saldo = 0;
+				
+				echo '<tbody>';
+				foreach($list_result as $row)
+				{
+					//GROUP KODE AKUN
+					
+					//$kode_akun_cur = $row->kode_akun;
+					//if(($kode_akun_cur != $kode_akun_old) || ($kode_akun_old == ""))
+					if($kode_akun_cur == "")
+					{
+						
+						/*
+						if($kode_akun_old != "")
+						{
+							echo'
+							<tr style="font-weight:bold;">
+								<td colspan="5" style="text-align:center;">GRAND TOTAL</td>
+								<td style="text-align:right;">'.number_format($subtotal_debet,0,'.',',').'</td>
+								<td style="text-align:right;">'.number_format($subtotal_kredit,0,'.',',').'</td>
+								<td style="text-align:right;">'.number_format($subtotal_debet - $subtotal_kredit,0,'.',',').'</td>
+							</tr>
+							';
+						}
+						
+						echo'<tr><td colspan="8"></td></tr>';
+						echo'<tr><td colspan="8"></td></tr>';
+						echo'<tr><td colspan="8"></td></tr>';
+						echo'<tr><td colspan="8"></td></tr>';
+						$no = 1;
+						$subtotal_debet = 0;
+						$subtotal_kredit = 0;
+						*/
+						echo'
+							<tr style="font-weight:bold;background-color:#808080;">
+								<td colspan="8" style="text-align:left;">KODE : '.$row->kode_akun.' ('.$row->nama_kode_akun.')</td>
+							</tr>
+							<tr style="font-weight:bold;background-color:#808080;">
+								<td width="5%">No</td>
+								<td width="10%">Tanggal</td>
+								<td width="15%">No.Ref</td>
+								<td width="35%">Keterangan</td>
+								<td width="10%">No.Dept</td>
+								<td width="10%">Debit</td>
+								<td width="10%">Kredit</td>
+								<td width="5%">Saldo</td>
+							</tr>
+						';
+						$kode_akun_cur = $row->kode_akun;
+					}
+					
+					//GROUP KODE AKUN
+					
+					$subtotal_debet = $subtotal_debet + $row->DEBET;
+					$subtotal_kredit = $subtotal_kredit + $row->KREDIT;
+					$saldo = $subtotal_debet - $subtotal_kredit;
+					
+					echo'<tr>';
+						echo'<td>'.$no.'</td>';
+						echo'<td>'.$row->tgl_uang_masuk.'</td>';
+						echo'<td>'.$row->no_ref.'</td>';
+						echo'<td>'.$row->nama_ref.'</td>';
+						echo'<td></td>';
+						
+						if($row->DEBET > 0)
+						{
+							echo'<td style="text-align:right;">'.($row->DEBET).'</td>';
+						}
+						else
+						{
+							echo'<td style="text-align:right;"></td>';
+						}
+						
+						if($row->KREDIT > 0)
+						{
+							echo'<td style="text-align:right;">'.($row->KREDIT).'</td>';
+						}
+						else
+						{
+							echo'<td style="text-align:right;"></td>';
+						}
+						
+						echo'<td style="text-align:right;">'.($saldo).'</td>';
+					echo'</tr>';
+				
+				
+					//GROUP KODE AKUN
+						$kode_akun_old = $row->kode_akun;
+					//GROUP KODE AKUN
+					$no++;
+					//$subtotal_debet = $subtotal_debet + $row->DEBET;
+					//$subtotal_kredit = $subtotal_kredit + $row->KREDIT;
+					
+					//CATAT SUBTOTAL
+					//$sub_total = $sub_total + $row->nominal;
+					//sum_uang_keluar
+				}
+				echo'
+					<tr style="font-weight:bold;">
+						<td colspan="5" style="text-align:center;">GRAND TOTAL</td>
+						<td style="text-align:right;">'.($subtotal_debet).'</td>
+						<td style="text-align:right;">'.($subtotal_kredit).'</td>
+						<td style="text-align:right;">'.($saldo).'</td>
+					</tr>
+				';
+				echo '</tbody>';
+			echo'</table>';
+			echo'</center>';
+		}
+		else
+		{
+			echo'<center>';
+			echo'Tidak Ada Data Yang Ditampilkan !';
+			echo'</center>';
+		}
+	//TABLE
+?>

@@ -1,0 +1,869 @@
+	<!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.4 -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/dist/css/AdminLTE.min.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/dist/css/skins/_all-skins.min.css">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/plugins/select2/select2.min.css">
+	<link rel="stylesheet" href="<?=base_url();?>assets/adminlte/bower_components/bootstrap-daterangepicker/daterangepicker.css">
+	<link rel="stylesheet" href="<?=base_url();?>assets/adminlte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+	<link rel="stylesheet" href="<?=base_url();?>assets/adminlte/bower_components/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css">
+	<link rel="stylesheet" href="<?=base_url();?>assets/adminlte/plugins/timepicker/bootstrap-timepicker.min.css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+		
+		
+			<style type="text/css">
+			.labelfrm {
+				display:block;
+				font-size:small;
+				margin-top:5px;
+			}
+			.error {
+				font-size:small;
+				color:red;
+			}
+			</style>
+			
+			<script type="text/javascript" src="<?=base_url();?>assets/admin/js/jquery.validate.min.js"></script>
+			
+			<script type="text/javascript">
+			$(document).ready(function() {
+				$('.frm-input').validate
+                (
+                    {
+        				rules: 
+                        {
+        					pass2: 
+                            {
+        						equalTo: "#pass"
+        					}
+        				},
+        				messages: 
+                        {
+        					pass2: {
+        						equalTo: "Password tidak sama"
+        					}
+        				}
+        			}
+                );
+				$('.confirm-btn').click(function(){
+				var answer = confirm(jQuery(this).attr('title'));
+				return answer;
+				});
+			});
+			</script>
+			
+			<script type="text/javascript">
+				var htmlobjek;
+				$(document).ready(function()
+				{	
+					$('#5_transaksi').attr('class', 'active treeview');
+					$('#51_transaksi_pembelian').attr('class', 'active treeview');
+					$('#512_penerimaan_order').attr('class', 'active treeview');
+					
+					$('body').attr('class', 'hold-transition skin-purple sidebar-collapse sidebar-mini');
+					
+					$("#no_surat_jalan").change(function()
+                    {  
+                
+                        var no_surat_jalan = $("#no_surat_jalan").val();
+						var kode_kantor = $("#kode_kantor").val();
+						
+						if(kode_kantor != "PST")
+						{
+							$("#pesan").html("<img src='<?php echo base_url();?>assets/global/loading.gif'>Cek <?php echo $msgbox_title;?> ...");
+						}
+                
+                        if(no_surat_jalan=='')
+                        {
+                          $("#pesan").html('<img src="<?php echo base_url();?>assets/global/salah.png"> Kolom Tidak Boleh Kosong');
+                          $("#no_surat_jalan").css('border', '3px #C33 solid');
+                        }
+						else
+						{
+							if(kode_kantor != "PST")
+							{
+								$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_admin_h_penerimaan/cek_no_surat_jalan/", data: "no_surat_jalan="+no_surat_jalan, success:function(data)
+								{ 
+									//HASIL NYA DIBALIK, JIKA DITEMUKAN HIJAU JIKA TIDAK MERAH
+									if(data==0 || ($("#no_surat_jalan").val() == $("#cek_no_surat_jalan").val()))
+									//if(data==0)
+									  {
+										$("#pesan").html('<img src="<?php echo base_url();?>assets/global/salah.png">No Surat Jalan Tidak Diteumkan Di pusat');
+										$("#no_surat_jalan").css('border', '3px #C33 solid');
+										
+									}
+									  else
+									  {
+										
+										//$("#pesan").html(data); 
+										
+										$("#pesan").html('<img src="<?php echo base_url();?>assets/global/true.png"> Surat Jalan Ditemukan (Surat jalan dibuat pada : '+data+ ' )');
+										$("#no_surat_jalan").css('border', '3px #090 solid');
+										
+									  }
+									  
+								} 
+								});
+							}
+						}
+                    });
+				});
+			</script>
+			
+	<div class="content-wrapper">
+		<!-- Content Header (Page header) -->
+		<section class="content-header">
+		
+		<h1>
+			<?php
+				echo $this->session->userdata('ses_gnl_nama_aplikasi');
+				/*
+				if(!empty($this->M_gl_pengaturan->get_data_by_id(1))) 
+				{
+					//echo $this->M_gl_pengaturan->get_data_by_id(1)->nilai; 
+					echo $this->M_gl_pengaturan->get_data_by_id(1)->nilai;
+				}
+				else
+				{
+					echo "Aplikasi Sistem Informasi dan Maagement Klinik 1.0";
+				} 
+				*/
+			?>
+			<?php 
+				//echo $msgbox_title;
+			?> 
+			<?php 
+				//echo $this->session->userdata("ses_nama_kantor"); 
+			?>
+		</h1>
+		
+		
+		
+		<ol class="breadcrumb">
+			<li><a href="<?php echo base_url()?>gl-admin"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+			<li><a href="#"><i class="fa fa-dashboard"></i> Pembelian</a></li>
+			<li class="active"><i class="fa fa-edit"></i> Penerimaan</li>
+			
+		</ol>
+		</section>
+
+		<!-- Main content -->
+		<section class="content">
+		<!-- =========================================================== -->
+
+		<div class="row">
+			<div class="col-md-12">
+			<!-- <div class="box box-warning collapsed-box box-solid"> -->
+			<!-- Perbatasan table dan form -->
+					<div class="box">
+						<div class="box-header">
+						<h3 class="box-title">Tabel <?php echo $msgbox_title;?> <?php echo $this->session->userdata("ses_nama_kantor"); ?>
+							</h3>
+							<!-- <div class="pull-right"> -->
+							<div class="col-md-12">
+								
+								<form action="<?=base_url();?>gl-admin-laporan-list-hutang-per-inv" method="get" class="frm-cari">
+								
+								
+								<br/>
+								<!-- <div  id="box-form" class="box box-warning collapsed-box box-solid"> -->
+								<div  id="box-form" class="box box-warning ellapsed-box box-solid">
+									<div class="box-header with-border">
+									<h3 class="box-title">Filter <?php echo $msgbox_title;?></h3>
+									<div class="box-tools pull-right">
+										<!-- <button class="btn btn-box-tool" data-widget="collapse"><i id="icon_form" class="fa fa-plus"></i></button> -->
+										<button class="btn btn-box-tool" data-widget="collapse"><i id="icon_form" class="fa fa-minus"></i></button>
+									</div><!-- /.box-tools -->
+									</div><!-- /.box-header -->
+									
+									<div class="box-body">
+										<div class="col-md-12">
+											<div class="col-md-4">
+												<div class="form-group">
+													<br/>
+													<select name="kode_supplier" id="kode_supplier" class="form-control select2" title="Kode Akun/COA" style="width:100%;" width="100%">
+														<option value="<?php if (!empty($_GET['kode_supplier'])){echo $_GET['kode_supplier'];} ?>"><?php if (!empty($_GET['kode_supplier'])){echo $_GET['kode_supplier'];}else{echo'.::-- Pilih Supplier Berdasarkan Nama Supplier --::.';} ?></option>
+														<?php
+															if(!empty($list_supllier))
+															{
+																$list_result = $list_supllier->result();
+																foreach($list_result as $row)
+																{
+																	echo'<option value="'.$row->kode_supplier.'">'.$row->nama_supplier.' ('.$row->kode_supplier.')</option>';
+																}
+															}
+														?>
+													</select>
+												</div>
+											</div>
+											<div class="col-md-2">
+												<div class="form-group">
+													<!-- <label for="id_kat_uang_masuk">Kode Akun/COA <font style="font-size:10px; color:red;"><i>(Yang Akan Bertambah/Debet)</i></font></label> -->
+													
+													<br/>
+													<select name="status_hutang" id="status_hutang" class="form-control select2" title="Kode Akun/COA" style="width:100%;" width="100%">
+														
+														<option value="<?php if (!empty($_GET['status_hutang'])){echo $_GET['status_hutang'];} ?>"><?php if (!empty($_GET['status_hutang'])){echo $_GET['status_hutang'];}else{echo'SEMUA';} ?></option>
+														<option value="SISA">SISA</option>
+														<option value="LUNAS">LUNAS</option>
+													</select>
+												</div>
+											</div>
+											<div class="col-md-2">
+												<div class="form-group">
+													<label></label>
+													<div class="input-group date">
+													  <div class="input-group-addon">
+														<i class="fa fa-calendar"></i>
+													  </div>
+													  <input name="dari" id="dari" type="text" class="required form-control pull-right settingDate" alt="TANGGAL TRANSAKSI" title="TANGGAL TRANSAKSI" value="<?php if (!empty($_GET['dari'])){ echo $_GET['dari'];} else {echo date("Y-m-d");} ?>"  data-date-format="yyyy-mm-dd">
+													</div>
+													<!-- /.input group -->
+												</div>
+											</div>
+											<div class="col-md-2">
+												<div class="form-group">
+													<label></label>
+													<div class="input-group date">
+													  <div class="input-group-addon">
+														<i class="fa fa-calendar"></i>
+													  </div>
+													  <input name="sampai" id="sampai" type="text" class="required form-control pull-right settingDate" alt="TANGGAL TRANSAKSI" title="TANGGAL TRANSAKSI" value="<?php if (!empty($_GET['sampai'])){ echo $_GET['sampai'];} else {echo date("Y-m-d");} ?>" data-date-format="yyyy-mm-dd">
+													</div>
+													<!-- /.input group -->
+												</div>
+											</div>
+											<div class="col-md-1">
+												<div class="form-group">
+													<label for="nama_satuan"></label>
+													
+													<!-- <button type="button" id="btnsimpan" onclick="cari_col_active()" class="btn btn-success btn-block btn-flat" title="Pencarian Data <?php echo $msgbox_title;?> ?">CARI</button> -->
+													
+													<button type="submit" id="btnsimpan" class="btn btn-success btn-block btn-flat" title="Pencarian Data <?php echo $msgbox_title;?> ?">CARI</button>
+												</div>
+												
+											</div>
+											
+											<div class="col-md-1">
+												<div class="form-group">
+													<label for="nama_satuan"></label>
+													<a class="btn btn-warning btn-block btn-flat" target="_blank" href="<?php echo base_url();?>gl-admin-laporan-list-hutang-per-inv-excel?kode_kantor=<?php if (!empty($_GET['kode_kantor'])){echo $_GET['kode_kantor'];} ?>&dari=<?php if (!empty($_GET['dari'])){echo $_GET['dari'];} ?>&sampai=<?php if (!empty($_GET['sampai'])){echo $_GET['sampai'];} ?>&cari=<?php if (!empty($_GET['cari'])){echo $_GET['cari'];} ?>" title = "Print Excel Stock" alt = "Print Excel Stock">EXCEL</a>
+												</div>
+											</div>
+											
+										</div>
+									</div>
+								</div>
+								
+								</form>
+							</div>
+						</div><!-- /.box-header -->
+						<div class="box-body table-responsive no-padding">
+						
+						<ul class="nav nav-tabs">
+							<!-- onclick="tampilkan_lap_general()"  -->
+							<li><a href="<?php echo base_url();?>gl-admin-laporan-pembelian/0?dari=<?php if (!empty($_GET['dari'])){ echo $_GET['dari'];} ?>&sampai=<?php if (!empty($_GET['sampai'])){ echo $_GET['sampai'];} ?>&cari=<?php if (!empty($_GET['cari'])){ echo $_GET['cari'];} ?>" >PEMBELIAN GENERAL</a></li>
+							
+							<!-- 
+								onclick="tampilkan_transaksi_detail()" 
+								data-toggle="tab"
+							-->
+							
+							
+							
+							<li class="active"><a style="background-color:#F0F8FF;" href="#" ><b>LAPORAN HUTANG</b></a></li>
+							
+							<li><a href="<?php echo base_url();?>gl-admin-laporan-pembelian-lap-detail-produk-order/0?dari=<?php if (!empty($_GET['dari'])){ echo $_GET['dari'];} ?>&sampai=<?php if (!empty($_GET['sampai'])){ echo $_GET['sampai'];} ?>&cari=<?php if (!empty($_GET['cari'])){ echo $_GET['cari'];} ?>" >PEMBELIAN DETAIL</a></li>
+							
+							<li><a href="<?php echo base_url();?>gl-admin-laporan-penerimaan-for-print/0?dari=<?php if (!empty($_GET['dari'])){ echo $_GET['dari'];} ?>&sampai=<?php if (!empty($_GET['sampai'])){ echo $_GET['sampai'];} ?>&cari=<?php if (!empty($_GET['cari'])){ echo $_GET['cari'];} ?>" >PENERIMAAN</a></li>
+							
+							<li><a href="<?php echo base_url();?>gl-admin-laporan-pembelian-lap-detail-produk-penerimaan/0?dari=<?php if (!empty($_GET['dari'])){ echo $_GET['dari'];} ?>&sampai=<?php if (!empty($_GET['sampai'])){ echo $_GET['sampai'];} ?>&cari=<?php if (!empty($_GET['cari'])){ echo $_GET['cari'];} ?>" >PO BELUM TERIMA</a></li>
+							
+							
+							<li><a href="<?php echo base_url();?>gl-admin-laporan-pembelian-vipot/0?dari=<?php if (!empty($_GET['dari'])){ echo $_GET['dari'];} ?>&sampai=<?php if (!empty($_GET['sampai'])){ echo $_GET['sampai'];} ?>&cari=<?php if (!empty($_GET['cari'])){ echo $_GET['cari'];} ?>" >AKUMULASI HUTANG</a></li>
+							
+							<li><a href="<?php echo base_url();?>gl-admin-laporan-hutang-per-supplier/0?dari=<?php if (!empty($_GET['dari'])){ echo $_GET['dari'];} ?>&sampai=<?php if (!empty($_GET['sampai'])){ echo $_GET['sampai'];} ?>&cari=<?php if (!empty($_GET['cari'])){ echo $_GET['cari'];} ?>" >HUTANG SUPPLIER</a></li>
+							
+							<!-- <li><a href="#pelatihan" onclick="list_d_penjualan_fee()" data-toggle="tab">LAPORAN PENERIMAAN</a></li> -->
+							
+							<!-- <li><a href="#karir" data-toggle="tab">Karir</a></li> -->
+							<!-- <li><a href="#punish" data-toggle="tab">Punishment</a></li> -->
+						</ul>
+						
+						<br/>
+						
+						<p style="font-style:italic;color:red;padding:1%;">
+							
+							NB : Hutang diperoleh berdasarkan invoice atau kedatangan barang (Surat Jalan). Lakukan pembayaran hutang dengan menggunakan menu <a href="<?php echo base_url();?>gl-pusat-admin-jurnal-umum-pembalik">Jurnal Umum</a>. Untuk menampilkan data silahkan pilih supplier, status hutang dan rentang waktu. <b>Jika anda memilih supplier & status hutang, maka rentang waktu tidak akan aktif.</b>
+							
+						</p>
+						
+						<br/>
+						
+						<?php
+							//TABLE
+							if(!empty($list_h_penerimaan))
+								{
+									//echo gethostname();
+									//echo $this->M_gl_pengaturan->getUserIpAddr();
+									//$sts_query = strpos(base_url(),"localhost");
+									//echo $sts_query;
+									//$nama = "Mulyana Yusuf";
+									//echo str_replace("f","849",$nama);
+									echo'<table width="100%" id="example2" class="table table-hover">';
+										echo '<thead>
+	<tr>';
+													echo '<th width="5%">NO</th>';
+													
+													echo '<th width="15%">SUPPLIER</th>';
+													echo '<th width="20%">SURAT JALAN</th>';
+													echo '<th width="20%">KETERANGAN</th>';
+													echo '<th width="15%">NOMINAL</th>';
+													echo '<th width="7%">BAYAR</th>';
+													echo '<th width="8%">SISA</th>';
+													
+													echo '<th width="10%">AKSI</th>';
+										echo '</tr>
+	</thead>';
+										$list_result = $list_h_penerimaan->result();
+										$no =$this->uri->segment(2,0)+1;
+										
+										$subtotalNominal = 0;
+										$subTotalBayar = 0;
+										$subTotalSisa = 0;
+										
+										echo '<tbody>';
+										foreach($list_result as $row)
+										{
+											if( date('Y-m-d') >= date('Y-m-d', strtotime(substr($row->tgl_tempo_next,0,10))) )
+											{
+												echo'<tr style="background-color:#FFB6C1;">';
+											}
+											else
+											{
+												echo'<tr>';
+											}
+											
+												echo'<td>'.$no.'</td>';
+												
+												/*
+												if($row->img_file == "")
+												{
+													$src = base_url().'assets/global/no-image.jpg';
+													echo '<td><img id="IMG_'.$no.'"  width="100px" height="100px" style="border:1px solid #C8C8C8; padding:5px; float:left; margin-right:20px;" src="'.$src.'" />
+													</td>';
+												}
+												else
+												{
+													$src = base_url().''.$row->img_url.''.$row->img_file;
+													echo '<td>
+															<a href="'.$src.'">
+																<img id="IMG_'.$no.'"  width="100px" height="100px" style="border:1px solid #C8C8C8; padding:5px; float:left; margin-right:20px;" src="'.$src.'" />
+															</a>
+													</td>';
+												}
+												*/
+												
+												
+												echo'<td>'.$row->nama_supplier.'</td>';
+												echo'
+												<td>
+													<b>PO : </b><i style="color:red;">'.$row->NO_PO.'</i>
+													<br/> <b>NO SURAT : </b>'.$row->no_surat_jalan.'
+													<br/> <b>TANGGAL KIRIM: </b>'.substr($row->tgl_kirim,0,10).'
+													<br/> <b>TANGGAL TERIMA: </b>'.substr($row->tgl_terima,0,10).'
+													<br/> <b>TANGGAL TEMPO: </b>'.substr($row->tgl_tempo_next,0,10).'
+													
+													<!-- <br/> <b>BIAYA KIRIM: </b>Rp.'.number_format($row->biaya_kirim,0,'.',',').' -->
+												</td>';
+												
+												
+												echo'
+												<td>
+													<b>DIKIRIM: </b>'.$row->nama_pengirim.'
+													<br/> <b>DITERIMA: </b>'.$row->diterima_oleh.'
+													<br/> <b>CARA KIRIM: </b>'.$row->cara_pengiriman.'
+													<br/> <b>NO BAYAR: </b><font style="color:red;">'.$row->NO_BUKTI.'</font>
+												</td>';
+												
+												echo'<td style="text-align:right;">
+														JUM : <font style="color:red;">'.number_format($row->NOMINAL,1,'.',',').'</font>
+														<br/> BIAYA : <font style="color:red;">'.number_format($row->biaya_kirim,0,'.',',').'</font>
+													</td>';
+												echo'<td style="text-align:right;">'.number_format($row->BAYAR,1,'.',',').'</td>';
+												echo'<td style="text-align:right;">'.number_format($row->SISA,1,'.',',').'</td>';
+												
+												$subtotalNominal = $subtotalNominal + $row->NOMINAL;
+												$subTotalBayar = $subTotalBayar + $row->BAYAR;
+												$subTotalSisa = $subTotalSisa + $row->SISA;
+												
+												/*
+												echo'<td>
+														<b>DIKIRIM: </b>'.$row->JUMLAH.' Item Diterima
+														<br/> <b>DITERIMA: </b>'.$row->ket_h_penerimaan.'
+													</td>';
+												*/
+												
+												
+
+												echo'<td>
+	<!--
+	<a href="javascript:void(0)" class="confirm-btn btn btn-success btn-block btn-flat" title = "Terima Produk Data '.$row->no_surat_jalan.'" alt = "Terima Produk Data '.$row->no_surat_jalan.'" data-toggle="modal" data-target="#myModal_produk" onclick="list_data_produk('.$no.')">DETAIL PRODUK</a>
+	-->
+	
+	<!--
+	<a href="'.base_url().'gl-admin-images/penerimaan/'.($row->id_h_penerimaan).'" class="confirm-btn btn btn-success btn-block btn-flat" title = "Upload Foto Surat Jalan '.$row->no_surat_jalan.'" alt = "Upload Foto Surat Jalan '.$row->no_surat_jalan.'" >FOTO SURAT JALAN</a>
+	-->
+	
+	<!--
+	<a href="'.base_url().'gl-admin-purchase-order-terima-surat-jalan-list-data-produk-terima/'.md5($row->id_h_penerimaan).'" class="confirm-btn btn btn-success btn-block btn-flat" title = "Terima Produk Data '.$row->no_surat_jalan.'" alt = "Terima Produk Data '.$row->no_surat_jalan.'" >DETAIL PRODUK</a>
+	-->
+	
+	<a href="'.base_url().'gl-pusat-admin-jurnal-umum-pembalik/'.md5($row->id_h_penerimaan).'" class="confirm-btn btn btn-danger btn-block btn-flat" title = "Terima Produk Data '.$row->no_surat_jalan.'" alt = "Terima Produk Data '.$row->no_surat_jalan.'" >BAYAR</a>
+	
+	<!--
+	<a href="'.base_url().'gl-admin-laporan-pembelian-pembayaran-invoice/'.md5($row->id_h_penerimaan).'" class="confirm-btn btn btn-danger btn-block btn-flat" title = "Terima Produk Data '.$row->no_surat_jalan.'" alt = "Terima Produk Data '.$row->no_surat_jalan.'" >BAYAR</a>
+	-->
+	
+												</td>';
+	//PEMBAYAAN JADI DARI UANG KELUAR, BUKAN DARI tb_d_pembelian lagi											
+												
+												/*
+												echo'<td>
+	<a href="'.base_url().'gl-admin-purchase-order-terima-detail-produk/'.md5($row->id_h_penerimaan).'" class="confirm-btn btn btn-success btn-block btn-flat" title = "Terima Produk Data '.$row->no_surat_jalan.'" alt = "Terima Produk Data '.$row->no_surat_jalan.'" >DETAIL PRODUK</a>
+	
+	<a href="javascript:void(0)" class="btn btn-warning btn-block btn-flat" onclick="edit('.$no.')" title = "Ubah Data '.$row->no_surat_jalan.'" alt = "Ubah Data '.$row->no_surat_jalan.'">EDIT</a>
+	
+	<a class="confirm-btn btn btn-danger btn-block btn-flat" href="'.base_url().'gl-admin-purchase-order-terima-surat-jalan-hapus/'.($row->id_h_pembelian).'/'.($row->id_h_penerimaan).'" title = "Hapus Data '.$row->no_surat_jalan.'" alt = "Hapus Data '.$row->no_surat_jalan.'">HAPUS</a>
+												</td>';
+												*/
+												
+											echo'</tr>';
+											$no++;
+											
+											
+											echo'<input type="hidden" id="no_'.$no.'" name="no_'.$no.'" value="'.$no.'" />';
+											echo'<input type="hidden" id="id_h_penerimaan_'.$no.'" name="id_h_penerimaan_'.$no.'" value="'.$row->id_h_penerimaan.'" />';
+											echo'<input type="hidden" id="id_h_pembelian_'.$no.'" name="id_h_pembelian_'.$no.'" value="'.$row->id_h_pembelian.'" />';
+											
+											echo'<input type="hidden" id="id_gedung_'.$no.'" name="id_gedung_'.$no.'" value="'.$row->id_gedung.'" />';
+											
+											
+											echo'<input type="hidden" id="no_surat_jalan_'.$no.'" name="no_surat_jalan_'.$no.'" value="'.$row->no_surat_jalan.'" />';
+											echo'<input type="hidden" id="nama_pengirim_'.$no.'" name="nama_pengirim_'.$no.'" value="'.$row->nama_pengirim.'" />';
+											echo'<input type="hidden" id="cara_pengiriman_'.$no.'" name="cara_pengiriman_'.$no.'" value="'.$row->cara_pengiriman.'" />';
+											echo'<input type="hidden" id="diterima_oleh_'.$no.'" name="diterima_oleh_'.$no.'" value="'.$row->diterima_oleh.'" />';
+											echo'<input type="hidden" id="biaya_kirim_'.$no.'" name="biaya_kirim_'.$no.'" value="'.$row->biaya_kirim.'" />';
+											echo'<input type="hidden" id="tgl_kirim_'.$no.'" name="tgl_kirim_'.$no.'" value="'.$row->tgl_kirim.'" />';
+											echo'<input type="hidden" id="tgl_terima_'.$no.'" name="tgl_terima_'.$no.'" value="'.$row->tgl_terima.'" />';
+											echo'<input type="hidden" id="ket_h_penerimaan_'.$no.'" name="ket_h_penerimaan_'.$no.'" value="'.$row->ket_h_penerimaan.'" />';
+											echo'<input type="hidden" id="tgl_ins_'.$no.'" name="tgl_ins_'.$no.'" value="'.$row->tgl_ins.'" />';
+											echo'<input type="hidden" id="tgl_updt_'.$no.'" name="tgl_updt_'.$no.'" value="'.$row->tgl_updt.'" />';
+											echo'<input type="hidden" id="user_updt_'.$no.'" name="user_updt_'.$no.'" value="'.$row->user_updt.'" />';
+											echo'<input type="hidden" id="user_ins_'.$no.'" name="user_ins_'.$no.'" value="'.$row->user_ins.'" />';
+											echo'<input type="hidden" id="kode_kantor_'.$no.'" name="kode_kantor_'.$no.'" value="'.$row->kode_kantor.'" />';
+										}
+										
+										
+											echo'<tr>';
+												echo'<td></td>';
+												echo'<td colspan="3" style="text-align:right;font-weight:bold;">TOTAL</td>';
+												echo'<td style="text-align:right;font-weight:bold;">'.number_format($subtotalNominal,1,'.',',').'</td>';
+												echo'<td style="text-align:right;font-weight:bold;">'.number_format($subTotalBayar,1,'.',',').'</td>';
+												echo'<td style="text-align:right;font-weight:bold;">'.number_format($subTotalSisa,1,'.',',').'</td>';
+												echo'<td></td>';
+											echo'</tr>';
+											
+										echo '</tbody>';
+									echo'</table>';
+								}
+								else
+								{
+									echo'<center>';
+									echo'Tidak Ada Data Yang Ditampilkan !';
+									echo'</center>';
+								}
+							//TABLE
+						?>
+						<center>
+						<div class="halaman"><?php echo $halaman;?></div>
+						</center>
+						</div><!-- /.box-body -->
+					</div><!-- /.box -->
+					
+					
+					
+					<!-- Show MOdal - TABLE 1 PRODUK -->
+						<div class="modal fade" id="myModal_produk" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+									<h4 class="modal-title" id="myModalLabel">Data Produk/Jasa</h4>
+								</div>
+								<div class="modal-body">
+									
+									
+									<!-- ISI BODY -->
+									<div class="box">
+										<div class="box-header">
+										<h3 class="box-title">Table List Produk/Jasa</h3>
+											<div class="pull-right">
+												<!-- <form action="<?=base_url();?>admin/pendaftaran-klinik-cari" method="post" class="frm-cari"> -->
+												<!--<form action="#" method="get" class="frm-cari">-->
+													<table>
+														<tr>
+															<td>
+																<input onkeydown="list_data_produk_by_enter()" type="text" id="cari_json_produk" name="cari_json_produk"  maxlength="35" class="text form-control" size="35" alt="tlp" title="Cari data" placeholder="...Cari" value="<?php if (!empty($_GET['berdasarkan'])){echo $_GET['cari_json_produk'];} ?>"/>
+															</td>
+															<!--
+															<td><a href="javascript:void(0)" id="btn_cari_json" class="btn btn-success btn-sm" onclick="list_data_karyawan_by_enter('.$row->id_klinik.')" title = "Cari Dokter" >Cari</a></td>
+															-->
+															<!-- <td><a href="javascript:void(0)" id="btn_cari_json_produk" class="btn btn-success btn-sm" onclick="list_data_produk()" title = "Cari Dokter" >Cari</a></td> -->
+														</tr>
+													</table>
+												<!-- </form> -->
+											</div>
+										</div><!-- /.box-header -->
+										<input type="hidden" name="no_produk" id="no_produk" />
+										<div  id="tb_cari_produk" class="box-body">
+											<!-- ISI DENGAN DATA KARYAWAN -->
+										</div><!-- /.box-body -->
+									</div><!-- /.box -->
+									<!-- ISI BODY -->
+									
+									
+								</div>
+								<div class="modal-footer">
+									<!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
+									<!-- <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="add_produk_masal()">Tambahkan Masal</button> -->
+								</div>
+								</div>
+							</div>
+						</div>
+
+					<!-- Show MOdal - TABLE 1 PRODUK-->
+					
+					
+			</div><!-- /.col -->
+		</div><!-- /.row -->
+		<!-- =========================================================== -->
+		</section><!-- /.content -->
+	</div><!-- /.content-wrapper -->
+			
+			
+		
+<script type='text/javascript'>
+	function print_surat_jalan(evt)
+	{
+		
+		var strId = evt.id;
+		var arrKode = strId.split("-");
+		var val = evt.value;
+		
+		var no_surat_jalan = arrKode[1];
+		var strKategori = arrKode[0];
+		
+		
+		var href = "<?php echo base_url();?>gl-admin-pendaftaran-print-surat-jalan-cek-pusat/"+no_surat_jalan;
+		window.open(href, 'popup', 'height=500,width=600,toolbar=no');
+	}
+	
+	function list_data_produk(id)
+	{
+		$("#no_produk").val(id);
+		var id_h_pembelian = $("#id_h_pembelian").val();
+		var id_h_penerimaan = $("#id_h_penerimaan_"+id).val();
+		var cari = $("#cari_json_produk").val();
+		var limit = 15;
+		var offset = 0;
+		
+		$("#tb_cari_produk").html("<img src='<?php echo base_url();?>assets/global/loading.gif'>Cek Data ...");
+		
+		$.ajax({type: "POST", url: "<?php echo base_url();?>gl-admin-purchase-order-terima-surat-jalan-list-data-produk/", data: {id_h_pembelian:id_h_pembelian,id_h_penerimaan:id_h_penerimaan,cari:cari,limit:limit,offset:offset}, success:function(data)
+		{
+			if(data!=0)
+			{
+				$("#tb_cari_produk").html(data);
+			} 
+			else
+			{
+				$("#tb_cari_produk").html("Tidak Ada Data Yang Ditampilkan");
+			}
+		}
+		});
+	}
+	
+	function list_data_produk_by_enter()
+	{
+		//CEK KEY CODE : NB ENTRT : 13
+			if (event.type == "keydown") {
+				//some browsers support evt.charCode, some only evt.keyCode
+			   if (event.charCode) {
+				  var charCode = event.charCode;
+			   }
+			   else {
+				  var charCode = event.keyCode;
+			   }
+			}
+		//CEK KEY CODE : NB ENTRT : 13
+		if(charCode == 13)
+		{
+			var id = $("#no_produk").val();
+			var id_h_pembelian = $("#id_h_pembelian").val();
+			var id_h_penerimaan = $("#id_h_penerimaan_"+id).val();
+			var cari = $("#cari_json_produk").val();
+			var limit = 15;
+			var offset = 0;
+			
+			$("#tb_cari_produk").html("<img src='<?php echo base_url();?>assets/global/loading.gif'>Cek Data ...");
+			
+			$.ajax({type: "POST", url: "<?php echo base_url();?>gl-admin-purchase-order-terima-surat-jalan-list-data-produk/", data: {id_h_pembelian:id_h_pembelian,id_h_penerimaan:id_h_penerimaan,cari:cari,limit:limit,offset:offset}, success:function(data)
+			{
+				if(data!=0)
+				{
+					$("#tb_cari_produk").html(data);
+				} 
+				else
+				{
+					$("#tb_cari_produk").html("Tidak Ada Data Yang Ditampilkan");
+				}
+			}
+			});
+		}
+	}
+	
+	function get_sisa(id)
+	{
+		var order = $("#BL_JUMLAH_"+id).val();
+		var telah_terima = $("#TLH_TERIMA_"+id).val();
+		var terima = $("#TERIMA_"+id).val();
+		var sisa = (order*1) - ( (telah_terima*1) + (terima*1) )
+		$("#SISA_"+id).val(sisa);
+	}
+	
+	function simpan_d_terima(id)
+	{
+	
+		var id_h_penerimaan = $("#id_h_penerimaan_"+id).val();
+		var id_h_pembelian = $("#id_h_pembelian").val();
+		var id_d_pembelian = $("#id_d_pembelian_"+id).val();
+		var id_produk = $("#id_produk_"+id).val();
+		var diterima = $("#TERIMA_"+id).val();
+		var konversi = $("#BL_KONVERSI_"+id).val();
+		var diterima_satuan_beli = $("#TERIMA_"+id).val();
+		var status_konversi = $("#BL_STATUS_KONVERSI_"+id).val();
+		var kode_satuan = $("#kode_satuan_"+id).val();
+		var nama_satuan = $("#kode_satuan_"+id).val();
+		var harga_beli = $("#BL_HARGA_"+id).val();
+		var harga_konversi = $("#BL_HARGA_"+id).val();
+		var tgl_exp = $("#tgl_exp_"+id).val();
+	
+		//alert(tgl_exp);
+		
+		$.ajax({type: "POST", url: "<?php echo base_url();?>gl-admin-purchase-order-terima-surat-jalan-simpan-terima-produk/", data: 
+		{
+		id_h_penerimaan:id_h_penerimaan,
+		id_h_pembelian:id_h_pembelian,
+		id_d_pembelian:id_d_pembelian,
+		id_produk:id_produk,
+		diterima:diterima,
+		konversi:konversi,
+		diterima_satuan_beli:diterima_satuan_beli,
+		status_konversi:status_konversi,
+		kode_satuan:kode_satuan,
+		nama_satuan:nama_satuan,
+		harga_beli:harga_beli,
+		harga_konversi:harga_konversi,
+		tgl_exp:tgl_exp
+
+		
+		}, success:function(data)
+		{
+			if(data!=0)
+			{
+				//$("#tb_cari_produk").html(data);
+			} 
+			else
+			{
+				//$("#tb_cari_produk").html("Tidak Ada Data Yang Ditampilkan");
+			}
+		}
+		});
+	}
+	
+	function edit(id)
+	{
+		
+		$('input[name=stat_edit]').val($('#id_h_penerimaan_'+id).val());
+		$('input[name=id_h_penerimaan]').val($('#id_h_penerimaan_'+id).val());
+		$('input[name=id_h_pembelian]').val($('#id_h_pembelian_'+id).val());
+		
+		
+		/*
+		$('input[name=id_gedung]').val($('#id_gedung_'+id).val());
+		$('input[name=kode_gedung]').val($('#kode_gedung_'+id).val());
+		$('input[name=nama_gedung]').val($('#nama_gedung_'+id).val());
+		*/
+		document.getElementById("id_gedung").options.item(0).text = $('#nama_gedung_'+id).val()+" ("+$('#kode_gedung_'+id).val()+")";
+		document.getElementById("id_gedung").options.item(0).value = $('#id_gedung_'+id).val();
+		
+		
+		$('input[name=no_surat_jalan]').val($('#no_surat_jalan_'+id).val());
+		$('input[name=nama_pengirim]').val($('#nama_pengirim_'+id).val());
+		$('input[name=cara_pengiriman]').val($('#cara_pengiriman_'+id).val());
+		$('input[name=diterima_oleh]').val($('#diterima_oleh_'+id).val());
+		$('input[name=biaya_kirim]').val( format_str_to_currency($('#biaya_kirim_'+id).val())  );
+		$('input[name=tgl_kirim]').val($('#tgl_kirim_'+id).val());
+		$('input[name=tgl_terima]').val($('#tgl_terima_'+id).val());
+		
+		//$('input[name=ket_h_penerimaan]').val($('#ket_h_penerimaan_'+id).val());
+		document.getElementById("ket_h_penerimaan").value = $('#ket_h_penerimaan_'+id).val();
+		
+		
+		alert("Mode Perubahan Aktif Untuk Data "+ $('#no_surat_jalan_'+id).val());
+		
+		/*Buka Form*/
+			$('#icon_form').attr('class', 'fa fa-minus');
+			$('#box-form').attr('class', 'box box-warning ellapsed-box box-solid');
+		/*Buka Form*/
+	}
+	
+	$('#btnbatal').click(function(){
+		$('input[name=stat_edit]').val("");
+		
+		
+		/*Tutup Dulu Form*/
+			$('#icon_form').attr('class', 'fa fa-plus');
+			$('#box-form').attr('class', 'box box-warning collapsed-box box-solid');
+		/*Tutup Dulu Form*/
+	});
+	
+	
+	function isNumberKey(evt)
+	{
+		var charCode = (evt.which) ? evt.which : event.keyCode
+		
+		//alert (charCode);
+		if((charCode != 44) && (charCode != 46))
+		{
+			if (charCode > 31 && (charCode < 48 || charCode > 57))
+			
+			return false;
+			return true;
+		}
+		
+	}
+	
+	function RestrictSpace() 
+	{
+		if (event.keyCode == 32) 
+		{
+			return false;
+		}
+	}
+	
+	
+	function getRupiah(id_objek)
+	//function getRupiah()
+	{
+		/*
+		var angka = $('#charge').val();
+		//return angka.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+		$('#charge').val(angka.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.'));
+		*/
+		var angka = $('#'+id_objek).val();
+		 //return angka.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+		 $('#'+id_objek).val(angka.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'));
+	}
+	
+	function format_str_to_currency(str)
+	{
+		return str.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+	}
+</script>
+      
+    <!-- Bootstrap 3.3.4 -->
+	<script src="<?=base_url();?>assets/adminlte/bootstrap/js/bootstrap.min.js"></script>
+	<!-- Slimscroll -->
+	<script src="<?=base_url();?>assets/adminlte/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+	<!-- FastClick -->
+	<script src="<?=base_url();?>assets/adminlte/plugins/fastclick/fastclick.min.js"></script>
+	<!-- AdminLTE App -->
+	<script src="<?=base_url();?>assets/adminlte/dist/js/app.min.js"></script>
+	<!-- Page script -->
+    <!-- InputMask -->
+    <script src="<?=base_url();?>/assets/adminlte/plugins/input-mask/jquery.inputmask.js"></script>
+    <script src="<?=base_url();?>/assets/adminlte/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+    <script src="<?=base_url();?>/assets/adminlte/plugins/input-mask/jquery.inputmask.extensions.js"></script>
+	
+	<!-- bootstrap datepicker -->
+	<script src="<?=base_url();?>/assets/adminlte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+	
+	<!-- Select2 -->
+	<script src="<?=base_url();?>/assets/adminlte/plugins/select2/select2.full.min.js"></script>
+    
+    <script>
+      $(function () {
+		//Date picker
+		$('.settingDate').datepicker({
+			autoclose: true
+		});
+		
+		
+        //Initialize Select2 Elements
+        $(".select2").select2();
+
+        //Datemask yyyy-mm-dd
+        $(".datemask_mysql").inputmask("yyyy-mm-dd", {"placeholder": "yyyy-mm-dd"});
+        //Datemask dd/mm/yyyy
+        //$("#datemask").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});
+        //Datemask2 mm/dd/yyyy
+        //$("#datemask2").inputmask("mm/dd/yyyy", {"placeholder": "mm/dd/yyyy"});
+        //TimeMask hh:mm:ss
+        $(".time_mysql").inputmask("hh:mm:ss", {"placeholder": "hh:mm:ss"});
+        //Money Euro
+        //$("[data-mask]").inputmask();
+
+        //iCheck for checkbox and radio inputs
+        $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+          checkboxClass: 'icheckbox_minimal-blue',
+          radioClass: 'iradio_minimal-blue'
+        });
+        //Red color scheme for iCheck
+        $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
+          checkboxClass: 'icheckbox_minimal-red',
+          radioClass: 'iradio_minimal-red'
+        });
+        //Flat red color scheme for iCheck
+        $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+          checkboxClass: 'icheckbox_flat-green',
+          radioClass: 'iradio_flat-green'
+        });
+
+        //Colorpicker
+        $(".my-colorpicker1").colorpicker();
+        //color picker with addon
+        $(".my-colorpicker2").colorpicker();
+
+        //Timepicker
+        $(".timepicker").timepicker({
+          showInputs: false
+        });
+      });
+    </script>
+	

@@ -1,0 +1,219 @@
+			<div class="heading-title heading-border">
+				<h3><span>Donasi untuk sesama bersama BAZNAS Kab.Sukabumi</span></h3>
+				<p class="font-lato fs-14">Program pelayanan donasi sesama adalah program pelayanan untuk masyarakat dimana jika ada saudara kita yang membutuhkan pertolongan akan dibantu dengan saudara - saudara nya yang lain. Mari bersama - sama kita bantu sesama saudara kita yang terkena musibah agar mereka bisa lebih bahagia.</p>
+			</div>
+			
+			
+			<?php
+				if($cari == "")
+				{
+			?>
+			<section>
+				<div class="container">
+					<div class="row">
+						
+						<?php
+							if(!empty($list_amal_terbatas)) 
+							{  
+								$no = 1;
+								$list_result = $list_amal_terbatas->result();
+								foreach($list_result as $row)
+								{
+						?>
+								<!-- <div class="blog-post-item col-md-4 col-sm-4"> -->
+								<div class="blog-post-item col-md-6 col-sm-6">
+
+									<!-- OWL SLIDER -->
+									<?php
+										$list_slider = $this->M_public->list_images(" WHERE A.IMG_GRUP = 'amal' AND A.ID = '".$row->AML_ID."'",0,10);
+										if(!empty($list_slider)) 
+										{  
+											if($list_slider->num_rows() > 1)
+											{
+									?>
+												<div class="owl-carousel buttons-autohide controlls-over" data-plugin-options='{"items": 1, "autoPlay": <?php echo (rand(1000,3000));?>, "autoHeight": false, "navigation": true, "pagination": true, "transitionStyle":"fadeUp", "progressBar":"false"}'>
+									<?php
+											}
+											else
+											{
+									?>
+												<div class="owl-carousel buttons-autohide controlls-over" data-plugin-options='{"items": 1, "autoPlay": 3000, "autoHeight": false, "navigation": true, "pagination": true, "transitionStyle":"none", "progressBar":"false"}'>
+									<?php
+											}
+										}
+									?>
+										
+										<?php
+											//$list_slider = $this->M_public->list_images(" WHERE A.IMG_GRUP = 'amal' AND A.ID = '".$row->AML_ID."'",0,10);
+											if(!empty($list_slider)) 
+											{  
+												$list_result_images = $list_slider->result();
+												foreach($list_result_images as $row_images)
+												{
+										?>
+													
+													<div>
+														<img class="img-fluid" src="<?php echo $row_images->IMG_LINK;?>" alt="<?php echo $row_images->IMG_NAMA;?>">
+													</div>
+										<?php
+												}
+											}
+										?>
+										
+									</div>
+									<!-- /OWL SLIDER -->
+
+									<h2><a href="<?php echo base_url();?>detail-donasi/<?php echo $row->AML_LINKTAHUN?>/<?php echo $row->AML_LINKBULAN?>/<?php echo $row->AML_LINKTITLE?>"><?php echo $row->AML_NAMA;?></a></h2>
+
+									<ul class="blog-post-info list-inline">
+										<li>
+											<a href="#">
+												<i class="fa fa-clock-o"></i> 
+												<span class="font-lato">June 29, 2017</span>
+											</a>
+										</li>
+										<li>
+											<a href="#">
+												<i class="fa fa-comment-o"></i> 
+												<span class="font-lato">28</span>
+											</a>
+										</li>
+									</ul>
+
+									<p><?php echo substr(strip_tags($row->AML_KET),0,150).'...';?></p>
+
+									<a href="<?php echo base_url();?>detail-donasi/<?php echo $row->AML_LINKTAHUN?>/<?php echo $row->AML_LINKBULAN?>/<?php echo $row->AML_LINKTITLE?>" class="btn btn-reveal btn-default">
+										<i class="fa fa-plus"></i>
+										<span>Read More</span>
+									</a>
+
+								</div>
+						
+						<?php
+									$no++;
+								}
+							}
+						?>
+						
+						
+					</div>
+				</div>
+				<?php
+				}
+				?>
+					
+			
+			
+			<?php
+				if(!empty($list_amal)) 
+				{  
+					$no = 1;
+					$list_result = $list_amal->result();
+					foreach($list_result as $row)
+					{
+			?>
+					<!-- POST ITEM -->
+						<?php
+							if( ($no % 2) == 0)
+							{
+								echo'<div class="blog-post-item"><!-- .blog-post-item-inverse = image right side [left on RTL] -->';
+							}
+							else
+							{
+								echo'<div class="blog-post-item blog-post-item-inverse"><!-- .blog-post-item-inverse = image right side [left on RTL] -->';
+							}
+						?>
+						
+
+							<div class="blog-item-small-image">
+								<!-- OWL SLIDER -->
+								<!-- <div class="owl-carousel buttons-autohide controlls-over" data-plugin-options='{"items": 1, "autoPlay": 3000, "autoHeight": false, "navigation": true, "pagination": true, "transitionStyle":"none", "progressBar":"false"}'> -->
+								
+								<?php
+									$list_slider = $this->M_public->list_images(" WHERE A.IMG_GRUP = 'amal' AND A.ID = '".$row->AML_ID."'",0,10);
+									if(!empty($list_slider)) 
+									{  
+										if($list_slider->num_rows() > 1)
+										{
+								?>
+											<div class="owl-carousel buttons-autohide controlls-over" data-plugin-options='{"items": 1, "autoPlay": <?php echo (rand(1000,3000));?>, "autoHeight": false, "navigation": true, "pagination": true, "transitionStyle":"fadeUp", "progressBar":"false"}'>
+								<?php
+										}
+										else
+										{
+								?>
+											<div class="owl-carousel buttons-autohide controlls-over" data-plugin-options='{"items": 1, "autoPlay": 3000, "autoHeight": false, "navigation": true, "pagination": true, "transitionStyle":"none", "progressBar":"false"}'>
+								<?php
+										}
+									}
+								?>
+								
+								
+								
+									<?php
+										//$list_slider = $this->M_public->list_images(" WHERE A.IMG_GRUP = 'amal' AND A.ID = '".$row->AML_ID."'",0,10);
+										if(!empty($list_slider)) 
+										{  
+											$list_result_images = $list_slider->result();
+											foreach($list_result_images as $row_images)
+											{
+									?>
+												
+												<div>
+													<img class="img-fluid" src="<?php echo $row_images->IMG_LINK;?>" alt="<?php echo $row_images->IMG_NAMA;?>">
+												</div>
+									<?php
+											}
+										}
+									?>
+									
+									<!-- <div> -->
+										<!-- <img class="img-fluid" src="<?php echo $row->IMG_LINK;?>" alt="<?php echo $row->AML_NAMA;?>"> -->
+									<!-- </div> -->
+									
+									
+								</div>
+								<!-- /OWL SLIDER -->
+							</div>
+
+							<div class="blog-item-small-content">
+
+								<h2><a href="<?php echo base_url();?>detail-artikel/<?php echo $row->AML_LINKTAHUN?>/<?php echo $row->AML_LINKBULAN?>/<?php echo $row->AML_LINKTITLE?>"><?php echo $row->AML_NAMA;?></a></h2>
+
+								<ul class="blog-post-info list-inline">
+									<li>
+										<a href="#">
+											<i class="fa fa-clock-o"></i> 
+											<span class="font-lato"><?php echo $row->AML_DTINS;?></span>
+										</a>
+									</li>
+									<li>
+										<a href="#">
+											<i class="fa fa-comment-o"></i> 
+											<span class="font-lato">0 Comments</span>
+										</a>
+									</li>
+								</ul>
+
+								<p><?php echo substr(strip_tags($row->AML_KET),0,150).'...';?></p>
+
+								<a href="<?php echo base_url();?>detail-donasi/<?php echo $row->AML_LINKTAHUN?>/<?php echo $row->AML_LINKBULAN?>/<?php echo $row->AML_LINKTITLE?>" class="btn btn-reveal btn-default">
+									<i class="fa fa-plus"></i>
+									<span>Read More</span>
+								</a>
+							
+							</div>
+
+						</div>
+					<!-- /POST ITEM -->
+			<?php
+						$no++;
+					}
+				}
+			?>
+			
+			<center>
+				<?php
+					echo $halaman;
+				?>
+			</center>

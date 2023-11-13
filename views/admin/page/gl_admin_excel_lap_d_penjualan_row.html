@@ -1,0 +1,797 @@
+ <!-- <title>LaporanPemasukanPeriode<?php echo $_GET['tahun'];?><?php echo $_GET['bulan'];?></title> -->
+ <title>LaporanPendapatan</title>
+ 
+ <?php
+ $title = "LaporanPendapatan";
+ header("Content-type: application/vnd-ms-excel");
+ header("Content-Disposition: attachment; filename=$title.xls");
+ header("Pragma: no-cache");
+ header("Expires: 0");
+ 
+ ?>
+
+<?php
+	//TABLE
+	if(!empty($list_laporan_d_penjualan_row))
+	{
+		echo'<table width="50%" id="example2" class="table table-hover hoverTable">';
+			/*
+			echo '<thead>';
+			echo'
+					<tr style="background-color:green;text-align:center;">';
+						echo '<th width="5%">NO</th>';
+						echo '<th width="20%">KODE PRODUK</th>';
+						echo '<th width="35%">NAMA PRODUK</th>';
+						echo '<th width="10%">JUMLAH</th>';
+						echo '<th width="10%">DISKON</th>';
+						echo '<th width="10%">HARGA</th>';
+						echo '<th width="10%">SUBTOTAL</th>';
+			echo '</tr>
+			</thead>';
+			*/
+			$list_result = $list_laporan_d_penjualan_row->result();
+			
+			
+			$no = $this->uri->segment(2,0) + 1;
+			
+			$no_faktur_old = "";
+			$no_faktur_cur = "";
+			
+			$tunai = 0;
+			$nontunai = 0;
+			$nama_bank = "";
+			$diskon_lain = 0;
+			
+			$pajak = 0;
+			
+			
+			$grandTotal_all_fix = 0;
+			$grandTotal = 0;
+			$allgrandtotal = 0;
+			$status_sub = 0;
+			
+			$dpp = 0;
+			$pajak10 = 0;
+												
+			$prodTr = 0;
+			$prodNom = 0;
+			$jasTr = 0;
+			$jasNom = 0;
+			$conTr = 0;
+			$conNom = 0;
+			$LainNom = 0;
+			
+			
+			echo '<tbody>
+				<tr>
+					<td colspan="7" style="text-align:center;">
+						<b>LAPORAN TRANSAKSI</b>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="7" style="text-align:center;">
+						<b>'.$this->session->userdata('ses_nama_kantor').'</b>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="7" style="text-align:center;">
+						'.$this->session->userdata('ses_alamat_kantor').'
+					</td>
+				</tr>
+				<tr>
+					<td colspan="7" style="text-align:center;">
+						<b>Per '.$dari.' Sampai '.$sampai.'</b>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="7" style="text-align:center;">
+						<br/>
+					</td>
+				</tr>
+			
+			';
+			
+			foreach($list_result as $row)
+			{
+				
+				if($row->isProduk == "PRODUK")
+				{
+					$prodTr = $prodTr + 1;
+					$prodNom = $prodNom + ($row->jumlah * ($row->harga - $row->besar_diskon_ori));
+				}
+				elseif($row->isProduk == "JASA")
+				{
+					$jasTr = $jasTr + 1;
+					$jasNom = $jasNom + ($row->jumlah * ($row->harga - $row->besar_diskon_ori));
+				}
+				else
+				{
+					$conTr = $conTr + 1;
+					$conNom = $conNom + ($row->jumlah * ($row->harga - $row->besar_diskon_ori));
+				}
+					
+					//GROUP NO FAKTUR
+					$no_faktur_cur = $row->no_faktur;
+					if($no_faktur_cur != $no_faktur_old)
+					{
+						if($no > 1)
+						{
+							//SUBTOTAL
+							echo'
+								<tr>';
+								echo '<th colspan="6" style="text-align:right;">GRAND TOTAL</th>';
+								echo '<th width="10%" style="text-align:right;">'.$grandTotal.'</th>';
+							echo '</tr>';
+							echo'
+								<tr>';
+								echo '<th colspan="6" style="text-align:right;">POTONGAN/DISKON LAIN</th>';
+								echo '<th width="10%" style="text-align:right;">'.$diskon_lain.'</th>';
+							echo '</tr>';
+							echo'
+								<tr>';
+								echo '<th colspan="6" style="text-align:right;">BIAYA /CHARGE</td>';
+								echo '<th width="10%" style="text-align:right;">'.$pajak.'</td>';
+							echo '</tr>';
+							echo'
+								<tr>';
+								echo '<th colspan="6" style="text-align:right;">PEMBAYARAN TUNAI</th>';
+								echo '<th width="10%" style="text-align:right;">'.$tunai.'</th>';
+							echo '</tr>';
+							echo'
+								<tr>';
+								echo '<th colspan="6" style="text-align:right;">PEMBAYARAN NONTUNAI ('.$nama_bank.')</th>';
+								echo '<th width="10%" style="text-align:right;">'.$nontunai.'</th>';
+							echo '</tr>';
+							echo'
+								<tr>';
+								echo '<th colspan="6" style="text-align:right;">KEMBALIAN</th>';
+								$tt = ($tunai + $nontunai) - ($grandTotal + $pajak);
+								echo '<th width="10%" style="text-align:right;">'.$tt.'</th>';
+							echo '</tr>';
+							
+							if($this->session->userdata('ses_kode_kantor') != 'OLN')
+							{
+								/*
+								$grandTotal_all_fix = (($grandTotal + $pajak) - $diskon_lain);
+								echo'
+									<tr>';
+									echo '<th colspan="6" style="text-align:right;">PPN(10%)--</td>';
+									echo '<th width="10%" style="text-align:right;">'.
+										
+										$grandTotal_all_fix
+										.'</td>';
+								echo '</tr>';
+								
+								echo'
+									<tr>';
+									echo '<th colspan="6" style="text-align:right;">DPP</td>';
+									echo '<th width="10%" style="text-align:right;">'.
+										
+										(($grandTotal_all_fix/1.1) * 0.1)
+										
+										.'</td>';
+								echo '</tr>';
+								*/
+								
+								$grandTotal_all_fix = (($grandTotal + $pajak) - $diskon_lain);
+								echo'
+									<tr>';
+									echo '<th colspan="6" style="text-align:right;">PPN(10%)</td>';
+									
+									$tt = $grandTotal_all_fix - ($grandTotal_all_fix/1.1);
+									echo '<th width="10%" style="text-align:right;">'.$tt.'</td>';
+								echo '</tr>';
+								$pajak10 = $pajak10 + ($grandTotal_all_fix - ($grandTotal_all_fix/1.1));
+							
+								
+								echo'
+									<tr>';
+									echo '<th colspan="6" style="text-align:right;">DPP</td>';
+									
+									$tt = $grandTotal_all_fix - ($grandTotal_all_fix/1.1) * 0.1;
+									echo '<th width="10%" style="text-align:right;">'.$tt.'</td>';
+								echo '</tr>';
+								$dpp = $dpp + ($grandTotal_all_fix - ($grandTotal_all_fix/1.1) * 0.1);
+							}
+							
+							
+							$grandTotal = 0;
+							
+							$LainNom = ($LainNom + $pajak) - $diskon_lain;
+							//SUBTOTAL
+						}
+						
+						//HEADER
+						$nama = $row->type_h_penjualan;
+						$arr = explode(' ', $nama);
+						$singkatan = '';
+						foreach($arr as $kata)
+						{
+							$singkatan .= substr($kata, 0, 1);
+						}
+						echo'
+						<tr>
+							<td><b style="color:red;">'.$singkatan.'</b></td>
+							<td colspan="2">
+								<b>FAKTUR : </b>'.$row->no_faktur.' ('.$row->sts_penjualan.')
+								<br/> <b>NO PELANGGAN : </b>'.$row->no_costumer.'
+								<br/> <b>NAMA PELANGGAN : </b>'.$row->nama_costumer.'
+								<br/> <b>PROMO : </b>'.$row->nama_diskon.'
+							</td>
+							<td colspan="3">';
+							
+								if($this->session->userdata('ses_gnl_isToko') == 'Y') //MEMASTIKAN IS TOKO
+								{
+									echo'<b>SALES/MARKETING : </b>'.$row->nama_dokter_konsul;
+								}
+								else
+								{
+									echo'<b>DOKTER KONSUL : </b>'.$row->nama_dokter_konsul;
+								}
+							
+							echo'							
+								<!-- <br/> <b>DOKTER TINDAKAN : </b>'.$row->nama_dokter_tindakan.'
+								-->
+								
+								<br/> <b>WAKTU BAYAR : </b>'.$row->WAKTU_BAYAR.'
+								';
+							
+								if( ($singkatan == "PL") || ($row->waktu_mulai_tindakan == "00:00:00"))
+								{
+									echo'
+										<br/> <b>SELESAI : </b>'.$row->tgl_updt.' 
+									</td>';
+
+								}
+								else
+								{
+									echo'
+										<br/> <b>TINDAKAN : </b>'.$row->waktu_mulai_tindakan.' - '.$row->waktu_selesai_tindakan.' ('.$row->selisih_waktu_tindakan_menit.')
+									</td>';
+								}
+							
+							
+							echo'
+							<td style="vertical-align: middle;">
+								';
+								if($row->isApprove > 0)
+								{
+									echo'
+									<center>
+									<a class="btn-pilih-pasien" href="javascript:void(0)" >
+									<i class="fa fa-edit"></i> <font style="color:red;">UBAH</font>
+									</a>
+									</center>
+									';
+								}
+								echo'
+							</td>
+						</tr>';
+						
+						echo'
+								<tr>';
+									echo '<th style="background-color:green;text-align:center;" width="5%">NO</th>';
+									echo '<th style="background-color:green;text-align:center;" width="20%">KODE PRODUK</th>';
+									echo '<th style="background-color:green;text-align:center;" width="35%">NAMA PRODUK</th>';
+									echo '<th style="background-color:green;text-align:center;" width="10%">JUMLAH</th>';
+									echo '<th style="background-color:green;text-align:center;" width="10%">DISKON</th>';
+									echo '<th style="background-color:green;text-align:center;" width="10%">HARGA</th>';
+									echo '<th style="background-color:green;text-align:center;" width="10%">SUBTOTAL</th>';
+						echo '</tr>';
+						//HEADER
+						
+						/*
+						echo'<td>'.$no.'</td>';
+						echo '<td>
+							<b>FAKTUR : </b>'.$row->no_faktur.'
+							<br/> <b>WAKTU INPUT : </b>'.$row->waktu_input.'
+							<br/> <b>NO PELANGGAN : </b>'.$row->no_costumer.'
+							<br/> <b>NAMA PELANGGAN : </b>'.$row->nama_costumer.'
+						</td>';
+						*/
+						echo'<tr>';
+							echo'<td>'.$no.'</td>';
+						
+						$no++;
+					}
+					else
+					{
+						echo'<tr>';
+							echo'<td></td>';
+						/*
+						echo'<td></td>';
+						echo'<td></td>';
+						*/
+					}
+					//GROUP NO FAKTUR
+					
+					if($row->isProduk == 'JASA')
+					{
+						echo'<td style="color:red;">'.$row->kode_produk.'</td>';
+						echo '<td style="color:red;">
+							'.$row->nama_produk.' 
+							<font style="color:black;">
+							<br/>
+							<b>Dokter :</b> '.$row->nama_dok.'
+							<br/>
+							<b>Therapist :</b> '.$row->nama_ass.'
+							</font>';
+							
+							if($row->nama_detail_diskon != "")
+							{
+								echo'<br/>
+								<b>Promo :</b> <font style="color:red;">'.$row->nama_detail_diskon.' </font>';
+							}
+							
+						echo'
+						</td>';
+					}
+					else
+					{
+						echo'<td>'.$row->kode_produk.'</td>';
+						echo '<td>
+							'.$row->nama_produk.' ';
+							
+							if($row->nama_detail_diskon != "")
+							{
+								echo'<br/>
+								<b>Promo :</b> <font style="color:red;">'.$row->nama_detail_diskon.' </font>';
+							}
+						echo'
+						</td>';
+					}
+					
+					
+					echo'<td>'.$row->jumlah.' '.$row->satuan_jual.'</td>';
+					echo'<td>'.$row->diskon.' '.$row->optr_diskon.'</td>';
+					echo'<td style="text-align:right;">'.$row->harga.'</td>';
+					echo'<td style="text-align:right;">'.$row->jumlah * ($row->harga - $row->besar_diskon_ori).'</td>';
+					//echo '<td>'.$row->harga.' </td>';
+					//<input type="checkbox" checked="checked">
+					
+					$grandTotal = $grandTotal + ($row->jumlah * ($row->harga - $row->besar_diskon_ori));
+								
+				echo'</tr>';
+				
+				
+				
+				
+				echo'<input type="hidden" id="id_d_penjualan_'.$no.'" name="id_d_penjualan_'.$no.'" value="'.$row->id_d_penjualan.'" />';
+				
+				//CATATA PEMBAYARAN, HARUS DITARO DISINI KARENA LOPING
+					$tunai = $row->TUNAI;
+					$nontunai = $row->NONTUNAI;
+					$nama_bank = $row->nama_bank;
+					$diskon_lain = $row->diskon_lain;
+					$pajak = $row->pajak + $row->biaya;
+				//CATATA PEMBAYARAN, HARUS DITARO DISINI KARENA LOPING
+				
+				//GROUP NO FAKTUR
+					$no_faktur_old = $row->no_faktur;
+				//GROUP NO FAKTUR
+				
+				$allgrandtotal = $allgrandtotal + ($row->jumlah * ($row->harga - $row->besar_diskon_ori));
+				
+			}
+			
+			//SUBTOTAL AKHIR
+				//SUBTOTAL
+					echo'
+						<tr>';
+						echo '<th colspan="6" style="text-align:right;">GRAND TOTAL</td>';
+						echo '<th width="10%" style="text-align:right;">'.$grandTotal.'</td>';
+					echo '</tr>';
+					echo'
+						<tr>';
+						echo '<th colspan="6" style="text-align:right;">POTONGAN/DISKON LAIN</td>';
+						echo '<th width="10%" style="text-align:right;">'.$diskon_lain.'</td>';
+					echo '</tr>';
+					echo'
+						<tr>';
+						echo '<th colspan="6" style="text-align:right;">BIAYA /CHARGE</td>';
+						echo '<th width="10%" style="text-align:right;">'.$pajak.'</td>';
+					echo '</tr>';
+					echo'
+						<tr>';
+						echo '<th colspan="6" style="text-align:right;">PEMBAYARAN TUNAI</td>';
+						echo '<th width="10%" style="text-align:right;">'.$tunai.'</td>';
+					echo '</tr>';
+					echo'
+						<tr>';
+						echo '<th colspan="6" style="text-align:right;">PEMBAYARAN NONTUNAI <font style="font-weight:normal;">('.$nama_bank.')</font></td>';
+						echo '<th width="10%" style="text-align:right;">'.$nontunai.'</td>';
+					echo '</tr>';
+					echo'
+						<tr>';
+						echo '<th colspan="6" style="text-align:right;">KEMBALIAN</td>';
+						
+						$tt = ($tunai + $nontunai) - ($grandTotal + $pajak);
+						echo '<th width="10%" style="text-align:right;">'.$tt.'</td>';
+					echo '</tr>';
+					
+					
+					
+					if($this->session->userdata('ses_kode_kantor') != 'OLN')
+					{
+						$grandTotal_all_fix = (($grandTotal + $pajak) - $diskon_lain);
+						echo'
+							<tr>';
+							echo '<th colspan="6" style="text-align:right;">PPN(10%)</td>';
+							
+							$tt = $grandTotal_all_fix - ($grandTotal_all_fix/1.1);
+							echo '<th width="10%" style="text-align:right;">'.$tt.'</td>';
+						echo '</tr>';
+						$pajak10 = $pajak10 + ( $grandTotal_all_fix - ($grandTotal_all_fix/1.1) );
+					
+						
+						echo'
+							<tr>';
+							echo '<th colspan="6" style="text-align:right;">DPP</td>';
+							
+							$tt = $grandTotal_all_fix - ($grandTotal_all_fix/1.1) * 0.1;
+							echo '<th width="10%" style="text-align:right;">'.$tt.'</td>';
+						echo '</tr>';
+						$dpp = $dpp + ($grandTotal_all_fix - ($grandTotal_all_fix/1.1) * 0.1);
+					}
+					
+					
+					
+					$grandTotal = 0;
+					$LainNom = ($LainNom + $pajak) - $diskon_lain;
+				//SUBTOTAL
+			//SUBTOTAL AKHIR
+			
+			//GRANDTOTAL KESELURUHAN
+			
+			//DPP DAN PPN
+			echo'<tr><td colspan="4"></td></tr>';
+			echo'<tr style="font-weight:bold; text-align:center;">
+				<td colspan="4">
+				DPP DAN PPN(10%)</td>
+			</tr>';
+			echo'<tr style="font-weight:bold;background-color:gray;">
+				<td colspan="2">NAMA</td>
+			
+				<td colspan="1"></td>
+			
+				<td colspan="1">NOMINAL</td>
+				<!-- <td colspan="1">EXPORT KE AKUN/JURNAL</td> -->
+			</tr>';
+			
+			echo'<tr style="font-weight:bold;">
+				<td colspan="2">DPP (DASAR PENGENAAN PAJAK)</td>
+			
+				<td colspan="1" style="text-align:center;"></td>
+			
+				<td colspan="1" style="text-align:right;">'.$dpp.'</td>
+			</tr>';
+			
+			echo'<tr style="font-weight:bold;">
+				<td colspan="2">PPN(10%)</td>
+			
+				<td colspan="1" style="text-align:center;"></td>
+			
+				<td colspan="1" style="text-align:right;">'.$pajak10.'</td>
+			</tr>';
+			
+		//DPP DAN PPN
+		echo'<br/>';
+		
+		if($this->session->userdata('ses_gnl_isPajakAktif')  <> "Y") 
+		{
+			
+			//AKUMULASI PEMBAYARAN
+			if(!empty($sum_laporan_h_penjualan))
+			{
+				echo'<tr><td colspan="4"></td></tr>';
+				echo'<tr style="font-weight:bold; text-align:center;">
+					<td colspan="4">AKUMULASI TRANSAKSI (METODE BAYAR)</td>
+				</tr>';
+				echo'<tr>
+					<td style="font-weight:bold;background-color:gray;" colspan="2">PEMBAYARAN</td>
+				
+					<td style="font-weight:bold;background-color:gray;" colspan="1">JUMLAH TRANSAKSI</td>
+				
+					<td style="font-weight:bold;background-color:gray;" colspan="1">NOMINAL</td>
+					<!-- <td colspan="1">EXPORT KE AKUN/JURNAL</td> -->
+				</tr>';
+				
+				$grandcntsum =0;
+				$grandtunaisum =0;
+				$grandnontunaisum =0;
+				$noRekBca = 0;
+				
+				$list_result_allgrandtotal = $sum_laporan_h_penjualan->result();
+				foreach($list_result_allgrandtotal as $row_allgrandtotal)
+				{
+					echo'<tr style="font-weight:normal">
+					<td colspan="2">'.($row_allgrandtotal->nama_bank).'</td>
+					
+					<td colspan="1" style="text-align:center;">'.$row_allgrandtotal->CNT.'</td>
+					
+					';
+					if($row_allgrandtotal->nama_bank == "TUNAI")
+					{
+						echo'
+						<td colspan="1" style="text-align:right;">'.$row_allgrandtotal->NONTUNAI.'</td>
+						';
+						
+						$grandtunaisum = $grandtunaisum + $row_allgrandtotal->NONTUNAI;
+					}
+					else
+					{
+						echo'
+						<td colspan="1" style="text-align:right;">'.$row_allgrandtotal->NONTUNAI.'</td>
+						';
+						
+						$grandnontunaisum = $grandnontunaisum + $row_allgrandtotal->NONTUNAI;
+						
+						if($row_allgrandtotal->norek == '1838880800')
+						{
+							$noRekBca = $noRekBca + $row_allgrandtotal->NONTUNAI;
+						}
+						
+					}
+					
+					/*
+					if($row_allgrandtotal->kode_akun == "")
+					{
+						echo'<td>TIDAK ADA AKUN</td>';
+					}
+					elseif($row_allgrandtotal->nama_bank == "TUNAI")
+					{
+						echo'<td></td>';
+					}
+					else
+					{
+						echo'
+							<td>
+								<a class="confirm-btn btn btn-success btn-block" target="_blank" href="'.base_url().'gl-admin-pemasukan?kode='.($row_allgrandtotal->kode_akun).'&nominal='.$row_allgrandtotal->NONTUNAI.'" title = "Export Data '.$row_allgrandtotal->kode_akun.'" alt = "Export Data '.$row_allgrandtotal->kode_akun.'">'.$row_allgrandtotal->kode_akun.'</a>
+							</td>
+						';
+					}
+					*/
+					
+					echo'</tr>';
+					$grandcntsum = $grandcntsum + $row_allgrandtotal->CNT;
+				}
+				
+				$grandTotal_all_fix = ($grandtunaisum + $grandnontunaisum);
+				
+				
+				$tt = $grandTotal_all_fix - ($grandTotal_all_fix/1.1) * 0.1;
+				echo'<tr style="font-weight:bold;">
+					<td colspan="2">DPP (DASAR PENGENAAN PAJAK)</td>
+				
+					<td colspan="1" style="text-align:center;"></td>
+				
+					<td colspan="1" style="text-align:right;">'.$tt.'</td>
+				</tr>';
+				
+				
+				
+				$tt = $grandTotal_all_fix - ($grandTotal_all_fix/1.1);
+				echo'<tr style="font-weight:bold;">
+					<td colspan="2">PPN(10%)</td>
+				
+					<td colspan="1" style="text-align:center;"></td>
+				
+					<td colspan="1" style="text-align:right;">'.$tt.'</td>
+				</tr>';
+				
+				
+				$tt = $grandtunaisum + $grandnontunaisum;
+				echo'<tr style="font-weight:bold;">
+					<td colspan="2">GRAND TOTAL</td>
+				
+					<td colspan="1" style="text-align:center;">'.$grandcntsum.'</td>
+				
+					<td colspan="1" style="text-align:right;">'.$tt.'</td>
+				</tr>';
+				
+				
+				
+				
+				
+				echo'<tr>
+					<td style="font-weight:bold;background-color:yellow;" colspan="3">TOTAL PEMBAYARAN TUNAI</td>
+				
+					<td style="font-weight:bold;background-color:yellow;" colspan="1" style="text-align:right;">'.$grandtunaisum .'</td>
+				';
+				
+				/*
+				if($get_kode_akun_kas_tunai == "")
+				{
+					echo'<td>TIDAK ADA AKUN</td>';
+				}
+				
+				else
+				{
+					echo'
+						<td>
+							<a class="confirm-btn btn btn-success btn-block" target="_blank" href="'.base_url().'gl-admin-pemasukan?kode='.($get_kode_akun_kas_tunai).'&nominal='.$grandtunaisum.'" title = "Export Data '.$get_kode_akun_kas_tunai.'" alt = "Export Data '.$get_kode_akun_kas_tunai.'">'.$get_kode_akun_kas_tunai.'</a>
+						</td>
+					';
+				}
+				*/
+				echo'</tr>';
+				
+				echo'<tr>
+					<td style="font-weight:bold;background-color:yellow;" colspan="3">TOTAL PEMBAYARAN NON TUNAI</td>
+				
+					<td style="font-weight:bold;background-color:yellow;" colspan="1" style="text-align:right;">'.$grandnontunaisum .'</td>
+				';
+				
+				/*
+				if($get_kode_akun_bank_all == "")
+				{
+					echo'<td>TIDAK ADA AKUN</td>';
+				}
+				
+				else
+				{
+					echo'
+						<td>
+							<a class="confirm-btn btn btn-success btn-block" target="_blank" href="'.base_url().'gl-admin-pemasukan?kode='.($get_kode_akun_bank_all).'&nominal='.$grandnontunaisum.'" title = "Export Data '.$get_kode_akun_bank_all.'" alt = "Export Data '.$get_kode_akun_bank_all.'">'.$get_kode_akun_bank_all.'</a>
+						</td>
+					';
+				}
+				*/
+				echo'</tr>';
+				
+				if($this->session->userdata('ses_gnl_isToko') == 'N') //MEMASTIKAN IS TOKO
+				{
+					echo'<tr>';
+						echo'<td style="font-weight:bold;background-color:yellow;"></td>';
+						echo'
+						<td style="font-weight:bold;background-color:yellow;" colspan="3" style="text-align:right;">MASUK KE REK BCA 1838880800</td>
+						<td style="font-weight:bold;background-color:yellow;" colspan="1" style="text-align:right;">'.$noRekBca .'</td>';
+					echo'</tr>';
+					
+					$tt = $grandnontunaisum - $noRekBca;
+					echo'<tr>';
+						echo'<td style="font-weight:bold;background-color:yellow;"></td>';
+						echo'
+						<td style="font-weight:bold;background-color:yellow;" colspan="3" style="text-align:right;">MASUK ALL EDC</td>
+						<td style="font-weight:bold;background-color:yellow;" colspan="1" style="text-align:right;">'.$tt .'</td>';
+					echo'</tr>';
+				}
+				
+			}
+			//AKUMULASI PEMBAYARAN
+			
+			//AKUMULIAS JENIS PRODUK,JASA DAN CONSUMABLE
+				echo'<tr><td colspan="4"></td></tr>';
+				echo'<tr style="font-weight:bold; text-align:center;">
+					<td colspan="4">AKUMULASI TRANSAKSI (PER JENIS)</td>
+				</tr>';
+				echo'<tr style="font-weight:bold;">
+					<td colspan="2" style="background-color:gray;">JENIS</td>
+				
+					<td colspan="1" style="background-color:gray;">JUMLAH TRANSAKSI</td>
+				
+					<td colspan="1" style="background-color:gray;">NOMINAL</td>
+				</tr>';
+				
+				echo'<tr>
+					<td colspan="2">PRODUK</td>
+					<td colspan="1">'.$prodTr.'</td>
+					<td colspan="1" style="text-align:right;">'.$prodNom.'</td>
+				</tr>';
+				
+				echo'<tr>
+					<td colspan="2">JASA</td>
+					<td colspan="1">'.$jasTr.'</td>
+					<td colspan="1" style="text-align:right;">'.$jasNom.'</td>
+				</tr>';
+				
+				echo'<tr>
+					<td colspan="2">CONSUMABLE</td>
+					<td colspan="1">'.$conTr.'</td>
+					<td colspan="1" style="text-align:right;">'.$conNom.'</td>
+				</tr>';
+				
+				echo'<tr>
+					<td colspan="2">LAINNYA</td>
+					<td colspan="1">0</td>
+					<td colspan="1" style="text-align:right;">'.$LainNom.'</td>
+				</tr>';
+				
+				$tt = $prodTr+$jasTr+$conTr;
+				$tt2 = $prodNom+$jasNom+$conNom+$LainNom;
+				echo'<tr style="font-weight:bold;">
+					<td colspan="2">GRAND TOTAL</td>
+					<td colspan="1">'.$tt.'</td>
+					<td colspan="1" style="text-align:right;">'.$tt2.'</td>
+				</tr>';
+				
+				/*
+				echo'<tr style="font-weight:bold;">
+					<td colspan="2">PPN(10%)</td>
+					<td colspan="1"></td>
+					<td colspan="1" style="text-align:right;">'.
+							
+							(($prodNom+$jasNom+$conNom+$LainNom)/100) * 10
+							
+							.'</td>
+				</tr>';
+				
+				echo'<tr style="font-weight:bold;">
+					<td colspan="2">PENDAPATAN</td>
+					<td colspan="1"></td>
+					<td colspan="1" style="text-align:right;">'.
+							
+							($prodNom+$jasNom+$conNom+$LainNom)
+							-
+							(($prodNom+$jasNom+$conNom+$LainNom)/100) * 10
+							
+							.'</td>
+				</tr>';
+				*/
+				
+			//AKUMULIAS JENIS PRODUK,JASA DAN CONSUMABLE
+			
+			//AKUMULASI PRODUK ISREPORT
+			if(!empty($sum_laporan_d_penjualan_produk_isReport))
+			{
+				echo'<tr><td colspan="6"></td></tr>';
+				echo'<tr><td colspan="6"></td></tr>';
+				echo'<tr>
+					<td style="font-weight:bold; text-align:center;" colspan="6">AKUMULASI JASA/PRODUK</td>
+				</tr>';
+				echo'<tr>
+					<td style="font-weight:bold;background-color:gray;" colspan="2">NAMA JASA/PRODUK</td>
+				
+					<td style="font-weight:bold;background-color:gray;" colspan="1">JUMLAH TRANSAKSI</td>
+				
+					<td style="font-weight:bold;background-color:gray;" colspan="1">NOMINAL</td>
+					<td style="font-weight:bold;background-color:gray;" colspan="2">SUBTOTAL</td>
+				</tr>';
+				
+				
+				$grand_total = 0;
+				$list_result_allgrandtotal = $sum_laporan_d_penjualan_produk_isReport->result();
+				foreach($list_result_allgrandtotal as $row_allgrandtotal)
+				{
+					echo'<tr style="font-weight:normal">
+					<td colspan="2">'.($row_allgrandtotal->nama_produk).'</td>
+					
+					<td colspan="1" style="text-align:center;">'.$row_allgrandtotal->jumlah.' '.$row_allgrandtotal->satuan_jual.'</td>
+					
+					';
+					
+					
+					echo'
+					<td colspan="1" style="text-align:right;">'.$row_allgrandtotal->harga.'</td>';
+					
+					echo'
+					<td colspan="2" style="text-align:right;">'.$row_allgrandtotal->jumlah * $row_allgrandtotal->harga.'</td>
+					</tr>';
+						
+					$grand_total = $grand_total + ($row_allgrandtotal->jumlah * $row_allgrandtotal->harga);
+					
+					
+				}
+				
+				echo'<tr style="font-weight:bold;">
+					<td colspan="5">GRAND TOTAl</td>
+				
+					<td colspan="1" style="text-align:right;">'.$grand_total.'</td>
+				
+				</tr>';
+			}
+			//AKUMULASI PRODUK ISREPORT
+			//GRANDTOTAL KESELURUHAN
+		} //DARI TAMPILAN PAJAK
+			echo '</tbody>';
+		echo'</table>';
+	}
+	else
+	{
+		echo'<center>';
+		echo'Tidak Ada Data Yang Ditampilkan !';
+		echo'</center>';
+	}
+										//TABLE 
+//TABLE
+?>

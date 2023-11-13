@@ -1,0 +1,178 @@
+ 
+<title>DataLaporanHutang</title>
+ 
+ <?php
+ 
+ $title = "DataLaporanHutang";
+ header("Content-type: application/vnd-ms-excel");
+ header("Content-Disposition: attachment; filename=$title.xls");
+ header("Pragma: no-cache");
+ header("Expires: 0");
+ 
+ ?>
+
+<?php
+	//TABLE
+	if(!empty($list_h_penerimaan))
+	{
+		//echo gethostname();
+		//echo $this->M_gl_pengaturan->getUserIpAddr();
+		//$sts_query = strpos(base_url(),"localhost");
+		//echo $sts_query;
+		//$nama = "Mulyana Yusuf";
+		//echo str_replace("f","849",$nama);
+		echo'<table width="100%" id="example2" class="table table-hover">';
+			echo'
+			<tr>
+				<td colspan="6" style="text-align:center;">
+					<b>LAPORAN HUTANG SUPPLIER </b>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="6" style="text-align:center;">
+				';
+				if(!empty($data_kantor))
+				{
+					$data_kantor = $data_kantor->row();
+					echo'
+					<b>'.$data_kantor->nama_kantor.'</b>
+					</td>
+					</tr>
+					<tr>
+						<td colspan="6" style="text-align:center;">
+							'.$data_kantor->alamat.'
+						</td>
+					</tr>
+					';
+				}
+				else
+				{
+					echo'
+					<b>'.$this->session->userdata('ses_nama_kantor').'</b>
+					</td>
+					</tr>
+					<tr>
+						<td colspan="6" style="text-align:center;">
+							'.$this->session->userdata('ses_alamat_kantor').'
+						</td>
+					</tr>
+					';
+				}
+			
+			//echo '<thead>';
+			echo'<tr>';
+						echo '<th width="15%" style="background-color:black;color:white;font-weight:bold;">SUPPLIER</th>';
+						echo '<th width="23%" style="background-color:black;color:white;font-weight:bold;">SURAT JALAN</th>';
+						echo '<th width="23%" style="background-color:black;color:white;font-weight:bold;">KETERANGAN</th>';
+						echo '<th width="13%" style="background-color:black;color:white;font-weight:bold;">NOMINAL</th>';
+						echo '<th width="13%" style="background-color:black;color:white;font-weight:bold;">BAYAR</th>';
+						echo '<th width="13%" style="background-color:black;color:white;font-weight:bold;">SISA</th>';
+			echo '</tr>';
+			//echo'</thead>';
+			$list_result = $list_h_penerimaan->result();
+			$no =$this->uri->segment(2,0)+1;
+			
+			$subtotalNominal = 0;
+			$subTotalBayar = 0;
+			$subTotalSisa = 0;
+			
+			echo '<tbody>';
+			foreach($list_result as $row)
+			{
+				if( date('Y-m-d') >= date('Y-m-d', strtotime(substr($row->tgl_tempo_next,0,10))) )
+				{
+					echo'<tr style="background-color:#FFB6C1;">';
+					//echo'<tr>';
+				}
+				else
+				{
+					echo'<tr>';
+				}
+				
+					//echo'<td>'.$no.'</td>';
+					
+					/*
+					if($row->img_file == "")
+					{
+						$src = base_url().'assets/global/no-image.jpg';
+						echo '<td><img id="IMG_'.$no.'"  width="100px" height="100px" style="border:1px solid #C8C8C8; padding:5px; float:left; margin-right:20px;" src="'.$src.'" />
+						</td>';
+					}
+					else
+					{
+						$src = base_url().''.$row->img_url.''.$row->img_file;
+						echo '<td>
+								<a href="'.$src.'">
+									<img id="IMG_'.$no.'"  width="100px" height="100px" style="border:1px solid #C8C8C8; padding:5px; float:left; margin-right:20px;" src="'.$src.'" />
+								</a>
+						</td>';
+					}
+					*/
+					
+					
+					echo'<td>'.$row->nama_supplier.'</td>';
+					echo'
+					<td>
+						<b>PO : </b><i style="color:red;">'.$row->NO_PO.'</i>
+						<br/> <b>NO SURAT : </b>'.$row->no_surat_jalan.'
+						<br/> <b>TANGGAL KIRIM: </b>'.substr($row->tgl_kirim,0,10).'
+						<br/> <b>TANGGAL TERIMA: </b>'.substr($row->tgl_terima,0,10).'
+						<br/> <b>TANGGAL TEMPO: </b>'.substr($row->tgl_tempo_next,0,10).'
+						
+						<br/> <b>BIAYA KIRIM: </b>Rp.'.$row->biaya_kirim.'
+					</td>';
+					
+					
+					echo'
+					<td>
+						<b>DIKIRIM: </b>'.$row->nama_pengirim.'
+						<br/> <b>DITERIMA: </b>'.$row->diterima_oleh.'
+						<br/> <b>CARA KIRIM: </b>'.$row->cara_pengiriman.'
+						<br/> <b>NO BAYAR: </b><font style="color:red;">'.$row->NO_BUKTI.'</font>
+					</td>';
+					
+					echo'<td style="text-align:right;">'.ROUND($row->NOMINAL,0).'</td>';
+					echo'<td style="text-align:right;">'.ROUND($row->BAYAR,0).'</td>';
+					echo'<td style="text-align:right;">'.ROUND($row->SISA,0).'</td>';
+					
+					$subtotalNominal = $subtotalNominal + $row->NOMINAL;
+					$subTotalBayar = $subTotalBayar + $row->BAYAR;
+					$subTotalSisa = $subTotalSisa + $row->SISA;
+					
+					/*
+					echo'<td>
+							<b>DIKIRIM: </b>'.$row->JUMLAH.' Item Diterima
+							<br/> <b>DITERIMA: </b>'.$row->ket_h_penerimaan.'
+						</td>';
+					*/
+					
+					
+
+					
+					
+				echo'</tr>';
+				$no++;
+				
+				
+			}
+			
+			
+				echo'<tr>';
+					echo'<td colspan="3" style="text-align:right;font-weight:bold;">TOTAL</td>';
+					echo'<td style="text-align:right;font-weight:bold;">'.ROUND($subtotalNominal,0).'</td>';
+					echo'<td style="text-align:right;font-weight:bold;">'.ROUND($subTotalBayar,0).'</td>';
+					echo'<td style="text-align:right;font-weight:bold;">'.ROUND($subTotalSisa,0).'</td>';
+				echo'</tr>';
+				
+			echo '</tbody>';
+		echo'</table>';
+	}
+	else
+	{
+		echo'<center>';
+		echo'Tidak Ada Data Yang Ditampilkan !';
+		echo'</center>';
+	}
+//TABLE
+//TABLE
+?>

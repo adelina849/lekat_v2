@@ -1,0 +1,147 @@
+ <title>LaporanPemasukanPeriode<?php echo $_GET['tahun'];?><?php echo $_GET['bulan'];?></title>
+ 
+ <?php
+ $title = "LaporanPemasukan";
+ header("Content-type: application/vnd-ms-excel");
+ header("Content-Disposition: attachment; filename=$title.xls");
+ header("Pragma: no-cache");
+ header("Expires: 0");
+ 
+ ?>
+
+<?php
+	//TABLE
+	if(!empty($list_laporan_per_periode))
+		{
+			echo'<table width="100%" id="example2" class="table table-bordered table-hover">';
+				echo '<thead>
+<tr>';
+							echo '<th width="5%">No</th>';
+							echo '<th width="10%">JENIS</th>';
+							echo '<th width="13%">PERIODE</th>';
+							echo '<th width="10%">TANGGAL</th>';
+							echo '<th width="17%">KAB/KOTA</th>';
+							echo '<th width="20%">NAMA</th>';
+							echo '<th width="15%">PETUGAS</th>';
+							echo '<th width="10%">NOMINAL</th>';
+				echo '</tr>
+</thead>';
+				$list_result = $list_laporan_per_periode->result();
+				$no =$this->uri->segment(2,0)+1;
+				
+				
+				$opcd_old = "";
+				$opcd_cur = "";
+				
+				$periode_old = "";
+				$periode_cur = "";
+				
+				$tgl_old = "";
+				$tgl_cur = "";
+				
+				$sub_total = 0;
+				$grand_total = 0;
+				
+				echo '<tbody>';
+				foreach($list_result as $row)
+				{
+				
+					$opcd_cur = $row->OPCD;
+					$periode_cur = $row->PERIODE;
+					$tgl_cur = $row->DT;
+				
+					if( ($tgl_cur != $tgl_old)  )
+					{
+						if($no != 1)
+						{
+							echo'<tr>';
+								echo'<td colspan="7" style="text-align:right;font-weight:bold;">SUB TOTAL</td>';
+								echo'<td style="text-align:right;">Rp.'.number_format($sub_total,0,",",".").'</td>';
+							echo'</tr>';
+							
+							$sub_total = 0;
+						}
+						
+					}
+					
+					echo'<tr>';
+						echo'<td>'.$no.'</td>';
+						
+						
+						if($opcd_cur == $opcd_old)
+						{
+							echo'<td></td>';
+						}
+						else
+						{
+							echo'<td>'.$row->OPCD.'</td>';
+							$opcd_old = $opcd_cur;
+							//echo'<td>'.$row->DT.'</td>';
+						}
+						
+						if($periode_cur == $periode_old)
+						{
+							echo'<td></td>';
+						}
+						else
+						{
+							echo'<td>'.$row->PERIODE.'</td>';
+							$periode_old = $periode_cur;
+						}
+						
+						
+						if($tgl_cur == $tgl_old)
+						{
+							echo'<td></td>';
+						}
+						else
+						{
+							//echo'<td>'.$row->DT.'</td>';
+							$jadi_tahun = substr($row->DT,0,4);
+							$jadi_bulan = substr($row->DT,5,2);
+							$jadi_tgl = substr($row->DT,8,2);
+							$jadi = $jadi_tgl.'-'.$jadi_bulan.'-'.$jadi_tahun;
+							echo'<td>'.$jadi.'</td>';
+							
+							
+							$tgl_old = $tgl_cur; //DISIMPAN DIBAWAH
+						}
+						
+						
+						
+						echo'<td>'.$row->KABKOT.'</td>';
+						echo'<td>'.$row->NAMA.'</td>';
+						echo'<td>'.$row->PETUGAS.'</td>';
+						echo'<td style="text-align:right;">Rp.'.number_format($row->NOMINAL,0,",",".").'</td>';
+						//echo'<td>'.word_limiter(strip_tags($row->ART_ISI),20,'...').'</td>';
+						
+						
+					echo'</tr>';
+					
+					$sub_total = $sub_total + $row->NOMINAL;
+					$grand_total = $grand_total + $row->NOMINAL;
+					
+					$no++;
+				}
+				
+				echo'<tr>';
+					echo'<td colspan="7" style="text-align:right;font-weight:bold;">SUB TOTAL</td>';
+					echo'<td style="text-align:right;">Rp.'.number_format($sub_total,0,",",".").'</td>';
+				echo'</tr>';
+				
+				echo'<tr>';
+					echo'<td colspan="7" style="text-align:right;font-weight:bold;">GRAND TOTAL</td>';
+					echo'<td style="text-align:right;">Rp.'.number_format($grand_total,0,",",".").'</td>';
+				echo'</tr>';
+				
+				echo '</tbody>';
+			echo'</table>';
+		}
+		else
+		{
+			echo'<center>';
+			echo'Tidak Ada Data Yang Ditampilkan !';
+			echo'</center>';
+		}
+	//TABLE
+?>

@@ -1,0 +1,487 @@
+	<!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.4 -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/dist/css/AdminLTE.min.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/dist/css/skins/_all-skins.min.css">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/plugins/select2/select2.min.css">
+	<link rel="stylesheet" href="<?=base_url();?>assets/adminlte/bower_components/bootstrap-daterangepicker/daterangepicker.css">
+	<link rel="stylesheet" href="<?=base_url();?>assets/adminlte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+	<link rel="stylesheet" href="<?=base_url();?>assets/adminlte/bower_components/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css">
+	<link rel="stylesheet" href="<?=base_url();?>assets/adminlte/plugins/timepicker/bootstrap-timepicker.min.css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+		
+		
+			<style type="text/css">
+			.labelfrm {
+				display:block;
+				font-size:small;
+				margin-top:5px;
+			}
+			.error {
+				font-size:small;
+				color:red;
+			}
+			</style>
+			
+			<script type="text/javascript" src="<?=base_url();?>assets/admin/js/jquery.validate.min.js"></script>
+			
+			<script type="text/javascript">
+			$(document).ready(function() {
+				$('.frm-input').validate
+                (
+                    {
+        				rules: 
+                        {
+        					pass2: 
+                            {
+        						equalTo: "#pass"
+        					}
+        				},
+        				messages: 
+                        {
+        					pass2: {
+        						equalTo: "Password tidak sama"
+        					}
+        				}
+        			}
+                );
+				$('.confirm-btn').click(function(){
+				var answer = confirm(jQuery(this).attr('title'));
+				return answer;
+				});
+			});
+			</script>
+			
+			<script type="text/javascript">
+				var htmlobjek;
+				$(document).ready(function()
+				{	
+					$('#5_transaksi').attr('class', 'active treeview');
+					$('#56_transaksi_statusTherapist').attr('class', 'active treeview');
+					
+					list_status_therapist();
+					/*Terus dipanggil setiap 5 detik*/
+					
+					window.setInterval(function() 
+					{
+					   list_status_therapist();
+					   //alert("terpanggil");
+					}, 10000);
+					
+					
+					$("#kode_satuan").change(function()
+                    {  
+                
+                        var kode_satuan = $("#kode_satuan").val();
+                        $("#pesan").html("<img src='<?php echo base_url();?>assets/global/loading.gif'>Cek <?php echo $msgbox_title;?> ...");
+                
+                        if(kode_satuan=='')
+                        {
+                          $("#pesan").html('<img src="<?php echo base_url();?>assets/global/salah.png"> Kolom Tidak Boleh Kosong');
+                          $("#kode_satuan").css('border', '3px #C33 solid');
+                        }
+						else
+						$.ajax({type: "POST", url: "<?php echo base_url();?>gl-admin-satuan-produk-jasa-cek/", data: "kode_satuan="+kode_satuan, success:function(data)
+                        { 
+                        	if(data==0 || ($("#kode_satuan").val() == $("#cek_kode_satuan").val()))
+                            //if(data==0)
+                        	  {
+                        	  	$("#pesan").html('<img src="<?php echo base_url();?>assets/global/true.png">');
+                                $("#kode_satuan").css('border', '3px #090 solid');
+                                $("#btnsimpan").attr("disabled", false);
+                            }
+                              else
+                              {
+                              	$("#pesan").html('<img src="<?php echo base_url();?>assets/global/salah.png"> No/Kode <?php echo $msgbox_title;?> Telah Digunakan, Tombol Save Terkunci');
+                				//$("#pesan").html(data); 
+                              	$("#kode_satuan").css('border', '3px #C33 solid');
+                                $("#btnsimpan").attr("disabled", true);
+                              }
+                              
+                        } 
+                        });
+                    });
+					
+				});
+			</script>
+			
+	<div class="content-wrapper">
+		<!-- Content Header (Page header) -->
+		<section class="content-header">
+		
+		<h1>
+			<?php
+				echo $this->session->userdata('ses_gnl_nama_aplikasi');
+				/*
+				if(!empty($this->M_gl_pengaturan->get_data_by_id(1))) 
+				{
+					//echo $this->M_gl_pengaturan->get_data_by_id(1)->nilai; 
+					echo $this->M_gl_pengaturan->get_data_by_id(1)->nilai;
+				}
+				else
+				{
+					echo "Aplikasi Sistem Informasi dan Maagement Klinik 1.0";
+				} 
+				*/
+			?>
+			<?php 
+				//echo $msgbox_title;
+			?> 
+			<?php 
+				//echo $this->session->userdata("ses_nama_kantor"); 
+			?>
+		</h1>
+		
+		
+		
+		<ol class="breadcrumb">
+			<li><a href="<?php echo base_url()?>gl-admin"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+			<li><a href="#"><i class="fa fa-dashboard"></i> Data Dasar</a></li>
+			<li><a href="#"><i class="fa fa-folder"></i> Data Karyawan</a></li>
+			<li class="active"><i class="fa fa-edit"></i> Satuan</li>
+			
+		</ol>
+		</section>
+
+		<!-- Main content -->
+		<section class="content">
+		<!-- =========================================================== -->
+
+		<div class="row">
+			<div class="col-md-12">
+			<!-- <div class="box box-warning collapsed-box box-solid"> -->
+			
+			
+			<!-- Perbatasan table dan form -->
+					
+					<div class="box">
+						<div class="box-header">
+						<h3 class="box-title">Tabel <?php echo $msgbox_title;?> <?php echo $this->session->userdata("ses_nama_kantor"); ?>
+							</h3>
+							<div class="pull-right">
+								<!-- <form action="<?=base_url();?>admin/pendaftaran-klinik-cari" method="post" class="frm-cari"> -->
+								<form action="<?=base_url();?>gl-admin-status-therapist" method="get" class="frm-cari">
+									<table>
+										<tr>
+											<!-- <td>Berdasarkan</td><td>:</td> -->
+											<!-- <td>
+												<select name="berdasarkan" title="Cari Berdasarkan" class="form-control">
+													<option value=""><?php if (!empty($_GET['berdasarkan'])){echo $_GET['berdasarkan'];} ?></option>
+													<option value="spesialisasi">Spesialisasi</option>
+													<option value="pendidikan">Pendidikan</option>
+												</select>
+											</td> -->
+											<td>
+												<!-- <input type="text" name="cari"  maxlength="35" class="text form-control" size="35" alt="tlp" title="Cari data" placeholder="...Cari" value="<?php if (!empty($_GET['berdasarkan'])){echo $_GET['cari'];} ?>"/> -->
+												<input type="text" name="cari"  maxlength="35" class="text form-control" size="35" alt="tlp" title="Cari data" placeholder="...Cari" value="<?php if (!empty($_GET['cari'])){echo $_GET['cari'];} ?>"/>
+											</td>
+										</tr>
+									</table>
+								</form>
+							</div>
+						</div><!-- /.box-header -->
+						<div class="box-body table-responsive no-padding">
+						
+						<div id="list_status_therapist">
+							<!-- TAMPILKAN DATA TABLE DISINI -->
+						</div>
+						
+						</div><!-- /.box-body -->
+					</div><!-- /.box -->
+					
+					
+					
+					
+			</div><!-- /.col -->
+		</div><!-- /.row -->
+		<!-- =========================================================== -->
+		</section><!-- /.content -->
+	</div><!-- /.content-wrapper -->
+			
+			
+		
+<script type='text/javascript'>
+	
+	function list_status_therapist()
+	{
+		var cari = $('#cari').val();
+		$.ajax({type: "POST", url: "<?php echo base_url();?>gl-admin-status-therapist-lits-status/", data:{
+			cari:cari
+		}, success:function(data)
+		{
+			if(data!=0)
+			{
+				$('#list_status_therapist').html(data);
+			} 
+			else
+			{
+				
+			}
+		}
+		});
+	}
+	
+	function selesai_tindakan(evt)
+	{
+		var strId = evt.id;
+		var arrKode = strId.split("-");
+		
+		var id_h_penjualan = arrKode[1];
+		var status = arrKode[0];
+		
+		//alert(id_h_penjualan);
+		var r = confirm("Apakah Anda Yakin Akan Menyelesaiakan Transaksi !");
+		if (r == true) 
+		{
+
+			/*
+			$id_h_penjualan = $_POST['id_h_penjualan'];
+			$poli = $_POST['poli'];
+			$var_lama_kerja = $_POST['var_lama_kerja'];
+			$var_isPasienBaru = $_POST['var_isPasienBaru'];
+			
+			$_POST['id_dokter2'],
+			$_POST['id_ass'],
+			$_POST['id_ass2'],
+			*/
+			
+			
+			var id_dokter2 = $("#id_dokter2-"+id_h_penjualan).val();
+			var id_ass = $("#id_ass-"+id_h_penjualan).val();
+			var id_ass2 = $("#id_ass2-"+id_h_penjualan).val();
+			
+			var poli = $("#type_h_penjualan-"+id_h_penjualan).val();
+			//var var_lama_kerja_dokter = $("#lama_kerja_dokter-"+id_h_penjualan).val();
+			var var_lama_kerja_dokter2 = $("#lama_kerja_dokter2-"+id_h_penjualan).val();
+			var var_lama_kerja_ass = $("#lama_kerja_ass-"+id_h_penjualan).val();
+			var var_lama_kerja_ass2 = $("#lama_kerja_ass2-"+id_h_penjualan).val();
+			
+			
+			
+			//alert(id_h_penjualan+"-"+poli+"-"+var_lama_kerja_dokter2+"-"+var_lama_kerja_ass+"-"+var_lama_kerja_ass2);
+			
+			$.ajax({type: "POST", url: "<?php echo base_url();?>gl-admin-perawatan-lanjut-selesai/", data: 
+			{
+				id_h_penjualan:id_h_penjualan,
+				var_lama_kerja_dokter2:var_lama_kerja_dokter2,
+				var_lama_kerja_ass:var_lama_kerja_ass,
+				var_lama_kerja_ass2:var_lama_kerja_ass2,
+				poli:poli,
+				id_dokter2:id_dokter2,
+				id_ass:id_ass,
+				id_ass2:id_ass2
+			
+			}, success:function(data)
+			{
+				if(data!=0)
+				{
+					
+					if(data == 'SELESAI')
+					{
+						$("#selesai-"+id_h_penjualan).css('background-color','red');
+						$("#selesai-"+id_h_penjualan).html('TRANSAKSI SUDAH DI TUTUP');
+						alert("TRANSAKSI SELESAI");
+					}
+					else
+					{
+						$("#selesai-"+id_h_penjualan).css('background-color','green');
+						$("#selesai-"+id_h_penjualan).html('SELESAI TINDAKAN');
+						alert("TRANSAKSI DIBUKA KEMBALI");
+					}
+				} 
+				else
+				{
+					//$("#tb_cari_therapist2").html("Tidak Ada Data Yang Ditampilkan");
+					//$("#cari_json_therapist2").focus();
+				}
+			}
+			});
+			
+		}
+		
+	}
+	
+	function edit(id)
+	{
+		
+		$('input[name=stat_edit]').val($('#id_satuan_'+id).val());
+		$('input[name=id_satuan]').val($('#id_satuan_'+id).val());
+		$('input[name=kode_satuan]').val($('#kode_satuan_'+id).val());
+		$('input[name=cek_kode_satuan]').val($('#kode_satuan_'+id).val());
+		$('input[name=nama_satuan]').val($('#nama_satuan_'+id).val());
+		
+		document.getElementById("ket_satuan").value = $('#ket_satuan_'+id).val();
+		
+		alert("Mode Perubahan Aktif Untuk Data "+ $('#nama_satuan_'+id).val());
+		
+		/*Buka Form*/
+			$('#icon_form').attr('class', 'fa fa-minus');
+			$('#box-form').attr('class', 'box box-warning ellapsed-box box-solid');
+		/*Buka Form*/
+	}
+	
+	$('#btnbatal').click(function(){
+		$('input[name=stat_edit]').val("");
+		
+		
+		/*Tutup Dulu Form*/
+			$('#icon_form').attr('class', 'fa fa-plus');
+			$('#box-form').attr('class', 'box box-warning collapsed-box box-solid');
+		/*Tutup Dulu Form*/
+	});
+	
+	
+	function isNumberKey(evt)
+	{
+    	var charCode = (evt.which) ? evt.which : event.keyCode
+    	if (charCode > 31 && (charCode < 48 || charCode > 57))
+    	
+    	return false;
+    	return true;
+	}
+	
+	function RestrictSpace() 
+	{
+		if (event.keyCode == 32) 
+		{
+			return false;
+		}
+	}
+	
+	
+	function FormatCurrency(objNum)
+	{
+	   var num = objNum.value
+	   var ent, dec;
+	   if (num != '' && num != objNum.oldvalue)
+	   {
+		 num = HapusTitik(num);
+		 if (isNaN(num))
+		 {
+		   objNum.value = (objNum.oldvalue)?objNum.oldvalue:'';
+		 } else {
+		   var ev = (navigator.appName.indexOf('Netscape') != -1)?Event:event;
+		   if (ev.keyCode == 190 || !isNaN(num.split('.')[1]))
+		   {
+			 alert(num.split('.')[1]);
+			 objNum.value = TambahTitik(num.split('.')[0])+'.'+num.split('.')[1];
+		   }
+		   else
+		   {
+			 objNum.value = TambahTitik(num.split('.')[0]);
+		   }
+		   objNum.oldvalue = objNum.value;
+		 }
+	   }
+	}
+	function HapusTitik(num)
+	{
+	   return (num.replace(/\./g, ''));
+	}
+
+	function TambahTitik(num)
+	{
+	   numArr=new String(num).split('').reverse();
+	   for (i=3;i<numArr.length;i+=3)
+	   {
+		 numArr[i]+='.';
+	   }
+	   return numArr.reverse().join('');
+	} 
+			
+	function formatCurrency(num) {
+	   num = num.toString().replace(/\$|\./g,'');
+	   if(isNaN(num))
+	   num = "0";
+	   sign = (num == (num = Math.abs(num)));
+	   num = Math.floor(num*100+0.50000000001);
+	   cents = num0;
+	   num = Math.floor(num/100).toString();
+	   for (var i = 0; i < Math.floor((num.length-(1+i))/3); i++)
+	   num = num.substring(0,num.length-(4*i+3))+'.'+
+	   num.substring(num.length-(4*i+3));
+	   return (((sign)?'':'-') + num);
+	}
+</script>
+      
+    <!-- Bootstrap 3.3.4 -->
+	<script src="<?=base_url();?>assets/adminlte/bootstrap/js/bootstrap.min.js"></script>
+	<!-- Slimscroll -->
+	<script src="<?=base_url();?>assets/adminlte/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+	<!-- FastClick -->
+	<script src="<?=base_url();?>assets/adminlte/plugins/fastclick/fastclick.min.js"></script>
+	<!-- AdminLTE App -->
+	<script src="<?=base_url();?>assets/adminlte/dist/js/app.min.js"></script>
+	<!-- Page script -->
+    <!-- InputMask -->
+    <script src="<?=base_url();?>/assets/adminlte/plugins/input-mask/jquery.inputmask.js"></script>
+    <script src="<?=base_url();?>/assets/adminlte/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+    <script src="<?=base_url();?>/assets/adminlte/plugins/input-mask/jquery.inputmask.extensions.js"></script>
+	
+	<!-- bootstrap datepicker -->
+	<script src="<?=base_url();?>/assets/adminlte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+    
+    <script>
+      $(function () {
+		//Date picker
+		$('.settingDate').datepicker({
+			autoclose: true
+		});
+		
+		
+        //Initialize Select2 Elements
+        //$(".select2").select2();
+
+        //Datemask yyyy-mm-dd
+        $(".datemask_mysql").inputmask("yyyy-mm-dd", {"placeholder": "yyyy-mm-dd"});
+        //Datemask dd/mm/yyyy
+        //$("#datemask").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});
+        //Datemask2 mm/dd/yyyy
+        //$("#datemask2").inputmask("mm/dd/yyyy", {"placeholder": "mm/dd/yyyy"});
+        //TimeMask hh:mm:ss
+        $(".time_mysql").inputmask("hh:mm:ss", {"placeholder": "hh:mm:ss"});
+        //Money Euro
+        //$("[data-mask]").inputmask();
+
+        //iCheck for checkbox and radio inputs
+        $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+          checkboxClass: 'icheckbox_minimal-blue',
+          radioClass: 'iradio_minimal-blue'
+        });
+        //Red color scheme for iCheck
+        $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
+          checkboxClass: 'icheckbox_minimal-red',
+          radioClass: 'iradio_minimal-red'
+        });
+        //Flat red color scheme for iCheck
+        $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+          checkboxClass: 'icheckbox_flat-green',
+          radioClass: 'iradio_flat-green'
+        });
+
+        //Colorpicker
+        $(".my-colorpicker1").colorpicker();
+        //color picker with addon
+        $(".my-colorpicker2").colorpicker();
+
+        //Timepicker
+        $(".timepicker").timepicker({
+          showInputs: false
+        });
+      });
+    </script>
+	

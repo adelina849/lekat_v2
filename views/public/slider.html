@@ -1,0 +1,97 @@
+			<section id="slider" class="fullheight">
+
+				<!--
+					SWIPPER SLIDER PARAMS
+					
+					data-effect="slide|fade|coverflow"
+					data-autoplay="2500|false" 						(remove to disable autoplay)
+				-->
+				<div class="swiper-container" data-effect="fade" data-autoplay="false">
+					<div class="swiper-wrapper">
+
+						<?php
+							$list_slider = $this->M_public->list_images(" WHERE COALESCE(B.KIMG_NAMA,'') = 'Slider' ");
+							if(!empty($list_slider)) 
+							{  
+								$list_result = $list_slider->result();
+								foreach($list_result as $row)
+								{
+						?>
+						<!-- SLIDE 1 -->
+						<div class="swiper-slide" style="background-image: url('<?php echo $row->IMG_LINK;?>');">
+							<div class="overlay dark-7"><!-- dark overlay [1 to 9 opacity] --></div>
+							
+							<div class="display-table">
+								<div class="display-table-cell vertical-align-middle">
+									<div class="container">
+
+										<div class="row">
+											<div class="col-md-5 col-xs-12">
+
+												<h1 class="bold font-raleway wow fadeInUp" data-wow-delay="0.4s"><?php echo $row->IMG_NAMA;?></h1>
+												<p class="lead font-lato fw-300 hidden-xs-down wow fadeInUp" data-wow-delay="0.6s">
+													<?php echo $row->IMG_KET; ?>
+												</p>
+												<!-- <a class="btn btn-default btn-lg hidden-xs-down wow fadeIn" data-wow-delay="1.5s" href="#">PURCHASE NOW</a> -->
+
+											</div>
+										</div>
+							
+									</div>
+								</div>
+							</div>
+							
+						</div>
+						<!-- /SLIDE 1 -->
+						<?php
+								}
+							}
+						?>
+
+
+						<!-- SLIDE 2 -->
+						<!-- <div class="swiper-slide" style="background-image: url('demo_files/images/1200x800/24-min.jpg');"> -->
+							<!-- <div class="overlay dark-5"> -->
+							<!-- </div> -->
+							
+							<!-- <div class="slider-video"> -->
+								<!-- <video poster="demo_files/images/video/back.jpg" preload="auto" loop autoplay muted> -->
+									<!-- <source src='demo_files/images/video/back.webm' type='video/webm' /> -->
+									<!-- <source src='demo_files/images/video/back.mp4' type='video/mp4' /> -->
+								<!-- </video> -->
+							<!-- </div> -->
+
+							<!-- <div class="display-table"> -->
+								<!-- <div class="display-table-cell vertical-align-middle"> -->
+									<!-- <div class="container"> -->
+
+										<!-- <div class="row"> -->
+											<!-- <div class="col-md-5 col-xs-12"> -->
+
+												<!-- <h1 class="bold font-raleway wow fadeInUp" data-wow-delay="0.4s">POWERFUL MULTIPURPOSE</h1> -->
+												<!-- <p class="lead font-lato fw-300 hidden-xs-down wow fadeInUp" data-wow-delay="0.6s">Porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non.</p> -->
+												<!-- <a class="btn btn-default btn-lg hidden-xs-down wow fadeIn" data-wow-delay="1.5s" href="#">PURCHASE NOW</a> -->
+
+											<!-- </div> -->
+											<!-- <div class="col-md-7 hidden-xs-down text-right"> -->
+												<!-- <img class="img-fluid" src="demo_files/images/fullscreen-video.png" alt="" /> -->
+											<!-- </div> -->
+										<!-- </div> -->
+							
+									<!-- </div> -->
+								<!-- </div> -->
+							<!-- </div> -->
+							
+						<!-- </div> -->
+						<!-- /SLIDE 2 -->
+
+					</div>
+
+					<!-- Swiper Pagination -->
+					<div class="swiper-pagination"></div>
+
+					<!-- Swiper Arrows -->
+					<div class="swiper-button-next"><i class="fa fa-angle-right"></i></div>
+					<div class="swiper-button-prev"><i class="fa fa-angle-left"></i></div>
+				</div>
+			</section>		

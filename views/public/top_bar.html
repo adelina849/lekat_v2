@@ -1,0 +1,353 @@
+			<style type="text/css">
+    		.labelfrm {
+    			display:block;
+    			font-size:small;
+    			margin-top:5px;
+    		}
+    		.error {
+    			font-size:small;
+    			color:red;
+    		}
+    		</style>
+			
+			
+			
+			<script type="text/javascript" src="<?=base_url();?>assets/admin/js/jquery.validate.min.js"></script>
+    		<script type="text/javascript">
+    		$(document).ready(function() {
+    			$('.frm-input').validate
+                (
+                    {
+        				rules: 
+                        {
+        					pass2: 
+                            {
+        						equalTo: "#pass"
+        					}
+        				},
+        				messages: 
+                        {
+        					pass2: {
+        						equalTo: "Password tidak sama"
+        					}
+        				}
+        			}
+                );
+                
+                $('.confirm-btn').click(function(){
+    			var answer = confirm(jQuery(this).attr('title'));
+                return answer;
+                });
+    		});
+            </script>
+	
+	<!-- Top Bar -->
+			<div id="topBar" class="color" style="background-color:white;color:white;">
+				<div class="container">
+
+					<!-- right -->
+					<ul class="top-links list-inline float-right">
+						<?php
+							if(($this->session->userdata('ses_public_email') != null) or ($this->session->userdata('ses_public_pass') != null))
+							{
+						?>
+								<li class="text-welcome hidden-xs-down">Welcome to Smarty, <strong>John Doe</strong></li>
+								<li>
+									<a class="dropdown-toggle no-text-underline" data-toggle="dropdown" href="#"><i class="fa fa-user hidden-xs-down"></i> MY ACCOUNT</a>
+									<ul class="dropdown-menu float-right">
+										<li><a tabindex="-1" href="#"><i class="fa fa-history"></i> ORDER HISTORY</a></li>
+										<li class="divider"></li>
+										<li><a tabindex="-1" href="#"><i class="fa fa-bookmark"></i> MY WISHLIST</a></li>
+										<li><a tabindex="-1" href="#"><i class="fa fa-edit"></i> MY REVIEWS</a></li>
+										<li><a tabindex="-1" href="#"><i class="fa fa-cog"></i> MY SETTINGS</a></li>
+										<li class="divider"></li>
+										<li><a tabindex="-1" href="#"><i class="glyphicon glyphicon-off"></i> LOGOUT</a></li>
+									</ul>
+								</li>
+						<?php
+							}
+						?>
+								<li>
+									<a class="no-text-underline" href="#">
+										<!-- <i class="fa fa-user hidden-xs-down"></i>  -->
+										<i class="glyphicon glyphicon-log-in"></i> 
+										MASUK
+									</a>
+								</li>
+								
+								<li>
+									<a class="no-text-underline" data-toggle="modal" data-target="#myModal">
+										<!-- <i class="fa fa-user hidden-xs-down"></i>  -->
+										<i class="glyphicon glyphicon-user"></i> 
+										DAFTAR
+									</a>
+								</li>
+					</ul>
+
+					<!-- left -->
+					<!-- <ul class="top-links list-inline"> -->
+						<!-- <li class="hidden-xs-down"><a href="page-faq-1.html">FAQ</a></li> -->
+						<!-- <li> -->
+							<!-- <a class="dropdown-toggle no-text-underline" data-toggle="dropdown" href="#"><img class="flag-lang" src="assets/images/_smarty/flags/us.png" width="16" height="11" alt="lang" /> ENGLISH</a> -->
+							<!-- <ul class="dropdown-langs dropdown-menu"> -->
+								<!-- <li><a tabindex="-1" href="#"><img class="flag-lang" src="assets/images/_smarty/flags/us.png" width="16" height="11" alt="lang" /> ENGLISH</a></li> -->
+								<!-- <li class="divider"></li> -->
+								<!-- <li><a tabindex="-1" href="#"><img class="flag-lang" src="assets/images/_smarty/flags/de.png" width="16" height="11" alt="lang" /> GERMAN</a></li> -->
+								<!-- <li><a tabindex="-1" href="#"><img class="flag-lang" src="assets/images/_smarty/flags/ru.png" width="16" height="11" alt="lang" /> RUSSIAN</a></li> -->
+								<!-- <li><a tabindex="-1" href="#"><img class="flag-lang" src="assets/images/_smarty/flags/it.png" width="16" height="11" alt="lang" /> ITALIAN</a></li> -->
+							<!-- </ul> -->
+						<!-- </li> -->
+						<!-- <li> -->
+							<!-- <a class="dropdown-toggle no-text-underline" data-toggle="dropdown" href="#">USD</a> -->
+							<!-- <ul class="dropdown-langs dropdown-menu"> -->
+								<!-- <li><a tabindex="-1" href="#">USD</a></li> -->
+								<!-- <li class="divider"></li> -->
+								<!-- <li><a tabindex="-1" href="#">EUR</a></li> -->
+								<!-- <li><a tabindex="-1" href="#">GBP</a></li> -->
+							<!-- </ul> -->
+						<!-- </li> -->
+					<!-- </ul> -->
+
+				</div>
+			</div>
+			<!-- /Top Bar -->
+			
+			
+			<!-- sample modal content -->
+			<div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content" style="background-color:green;">
+
+						<!-- Modal Header -->
+						<!-- <div class="modal-header" style="background-color:white;"> -->
+							<!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> -->
+							<!-- <h4 class="modal-title" id="myModalLabel">FORMULIR PENDAFTARAN</h4> -->
+						<!-- </div> -->
+
+						<!-- Modal Body -->
+						<div class="modal-body">
+							<!-- <div class="box-static box-border-top p-30"> -->
+								<!-- <div class="box-title mb-30"> -->
+									<!-- <h2 class="fs-20">Silahkan isi formulir dibawah dengan baik dan benar sesuai data yang anda miliki</h2> -->
+									<!-- <center> -->
+									<!-- <p class="fs-20">Silahkan isi formulir dibawah dengan baik dan benar sesuai data yang anda miliki</p> -->
+									<!-- </center> -->
+								<!-- </div> -->
+
+								<form class="frm-input" method="post" action="<?php echo (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";?>" autocomplete="on" enctype="multipart/form-data" data-success="Sent! Thank you!" data-toastr-position="top-right">
+								<!-- <form class="validate" action="php/contact.php" method="post" enctype="multipart/form-data" data-success="Sent! Thank you!" data-toastr-position="top-right"> -->
+								
+								<!-- <form role="form" action="<?php echo base_url();?>donasi-sesama" method="post" class="frm-input" enctype="multipart/form-data"> -->
+									<!-- <div class="clearfix"> -->
+										
+										<!-- Email -->
+										<!-- <div class="form-group"> -->
+											<!-- <input type="text" name="email" class="form-control" placeholder="Email" required=""> -->
+										<!-- </div> -->
+										
+										<!-- Password -->
+										<!-- <div class="form-group"> -->
+											<!-- <input type="password" name="password" class="form-control" placeholder="Password" required=""> -->
+										<!-- </div> -->
+										
+										
+										<!-- Useful Elements -->
+											<div class="card card-default">
+												<div class="card-heading card-heading-transparent">
+													<h2 class="card-title">Formulir Pendaftaran</h2>
+												</div>
+
+												<div class="card-block">
+
+													<!-- <form class="validate" action="<?php echo base_url();?>" method="post" enctype="multipart/form-data" data-success="Sent! Thank you!" data-toastr-position="top-right"> -->
+													
+													<!-- <form class="validate" action="<?php echo base_url();?>" method="post" enctype="multipart/form-data"> -->
+														<fieldset>
+															<!-- required [php action request] -->
+															<!-- <input type="text" name="action" value="<?php echo (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";?>" /> -->
+
+															<div class="row">
+																<div class="col-md-12 col-sm-12">
+																	<label>Nama Lengkap</label>
+																	<input type="text" name="MUZ_NAMA" value="" class="required form-control">
+																</div>
+															</div>
+
+															<div class="row">
+																<div class="col-md-12 col-sm-12">
+																	<label>Email *</label>
+																	<input type="email" name="MUZ_EMAIL" value="" class="required email form-control">
+																</div>
+																<!-- <div class="col-md-6 col-sm-6"> -->
+																	<!-- <label>Phone *</label> -->
+																	<!-- <input type="text" name="contact[phone]" value="" class="form-control required"> -->
+																<!-- </div> -->
+															</div>
+															
+															<div class="row">
+																<!-- <div class="col-md-12 col-sm-12"> -->
+																	<!-- <label>Email *</label> -->
+																	<!-- <input type="email" name="contact[email]" value="" class="form-control required"> -->
+																<!-- </div> -->
+																<div class="col-md-12 col-sm-12">
+																	<label>Telpone/Hp *</label>
+																	<input type="text" name="MUZ_TLP" value="" class="required form-control" onkeypress="return isNumberKey(event)">
+																</div>
+															</div>
+															
+															<div class="row">
+																<div class="col-md-12 col-sm-12">
+																	<label>Password</label>
+																	<input type="password" name="MUZ_PASS" value="" class="required form-control">
+																</div>
+															</div>
+															
+															<div class="row">
+																<div class="col-md-12 col-sm-12">
+																	<label>Konfirmasi Password</label>
+																	<input type="password" name="MUZ_PASS2" value="" class="required form-control">
+																</div>
+															</div>
+															
+															
+
+															<!-- <div class="row"> -->
+																<!-- <div class="col-md-12 col-sm-12"> -->
+																	<!-- <label>Position *</label> -->
+																	<!-- <select name="contact[position]" class="form-control pointer required"> -->
+																		<!-- <option value="">--- Select ---</option> -->
+																		<!-- <option value="Marketing">PR &amp; Marketing</option> -->
+																		<!-- <option value="Developer">Web Developer</option> -->
+																		<!-- <option value="php">PHP Programmer</option> -->
+																		<!-- <option value="Javascript">Javascript Programmer</option> -->
+																	<!-- </select> -->
+																<!-- </div> -->
+															<!-- </div> -->
+
+															<!-- <div class="row"> -->
+																<!-- <div class="col-md-6 col-sm-6"> -->
+																	<!-- <label>Expected Salary *</label> -->
+																	<!-- <input type="text" name="contact[expected_salary]" value="" class="form-control required"> -->
+																<!-- </div> -->
+																<!-- <div class="col-md-6 col-sm-6"> -->
+																	<!-- <label>Start Date *</label> -->
+																	<!-- <input type="text" name="contact[start_date]" value="" class="form-control datepicker required" data-format="yyyy-mm-dd" data-lang="en" data-RTL="false"> -->
+																<!-- </div> -->
+															<!-- </div> -->
+
+															<!-- <div class="row"> -->
+																<!-- <div class="col-md-12 col-sm-12"> -->
+																	<!-- <label>Experience *</label> -->
+																	<!-- <textarea name="contact[experience]" rows="4" class="form-control required"></textarea> -->
+																<!-- </div> -->
+															<!-- </div> -->
+
+															<!-- <div class="row"> -->
+																<!-- <div class="col-md-12 col-sm-12"> -->
+																	<!-- <label> -->
+																		<!-- Website -->
+																		<!-- <small class="text-muted">- optional</small> -->
+																	<!-- </label> -->
+																	<!-- <input type="text" name="contact[website]" placeholder="http://" class="form-control"> -->
+																<!-- </div> -->
+															<!-- </div> -->
+
+															<!-- <div class="row"> -->
+																<!-- <div class="col-md-12"> -->
+																	<!-- <label> -->
+																		<!-- File Attachment  -->
+																		<!-- <small class="text-muted">Curriculum Vitae - optional</small> -->
+																	<!-- </label> -->
+
+																	<!-- custom file upload -->
+																	<!-- <div class="fancy-file-upload fancy-file-primary"> -->
+																		<!-- <i class="fa fa-upload"></i> -->
+																		<!-- <input type="file" class="form-control" name="contact[attachment]" onchange="jQuery(this).next('input').val(this.value);" /> -->
+																		<!-- <input type="text" class="form-control" placeholder="no file selected" readonly="" /> -->
+																		<!-- <span class="button">Choose File</span> -->
+																	<!-- </div> -->
+																	<!-- <small class="text-muted block">Max file size: 10Mb (zip/pdf/jpg/png)</small> -->
+
+																<!-- </div> -->
+															<!-- </div> -->
+
+														</fieldset>
+
+														<div class="row">
+															<div class="col-md-12">
+																<button type="submit" class="confirm-btn btn btn-3d btn-teal btn-xlg btn-block mt-30">
+																	SIMPAN DATA
+																	<span class="block font-lato">Tulis email dengan benar, karena kami akan melakukan validasi email</span>
+																</button>
+																<!-- <button type="submit" class="btn btn-primary">OK, LOG IN</button> -->
+															</div>
+														</div>
+
+													</form>
+
+
+												</div>
+												
+											</div>
+											<!-- /Useful Elements -->
+											
+									<!-- </div> -->
+									
+									<div class="row">
+										
+										<div class="col-md-6 col-sm-6 col-xs-6">
+											
+											<!-- Inform Tip -->                                        
+											<div class="form-tip pt-20">
+												<a class="no-text-decoration fs-13 mt-10 block" href="#">Syarat dan ketentuan</a>
+											</div>
+											
+										</div>
+										
+										<div class="col-md-6 col-sm-6 col-xs-6 text-right">
+
+											<!-- <button class="btn btn-primary">OK, LOG IN</button> -->
+											<div class="form-tip pt-20">
+												<a class="no-text-decoration fs-13 mt-10 block" href="#">Tata cara penggunaan</a>
+											</div>
+
+										</div>
+										
+									</div>
+									
+								<!-- </form> -->
+
+							<!-- </div> -->
+							
+							<!-- <div class="mt-30 text-center"> -->
+								<!-- <a href="page-register-1.html"><strong>Create Account</strong></a> -->
+
+							<!-- </div> -->
+							
+							
+							
+						</div>
+
+						<!-- Modal Footer -->
+						<!-- <div class="modal-footer"> -->
+							<!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
+							<!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+						<!-- </div> -->
+
+					</div>
+				</div>
+			</div>
+			<!-- sample modal content -->
+			
+			
+<script type='text/javascript'>
+	
+	function isNumberKey(evt)
+	{
+    	var charCode = (evt.which) ? evt.which : event.keyCode
+    	if (charCode > 31 && (charCode < 48 || charCode > 57))
+    	
+    	return false;
+    	return true;
+	}
+</script>

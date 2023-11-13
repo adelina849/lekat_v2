@@ -1,0 +1,251 @@
+ <title>Laporan Detail Tindakan</title>
+ 
+ <?php
+ $title = "Laporan-Gaji";
+ header('Content-Type: application/vnd.ms-excel');
+ header('Content-Disposition: attachment;filename="Laporan Detail Tindakan.xls"');
+
+ 
+ ?>
+
+<table class="table table-bordered table-striped">
+<thead>
+    <tr>
+        <th class="text-leftt" width="80px" colspan="7">Rekap Tindakan Non Promo</th>
+    </tr>
+</thead>
+</table>
+
+<br>
+
+<table class="table table-bordered table-striped" border="1">
+<thead>
+    <tr>
+        <th width="80px">No</th>
+        <th width="30%">Nama Tindakan</th>
+        <th width="30%">Nama Diskon</th>
+        <th width="5%">Qty</th>
+        <th width="15%">Harga</th>
+        <th width="10%">Fee (%)</th>
+        <th>Subtotal</th>
+    </tr>
+</thead>
+<tbody>
+    <?php
+        $no=1;
+        $total_fee_normal=0;
+        $total_qty=0;
+
+        foreach($data as $row)
+        {
+            if($row->nama_diskon == '') {
+        ?>
+            <tr>
+                <td><?=$no;?></td>
+                <td><?=$row->nama_produk;?></td>
+                <td><?=$row->nama_diskon;?></td>
+                <td><?=number_format($row->jumlah_konversi);?></td>
+                <td><?=number_format($row->harga_konversi);?></td>
+                <td><?=number_format($row->fee);?></td>
+                <td><?=number_format($row->fee_tindakan);?></td>
+            </tr>
+        <?php
+                $no++;
+                $total_fee_normal += $row->fee_tindakan;
+                $total_qty += $row->jumlah_konversi;
+            }
+        }
+        ?>
+    <tr>
+        <td></td>
+        <td></td>
+        <td><strong>Total</strong></td>
+        <td><?=number_format($total_qty);?></td>
+        <td></td>
+        <td></td>
+        <td><?=number_format($total_fee_normal);?></td>
+    </tr>
+    <tr>
+        
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <!-- <button onclick="simpan_d_tindakan()" class="btn btn-info">Proses ke Penggajian</button> -->
+    </tr>
+</tbody>
+</table>
+
+<br>
+
+<table class="table table-bordered table-striped">
+<thead>
+    <tr>
+        <th class="text-leftt" width="80px" colspan="7">Rekap Tindakan Promo</th>
+    </tr>
+</thead>
+</table>
+
+<br>
+
+<table class="table table-bordered table-striped" border="1">
+<thead>
+    <tr>
+        <th width="80px">No</th>
+        <th width="30%">Nama Tindakan</th>
+        <th width="30%">Nama Diskon</th>
+        <th width="5%">Qty</th>
+        <th width="15%">Harga</th>
+        <th width="10%">Fee (%)</th>
+        <th>Subtotal</th>
+    </tr>
+</thead>
+<tbody>
+    <?php
+        $no=1;
+        $total_fee_promo=0;
+        $total_qty=0;
+
+        foreach($data as $row)
+        {
+            if($row->nama_diskon != '') {
+        ?>
+            <tr>
+                <td><?=$no;?></td>
+                <td><?=$row->nama_produk;?></td>
+                <td><?=$row->nama_diskon;?></td>
+                <td><?=number_format($row->jumlah_konversi);?></td>
+                <td><?=number_format($row->harga_konversi);?></td>
+                <td><?=number_format($row->fee);?></td>
+                <td><?=number_format($row->fee_tindakan);?></td>
+            </tr>
+        <?php
+                $no++;
+                $total_fee_promo += $row->fee_tindakan;
+                $total_qty += $row->jumlah_konversi;
+            }
+        }
+        ?>
+    <tr>
+        <td></td>
+        <td></td>
+        <td><strong>Total</strong></td>
+        <td><?=number_format($total_qty);?></td>
+        <td></td>
+        <td></td>
+        <td><?=number_format($total_fee_promo);?></td>
+    </tr>
+    <tr>
+        
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <!-- <button onclick="simpan_d_tindakan()" class="btn btn-info">Proses ke Penggajian</button> -->
+    </tr>
+</tbody>
+</table>
+
+<br>
+
+<table class="table table-bordered table-striped">
+<thead>
+    <tr>
+        <th class="text-leftt" width="80px" colspan="7">Total Tindakan Dokter</th>
+    </tr>
+</thead>
+</table>
+
+<br>
+
+<table class="table table-bordered table-striped" border="1">
+    <thead>
+        <tr>
+            <th width="30%">Deskripsi</th>
+            <th width="30%">Jumlah</th>
+            <th width="15%">Fee</th>
+            <th width="10%">Total Fee</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Total Resep Tindakan Dokter</td>
+            <td><?=number_format($total_tindakan->total_tindakan);?></td>
+            <td><?=number_format($total_tindakan->fee);?></td>
+            <td><?=number_format($total_tindakan->fee_total);?></td>
+        </tr>
+    </tbody>
+</table>
+
+<br>
+
+<table class="table table-bordered table-striped">
+<thead>
+    <tr>
+        <th class="text-leftt" width="80px" colspan="7">Total Insentif</th>
+    </tr>
+</thead>
+</table>
+
+<br>
+
+<table class="table table-bordered table-striped" border="1">
+<thead>
+    <tr>
+        <th width="50%">Deskripsi</th>
+        <th width="20%">Total Fee</th>
+        <th width="30%">Keterangan</th>
+    </tr>
+</thead>
+<tbody>
+    <tr>
+        <td>Tindakan Normal</td>
+        <td><?=number_format($total_fee_normal);?></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Tindakan Promo</td>
+        <td><?=number_format($total_fee_promo);?></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Resep Tindakan</td>
+        <td><?=number_format($total_tindakan->fee_total);?></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Total</td>
+        <?php
+            $total_fee = $total_fee_normal+$total_fee_promo+$total_tindakan->fee_total;
+
+            if($cek_bft->total == 0) {
+                $persen = 50;
+            } else if($cek_bft->total == 1) {
+                $persen = 75;
+            } else if($cek_bft->total >= 2) {
+                $persen = 100;
+            }
+
+            $grand_total = $total_fee * $persen / 100;
+        ?>
+        <td><?=number_format($total_fee);?></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td><strong>Total Insentif (<?=$persen;?> %)</strong></td>
+        <td><?=number_format($grand_total);?></td>
+        <td><strong><?=$cek_bft->nama_produk;?></strong></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+</tbody>
+</table>

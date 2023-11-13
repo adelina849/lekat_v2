@@ -1,0 +1,285 @@
+			<script src="<?=base_url();?>assets/adminlte/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+			<script type="text/javascript">
+                var htmlobjek;
+                $(document).ready(function()
+                {	
+					$('#profile-left-menu-profile').attr('class', 'list-group-item active');
+					$('#profile-left-menu-history').attr('class', 'list-group-item');
+					
+                });
+            </script>
+			
+			<section>
+				<div class="container">
+				<div class="row">
+
+						<!-- RIGHT -->
+						<div class="col-lg-9 col-md-9 col-sm-8 push-lg-3 push-md-3 push-sm-4 mb-80">
+
+							<ul class="nav nav-tabs nav-top-border">
+								<li class="'list-group-item active"><a href="#info" data-toggle="tab">Personal Info</a></li>
+								<li><a href="#avatar" data-toggle="tab">Avatar</a></li>
+								<li><a href="#password" data-toggle="tab">Password</a></li>
+								
+							</ul>
+
+							<div class="tab-content mt-20">
+
+								<!-- PERSONAL INFO TAB -->
+								<div class="tab-pane active" id="info">
+									<form action="<?php echo base_url();?>public-profile-ubah-profile/" method="post">
+										
+										<input type="hidden" name="MUZ_ID" placeholder="" value="<?php echo $this->session->userdata('ses_MUZ_ID');?>" class="form-control" readonly>
+										<input type="hidden" name="KMUZ_ID" placeholder="" value="<?php echo $this->session->userdata('ses_KMUZ_ID');?>" class="form-control" readonly>
+										
+										<input type="hidden" name="MUZ_PROV" placeholder="" value="<?php echo $this->session->userdata('ses_KMUZ_PROV');?>" class="form-control" readonly>
+										<input type="hidden" name="MUZ_KAB" placeholder="" value="<?php echo $this->session->userdata('ses_KMUZ_KAB');?>" class="form-control" readonly>
+										<input type="hidden" name="MUZ_KEC" placeholder="" value="<?php echo $this->session->userdata('ses_KMUZ_KEC');?>" class="form-control" readonly>
+										<input type="hidden" name="MUZ_DESA" placeholder="" value="<?php echo $this->session->userdata('ses_KMUZ_DESA');?>" class="form-control" readonly>
+										<input type="hidden" name="MUZ_LONGI" placeholder="" value="<?php echo $this->session->userdata('ses_KMUZ_LONGI');?>" class="form-control" readonly>
+										<input type="hidden" name="MUZ_LATI" placeholder="" value="<?php echo $this->session->userdata('ses_KMUZ_LATI');?>" class="form-control" readonly>
+										
+										<input type="hidden" name="MUZ_KET" placeholder="" value="<?php echo $this->session->userdata('ses_KMUZ_KET');?>" class="form-control" readonly>
+										
+										<input type="hidden" name="MUZ_PASS" placeholder="" value="<?php echo $this->session->userdata('ses_KMUZ_PASS');?>" class="form-control" readonly>
+										<input type="hidden" name="MUZ_PASSORI" placeholder="" value="<?php echo $this->session->userdata('ses_KMUZ_PASSORI');?>" class="form-control" readonly>
+										<input type="hidden" name="MUZ_USERUPDT" placeholder="" value="<?php echo $this->session->userdata('ses_MUZ_USERUPDT');?>" class="form-control" readonly>
+										<input type="hidden" name="MUZ_KODEKANTOR" placeholder="" value="<?php echo $this->session->userdata('ses_MUZ_KODEKANTOR');?>" class="form-control" readonly>
+										
+										
+										
+										
+										<div class="form-group">
+											<label class="form-control-label">Kode Muzaki</label>
+											<input type="text" name="MUZ_KODE" placeholder="" value="<?php echo $this->session->userdata('ses_MUZ_KODE');?>" class="form-control" readonly>
+										</div>
+										
+										<div class="form-group">
+											<label class="form-control-label">Nama Lengkap</label>
+											<input type="text" name="MUZ_NAMA" placeholder="" value="<?php echo $this->session->userdata('ses_MUZ_NAMA');?>" class="form-control">
+										</div>
+										
+										<div class="form-group">
+											<label class="form-control-label">Email</label>
+											<input type="text" name="MUZ_EMAIL" placeholder="" value="<?php echo $this->session->userdata('ses_MUZ_EMAIL');?>" class="form-control" readonly>
+										</div>
+										
+										<div class="form-group">
+											<label class="form-control-label">No Telpon</label>
+											<input type="text" name="MUZ_TLP" placeholder="" value="<?php echo $this->session->userdata('ses_MUZ_TLP');?>" class="form-control" onkeypress="return isNumberKey(event)">
+										</div>
+										
+										<div class="form-group">
+											<label class="form-control-label">Tempat Lahir</label>
+											<input type="text" name="MUZ_TLAHIR" placeholder="" value="<?php echo $this->session->userdata('ses_MUZ_TLAHIR');?>" class="form-control">
+										</div>
+										
+										<div class="form-group">
+											<label class="form-control-label">Tanggal Lahir</label>
+											<input type="text" name="MUZ_DTLAHIR" placeholder="YYYY-MM-DD" value="<?php echo $this->session->userdata('ses_MUZ_DTLAHIR');?>" class="form-control" onkeypress="return isNumberKey(event)">
+										</div>
+										
+										<div class="form-group">
+											<label class="form-control-label">Nama Perusahaan</label>
+											<input type="text" name="PRSH_NAMA" placeholder="" value="<?php echo $this->session->userdata('ses_PRSH_NAMA');?>" class="form-control">
+										</div>
+										
+										<div class="form-group">
+											<label class="form-control-label">Jabatan</label>
+											<input type="text" name="PROF_NAMA" placeholder="" value="<?php echo $this->session->userdata('ses_PROF_NAMA');?>" class="form-control">
+										</div>
+										
+										<div class="form-group">
+											<label class="form-control-label">Nominal Penghasilan</label>
+											<input type="text" name="MUZ_GAJI" placeholder="" value="<?php echo $this->session->userdata('ses_MUZ_GAJI');?>" class="form-control" onkeypress="return isNumberKey(event)">
+										</div>
+										
+										<div class="form-group">
+											<label class="form-control-label">Alamat</label>
+											<textarea class="form-control" name="MUZ_ALMTDETAIL" rows="5" placeholder=""><?php echo $this->session->userdata('ses_MUZ_ALMTDETAIL');?></textarea>
+										</div>
+										
+										<div class="margiv-top10">
+											<!-- <a href="#" class="btn btn-primary"><i class="fa fa-check"></i> Save Changes </a> -->
+											<!-- <a href="#" class="btn btn-default">Cancel </a> -->
+											<input type="submit" class="btn btn-primary" value="SIMPAN"/>
+										</div>
+									</form>
+								</div>
+								<!-- /PERSONAL INFO TAB -->
+
+								<!-- AVATAR TAB -->
+								<div class="tab-pane fade" id="avatar">
+
+									<form class="clearfix" action="<?php echo base_url();?>public-profile-ubah-avatar" method="post" enctype="multipart/form-data">
+										<div class="form-group">
+
+											<div class="row">
+
+												<div class="col-md-3 col-sm-4">
+
+													<div class="thumbnail">
+													
+														<input type="hidden" name="MUZ_ID" placeholder="" value="<?php echo $this->session->userdata('ses_MUZ_ID');?>" class="form-control" readonly>
+													
+														
+														<?php 
+															if( $this->session->userdata('ses_MUZ_AVATARLINK') == "")
+															{
+																?>
+																	<img class="img-fluid" src="<?php echo base_url();?>assets/global/karyawan/loading.gif" alt="<?php echo $this->session->userdata('ses_MUZ_NAMA');?>" />
+																<?php
+															}
+															else
+															{
+																?>
+																	<img class="img-fluid" src="<?php echo $this->session->userdata('ses_MUZ_AVATARLINK');?>" alt="<?php echo $this->session->userdata('ses_MUZ_NAMA');?>" />
+																<?php
+															}
+														?>
+													
+														
+													</div>
+
+												</div>
+
+												<div class="col-md-9 col-sm-8">
+
+													<div class="sky-form m-0">
+														<label class="label">Select File</label>
+														<label for="file" class="input input-file">
+															<div class="button">
+																<input type="file" id="file" name="foto" onchange="this.parentNode.nextSibling.value = this.value">Browse
+															</div><input type="text" readonly>
+														</label>
+													</div>
+
+													<!-- <a href="#" class="btn btn-danger btn-sm rad-0"><i class="fa fa-times"></i> Hapus Avatar</a> -->
+
+													<!-- <div class="clearfix mt-20"> -->
+														<!-- <span class="badge badge-warning">NOTE! </span> -->
+														<!-- <p> -->
+															<!-- Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt laoreet! -->
+														<!-- </p> -->
+													<!-- </div> -->
+
+												</div>
+
+											</div>
+
+										</div>
+
+										<div class="margiv-top10">
+											<!-- <a href="#" class="btn btn-primary"><i class="fa fa-check"></i> Save Changes </a> -->
+											<!-- <a href="#" class="btn btn-default">Cancel </a> -->
+											<input type="submit" class="btn btn-primary" value="SIMPAN"/>
+										</div>
+
+									</form>
+
+								</div>
+								<!-- /AVATAR TAB -->
+
+								<!-- PASSWORD TAB -->
+								<div class="tab-pane fade" id="password">
+
+									<form action="<?php echo base_url();?>public-profile-ubah-password" method="post" onsubmit="return validasi_input(this)">
+
+										<input type="hidden" id="PASS_MUZ_ID" name="PASS_MUZ_ID" placeholder="" value="<?php echo $this->session->userdata('ses_MUZ_ID');?>" class="form-control" readonly>
+										
+										<!-- <input type="text" id="PASS_MUZ_EMAIL" name="PASS_MUZ_EMAIL" placeholder="" value="<?php echo $this->session->userdata('ses_MUZ_EMAIL');?>" class="form-control" readonly> -->
+										
+										<!-- <div class="form-group"> -->
+											<!-- <label class="form-control-label">Current Password</label> -->
+											<!-- <input type="password" id="PASS_MUZ_PASSORI" name="PASS_MUZ_PASSORI" class="form-control" onkeyup="showHint(this.value)"> -->
+											<!-- <span id="CEK_PASS_OLD" name="CEK_PASS_OLD"></span> -->
+										<!-- </div> -->
+										
+										<div class="form-group">
+											<label class="form-control-label">New Password</label>
+											<input type="password" id="PASS_MUZ_PASSORI1" name="PASS_MUZ_PASSORI1" class="form-control">
+										</div>
+										<div class="form-group">
+											<label class="form-control-label">Re-type New Password</label>
+											<input type="password" id="PASS_MUZ_PASSORI2" name="PASS_MUZ_PASSORI2" class="form-control">
+										</div>
+
+										<div class="margiv-top10">
+											<!-- <a href="#" class="btn btn-primary"><i class="fa fa-check"></i> Save Changes </a> -->
+											<!-- <a href="#" class="btn btn-default">Cancel </a> -->
+											<input type="submit" class="btn btn-primary" value="SIMPAN"/>
+										</div>
+
+									</form>
+
+								</div>
+								<!-- /PASSWORD TAB -->
+
+								
+
+							</div>
+
+						</div>
+
+						
+						<!-- LEFT -->
+							<?php
+							
+								$this->load->view('public/profile_sidebar_left.html');
+							
+							?>
+						<!-- LEFT -->
+
+					</div>
+				</div>
+			</section>
+			
+			
+			<script type='text/javascript'>
+	
+				function isNumberKey(evt)
+				{
+					var charCode = (evt.which) ? evt.which : event.keyCode
+					/*if   (charCode > 31 && (charCode < 48 || charCode > 57))
+					return false;
+					return true;*/
+					
+					if (charCode > 31 && ( (charCode != 45 && charCode < 48) || charCode > 57  ))
+						return false;
+						return true;
+					//alert(charCode);
+					
+				}
+				
+				function validasi_input(form)
+				{
+					/*
+					var mincar = 1;
+					if (form.PASS_MUZ_PASSORI.value.length < mincar)
+					{
+						alert("Maaf, password lama harus diisi!");
+						form.PASS_MUZ_PASSORI.focus();
+						return (false);
+					}
+					*/
+					
+					var mincar = 1;
+					if (form.PASS_MUZ_PASSORI1.value.length < mincar)
+					{
+						alert("Maaf, password baru harus diisi!");
+						form.PASS_MUZ_PASSORI1.focus();
+						return (false);
+					}
+					
+					if (form.PASS_MUZ_PASSORI1.value  != form.PASS_MUZ_PASSORI2.value)
+					{
+						alert("Maaf, password baru harus terkonfirmasi !");
+						form.PASS_MUZ_PASSORI2.focus();
+						return (false);
+					}
+					
+					
+					return (true);
+				}
+				
+			</script>

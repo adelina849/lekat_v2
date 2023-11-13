@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="IMS Technology <?php echo date("y"); ?>" content="Dashboard Admin" />
+		<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+		<meta content="width=device-width, initial-scale=1.0" name="viewport">
+		<meta content="klinik, managemen, sistem, informasi, kesehatan" name="keywords">
+		<meta content="Sistem Informasi dan Management Klinik IMS 1.0" name="description">
+    
+		<?php
+			echo '<title>'.$this->M_gl_pengaturan->get_data_by_id(1)->nilai.'</title>';
+		?>
+		<link rel="shortcut icon" href="<?php 
+										echo $this->M_gl_pengaturan->get_data_by_id(2)->nilai;
+									?>">
+									
+
+		<!-- mobile settings -->
+		<meta name="viewport" content="width=device-width, maximum-scale=1, initial-scale=1, user-scalable=0" />
+		<!--[if IE]><meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'><![endif]-->
+
+		<!-- WEB FONTS : use %7C instead of | (pipe) -->
+		<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600%7CRaleway:300,400,500,600,700%7CLato:300,400,400italic,600,700" rel="stylesheet" type="text/css" />
+
+		<!-- CORE CSS -->
+		<link href="<?php echo base_url();?>assets/public/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+		
+		<!-- THEME CSS -->
+		<link href="<?php echo base_url();?>assets/public/assets/css/essentials.css" rel="stylesheet" type="text/css" />
+		<link href="<?php echo base_url();?>assets/public/assets/css/layout.css" rel="stylesheet" type="text/css" />
+
+		<!-- PAGE LEVEL SCRIPTS -->
+		<link href="<?php echo base_url();?>assets/public/assets/css/header-1.css" rel="stylesheet" type="text/css" />
+		<link href="<?php echo base_url();?>assets/public/assets/css/color_scheme/green.css" rel="stylesheet" type="text/css" id="color_scheme" />
+		
+		
+		<style>	
+			@media (max-width:960px) 
+			{
+				#img_logo_public 
+				{
+					width: 50%;
+				}
+			}
+		</style>
+	</head>
+
+	<!--
+		AVAILABLE BODY CLASSES:
+		
+		smoothscroll 			= create a browser smooth scroll
+		enable-animation		= enable WOW animations
+
+		bg-grey					= grey background
+		grain-grey				= grey grain background
+		grain-blue				= blue grain background
+		grain-green				= green grain background
+		grain-blue				= blue grain background
+		grain-orange			= orange grain background
+		grain-yellow			= yellow grain background
+		
+		boxed 					= boxed layout
+		pattern1 ... patern11	= pattern background
+		menu-vertical-hide		= hidden, open on click
+		
+		BACKGROUND IMAGE [together with .boxed class]
+		data-background="assets/images/_smarty/boxed_background/1.jpg"
+	-->
+	<body class="smoothscroll enable-animation" style="background-image: url('<?php echo base_url();?>assets/global/images/bg_public.jpg');" >
+
+
+
+		<!-- wrapper -->
+		<div id="wrapper" style="margin-top:0%;" >
+			<!-- -->
+			<section style="background-image: url('<?php echo base_url();?>assets/global/images/bg_public.jpg');background-repeat: repeat-y;background-repeat: repeat-x;">
+				<div class="container" style="background-color:white;padding:1%;opacity:90%;box-shadow:0 0 7px 5px lightblue;">
+					
+					
+
+					<div class="heading-title heading-border">
+						<!-- <h3>Related <span>Projects</span></h3> -->
+						
+
+							<a class="image-hover" href="<?php echo base_url();?>gl-pusat-login-view">
+								<img id="img_logo_public" style="width:25%;" src="<?php echo $this->M_gl_pengaturan->get_data_by_id(3)->nilai; ?>" alt="<?php echo $this->M_gl_pengaturan->get_data_by_id(1)->nilai; ?>" title="<?php echo $this->M_gl_pengaturan->get_data_by_id(1)->nilai; ?>">
+							</a>
+						
+						<h3><?php echo $this->M_gl_pengaturan->get_data_by_id(1)->nilai; ?></h3>
+						<p class="font-lato fs-14"><?php echo $this->M_gl_pengaturan->get_data_by_id(4)->nilai; ?></p>
+						
+						<style>
+							.btn-pilih-pasien {
+								//text-shadow: 3px 2px 1px grey;
+								//font-size: 20px;
+								
+								box-shadow: 2px 2px 2px rgba(0,0,0,0.8);
+								padding: 10px;
+								border: 1px dashed grey;
+								
+							}
+						</style>
+						</br>
+						
+						<?php
+							$cek_tampilan_pajak = $this->M_gl_pengaturan->get_data_by_id(15)->nilai; 
+							if($cek_tampilan_pajak != "Y")
+							{
+						?>
+							<a class="btn-pilih-pasien" href="<?php echo base_url();?>gl-pusat-login-view"  >
+								<i class="fa fa-building"></i> <font style="color:red;">APLIKASI CENTER</font>
+							</a>
+							
+							<a class="btn-pilih-pasien" style="margin-left:10%;" href="http://shopee.glafidsyamedika.com/tutorial"  >
+								<i class="fa fa-video-camera"></i> <font style="color:red;">TUTORIAL</font>
+							</a>
+							</br>
+						<?php
+							}
+						?>
+						
+						
+					</div>
+					
+					
+					<!-- <div class="text-center"> -->
+						<!-- <a class="image-hover" href="#"> -->
+							<!-- <img id="img_logo_public" style="width:25%;" src="<?php echo $this->M_gl_pengaturan->get_data_by_id(2)->nilai; ?>" alt="<?php echo $this->M_gl_pengaturan->get_data_by_id(1)->nilai; ?>" title="<?php echo $this->M_gl_pengaturan->get_data_by_id(1)->nilai; ?>"> -->
+						<!-- </a> -->
+						
+						<!-- <h3><?php echo $this->M_gl_pengaturan->get_data_by_id(1)->nilai; ?></h3> -->
+					<!-- </div> -->
+
+					<!-- 
+						RELATED CAROUSEL 
+
+						controlls-over		= navigation buttons over the image 
+						buttons-autohide 	= navigation buttons visible on mouse hover only
+
+						owl-carousel item paddings
+							.owl-padding-0
+							.owl-padding-1
+							.owl-padding-2
+							.owl-padding-3
+							.owl-padding-6
+							.owl-padding-10
+							.owl-padding-15
+							.owl-padding-20
+					-->
+					<div class="text-center">
+						<div class="owl-carousel owl-padding-1 m-0 buttons-autohide controlls-over" data-plugin-options='{"singleItem": false, "items": "4", "autoPlay": 3500, "navigation": true, "pagination": false}'>
+							
+							<?php
+								if(!empty($data_kantor))
+								{
+									$list_result = $data_kantor->result();
+									foreach($list_result as $row)
+									{
+									?>
+									
+										<!-- item -->
+										<div class="item-box">
+											<figure>
+												<span class="item-hover">
+													<span class="overlay dark-5"></span>
+													<span class="inner">
+
+														<!-- lightbox -->
+														<!-- <a class="ico-rounded lightbox" href="demo_files/images/mockups/1200x800/16-min.jpg" data-plugin-options='{"type":"image"}'> -->
+															<!-- <span class="fa fa-users fs-20"></span> -->
+														<!-- </a> -->
+
+														<!-- details -->
+														<a class="ico-rounded" href="<?php echo base_url();?>gl-admin-login?kode_kantor=<?php echo $row->kode_kantor;?>">
+															<!-- <span class="glyphicon glyphicon-option-horizontal fs-20"></span> -->
+															<span class="fa fa-users fs-20"></span>
+														</a>
+
+													</span>
+												</span>
+
+												<img class="img-fluid" src="<?php echo $row->url_img.''.$row->img_kantor;?>" style="width:300px;height:150px;" width="600" height="399" alt="">
+												<!-- <img class="img-fluid" src="demo_files/images/mockups/600x399/16-min.jpg" width="600" height="399" alt=""> -->
+												
+												
+											</figure>
+
+											<div class="item-box-desc">
+												<h3><?php echo $row->nama_kantor;?></h3>
+												<ul class="list-inline categories m-0">
+													<li><a href="#"><?php echo $row->alamat;?></a></li>
+													<!-- <li><a href="#">Design</a></li> -->
+												</ul>
+											</div>
+
+										</div>
+										<!-- /item -->
+									
+									<?php
+									}
+								}
+							?>
+							
+						</div>
+					</div>
+
+				</div>
+			</section>
+			<!-- / -->
+
+
+		</div>
+		<!-- /wrapper -->
+
+
+		<!-- SCROLL TO TOP -->
+		<a href="#" id="toTop"></a>
+
+
+		<!-- PRELOADER -->
+		<div id="preloader">
+			<div class="inner">
+				<span class="loader"></span>
+			</div>
+		</div><!-- /PRELOADER -->
+
+
+		<!-- JAVASCRIPT FILES -->
+		<script type="text/javascript">var plugin_path = '<?php echo base_url();?>assets/public/assets/plugins/';</script>
+		<script type="text/javascript" src="<?php echo base_url();?>assets/public/assets/plugins/jquery/jquery-3.2.1.min.js"></script>
+
+		<script type="text/javascript" src="<?php echo base_url();?>assets/public/assets/js/scripts.js"></script>
+		
+	</body>
+</html>

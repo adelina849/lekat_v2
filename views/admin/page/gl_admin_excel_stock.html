@@ -1,0 +1,238 @@
+ 
+<title>DataProdukStock</title>
+ 
+ <?php
+ $title = "DataProdukStock";
+ header("Content-type: application/vnd-ms-excel");
+ header("Content-Disposition: attachment; filename=$title.xls");
+ header("Pragma: no-cache");
+ header("Expires: 0");
+ 
+ ?>
+
+<?php
+	//TABLE
+	if(!empty($list_stock_produk))
+	{
+		//echo gethostname();
+		//echo $this->M_gl_pengaturan->getUserIpAddr();
+		//$sts_query = strpos(base_url(),"localhost");
+		//echo $sts_query;
+		//$nama = "Mulyana Yusuf";
+		//echo str_replace("f","849",$nama);
+		echo'<table width="100%" id="example2" class="table table-hover style="border: 1px black solid;">';
+			echo '<thead style="background-color:grey;">
+				<tr>
+					<td colspan="18" style="text-align:center;">
+						<b>LAPORAN STOCK PRODUK</b>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="18" style="text-align:center;">
+					';
+					if(!empty($data_kantor))
+					{
+						$data_kantor = $data_kantor->row();
+						echo'
+						<b>'.$data_kantor->nama_kantor.'</b>
+						</td>
+						</tr>
+						<tr>
+							<td colspan="18" style="text-align:center;">
+								'.$data_kantor->alamat.'
+							</td>
+						</tr>
+						';
+					}
+					else
+					{
+						echo'
+						<b>'.$this->session->userdata('ses_nama_kantor').'</b>
+						</td>
+						</tr>
+						<tr>
+							<td colspan="18" style="text-align:center;">
+								'.$this->session->userdata('ses_alamat_kantor').'
+							</td>
+						</tr>
+						';
+					}
+						
+			echo'
+				<tr>
+					<td colspan="18" style="text-align:center;">
+						<br/>
+					</td>
+				</tr>
+				<tr style="">';
+						echo '<th style="border: 1px black solid;background-color:black;color:white;">NO</th>';
+						echo '<th style="border: 1px black solid;background-color:black;color:white;">KODE</th>';
+						echo '<th style="border: 1px black solid;background-color:black;color:white;">NAMA</th>';
+						echo '<th style="border: 1px black solid;background-color:black;color:white;">SUPPLIER</th>';
+						//echo '<th>HPP</th>';
+						//echo '<th>SATUAN</th>';
+						//echo '<th>BATASAN</th>';
+						//echo '<th>AWAL</th>';
+						
+						
+						echo '<th style="border: 1px black solid;background-color:black;color:white;">MIN</th>';
+						echo '<th style="border: 1px black solid;background-color:black;color:white;">MAX</th>';
+						echo '<th style="border: 1px black solid;background-color:black;color:white;">BUF</th>';
+						echo '<th style="border: 1px black solid;background-color:black;color:white;">LT</th>';
+						echo '<th style="border: 1px black solid;background-color:black;color:white;">ST.AWAL</th>';
+						echo '<th style="border: 1px black solid;background-color:black;color:white;">TERIMA</th>';
+						echo '<th style="border: 1px black solid;background-color:black;color:white;">JUAL</th>';
+						echo '<th style="border: 1px black solid;background-color:black;color:white;">IN</th>';
+						echo '<th style="border: 1px black solid;background-color:black;color:white;">OUT</th>';
+						//echo '<th>RETUR KE SUPPLIER</th>';
+						echo '<th style="border: 1px black solid;">RETUR PEMBELIAN</th>';
+						echo '<th style="border: 1px black solid;">RETUR PENJUALAN</th>';
+						echo '<th style="border: 1px black solid;background-color:black;color:white;">STOCK</th>';
+						echo '<th style="border: 1px black solid;background-color:black;color:white;">SATUAN</th>';
+						echo '<th style="border: 1px black solid;background-color:black;color:white;">HARGA</th>';
+						echo '<th style="border: 1px black solid;background-color:black;color:white;">SUBTOTAL</th>';
+						//echo '<th>PERSEDIAAN</th>';
+			echo '</tr>
+</thead>';
+			$list_result = $list_stock_produk->result();
+			$no =1;
+			$sub_total = 0;
+			$grand_total = 0;
+			
+			echo '<tbody>';
+			foreach($list_result as $row)
+			{
+				echo'<tr>';
+					echo'<td style="border: 0px black solid;">'.$no.'</td>';
+					
+					/*
+					echo '<td>
+						<b>KODE : </b>'.$row->kode_produk.' 
+						<br/> <b>NAMA : </b>'.$row->nama_produk.'
+						<br/> <b>SUPPLIER : </b>'.$row->produksi_oleh.'
+						<br/> <b>SATUAN : </b><font style="color:red;">'.$row->kode_satuan.'</font>
+						<br/> <b>HPP : </b>'.$row->hpp.'
+						<br/> <b>MIN - MAX : </b>'.$row->min_stock.' - '.$row->max_stock.'
+						<br/> <b>TGL STOCK AWAL : </b>'.$row->tgl_stock.' 
+						<br/> <b>STOCK AWAL : </b>'.$row->AWAL.'
+						<br/> <b>BF.STOCK - LT.TIME : </b>'.$row->buf_stock.' - '.$row->late_time.' Hari
+					</td>';
+					*/
+					
+					if($row->produksi_oleh == '')
+					{
+						$supplier = $row->pencipta;
+					}
+					else
+					{
+						$supplier = $row->produksi_oleh;
+					}
+					
+					echo '<td style="border: 0px black solid;">'.$row->kode_produk.'</td>';
+					echo '<td style="border: 0px black solid;">'.$row->nama_produk.'</td>';
+					echo '<td style="border: 0px black solid;">'.$supplier.'</td>';
+					
+					
+					echo '<td style="text-align:center;border: 0px black solid;">
+						'.$row->min_stock.'
+					</td>';
+					echo '<td style="text-align:center;border: 0px black solid;">
+						'.$row->max_stock.'
+					</td>';
+					
+					echo'<td style="text-align:center;border: 0px black solid;">'.$row->buf_stock.'</td>';
+					echo'<td style="text-align:center;border: 0px black solid;">'.$row->late_time.'</td>';
+					
+					echo'<td style="text-align:center;border: 0px black solid;">'.$row->STOCK_AWAL.'</td>';
+					
+					//echo '<td style="text-align:right;">'.$row->hpp.'</td>';
+					//echo'<td>'.$row->kode_satuan.'</td>';
+					/*
+					echo '<td>
+						<b>MIN STOCK : </b>'.$row->min_stock.' 
+						<br/> <b>MAX STOCK : </b>'.$row->max_stock.'
+					</td>';
+					
+					echo '<td>
+						<b>TGL STOCK AWAL : </b>'.$row->tgl_stock.' 
+						<br/> <b>STOCK AWAL : </b>'.$row->AWAL.'
+					</td>';
+					*/
+					
+					//echo'<td style="text-align:right;">'.$row->DITERIMA.'</td>';
+					
+					echo'<td style="text-align:center;border: 0px black solid;">
+							'.$row->JML_DITERIMA.'
+						</td>';
+						
+					echo'<td style="text-align:center;border: 0px black solid;">
+						'.$row->JML_TERJUAL.'
+						</td>';
+					
+					//echo'<td style="text-align:right;">'.$row->MUTASIIN.'</td>';
+					echo'<td style="text-align:center;border: 0px black solid;">
+						'.$row->MUTASI_IN.'
+						</td>';
+						
+					
+					//echo'<td style="text-align:right;">'.$row->MUTASIOUT.'</td>';
+					echo'<td style="text-align:center;border: 0px black solid;">
+						'.$row->MUTASI_OUT.'
+						</td>';
+					
+					//echo'<td style="text-align:right;">'.$row->RETURPEMBELIAN.'</td>';
+					echo'<td style="text-align:center;border: 0px black solid;">
+					
+						'.$row->RETUR_PEMBELIAN.'
+						</td>';
+					
+					echo'<td style="text-align:center;border: 0px black solid;">
+					
+						'.$row->RETUR_PENJUALAN.'
+						</td>';
+					
+					//echo'<td style="text-align:right;">'.$row->STOCK.'</td>';
+					echo'<td style="text-align:center;border: 0px black solid;">
+					
+						'.$row->STOCK_AKHIR.'
+						</td>';
+					
+					echo '<td style="border: 0px black solid;">
+						'.$row->kode_satuan.'
+					</td>';
+					echo'<td style="text-align:right;border: 1px black solid;">'.($row->harga).'</td>';
+																
+					echo'<td style="text-align:right;border: 1px black solid;">'.($row->harga * $row->STOCK_AKHIR).'</td>';
+					
+					
+					//echo'<td style="text-align:right;">'.$row->NOMINAL_STOCK.'</td>';
+					
+					
+					echo'<input type="hidden" id="id_produk_'.$no.'" name="id_produk_'.$no.'" value="'.md5($row->id_produk).'" />';
+					
+				echo'</tr>';
+				$no++;
+				$grand_total = $grand_total + ($row->harga * $row->STOCK_AKHIR);
+				
+				//$sub_total = $sub_total + $row->nominal;
+				//sum_uang_keluar
+			}
+			
+			echo'
+				<tr>
+					<td colspan="16" style="text-align:right;border: 1px black solid;">GRAND TOTAL</td>
+					<td style="text-align:right;border: 1px black solid;"></td>
+					<td style="text-align:right;border: 1px black solid;">'.$grand_total.'</td>
+				</tr>
+			';
+			echo '</tbody>';
+		echo'</table>';
+	}
+	else
+	{
+		echo'<center>';
+		echo'Tidak Ada Data Yang Ditampilkan !';
+		echo'</center>';
+	}
+//TABLE
+?>

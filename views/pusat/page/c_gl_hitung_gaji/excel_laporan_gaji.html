@@ -1,0 +1,105 @@
+ <title>Laporan Gaji</title>
+ 
+ <?php
+ $title = "Laporan-Gaji";
+ header('Content-Type: application/vnd.ms-excel');
+ header('Content-Disposition: attachment;filename="Laporan Penggajian.xls"');
+
+ 
+ ?>
+
+ <table width="50%" id="example2" class="table table-hover hoverTable">
+	<tbody>
+		<tr>
+			<td colspan="11" style="text-align:center;">
+				<b>LAPORAN PENGGAJIAN</b>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="11" style="text-align:center;">
+				<b>Glafidsya Medika Cianjur</b>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="11" style="text-align:center;">
+				<?=$this->session->userdata('ses_alamat_kantor');?>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="11" style="text-align:center;">
+				<b>Periode <?=$periode; ?></b>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="11" style="text-align:center;">
+				<br/>
+			</td>
+		</tr>
+		
+		<tr>
+			<td width="5%" style="background-color:green;color:white;">No</td>
+			<td width="10%" style="background-color:green;color:white;">No Karyawan</td>
+			<td width="15%" style="background-color:green;color:white;">Nama Karyawan</td>
+			<td width="10%" style="background-color:green;color:white;">Cabang</td>
+			<td width="10%" style="background-color:green;color:white;">Jabatan</td>
+			<td width="10%" style="background-color:green;color:white;">Masuk Kerja</td>
+			<td width="10%" style="background-color:green;color:white;">Gaji Pokok</td>
+			<td width="10%" style="background-color:green;color:white;">Tunjangan</td>
+			<td width="10%" style="background-color:green;color:white;">Potongan</td>
+			<td width="10%" style="background-color:green;color:white;">PPH 21</td>
+			<td width="10%" style="background-color:green;color:white;">Gaji Kotor</td>
+			<td width="10%" style="background-color:green;color:white;">Gaji Bersih</td>
+		</tr>
+		<?php
+			$no=1;
+			$gapok=0;
+      		$tunjangan=0;
+      		$potongan=0;
+      		$pph=0;
+      		$gkotor=0;
+      		$gbersih=0;
+
+			foreach($data as $row)
+			{
+				echo '<tr>';
+				echo '<td>'.$no.'</td>';
+				echo '<td>'.$row->no_karyawan.'</td>';
+				echo '<td>'.$row->nama_karyawan.'</td>';
+				echo '<td>'.$row->kode_kantor.'</td>';
+				echo '<td>'.$row->jabatan.'</td>';
+				echo '<td>'.$row->tgl_diterima.'</td>';
+				echo '<td>'.number_format($row->gaji_pokok).'</td>';
+				echo '<td>'.number_format($row->total_tunjangan).'</td>';
+				echo '<td>'.number_format($row->total_potongan).'</td>';
+				echo '<td>'.number_format($row->pph_21).'</td>';
+				echo '<td>'.number_format($row->gaji_kotor).'</td>';
+				echo '<td>'.number_format($row->gaji_bersih).'</td>';
+				echo '</tr>';
+
+				$no++;
+				$gapok += $row->gaji_pokok;
+          		$tunjangan += $row->total_tunjangan;
+          		$potongan += $row->total_potongan;
+          		$pph += $row->pph_21;
+          		$gkotor += $row->gaji_kotor;
+          		$gbersih += $row->gaji_bersih;
+			}
+
+			echo '<tr>';
+			echo '	<td></td>';
+			echo '	<td></td>';
+			echo '	<td></td>';
+			echo '	<td></td>';
+			echo '	<td></td>';
+			echo '	<td><b>Total</b></td>';
+			echo '	<td><b>'.number_format($gapok).'</b></td>';
+			echo '	<td><b>'.number_format($tunjangan).'</b></td>';
+			echo '	<td><b>'.number_format($potongan).'</b></td>';
+			echo '	<td><b>'.number_format($pph).'</b></td>';
+			echo '	<td><b>'.number_format($gkotor).'</b></td>';
+			echo '	<td><b>'.number_format($gbersih).'</b></td>';
+			echo '</tr>';
+		?>
+	</tbody>
+</table>
+

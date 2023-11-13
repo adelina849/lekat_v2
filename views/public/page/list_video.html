@@ -1,0 +1,76 @@
+			<div class="heading-title heading-border">
+				<h3><span>List Video</span></h3>
+				<p class="font-lato fs-14">Menampilkan Video - video terkait Zakat, Infaq dan Sadaqah BAZNAS Kab.Sukabumi.</p>
+			</div>
+			
+			<?php
+				if(!empty($list_video)) 
+				{  
+					$list_result = $list_video->result();
+					foreach($list_result as $row)
+					{
+			?>
+					<!-- POST ITEM -->
+						<div class="blog-post-item">
+
+							<!-- VIDEO -->
+							<div class="mb-20">
+								<div class="embed-responsive embed-responsive-16by9">
+									<!-- <iframe class="embed-responsive-item" src="http://player.vimeo.com/video/8408210" width="800" height="450"></iframe> -->
+									<?php echo $row->VID_LINK;?>
+									<!-- <iframe width="100%" height="360" src="https://www.youtube.com/embed/CCuuBD01KVU" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe> -->
+								</div>
+							</div>
+
+							<h2><a href="blog-single-default.html"><?php echo $row->VID_NAMA;?></a></h2>
+
+							<ul class="blog-post-info list-inline">
+								<li>
+									<a href="#">
+										<i class="fa fa-clock-o"></i> 
+										<span class="font-lato"><?php echo $row->VID_DTINS;?></span>
+									</a>
+								</li>
+								<li>
+									<a href="#">
+										<i class="fa fa-comment-o"></i> 
+										<span class="font-lato">0 Comments</span>
+									</a>
+								</li>
+								<!-- <li> -->
+									<!-- <i class="fa fa-folder-open-o"></i>  -->
+
+									<!-- <a class="category" href="#"> -->
+										<!-- <span class="font-lato">Design</span> -->
+									<!-- </a> -->
+									<!-- <a class="category" href="#"> -->
+										<!-- <span class="font-lato">Photography</span> -->
+									<!-- </a> -->
+								<!-- </li> -->
+								<li>
+									<a href="#">
+										<i class="fa fa-user"></i> 
+										<span class="font-lato">Administartor</span>
+									</a>
+								</li>
+							</ul>
+
+							<p><?php echo $row->VID_KET;?></p>
+
+							<!-- <a href="blog-single-default.html" class="btn btn-reveal btn-default"> -->
+								<!-- <i class="fa fa-plus"></i> -->
+								<!-- <span>Read More</span> -->
+							<!-- </a> -->
+
+						</div>
+						<!-- /POST ITEM -->
+			<?php
+					}
+				}
+			?>
+			
+			<center>
+				<?php
+					echo $halaman;
+				?>
+			</center>

@@ -1,0 +1,140 @@
+ 
+<title>DataLpaoranPOBelumTerima</title>
+ 
+ <?php
+ 
+ $title = "DataLpaoranPOBelumTerima";
+ header("Content-type: application/vnd-ms-excel");
+ header("Content-Disposition: attachment; filename=$title.xls");
+ header("Pragma: no-cache");
+ header("Expires: 0");
+ 
+ ?>
+
+<?php
+	if(!empty($list_laporan_h_pembelian_detail_order_terima))
+	{
+		echo'<table width="100%" id="example2" class="table table-hover hoverTable">';
+			echo'
+			<tr>
+				<td colspan="6" style="text-align:center;">
+					<b>LAPORAN HUTANG SUPPLIER </b>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="6" style="text-align:center;">
+				';
+				if(!empty($data_kantor))
+				{
+					$data_kantor = $data_kantor->row();
+					echo'
+					<b>'.$data_kantor->nama_kantor.'</b>
+					</td>
+					</tr>
+					<tr>
+						<td colspan="6" style="text-align:center;">
+							'.$data_kantor->alamat.'
+						</td>
+					</tr>
+					';
+				}
+				else
+				{
+					echo'
+					<b>'.$this->session->userdata('ses_nama_kantor').'</b>
+					</td>
+					</tr>
+					<tr>
+						<td colspan="6" style="text-align:center;">
+							'.$this->session->userdata('ses_alamat_kantor').'
+						</td>
+					</tr>
+					';
+				}
+			echo'
+					<tr style="background-color:green;">';
+						echo '<th width="5%">NO</th>';
+						echo '<th width="30%">PEMBELIAN</th>';
+						echo '<th width="35%">PRODUK</th>';
+						echo '<th width="10%">JUMLAH PO</th>';
+						echo '<th width="10%">TERIMA</th>';
+						echo '<th width="10%">SISA</th>';
+			echo '</tr>';
+			$list_result = $list_laporan_h_pembelian_detail_order_terima->result();
+			
+			
+			$no = $this->uri->segment(2,0) + 1;
+			
+			$no_faktur_old = "";
+			$no_faktur_cur = "";
+			
+			echo '<tbody>';
+			
+			foreach($list_result as $row)
+			{
+				
+				echo'<tr>';
+					
+					//GROUP NO FAKTUR
+					$no_faktur_cur = $row->no_h_pembelian;
+					if($no_faktur_cur != $no_faktur_old)
+					{
+						echo'<td>'.$no.'</td>';
+						echo '<td>
+							<b>PO : </b>'.$row->no_h_pembelian.'
+							<br/> <b>WAKTU : </b>'.$row->tgl_h_pembelian.'
+							<br/> <b>NO SUPPLIER : </b>'.$row->kode_supplier.'
+							<br/> <b>NAMA SUPPLIER : </b>'.$row->nama_supplier.'
+						</td>';
+						
+						$no++;
+					}
+					else
+					{
+						echo'<td></td>';
+						echo'<td></td>';
+					}
+					//GROUP NO FAKTUR
+					
+					echo '<td>
+						<b>KODE : </b>'.$row->kode_produk.'
+						<br/> <b>NAMA : </b>'.$row->nama_produk.'
+					</td>';
+					
+					echo'<td>'.$row->jumlah.' '.$row->kode_satuan.'</td>';
+					
+					if($row->TERIMA > 0)
+					{
+						echo'<td style="color:red;">'.$row->TERIMA.' '.$row->kode_satuan.'</td>';
+					}
+					else
+					{
+						echo'<td>'.$row->TERIMA.' '.$row->kode_satuan.'</td>';
+					}
+					
+					$sisa = $row->jumlah - $row->TERIMA;
+					echo'<td>'.$sisa.' '.$row->kode_satuan.'</td>';
+					
+					
+										
+				echo'</tr>';
+				
+				
+				echo'<input type="hidden" id="id_d_pembelian_'.$no.'" name="id_d_pembelian_'.$no.'" value="'.$row->id_d_pembelian.'" />';
+				
+				//GROUP NO FAKTUR
+					$no_faktur_old = $row->no_h_pembelian;
+				//GROUP NO FAKTUR
+				
+			}					
+			echo '</tbody>';
+		echo'</table>';
+	}
+	else
+	{
+		echo'<center>';
+		echo'Tidak Ada Data Yang Ditampilkan !';
+		echo'</center>';
+	}
+//TABLE
+?>

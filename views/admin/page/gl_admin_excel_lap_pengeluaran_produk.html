@@ -1,0 +1,184 @@
+ <!-- <title>LaporanPemasukanPeriode<?php echo $_GET['tahun'];?><?php echo $_GET['bulan'];?></title> -->
+ <title>DataPengeluaranProduk</title>
+ 
+ <?php
+ $title = "DataPengeluaranProduk";
+ header("Content-type: application/vnd-ms-excel");
+ header("Content-Disposition: attachment; filename=$title.xls");
+ header("Pragma: no-cache");
+ header("Expires: 0");
+ 
+ ?>
+
+<?php
+	//TABLE
+	if(!empty($list_laporan_d_penjualan_pengeluaran_produk))
+	{
+		//$sum_laporan_h_penjualan = $sum_laporan_h_penjualan->row();
+		
+		echo'<table width="100%" id="example2" class="table table-hover hoverTable">';
+			echo '<thead>';
+			echo '
+				<tr>
+					<td colspan="10" style="text-align:center;">
+						<b>LAPORAN TRANSAKSI PER SALES</b>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="10" style="text-align:center;">
+						<b>'.$this->session->userdata('ses_nama_kantor').'</b>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="10" style="text-align:center;">
+						'.$this->session->userdata('ses_alamat_kantor').'
+					</td>
+				</tr>
+				<tr>
+					<td colspan="10" style="text-align:center;">
+						<b>Per '.$dari.' Sampai '.$sampai.'</b>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="10" style="text-align:center;">
+						<br/>
+					</td>
+				</tr>
+			
+			';
+			
+			echo'
+					<tr style="background-color:white;">';
+						
+						if( ($this->session->userdata('ses_nama_jabatan') == 'Admin Aplikasi') )
+						{
+							echo '<th style="background-color:green;" width="5%">NO</th>';
+							echo '<th style="background-color:green;" width="8%">TANGGAL</th>';
+							echo '<th style="background-color:green;" width="5%">NO FAKTUR</th>';
+							
+							echo '<th style="background-color:green;" width="15%">PELANGGAN</th>';
+							//echo '<th width="5%">JENIS</th>';
+							
+							echo '<th style="background-color:green;" width="5%">KODE</th>';
+							echo '<th style="background-color:green;" width="17%">NAMA PRODUK</th>';
+							
+							//echo '<th width="5%">JENIS</th>';
+							echo '<th style="background-color:green;" width="13%">SUPPLIER</th>';
+							
+							echo '<th style="background-color:green;" width="5%">JUMLAH</th>';
+							echo '<th style="background-color:green;" width="5%">SATUAN</th>';
+							echo '<th style="background-color:green;" width="5%">HPP</th>';
+							echo '<th style="background-color:green;" width="5%">HARGA</th>';
+							echo '<th style="background-color:green;" width="5%">SUBTOTAL</th>';
+							echo '<th style="background-color:green;" width="5%">MARGIN</th>';
+						}
+						else
+						{
+							echo '<th style="background-color:green;" width="5%">NO</th>';
+							echo '<th style="background-color:green;" width="8%">TANGGAL</th>';
+							echo '<th style="background-color:green;" width="5%">NO FAKTUR</th>';
+							
+							echo '<th style="background-color:green;" width="20%">PELANGGAN</th>';
+							//echo '<th width="5%">JENIS</th>';
+							
+							echo '<th style="background-color:green;" width="10%">KODE</th>';
+							echo '<th style="background-color:green;" width="20%">NAMA PRODUK</th>';
+							
+							//echo '<th width="5%">JENIS</th>';
+							echo '<th style="background-color:green;" width="15%">SUPPLIER</th>';
+							
+							echo '<th style="background-color:green;" width="5%">JUMLAH</th>';
+							echo '<th style="background-color:green;" width="5%">SATUAN</th>';
+							echo '<th style="background-color:green;" width="5%">HARGA</th>';
+							echo '<th style="background-color:green;" width="5%">SUBTOTAL</th>';
+						}
+			echo '</tr>
+				</thead>';
+			$list_result = $list_laporan_d_penjualan_pengeluaran_produk->result();
+			
+			
+			$no = 1;
+			$grand_total = 0;
+			$harga = 0;
+			$hpp = 0;
+			$margin = 0;
+			$total_margin = 0;
+			
+			echo '<tbody>';
+			
+			foreach($list_result as $row)
+			{
+				echo'<tr class="tr_utama">';
+					echo'<td>'.$no.'</td>';
+					echo'<td>'.$row->tgl_h_penjualan.'</td>';
+					echo'<td>'.$row->no_faktur.'</td>';
+					//echo'<td>'.$row->no_costumer.'</td>';
+					
+					echo'<td>
+						'.$row->nama_costumer.'
+						<br/>
+						('.$row->nama_kat_costumer.')
+						</td>';
+					
+					
+					echo'<td>'.$row->kode_produk.'</td>';
+					echo'<td>'.$row->nama_produk.'</td>';
+					
+					//echo'<td>'.$row->isProduk.'</td>';
+					echo'<td>'.$row->nama_supplier.'</td>';
+					
+					
+					echo'<td style="text-align:right;">'.$row->jumlah.'</td>';
+					echo'<td>'.$row->satuan_jual.'</td>';
+					
+					if( ($this->session->userdata('ses_nama_jabatan') == 'Admin Aplikasi') )
+					{
+						echo'<td style="text-align:right;">'. $row->harga_dasar .'</td>';
+					}
+					
+					$harga = $row->harga - $row->diskon;
+					echo'<td style="text-align:right;">'. $harga .'</td>';
+					
+					
+					
+					$subtotal = $row->jumlah * ($row->harga - $row->diskon);
+					echo'<td style="text-align:right;">'. $subtotal .'</td>';
+					
+					if( ($this->session->userdata('ses_nama_jabatan') == 'Admin Aplikasi') )
+					{
+						$hpp = $row->jumlah * $row->harga_dasar;
+						$margin = $subtotal - $hpp;
+						$total_margin = $total_margin + $margin;
+						echo'<td style="text-align:right;">'. $margin .'</td>';
+					}
+					
+				echo'</tr>';
+				$no++;
+				$grand_total = $grand_total + $subtotal;
+			}		
+			
+				echo'<tr>';							
+					if( ($this->session->userdata('ses_nama_jabatan') == 'Admin Aplikasi') )
+					{
+						echo'<td colspan="11" style="text-align:right;font-weight:bold;">GRAND TOTAL</td>';
+						echo'<td style="text-align:right;font-weight:bold;">'. $grand_total.'</td>';
+						echo'<td style="text-align:right;font-weight:bold;">'. $total_margin.'</td>';
+					}
+					else
+					{
+						echo'<td colspan="10" style="text-align:right;font-weight:bold;">GRAND TOTAL</td>';
+						echo'<td style="text-align:right;font-weight:bold;">'. $grand_total.'</td>';
+					}
+				echo'</tr>';
+														
+			echo '</tbody>';
+		echo'</table>';
+	}
+	else
+	{
+		echo'<center>';
+		echo'Tidak Ada Data Yang Ditampilkan !';
+		echo'</center>';
+	}
+	//TABLE
+?>

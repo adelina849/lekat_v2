@@ -1,0 +1,133 @@
+ <!-- <title>LaporanPemasukanPeriode<?php echo $_GET['tahun'];?><?php echo $_GET['bulan'];?></title> -->
+ <title>LaporanHutangSupplier</title>
+ 
+ <?php
+ $title = "LaporanHutangSupplier";
+ header("Content-type: application/vnd-ms-excel");
+ header("Content-Disposition: attachment; filename=$title.xls");
+ header("Pragma: no-cache");
+ header("Expires: 0");
+ 
+ ?>
+
+<?php
+if(!empty($list_lap_hutang_view))
+{
+
+	$list_result = $list_lap_hutang_view->result_array();
+	$num_col=0;
+	
+	echo'<table width="100%" id="example2" class="table table-bordered table-hover">';
+		echo '<thead>
+				 <tr>';
+					echo '<th width="3%">No</th>';
+					//echo '<th width="10%">Kode Produk</th>';
+					echo '<th width="20%">SUPPLIER</th>';
+
+					foreach($list_field as $field)
+					{
+						if($num_col>=3)
+						{
+							//$str_data = explode("z",$field->name);
+							//$str_data = substr($str_data,0,strlen($str_data)-1);
+							
+							
+							if($field->name == 'TOTAL')
+							{
+								$str_data = $field->name;
+								//echo '<th width="5%">'.$str_data[0].'</th>';
+								echo '<th width="5%">'.$str_data.'</th>';
+							}
+							else
+							{
+								$str_data = str_replace("T","",$field->name);
+								//echo '<th width="5%">'.$str_data[0].'</th>';
+								echo '<th width="5%">'.$str_data.'</th>';
+							}
+							
+							
+							/*
+							$str_data = $field->name;
+							echo '<th width="5%">'.$str_data.'</th>';
+							*/
+						}
+						$num_col++;
+					}
+					
+			echo '</tr>
+			 </thead>';
+		
+		
+		//echo $num_field;
+		$no = 1; //$this->uri->segment(2,0)+1;
+		
+		echo '<tbody>';
+		foreach($list_result as $row)
+		{
+			if($no>1)
+			{
+				echo '<tr>';
+				echo'<td><input type="hidden" id="no_'.$row['kode_supplier'].'" value="'.$row['kode_supplier'].'" />'.($no - 1).'</td>';
+				//echo'<td><input type="hidden" id="kode_'.$row['kode_supplier'].'" value="'.$row['kode_supplier'].'" />'.$row['kode_supplier'].'</td>';
+				echo'<td><input type="hidden" id="nama_'.$row['kode_supplier'].'" value="'.$row['nama_supplier'].'" />'.$row['nama_supplier'].'('.$row['hari_tempo'].')</td>';
+				
+				
+				$num_col=0;
+				foreach($list_field as $field)
+				{
+					
+					if($num_col>=3)
+					{
+						//JIKA ADA SATUAN DEFAULT
+						/*
+							if($row[$field->name] == 1)
+							{
+								$strIdSatuan = str_replace("1","",$field->name);
+								echo'<td><input type="text" onkeypress="return isNumberKey(event)" size="1" 
+								id="'.$strIdSatuan.'-'.$row['id_produk'].'" value="'.$row[$field->name].'" onchange="saveInput(this);" readonly /></td>';
+							}
+							else
+							{
+								$strIdSatuan = str_replace("1","",$field->name);
+								echo'<td><input type="text" onkeypress="return isNumberKey(event)" size="1" 
+								id="'.$strIdSatuan.'-'.$row['id_produk'].'" value="'.$row[$field->name].'" onchange="saveInput(this);" style="background-color:green;" /></td>';
+							}
+						*/
+						//JIKA ADA SATUAN DEFAULT
+						
+						//if($row[$field->name] > 0)
+						if((!empty($_GET['dari'])) && ($_GET['dari']!= "")  )
+						{
+							$dari = $_GET['dari'];
+							$sampai = $_GET['sampai'];
+						}
+						else
+						{
+							$dari = date("Y-m-d");
+							$sampai = date("Y-m-d");
+						}
+						
+						echo'
+						<td>
+							'.$row[$field->name].'
+						</td>';
+						
+						
+					}
+					
+					$num_col++;
+				}
+			}
+			$no++;
+		}
+		echo '</tr>';
+		echo '</tbody>';
+	echo'</table>';
+}
+else
+{
+	echo'<center>';
+	echo'Tidak Ada Data Yang Ditampilkan !';
+	echo'</center>';
+}
+?>

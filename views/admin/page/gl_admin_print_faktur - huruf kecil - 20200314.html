@@ -1,0 +1,177 @@
+<html>
+	<head>
+		<?php
+			echo '<title>'.$this->session->userdata('ses_gnl_nama_aplikasi').'</title>';
+		?>
+		
+		<!-- @page { size: auto;  margin: 0mm; } -->
+		<style>
+			@page { size: auto; margin-top:0mm;margin-bottom:0mm; }	
+		</style>
+	</head>
+	<body onload="window.print();">
+		<center style="margin:0;font-size:10px;">
+			<img class="profile-user-img img-responsive" style="border:0px;width:50%;" src= "<?php echo base_url().'/'.$this->session->userdata('ses_gnl_logo_aplikasi_besar');?>" alt="User profile picture">
+			<br/>
+			<?php echo $this->session->userdata('ses_alamat_kantor') .'<br/>';?>
+			<?php //echo $this->session->userdata('ses_alamat_kantor') .'<br/><font style="font-size:60px;font-weight:bold;">'.$data_h_penjualan->no_antrian.'</font>';?>
+			<?php //echo '<h1 style="font-size:60px;">'.$data_h_penjualan->no_antrian.'</h1>';?>
+			<?php //echo $this->session->userdata('ses_alamat_kantor');?>
+		</center>
+			<?php
+				echo '</br>
+						<font style="float:left;font-size:10px;">No Faktur : '.$data_h_penjualan->no_faktur.' </font> <font  style="float:right;font-size:10px;"> '.($data_h_penjualan->tgl_ins).'</font>';
+				//echo '<br/><b>Dokter : </b>'.$data_dokter->nama_karyawan;
+				
+				if(!empty($data_costumer))
+				{
+					echo '<br/><font style="float:left;font-size:10px;">Pasien : '.$data_costumer->nama_lengkap.'</font>';
+				}
+				if(!empty($data_dokter))
+				{
+					echo '<br/><font style="float:left;font-size:10px;">Dokter : '.$data_dokter->nama_karyawan.'</font>';
+				}
+			?>
+		
+			
+			<div class="box-body table-responsive no-padding" style="font-size:5px;">
+				<table width="100%" id="table_transaksi" class="table table-hover">
+					<thead>
+						<tr style="background-color:black;color:white;text-align:center;font-size:10px;">
+							<th width="50%" style="text-align:center;">NAMA</th>
+							<th width="15%" style="text-align:right;">JUMLAH</th>
+							<!-- <th width="15%" style="text-align:right;">HARGA</th> -->
+							<th width="20%" style="text-align:right;">SUBTOTAL</th>
+						</tr>
+					</thead>
+			<?php
+			
+				/*
+				if((!empty($_POST['cari'])) && ($_POST['cari']!= "")  )
+				{
+					$cari = "WHERE A.kode_kantor = '".$this->session->userdata('ses_kode_kantor')."' 
+							AND A.id_h_penjualan = '".$_POST['id_h_penjualan']."'
+							AND (B.kode_produk LIKE '%".str_replace("'","",$_POST['cari'])."%' OR B.nama_produk LIKE '%".str_replace("'","",$_POST['cari'])."%')";
+				}
+				else
+				{
+				*/
+					$cari = "WHERE A.kode_kantor = '".$this->session->userdata('ses_kode_kantor')."' 
+							AND A.id_h_penjualan = '".$data_h_penjualan->id_h_penjualan."'";
+				//}
+				
+				$order_by = " ORDER BY A.tgl_ins DESC ";
+				
+				$list_d_penjualan = $this->M_gl_h_penjualan->list_d_penjualan($cari,$order_by,1000,0);
+				//($cari,$_POST['limit'],$_POST['offset']);
+				
+				if(!empty($list_d_penjualan))
+				{
+						$list_result = $list_d_penjualan->result();
+						//$no =$this->uri->segment(2,0)+1;
+						$total = 0;
+						$no = 1;
+						foreach($list_result as $row)
+						{
+							//echo'<tr id="tr_'.$no.'">';
+							
+							echo'<tr id="tr_list_transaksi-'.$row->id_produk.'-'.$row->id_h_diskon.'" >';
+								
+								echo'<td width="50%" style="text-align:left;width:50%;font-size:10px;">'.$row->nama_produk.'</td>';
+								echo'<td width="15%" style="text-align:center;width:10%;font-size:10px;">'.$row->jumlah.' '.$row->satuan_jual.'</td>';
+								//echo'<td width="10%" style="text-align:center;width:10%;font-size:10px;">'.$row->satuan_jual.'</td>';
+								//echo'<td width="15%" style="text-align:right;width:15%;font-size:10px;">'.number_format($row->harga,0,'.',',').'</td>';
+								
+								echo'<td width="20%" style="text-align:right;width:15%;font-size:10px;">'.number_format($row->harga * $row->jumlah,0,'.',',').'</td>';
+							echo'</tr>';
+							$total = $total + ($row->harga * $row->jumlah);
+							$no++;
+						}
+						
+						echo'
+							
+							<tr style="border-bottom:1px solid black;">
+								<td colspan="2" style="text-align:right;font-size:10px;">TOTAL</td><td style="text-align:right;font-size:10px;">'.number_format($total,0,'.',',').'</td>
+							</tr>
+							<tr>
+								<td colspan="2" style="text-align:right;font-size:10px;">DISKON</td><td style="text-align:right;font-size:10px;">'.number_format($data_h_penjualan->diskon,0,'.',',').'</td>
+							</tr>
+						';
+						
+						if( ($this->session->userdata('ses_gnl_pajak_transaksi')) > 0)
+						{
+							echo'
+							<tr>
+								<td colspan="2" style="text-align:right;font-size:10px;">PAJAK</td><td style="text-align:right;font-size:10px;">'.number_format($data_h_penjualan->pajak,0,'.',',').'</td>
+							</tr>
+							';
+						}
+						
+						if(!empty($data_pembayaran_bank))
+						{
+							//$data_pembayaran_bank = $data_pembayaran_bank->row();
+							$bayar_bank = $data_pembayaran_bank->nominal;
+						}
+						else
+						{
+							$bayar_bank = 0;
+						}
+						
+						if(!empty($data_pembayaran_cash))
+						{
+							//$data_pembayaran_cash = $data_pembayaran_cash->row();
+							$bayar_cash = $data_pembayaran_cash->nominal;
+						}
+						else
+						{
+							$bayar_cash = 0;
+						}
+						
+						$bayar_all = $bayar_bank + $bayar_cash;
+						
+						echo'
+						<tr>
+							<td colspan="2" style="text-align:right;font-size:10px;">BAYAR</td><td style="text-align:right;font-size:10px;">'.number_format($bayar_all,0,'.',',').'</td>
+						</tr>
+						';
+						
+						$kembalian = $bayar_all - (($total + $data_h_penjualan->pajak) - $data_h_penjualan->diskon);
+						
+						echo'
+						<tr>
+							<td colspan="2" style="text-align:right;font-size:10px;">KEMBALI</td><td style="text-align:right;font-size:10px;">'.number_format($kembalian,0,'.',',').'</td>
+						</tr>
+						';
+						
+						
+				}
+				else
+				{
+					//echo "TIDAK ADA DATA YANG DITAMPILKAN";
+				}
+			
+			?>
+				</table>
+			</div>
+			
+		
+		
+		
+		<center>
+			<?php
+				//echo '<br/>'.$data_h_penjualan->type_h_penjualan;
+			?>
+			<table style="width:100%; text-align:center;">
+				<tr><td>
+					<font style="text-align:right;font-size:8px;">TERIMA KASIH TELAH BERKUNJUNG, KAMI TUNGGU KEDATANGAN ANDA SELANJUTNYA</font>
+				</td></tr>
+				
+				<tr><td>
+					<img class="profile-user-img img-responsive" style="border:0px;width:25%;" src= "<?php echo base_url().'/assets/global/images/qrcode/'.$data_h_penjualan->no_faktur.'.png';?>" alt="User profile picture">
+				</td></tr>
+			</table>
+			
+			
+		</center>
+	</body>
+</html>

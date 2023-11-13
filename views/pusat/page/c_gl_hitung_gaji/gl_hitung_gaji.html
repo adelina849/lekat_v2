@@ -1,0 +1,1824 @@
+	  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.4 -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/dist/css/AdminLTE.min.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/dist/css/skins/_all-skins.min.css">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/plugins/select2/select2.min.css">
+	  <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/bower_components/bootstrap-daterangepicker/daterangepicker.css">
+	  <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+	  <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/bower_components/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css">
+	  <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/plugins/timepicker/bootstrap-timepicker.min.css">
+
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/plugins/datatables/dataTables.bootstrap.css">
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/plugins/datatables/jquery.dataTables.css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+
+			<style type="text/css">
+				.labelfrm {
+					display:block;
+					font-size:small;
+					margin-top:5px;
+				}
+				.error {
+					font-size:small;
+					color:red;
+				}
+			</style>
+
+			<script type="text/javascript">
+				var htmlobjek;
+				$(document).ready(function()
+				{
+					$('#6_penggajian').attr('class', 'active treeview');
+					$('#66_penggajian_hitung_gaji').attr('class', 'active');
+				});
+			</script>
+
+	<div class="content-wrapper">
+		<!-- Content Header (Page header) -->
+		<section class="content-header">
+
+		<h1>
+			<?php
+				echo $this->session->userdata('ses_gnl_nama_aplikasi');
+				/*
+				if(!empty($this->M_gl_pengaturan->get_data_by_id(1)))
+				{
+					//echo $this->M_gl_pengaturan->get_data_by_id(1)->nilai;
+					echo $this->M_gl_pengaturan->get_data_by_id(1)->nilai;
+				}
+				else
+				{
+					echo "Aplikasi Sistem Informasi dan Maagement Klinik 1.0";
+				}
+				*/
+			?>
+			<?php
+				//echo $msgbox_title;
+			?>
+			<?php
+				//echo $this->session->userdata("ses_nama_kantor");
+			?>
+		</h1>
+
+
+
+		<ol class="breadcrumb">
+			<li><a href="<?php echo base_url()?>gl-admin"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+			<li><a href="#"><i class="fa fa-dashboard"></i> Penggajian</a></li>
+			<li class="active"><i class="fa fa-edit"></i> Hitung Gaji</li>
+
+		</ol>
+		</section>
+
+		<!-- Main content -->
+		<section class="content">
+		<!-- =========================================================== -->
+
+		<div class="row">
+			<div class="col-md-12">
+	          <div class="box box-success">
+	            <div class="box-header">
+	            	<div class="row">
+	            		<div class="col-md-4">
+	            			<div class="form-group">
+				                <label>Periode</label>
+
+				                <div class="input-group date">
+				                  <div class="input-group-addon">
+				                    <i class="fa fa-calendar"></i>
+				                  </div>
+				                  <input type="text" onchange="pilihTanggal()" id="periode" name="periode" value="<?=$periode;?>" class="form-control pull-right">
+				                </div>
+				                <!-- /.input group -->
+				              </div>
+	            		</div>
+	            		<div class="col-md-4">
+	            			<div class="form-group">
+				                <label>.</label>
+
+				                <a href="#" onclick="lihatLaporan()" class="btn btn-primary btn-block"><b>Lihat Laporan</b></a>
+				                <!-- /.input group -->
+				             </div>
+	            		</div>
+	            		<div class="col-md-4">
+	            			<div class="form-group">
+				                <label>.</label>
+				                <a href="#" onclick="closingGaji()" class="btn btn-warning btn-block"><b>Closing Gaji</b></a>
+				                <!-- /.input group -->
+				             </div>
+	            		</div>
+	            	</div>
+	            </div>
+	           </div>
+	        </div>
+	     </div>
+
+		<div class="row">
+			<div class="col-md-3">
+
+	          <!-- Profile Image -->
+	          <div class="box box-primary">
+	            <div class="box-body box-profile">
+	              <img class="profile-user-img img-responsive img-circle" src="<?=base_url();?>assets/global/users/loading.gif" alt="User profile picture">
+					<a href="#" class="btn btn-primary btn-block" onclick="list_karyawan()"  data-toggle="modal" data-target="#modal-karyawan"><b>Pilih Karyawan</b></a>
+
+					<hr>
+
+					<input type="hidden" name="id_karyawan" id="id_karyawan" value="<?=$id_karyawan;?>">
+					<input type="hidden" name="kode_kantor" id="kode_kantor" value="<?=$kode_kantor;?>">
+
+					<?php if(!empty($header))
+					{
+					?>
+					  <strong> No Karyawan</strong>
+		              <p class="text-muted"><?=$header->no_karyawan;?></p>
+
+		              <strong> Nama Karyawan</strong>
+		              <p class="text-muted"><?=$header->nama_karyawan;?></p>
+
+					  <strong> Jabatan</strong>
+		              <p class="text-muted"><?=$header->nama_jabatan;?></p>
+
+					  <strong> Cabang</strong>
+		              <p class="text-muted"><?=$header->nama_kantor;?></p>
+					<?php } ?>
+	            </div>
+	            <!-- /.box-body -->
+	          </div>
+	          <!-- /.box -->
+
+	        </div>
+
+			<div class="col-md-9">
+	          <div class="nav-tabs-custom">
+	            <ul class="nav nav-tabs">
+	              <li class="active"><a href="#tunjangan" data-toggle="tab">Tunjangan</a></li>
+	              <li class=""><a href="#potongan" data-toggle="tab">Potongan</a></li>
+	              <li class=""><a href="#summary-slip" data-toggle="tab">Summary</a></li>
+	            </ul>
+	            <div class="tab-content">
+	              <div class="tab-pane active" id="tunjangan">
+					<div class="pull-right">
+					</div>
+
+					<?php if(!empty($header))
+					{
+						$total = 0;
+					?>
+						<table class="table table-bordered">
+								<tbody><tr>
+									<th style="width: 10px">#</th>
+									<th>Nama Tunjangan</th>
+									<th>Nominal</th>
+									<th>Action</th>
+									<!-- <th style="width: 200px">Action</th> -->
+								</tr>
+								<?php
+									$no=1;
+									foreach($list_tunjangan as $row)
+									{
+								?>
+									<tr>
+										<input type="hidden" id="id_tampung_tunjangan_<?=$no;?>" value="<?=$row->id_tampung;?>">
+										<input type="hidden" id="kode_tunjangan_<?=$no;?>" value="<?=$row->kode_tunjangan;?>">
+										<input type="hidden" id="nama_tunjangan_<?=$no;?>" value="<?=$row->nama_tunjangan;?>">
+										<td><input type="hidden" id="id_tunjangan_<?=$no;?>" value="<?=$row->id_tunjangan_karyawan;?>"> <?=$no;?></td>
+										<td>
+											<?php 
+												echo $row->nama_tunjangan;
+												if($row->keterangan != '') {
+													echo ' ('.$row->keterangan.')';
+												}
+											?>
+										</td>
+										<td><input type="number" id="nominal_tunj_<?=$no;?>" onchange="updateTunjangan('<?=$no;?>')" value="<?=$row->nominal;?>"></td>
+										<td>
+											<a href="#" onclick="detailDataTunjangan('<?=$no;?>')" class="btn btn-warning">Detail</a>
+										</td>
+									</tr>
+								<?php 
+										$no++; 
+										$total = $total + $row->nominal;
+									} 
+								?>
+								<tr>
+									<td></td>
+									<td><strong>Total Tunjangan</strong></td>
+									<td><strong><?=number_format($total);?></strong></td>
+									<td></td>
+								</tr>
+							</tbody>
+						</table>
+					<?php } ?>
+
+					<div class="box-footer">
+		                <!-- <button type="submit" class="btn btn-info pull-right">Tambah Data</button> -->
+
+		            </div>
+	              </div>
+	              <!-- /.tab-pane -->
+	              <div class="tab-pane" id="potongan">
+	              	<?php if(!empty($header))
+					{
+						$total = 0;
+					?>
+						<table class="table table-bordered">
+								<tbody><tr>
+									<th style="width: 10px">#</th>
+									<th>Nama Potongan</th>
+									<th>Nominal</th>
+									<th>Action</th>
+									<!-- <th style="width: 200px">Action</th> -->
+								</tr>
+								<?php
+									$no=1;
+									foreach($list_potongan as $row)
+									{
+								?>
+									<tr>
+										
+										<td>
+											<input type="hidden" id="id_tampung_potongan_<?=$no;?>" value="<?=$row->id_tampung;?>">
+											<input type="hidden" id="kode_potongan_<?=$no;?>" value="<?=$row->kode_potongan;?>">
+											<input type="hidden" id="nama_potongan_<?=$no;?>" value="<?=$row->nama_potongan;?>">
+											<input type="hidden" id="id_potongan_<?=$no;?>" value="<?=$row->id_potongan_karyawan;?>"> <?=$no;?></td>
+										<td><?=$row->nama_potongan;?></td>
+										<td><input type="number" id="nominal_pot_<?=$no;?>" onchange="updatePotongan('<?=$no;?>')" value="<?=$row->nominal;?>"></td>
+										<td>
+											<a href="#" onclick="detailDataPotongan('<?=$no;?>')" class="btn btn-warning">Detail</a>
+										</td>
+										<!-- <td><input type="checkbox" class="minimal" id="check_pot_<?=$no;?>" onclick="setAktifPotongan('<?=$no;?>')" class="minimal" <?php if($row->is_aktif == '0') { echo 'checked'; } ?>></td> -->
+										<!-- <td>
+											<a href="#" onclick="updatePotongan('<?=$no;?>')" class="btn btn-warning">Update</a>
+											<a href="#" onclick="deletePotongan('<?=$no;?>')" class="btn btn-danger">Delete</a>
+										</td> -->
+									</tr>
+								<?php 
+										$no++; 
+										$total = $total + $row->nominal;
+									} 
+								?>
+								<tr>
+									<td></td>
+									<td><strong>Total Tunjangan</strong></td>
+									<td><strong><?=number_format($total);?></strong></td>
+									<td></td>
+								</tr>
+							</tbody>
+						</table>
+					<?php } ?>
+	              </div>
+
+	              <div class="tab-pane" id="summary-slip">
+	              	<table class="table table-bordered">
+	              		<thead>
+							<tr>
+								<th style="width: 20px">#</th>
+								<th width="30%">Deskripsi</th>
+								<th width="15%">Nominal</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>1</td>
+								<td>Gaji Pokok</td>
+								<td class="text-right"><?=number_format($summary->besar_gaji);?></td>
+							</tr>
+							<tr>
+								<td>2</td>
+								<td>Total Pendapatan</td>
+								<td class="text-right"><?=number_format($summary->total_pendapatan);?></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>3</td>
+								<td>Total Potongan</td>
+								<td class="text-right"><?=number_format($summary->total_potongan);?></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>4</td>
+								<td><strong>Total Bersih</strong></td>
+								<td class="text-right"><strong><?=number_format($summary->total_bersih);?></strong></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>5</td>
+								<td>PPh Ps. 21</td>
+								<td class="text-right"><?=number_format($summary->pajak);?></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>6</td>
+								<td><strong>TOTAL GAJI YANG DITERIMA</strong></td>
+								<td class="text-right"><strong><?=number_format($summary->total_bersih - $summary->pajak);?></strong></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td>Kehadiran</td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>1</td>
+								<td>Sakit</td>
+								<td class="text-right"><?=number_format($summary->sakit);?></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>2</td>
+								<td>Ijin</td>
+								<td class="text-right"><?=number_format($summary->izin);?></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>3</td>
+								<td>Absen</td>
+								<td class="text-right"><?=number_format($summary->absen);?></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>4</td>
+								<td>Cuti</td>
+								<td class="text-right"><?=number_format($summary->cuti);?></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td><strong>Total</strong></td>
+								<td class="text-right"><strong><?=number_format($summary->total_kehadiran);?></strong></td>
+								<td></td>
+							</tr>
+						</tbody>
+					</table>
+	              </div>
+
+	              <!-- /.tab-pane -->
+	            </div>
+	            <!-- /.tab-content -->
+	          </div>
+	          <!-- /.nav-tabs-custom -->
+	        </div>
+		</div><!-- /.row -->
+
+		<!-- TABLE PROSES TARIK -->
+		<div class="row">
+			<div class="col-md-6">
+	          <div class="box box-success">
+	            <div class="box-header">
+	              <h3 class="box-title">1. Tarik Potongan Absensi</h3>
+	            </div>
+	            <div class="box-body">
+	              <button id="btn_potongan_absen" onclick="hitungPotonganAbsen()" class="btn btn-info btn-lg btn-block">Proses</button>
+	            </div>
+	            <!-- /.box-body -->
+	            <!-- Loading (remove the following to stop the loading)-->
+	            <div id="table_absensi">
+	            	<!-- <div class="overlay" id="loading-potongan"><i class="fa fa-refresh fa-spin"></i></div> -->
+	        	</div>
+	            <!-- end loading -->
+	          </div>
+			</div>
+
+			<div class="col-md-6">
+	          <div class="box box-success">
+	            <div class="box-header">
+	              <h3 class="box-title">2. Tarik Potongan Late</h3>
+	            </div>
+	            <div class="box-body">
+	              <button id="btn_potongan_late" onclick="hitungPotonganLate()" class="btn btn-info btn-lg btn-block">Proses</button>
+	            </div>
+	            <div id="table_late">
+	        	</div>
+	          </div>
+			</div>
+
+		</div>
+
+		<div class="row">
+			<div class="col-md-6">
+	          <div class="box box-success">
+	            <div class="box-header">
+	              <h3 class="box-title">3. Tarik Konsultasi Pasien Baru</h3>
+	            </div>
+	            <div class="box-body">
+	              <button id="btn_konsul_baru" onclick="hitungKonsultasiBaru()" class="btn btn-info btn-lg btn-block">Proses</button>
+	            </div>
+	            <!-- /.box-body -->
+	            <!-- Loading (remove the following to stop the loading)-->
+	            <div id="table_konsul_baru">
+	            	<!-- <div class="overlay" id="loading-potongan"><i class="fa fa-refresh fa-spin"></i></div> -->
+	        	</div>
+	            <!-- end loading -->
+	          </div>
+			</div>
+
+			<div class="col-md-6">
+	          <div class="box box-success">
+	            <div class="box-header">
+	              <h3 class="box-title">4. Tarik Konsultasi Pasien Lama</h3>
+	            </div>
+	            <div class="box-body">
+	              <button id="btn_konsul_lama" onclick="hitungKonsultasiLama()" class="btn btn-info btn-lg btn-block">Proses</button>
+	            </div>
+	            <!-- /.box-body -->
+	            <!-- Loading (remove the following to stop the loading)-->
+	            <div id="table_konsul_lama">
+	            	<!-- <div class="overlay" id="loading-potongan"><i class="fa fa-refresh fa-spin"></i></div> -->
+	        	</div>
+	            <!-- end loading -->
+	          </div>
+			</div>
+
+			<div class="col-md-6">
+	          <div class="box box-success">
+	            <div class="box-header">
+	              <h3 class="box-title">5. Tarik Insentif Lembur</h3>
+	            </div>
+	            <div class="box-body">
+	              <button id="btn_lembur" onclick="hitungLembur()" class="btn btn-info btn-lg btn-block">Proses</button>
+	            </div>
+	            <!-- /.box-body -->
+	            <!-- Loading (remove the following to stop the loading)-->
+	            <div id="table_lembur">
+	            	<!-- <div class="overlay" id="loading-potongan"><i class="fa fa-refresh fa-spin"></i></div> -->
+	        	</div>
+	            <!-- end loading -->
+	          </div>
+			</div>
+
+			<div class="col-md-6">
+	          <div class="box box-success">
+	            <div class="box-header">
+	              <h3 class="box-title">6. Tarik Upselling</h3>
+	            </div>
+	            <div class="box-body">
+	              <button id="btn_upselling" onclick="hitungUpselling()" class="btn btn-info btn-lg btn-block">Proses</button>
+	            </div>
+	            <!-- /.box-body -->
+	            <!-- Loading (remove the following to stop the loading)-->
+	            <div id="table_upselling">
+	            	<!-- <div class="overlay" id="loading-potongan"><i class="fa fa-refresh fa-spin"></i></div> -->
+	        	</div>
+	            <!-- end loading -->
+	          </div>
+			</div>
+			<div class="col-md-6">
+	          <div class="box box-success">
+	            <div class="box-header">
+	              <h3 class="box-title">7. Tarik Uang Makan</h3>
+	            </div>
+	            <div class="box-body">
+	              <button id="btn_uangmakan" onclick="hitungUangMakan()" class="btn btn-info btn-lg btn-block">Proses</button>
+	            </div>
+	            <!-- /.box-body -->
+	            <!-- Loading (remove the following to stop the loading)-->
+	            <div id="table_uangmakan">
+	            	<!-- <div class="overlay" id="loading-potongan"><i class="fa fa-refresh fa-spin"></i></div> -->
+	        	</div>
+	            <!-- end loading -->
+	          </div>
+			</div>
+
+			<div class="col-md-6">
+	          <div class="box box-success">
+	            <div class="box-header">
+	              <h3 class="box-title">8. Tarik Insentif Hari Libur</h3>
+	            </div>
+	            <div class="box-body">
+	              <button id="btn_harilibur" onclick="hitungHariLibur()" class="btn btn-info btn-lg btn-block">Proses</button>
+	            </div>
+	            <!-- /.box-body -->
+	            <!-- Loading (remove the following to stop the loading)-->
+	            <div id="table_harilibur">
+	            	<!-- <div class="overlay" id="loading-potongan"><i class="fa fa-refresh fa-spin"></i></div> -->
+	        	</div>
+	            <!-- end loading -->
+	          </div>
+			</div>
+
+			<div class="col-md-6">
+	          <div class="box box-success">
+	            <div class="box-header">
+	              <h3 class="box-title">9. Tarik Tindakan Lebih 10 Jt</h3>
+	            </div>
+	            <div class="box-body">
+	              <button id="btn_lebih" onclick="hitungTindakanLebih()" class="btn btn-info btn-lg btn-block">Proses</button>
+	            </div>
+	            <!-- /.box-body -->
+	            <!-- Loading (remove the following to stop the loading)-->
+	            <div id="table_lebih">
+	            	<!-- <div class="overlay" id="loading-potongan"><i class="fa fa-refresh fa-spin"></i></div> -->
+	        	</div>
+	            <!-- end loading -->
+	          </div>
+			</div>
+
+			<div class="col-md-6">
+	          <div class="box box-success">
+	            <div class="box-header">
+	              <h3 class="box-title">10. Tarik Produk Lebih 1 Jt</h3>
+	            </div>
+	            <div class="box-body">
+	              <button id="btn_produklebih" onclick="hitungProdukLebih()" class="btn btn-info btn-lg btn-block">Proses</button>
+	            </div>
+	            <!-- /.box-body -->
+	            <!-- Loading (remove the following to stop the loading)-->
+	            <div id="table_produklebih">
+	            	<!-- <div class="overlay" id="loading-potongan"><i class="fa fa-refresh fa-spin"></i></div> -->
+	        	</div>
+	            <!-- end loading -->
+	          </div>
+			</div>
+
+			<div class="col-md-6">
+	          <div class="box box-success">
+	            <div class="box-header">
+	              <h3 class="box-title">11. Tarik Potongan Punishment</h3>
+	            </div>
+	            <div class="box-body">
+	              <button id="btn_punishment" onclick="hitungPunishment()" class="btn btn-info btn-lg btn-block">Proses</button>
+	            </div>
+	            <!-- /.box-body -->
+	            <!-- Loading (remove the following to stop the loading)-->
+	            <div id="table_punishment">
+	            	<!-- <div class="overlay" id="loading-potongan"><i class="fa fa-refresh fa-spin"></i></div> -->
+	        	</div>
+	            <!-- end loading -->
+	          </div>
+			</div>
+
+			<div class="col-md-6">
+	          <div class="box box-success">
+	            <div class="box-header">
+	              <h3 class="box-title">12. Tarik Insentif 1 Tahun</h3>
+	            </div>
+	            <div class="box-body">
+	              <button id="btn_setahun" onclick="hitungSetahun()" class="btn btn-info btn-lg btn-block">Proses</button>
+	            </div>
+	            <!-- /.box-body -->
+	            <!-- Loading (remove the following to stop the loading)-->
+	            <div id="table_setahun">
+	            	<!-- <div class="overlay" id="loading-potongan"><i class="fa fa-refresh fa-spin"></i></div> -->
+	        	</div>
+	            <!-- end loading -->
+	          </div>
+			</div>
+
+			<div class="col-md-6">
+	          <div class="box box-success">
+	            <div class="box-header">
+	              <h3 class="box-title">13. Tarik Insentif Dokter/Perawat/Terapis</h3>
+	            </div>
+	            <div class="box-body">
+	              <button id="btn_ins_terapis" onclick="hitungInsentif()" class="btn btn-info btn-lg btn-block">Proses</button>
+	            </div>
+	            <!-- /.box-body -->
+	            <!-- Loading (remove the following to stop the loading)-->
+	            <div id="table_ins_terapis">
+	            	<!-- <div class="overlay" id="loading-potongan"><i class="fa fa-refresh fa-spin"></i></div> -->
+	        	</div>
+	            <!-- end loading -->
+	          </div>
+			</div>
+
+			<div class="col-md-6">
+	          <div class="box box-success">
+	            <div class="box-header">
+	              <h3 class="box-title">14. Tarik Insentif Asst. Dokter/Resep</h3>
+	            </div>
+	            <div class="box-body">
+	              <button id="btn_ass_resep" onclick="hitungInsAssResep()" class="btn btn-info btn-lg btn-block">Proses</button>
+	            </div>
+	            <!-- /.box-body -->
+	            <!-- Loading (remove the following to stop the loading)-->
+	            <div id="table_ass_resep">
+	            	<!-- <div class="overlay" id="loading-potongan"><i class="fa fa-refresh fa-spin"></i></div> -->
+	        	</div>
+	            <!-- end loading -->
+	          </div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-12">
+	          <div class="box box-success">
+	            <div class="box-header">
+	              <h3 class="box-title">Proses Hitungan Gaji</h3>
+	            </div>
+	            <div class="box-body">
+	              <button id="btn_proses" onclick="prosesGaji()" class="btn btn-info btn-lg btn-block">Tarik Data</button>
+	            </div>
+	            <!-- /.box-body -->
+	            <!-- Loading (remove the following to stop the loading)-->
+	            <div id="table_proses">
+	            	<!-- <div class="overlay" id="loading-potongan"><i class="fa fa-refresh fa-spin"></i></div> -->
+	        	</div>
+	            <!-- end loading -->
+	          </div>
+			</div>
+		</div>
+		
+		</section><!-- /.content -->
+	</div><!-- /.content-wrapper -->
+
+<!-- Modal Karyawan -->
+<div class="modal fade" id="modal-karyawan">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">List Karyawan</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col col-md-6">
+          </div>
+          <div class="col col-md-6">
+            <div class="input-group input-group-sm">
+              <input type="text" name="cari_karyawan" onkeypress="list_karyawan()" id="cari_karyawan" placeholder="Nama karyawan" class="form-control">
+                  <span class="input-group-btn">
+                    <button type="button" class="btn btn-info btn-flat" onclick="list_karyawan()" >Cari</button>
+                  </span>
+            </div>
+          </div>
+        </div>
+        <table width="100%" id="example2" class="table table-hover">';
+          <thead>
+            <tr>
+              <th width="5%">NO</th>
+              <th width="20%">NIK Karyawan</th>
+              <th width="30%">Nama Karyawan</th>
+              <th width="20%">Cabang</th>
+              <th width="15%">AKSI</th>
+            </tr>
+          </thead>
+          <tbody id="table_karyawan">
+
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- Modal karyawan -->
+
+<!-- Modal Tunjangan -->
+<div class="modal fade" id="modal-tunjangan">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">List Tunjangan</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col col-md-6">
+          </div>
+          <div class="col col-md-6">
+            <div class="input-group input-group-sm">
+              <input type="text" name="cari_tunjangan" id="cari_tunjangan" placeholder="Nama Tunjangan" class="form-control">
+                  <span class="input-group-btn">
+                    <button type="button" class="btn btn-info btn-flat" onclick="list_tunjangan()" >Cari</button>
+                  </span>
+            </div>
+          </div>
+        </div>
+        <table width="100%" id="example2" class="table table-hover">';
+          <thead>
+            <tr>
+              <th width="5%">NO</th>
+              <th width="20%">Nama Tunjangan</th>
+              <th width="30%">Nominal</th>
+              <th width="15%">AKSI</th>
+            </tr>
+          </thead>
+          <tbody id="table_tunjangan">
+
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- Modal karyawan -->
+
+
+<!-- jQuery 2.1.4 -->
+<script src="<?php echo base_url();?>assets/adminlte/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+<script src="<?php echo base_url();?>assets/adminlte/plugins/datatables/jquery.dataTables.js"></script>
+<script src="<?php echo base_url();?>assets/adminlte/plugins/datatables/dataTables.bootstrap.js"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="<?php echo base_url();?>assets/adminlte/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+
+<!-- bootstrap datepicker -->
+<script src="<?php echo base_url();?>assets/adminlte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+
+
+
+<script type='text/javascript'>
+
+	function closingGaji()
+	{
+		var r = confirm("Yakin proses gaji akan di close?");
+		var periode = $('#periode').val();
+
+    	if (r == true) {
+    		$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_admin_hitung_gaji/closing_gaji/",
+				data: {
+					periode:periode
+				},
+				success:function(data)
+				{
+					window.location.reload();	
+				}
+			});
+    	}
+	}
+
+	function detailDataTunjangan(id)
+	{
+		var id_karyawan = $('#id_karyawan').val();
+		var periode = $('#periode').val();
+		var tgl_to = periode+'-23';
+		var kode_tunjangan = $('#kode_tunjangan_'+id).val();
+		var kode_kantor = $('#kode_kantor').val();
+
+		if(kode_tunjangan == 'TINDAKAN')
+		{
+			var href = "<?php echo base_url();?>detail-data-penggajian/"+id_karyawan+"/"+tgl_to+"/"+periode+"/"+kode_kantor;
+			window.open(href, 'popup', 'height=500,width=900,toolbar=no');	
+		} else if(kode_tunjangan == 'KONSUL1')
+		{
+			var href = "<?php echo base_url();?>detail-data-konsul-baru/"+id_karyawan+"/"+tgl_to+"/"+periode;
+			window.open(href, 'popup', 'height=500,width=1300,toolbar=no');	
+		} else if(kode_tunjangan == 'KONSUL2')
+		{
+			var href = "<?php echo base_url();?>detail-data-konsul-lama/"+id_karyawan+"/"+tgl_to+"/"+periode;
+			window.open(href, 'popup', 'height=500,width=1300,toolbar=no');	
+		} else if(kode_tunjangan == 'UPSELLING')
+		{
+			var href = "<?php echo base_url();?>detail-data-upselling/"+id_karyawan+"/"+tgl_to+"/"+periode;
+			window.open(href, 'popup', 'height=500,width=1300,toolbar=no');	
+		} else if(kode_tunjangan == 'LIBUR')
+		{
+			var href = "<?php echo base_url();?>detail-data-libur/"+id_karyawan+"/"+tgl_to+"/"+periode;
+			window.open(href, 'popup', 'height=500,width=1300,toolbar=no');	
+		} else if(kode_tunjangan == 'UM')
+		{
+			var href = "<?php echo base_url();?>detail-uang-makan/"+id_karyawan+"/"+tgl_to+"/"+periode;
+			window.open(href, 'popup', 'height=500,width=1300,toolbar=no');
+		} else if(kode_tunjangan == 'LEBIH10')
+		{
+			var href = "<?php echo base_url();?>detail-tindakan-lebih/"+id_karyawan+"/"+tgl_to+"/"+periode;
+			window.open(href, 'popup', 'height=500,width=1300,toolbar=no');
+		} else if(kode_tunjangan == 'LEBIH1')
+		{
+			var href = "<?php echo base_url();?>detail-produk-lebih/"+id_karyawan+"/"+tgl_to+"/"+periode;
+			window.open(href, 'popup', 'height=500,width=1300,toolbar=no');
+		}  else if(kode_tunjangan == 'ASSIST')
+		{
+			var href = "<?php echo base_url();?>detail-ins-ass/"+id_karyawan+"/"+tgl_to+"/"+periode+"/"+kode_kantor;
+			window.open(href, 'popup', 'height=500,width=800,toolbar=no');
+		}  else if(kode_tunjangan == 'LEMBUR')
+		{
+			var href = "<?php echo base_url();?>detail-ins-lembur/"+id_karyawan+"/"+tgl_to+"/"+periode;
+			window.open(href, 'popup', 'height=500,width=800,toolbar=no');
+		} 
+	}
+
+	function detailDataPotongan(id)
+	{
+		var id_karyawan = $('#id_karyawan').val();
+		var periode = $('#periode').val();
+		var tgl_to = periode+'-23';
+		var kode_potongan = $('#kode_potongan_'+id).val();
+		var kode_kantor = $('#kode_kantor').val();
+
+		if(kode_potongan == 'ABSEN')
+		{
+			var href = "<?php echo base_url();?>detail-potongan-absen/"+id_karyawan+"/"+tgl_to+"/"+periode;
+			window.open(href, 'popup', 'height=500,width=800,toolbar=no');	
+		} else if(kode_potongan == 'PUNISH')
+		{
+			var href = "<?php echo base_url();?>detail-punishment/"+id_karyawan+"/"+tgl_to+"/"+periode;
+			window.open(href, 'popup', 'height=500,width=800,toolbar=no');	
+		} 
+	}
+
+	function lihatLaporan()
+	{
+		var periode = $('#periode').val();
+
+		window.open(
+		  '<?=base_url();?>laporan-gaji/'+periode,
+		  '_blank'
+		);
+	}
+
+	function list_karyawan()
+	{
+		var cari = $('#cari_karyawan').val();
+
+		//alert(cari);
+		$('#table_karyawan').html('');
+		$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_admin_hitung_gaji/list_karyawan/",
+			data: {cari:cari},
+			success:function(data)
+			{
+					console.log(data);
+					 if(data==0)
+					 {
+							$('#table_karyawan').html('');
+					 } else {
+							$('#table_karyawan').html(data);
+					 }
+			}
+		});
+	}
+
+	function pilihKaryawan(no)
+	{
+		var id_karyawan = $('#id_karyawan_'+no).val();
+		var kode_kantor = $('#kode_kantor_'+no).val();
+		var periode = $('#periode').val();
+
+		window.location.replace("<?=base_url('gl-admin-hitung-gaji');?>/"+id_karyawan+"/"+kode_kantor+"/"+periode);
+
+	}
+
+	function pilihTanggal()
+	{
+		var id_karyawan = $('#id_karyawan').val();
+		var kode_kantor = $('#kode_kantor').val();
+		var periode = $('#periode').val();
+
+		window.location.replace("<?=base_url('gl-admin-hitung-gaji');?>/"+id_karyawan+"/"+kode_kantor+"/"+periode);
+
+	}
+
+	function list_tunjangan()
+	{
+		var cari = $('#cari_tunjangan').val();
+
+		//alert(cari);
+		$('#table_tunjangan').html('');
+		$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_admin_tunjangan/list_tunjangan/",
+			data: {cari:cari},
+			success:function(data)
+			{
+				console.log(data);
+				 if(data==0)
+				 {
+					$('#table_tunjangan').html('');
+				 } else {
+					$('#table_tunjangan').html(data);
+				 }
+			}
+		});
+	}
+
+	function hitungPotonganAbsen()
+	{
+		$('#table_absensi').html('<div class="overlay" id="loading-potongan"><i class="fa fa-refresh fa-spin"></i></div>');
+		$('#btn_potongan_absen').attr('disabled',true);
+
+		var periode = $('#periode').val();
+		var tgl_to = periode+'-23';
+
+		$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_admin_hitung_gaji/cek_closing/",
+			data: {
+				periode:periode,
+			},
+			success:function(data)
+			{
+				if(data == '1')
+				{
+					alert('Gagal proses data. Periode bulan ini sudah closing!!!');
+					$('#table_absensi').html('');
+					$('#btn_potongan_absen').attr('disabled',false);
+					return;
+				} else {
+					$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_admin_hitung_gaji/hitung_potongan_absensi/",
+						data: {
+							periode:periode,
+							tgl_to:tgl_to
+						},
+						success:function(data)
+						{
+							console.log(data);
+							$('#table_absensi').html('');
+							//$('#btn_potongan_absen').attr('disabled',false);
+						}
+					});
+				}
+			}
+		});		
+
+		
+	}
+
+	function hitungUangMakan()
+	{
+		$('#table_uangmakan').html('<div class="overlay" id="loading-uangmakan"><i class="fa fa-refresh fa-spin"></i></div>');
+		$('#btn_uangmakan').attr('disabled',true);
+
+		var periode = $('#periode').val();
+		var tgl_to = periode+'-23';
+
+		$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_admin_hitung_gaji/cek_closing/",
+			data: {
+				periode:periode,
+			},
+			success:function(data)
+			{
+				if(data == '1')
+				{
+					alert('Gagal proses data. Periode bulan ini sudah closing!!!');
+					$('#table_uangmakan').html('');
+					$('#btn_uangmakan').attr('disabled',false);
+					return;
+				} else {
+					$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_admin_hitung_gaji/hitung_uang_makan/",
+						data: {
+							periode:periode,
+							tgl_to:tgl_to
+						},
+						success:function(data)
+						{
+							console.log(data);
+							$('#table_uangmakan').html('');
+							//$('#btn_uangmakan').attr('disabled',false);
+						}
+					});
+				}
+			}
+		});	
+
+		
+	}
+
+	function hitungPotonganLate()
+	{
+		$('#table_late').html('<div class="overlay" id="loading-late"><i class="fa fa-refresh fa-spin"></i></div>');
+		$('#btn_potongan_late').attr('disabled',true);
+
+		var periode = $('#periode').val();
+		var kode_kantor = $('#kode_kantor').val();
+		var tgl_to = periode+'-23';
+
+
+		$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_admin_hitung_gaji/cek_closing/",
+			data: {
+				periode:periode,
+			},
+			success:function(data)
+			{
+				if(data == '1')
+				{
+					alert('Gagal proses data. Periode bulan ini sudah closing!!!');
+					$('#table_late').html('');
+					$('#btn_potongan_late').attr('disabled',false);
+					return;
+				} else {
+					$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_admin_hitung_gaji/hitung_potongan_late/",
+						data: {
+							periode:periode,
+							tgl_to:tgl_to,
+							kode_kantor:kode_kantor
+						},
+						success:function(data)
+						{
+							console.log(data);
+							$('#table_late').html('');
+							//$('#btn_potongan_late').attr('disabled',false);
+						}
+					});
+				}
+			}
+		});	
+
+		
+	}
+
+	function hitungHariLibur()
+	{
+		$('#table_harilibur').html('<div class="overlay" id="loading-late"><i class="fa fa-refresh fa-spin"></i></div>');
+		$('#btn_harilibur').attr('disabled',true);
+
+		var periode = $('#periode').val();
+		var kode_kantor = $('#kode_kantor').val();
+		var tgl_to = periode+'-23';
+		
+		$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_admin_hitung_gaji/cek_closing/",
+			data: {
+				periode:periode,
+			},
+			success:function(data)
+			{
+				if(data == '1')
+				{
+					alert('Gagal proses data. Periode bulan ini sudah closing!!!');
+					$('#table_harilibur').html('');
+					$('#btn_harilibur').attr('disabled',false);
+					return;
+				} else {
+					$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_admin_hitung_gaji/hitung_hari_libur/",
+						data: {
+							periode:periode,
+							tgl_to:tgl_to,
+							kode_kantor:kode_kantor
+						},
+						success:function(data)
+						{
+							console.log(data);
+							$('#table_harilibur').html('');
+							//$('#btn_harilibur').attr('disabled',false);
+						}
+					});
+				}
+			}
+		});	
+
+		
+	}
+
+	function hitungKonsultasiBaru()
+	{
+		$('#table_konsul_baru').html('<div class="overlay" id="loading-late"><i class="fa fa-refresh fa-spin"></i></div>');
+		$('#btn_konsul_baru').attr('disabled',true);
+
+		var periode = $('#periode').val();
+		var kode_kantor = $('#kode_kantor').val();
+		var tgl_to = periode+'-23';
+		
+
+		$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_admin_hitung_gaji/cek_closing/",
+			data: {
+				periode:periode,
+			},
+			success:function(data)
+			{
+				if(data == '1')
+				{
+					alert('Gagal proses data. Periode bulan ini sudah closing!!!');
+					$('#table_konsul_baru').html('');
+					$('#btn_konsul_baru').attr('disabled',false);
+					return;
+				} else {
+					$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_admin_hitung_gaji/hitung_konsultasi_pasien_baru/",
+						data: {
+							periode:periode,
+							tgl_to:tgl_to,
+							kode_kantor:kode_kantor
+						},
+						success:function(data)
+						{
+							console.log(data);
+							$('#table_konsul_baru').html('');
+							//$('#btn_konsul_baru').attr('disabled',false);
+						}, error: function (request, status, error) {
+					        alert('gagal tarik');
+					        $('#table_konsul_baru').html('');
+							$('#btn_konsul_baru').attr('disabled',false);
+					    }
+					});
+				}
+			}
+		});	
+
+		
+	}
+
+	function hitungKonsultasiLama()
+	{
+		$('#table_konsul_lama').html('<div class="overlay" id="loading-late"><i class="fa fa-refresh fa-spin"></i></div>');
+		$('#btn_konsul_lama').attr('disabled',true);
+
+		var periode = $('#periode').val();
+		var kode_kantor = $('#kode_kantor').val();
+		var tgl_to = periode+'-23';
+		
+
+		$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_admin_hitung_gaji/cek_closing/",
+			data: {
+				periode:periode,
+			},
+			success:function(data)
+			{
+				if(data == '1')
+				{
+					alert('Gagal proses data. Periode bulan ini sudah closing!!!');
+					$('#table_konsul_lama').html('');
+					$('#btn_konsul_lama').attr('disabled',false);
+					return;
+				} else {
+					$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_admin_hitung_gaji/hitung_konsultasi_pasien_lama/",
+						data: {
+							periode:periode,
+							tgl_to:tgl_to,
+							kode_kantor:kode_kantor
+						},
+						success:function(data)
+						{
+							console.log(data);
+							$('#table_konsul_lama').html('');
+							//$('#btn_konsul_lama').attr('disabled',false);
+						}, error: function (request, status, error) {
+					        alert('gagal tarik');
+					        $('#table_konsul_lama').html('');
+							$('#btn_konsul_lama').attr('disabled',false);
+					    }
+					});
+				}
+			}
+		});	
+
+		
+	}
+
+	function hitungLembur()
+	{
+		$('#table_lembur').html('<div class="overlay" id="loading-late"><i class="fa fa-refresh fa-spin"></i></div>');
+		$('#btn_lembur').attr('disabled',true);
+
+		var periode = $('#periode').val();
+		var kode_kantor = $('#kode_kantor').val();
+		var tgl_to = periode+'-23';
+
+		$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_admin_hitung_gaji/cek_closing/",
+			data: {
+				periode:periode,
+			},
+			success:function(data)
+			{
+				if(data == '1')
+				{
+					alert('Gagal proses data. Periode bulan ini sudah closing!!!');
+					$('#table_lembur').html('');
+					$('#btn_lembur').attr('disabled',false);
+					return;
+				} else {
+					$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_admin_hitung_gaji/hitung_lembur_v2/",
+						data: {
+							periode:periode,
+							tgl_to:tgl_to,
+							kode_kantor:kode_kantor
+						},
+						success:function(data)
+						{
+							console.log(data);
+							$('#table_lembur').html('');
+							//$('#btn_lembur').attr('disabled',false);
+						}
+					});
+				}
+			}
+		});			
+	}
+
+	function hitungInsAssResep()
+	{
+		$('#table_ass_resep').html('<div class="overlay" id="loading-late"><i class="fa fa-refresh fa-spin"></i></div>');
+		$('#btn_ass_resep').attr('disabled',true);
+
+		var periode = $('#periode').val();
+		var kode_kantor = $('#kode_kantor').val();
+		var tgl_to = periode+'-23';
+
+		$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_admin_hitung_gaji/cek_closing/",
+			data: {
+				periode:periode,
+			},
+			success:function(data)
+			{
+				if(data == '1')
+				{
+					alert('Gagal proses data. Periode bulan ini sudah closing!!!');
+					$('#table_ass_resep').html('');
+					$('#btn_ass_resep').attr('disabled',false);
+					return;
+				} else {
+					$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_admin_hitung_gaji/hitung_ins_ass_apoteker/",
+						data: {
+							periode:periode,
+							tgl_to:tgl_to,
+							kode_kantor:kode_kantor
+						},
+						success:function(data)
+						{
+							console.log(data);
+							$('#table_ass_resep').html('');
+							//$('#btn_lembur').attr('disabled',false);
+						}
+					});
+				}
+			}
+		});	
+	}
+
+	function hitungUpselling()
+	{
+		$('#table_upselling').html('<div class="overlay" id="loading-late"><i class="fa fa-refresh fa-spin"></i></div>');
+		$('#btn_upselling').attr('disabled',true);
+
+		var periode = $('#periode').val();
+		var tgl_to = periode+'-23';
+
+		$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_admin_hitung_gaji/cek_closing/",
+			data: {
+				periode:periode,
+			},
+			success:function(data)
+			{
+				if(data == '1')
+				{
+					alert('Gagal proses data. Periode bulan ini sudah closing!!!');
+					$('#table_upselling').html('');
+					$('#btn_upselling').attr('disabled',false);
+					return;
+				} else {
+					$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_admin_hitung_gaji/hitung_upselling/",
+						data: {
+							periode:periode,
+							tgl_to:tgl_to,
+						},
+						success:function(data)
+						{
+							console.log(data);
+							$('#table_upselling').html('');
+							//$('#btn_upselling').attr('disabled',false);
+						}
+					});
+				}
+			}
+		});	
+
+		
+	}
+
+	function hitungTindakanLebih()
+	{
+		$('#table_lebih').html('<div class="overlay" id="loading-late"><i class="fa fa-refresh fa-spin"></i></div>');
+		$('#btn_lebih').attr('disabled',true);
+
+		var periode = $('#periode').val();
+		var tgl_to = periode+'-23';
+
+		$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_admin_hitung_gaji/cek_closing/",
+			data: {
+				periode:periode,
+			},
+			success:function(data)
+			{
+				if(data == '1')
+				{
+					alert('Gagal proses data. Periode bulan ini sudah closing!!!');
+					$('#table_lebih').html('');
+					$('#btn_lebih').attr('disabled',false);
+					return;
+				} else {
+					$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_admin_hitung_gaji/hitung_tindakan_lebih/",
+						data: {
+							periode:periode,
+							tgl_to:tgl_to,
+						},
+						success:function(data)
+						{
+							console.log(data);
+							$('#table_lebih').html('');
+							//$('#btn_upselling').attr('disabled',false);
+						}
+					});
+				}
+			}
+		});
+
+		
+	}
+
+	function hitungProdukLebih()
+	{
+		$('#table_produklebih').html('<div class="overlay" id="loading-late"><i class="fa fa-refresh fa-spin"></i></div>');
+		$('#btn_produklebih').attr('disabled',true);
+
+		var periode = $('#periode').val();
+		var tgl_to = periode+'-23';
+
+		$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_admin_hitung_gaji/cek_closing/",
+			data: {
+				periode:periode,
+			},
+			success:function(data)
+			{
+				if(data == '1')
+				{
+					alert('Gagal proses data. Periode bulan ini sudah closing!!!');
+					$('#table_produklebih').html('');
+					$('#btn_produklebih').attr('disabled',false);
+					return;
+				} else {
+					$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_admin_hitung_gaji/hitung_produk_lebih/",
+						data: {
+							periode:periode,
+							tgl_to:tgl_to,
+						},
+						success:function(data)
+						{
+							console.log(data);
+							$('#table_produklebih').html('');
+							//$('#btn_upselling').attr('disabled',false);
+						}
+					});
+				}
+			}
+		});
+
+		
+	}
+
+	function hitungPunishment()
+	{
+		$('#table_punishment').html('<div class="overlay" id="loading-late"><i class="fa fa-refresh fa-spin"></i></div>');
+		$('#btn_punishment').attr('disabled',true);
+
+		var periode = $('#periode').val();
+		var tgl_to = periode+'-23';
+
+
+		$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_admin_hitung_gaji/cek_closing/",
+			data: {
+				periode:periode,
+			},
+			success:function(data)
+			{
+				if(data == '1')
+				{
+					alert('Gagal proses data. Periode bulan ini sudah closing!!!');
+					$('#table_punishment').html('');
+					$('#btn_punishment').attr('disabled',false);
+					return;
+				} else {
+					$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_admin_hitung_gaji/hitung_punishment/",
+						data: {
+							periode:periode,
+							tgl_to:tgl_to,
+						},
+						success:function(data)
+						{
+							console.log(data);
+							$('#table_punishment').html('');
+							//$('#btn_upselling').attr('disabled',false);
+						}
+					});
+				}	
+			}
+		});
+
+		
+	}
+
+	function hitungInsentif()
+	{
+		$('#table_ins_terapis').html('<div class="overlay" id="loading-late"><i class="fa fa-refresh fa-spin"></i></div>');
+		$('#btn_ins_terapis').attr('disabled',true);
+
+		var periode = $('#periode').val();
+		var tgl_to = periode+'-23';
+
+
+		$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_admin_hitung_gaji/cek_closing/",
+			data: {
+				periode:periode,
+			},
+			success:function(data)
+			{
+				if(data == '1')
+				{
+					alert('Gagal proses data. Periode bulan ini sudah closing!!!');
+					$('#table_ins_terapis').html('');
+					$('#btn_ins_terapis').attr('disabled',false);
+					return;
+				} else {
+					$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_admin_hitung_gaji/hitung_ins_tindakan/",
+						data: {
+							periode:periode,
+							tgl_to:tgl_to,
+						},
+						success:function(data)
+						{
+							console.log(data);
+							$('#table_ins_terapis').html('');
+							//$('#btn_upselling').attr('disabled',false);
+						}
+					});
+				}
+			}
+		});
+
+		
+	}
+
+	function hitungSetahun()
+	{
+		$('#table_setahun').html('<div class="overlay" id="loading-late"><i class="fa fa-refresh fa-spin"></i></div>');
+		$('#btn_setahun').attr('disabled',true);
+
+		var periode = $('#periode').val();
+		var tgl_to = periode+'-23';
+
+
+		$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_admin_hitung_gaji/cek_closing/",
+			data: {
+				periode:periode,
+			},
+			success:function(data)
+			{
+				if(data == '1')
+				{
+					alert('Gagal proses data. Periode bulan ini sudah closing!!!');
+					$('#table_setahun').html('');
+					$('#btn_setahun').attr('disabled',false);
+					return;
+				} else {
+					$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_admin_hitung_gaji/hitung_setahun/",
+						data: {
+							periode:periode,
+							tgl_to:tgl_to,
+						},
+						success:function(data)
+						{
+							console.log(data);
+							$('#table_setahun').html('');
+							//$('#btn_upselling').attr('disabled',false);
+						}
+					});
+				}
+			}
+		});
+
+		
+	}
+
+	function deleteTunjangan(id)
+	{
+
+		var r = confirm("Hapus tunjangan?");
+    	if (r == true) {
+
+			var id_tunjangan = $('#id_tunjangan_'+id).val();
+			var id_tampung = $('#id_tampung_tunjangan_'+id).val();
+
+			$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_admin_hitung_gaji/hapus_tunjangan/",
+				data: {
+					id_tunjangan:id_tunjangan,
+					id_tampung:id_tampung,
+				},
+				success:function(data)
+				{
+					console.log(data);
+					window.location.reload();
+				}
+			});
+		}
+	}
+
+	
+
+	function deletePotongan(id)
+	{
+		var r = confirm("Hapus tunjangan?");
+    	if (r == true) {
+
+			var id_potongan = $('#id_potongan_'+id).val();
+			var id_tampung = $('#id_tampung_potongan_'+id).val();
+
+			$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_admin_hitung_gaji/hapus_potongan/",
+				data: {
+					id_potongan:id_potongan,
+					id_tampung: id_tampung,
+				},
+				success:function(data)
+				{
+					console.log(data);
+					window.location.reload();
+				}
+			});
+		}
+	}
+
+	function updateTunjangan(id)
+	{
+		var id_tunjangan = $('#id_tunjangan_'+id).val();
+		var id_karyawan = $('#id_karyawan').val();
+		var id_tampung = $('#id_tampung_tunjangan_'+id).val();
+		var kode_tunjangan = $('#kode_tunjangan_'+id).val();
+		var nama_tunjangan = $('#nama_tunjangan_'+id).val();
+		var nominal = $('#nominal_tunj_'+id).val();
+		var periode = $('#periode').val();
+
+
+		$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_admin_hitung_gaji/cek_closing/",
+			data: {
+				periode:periode,
+			},
+			success:function(data)
+			{
+				if(data == '1')
+				{
+					alert('Gagal proses data. Periode bulan ini sudah closing!!!');
+					//$('#btn_setahun').attr('disabled',false);
+					return;
+				} else {
+					$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_admin_hitung_gaji/update_tunjangan/",
+						data: {
+							id_tunjangan: id_tunjangan,
+							id_karyawan: id_karyawan,
+							id_tampung: id_tampung,
+							nominal: nominal,
+							kode_tunjangan: kode_tunjangan,
+							nama_tunjangan: nama_tunjangan,
+							periode: periode,
+						},
+						success:function(data)
+						{
+							console.log(data);
+							//window.location.reload();
+						}
+					});
+				}
+			}
+		});
+
+		
+	}
+
+	function updatePotongan(id)
+	{
+		var id_potongan = $('#id_potongan_'+id).val();
+		var id_karyawan = $('#id_karyawan').val();
+		var nominal = $('#nominal_pot_'+id).val();
+		var id_tampung = $('#id_tampung_potongan_'+id).val();
+		var kode_potongan = $('#kode_potongan_'+id).val();
+		var nama_potongan = $('#nama_potongan_'+id).val();
+		var periode = $('#periode').val();
+
+
+		$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_admin_hitung_gaji/cek_closing/",
+			data: {
+				periode:periode,
+			},
+			success:function(data)
+			{
+				if(data == '1')
+				{
+					alert('Gagal proses data. Periode bulan ini sudah closing!!!');
+					//$('#btn_setahun').attr('disabled',false);
+					return;
+				} else {
+					$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_admin_hitung_gaji/update_potongan/",
+						data: {
+							id_potongan: id_potongan,
+							id_karyawan: id_karyawan,
+							nominal: nominal,
+							id_tampung: id_tampung,
+							kode_potongan: kode_potongan,
+							nama_potongan: nama_potongan,
+							periode: periode,
+						},
+						success:function(data)
+						{
+							console.log(data);
+							//window.location.reload();
+						}
+					});
+				}
+			}
+		});
+
+		
+	}
+
+	function setAktifPotongan(id)
+	{
+		var id_potongan = $('#id_potongan_'+id).val();
+		var cekbox = document.getElementById("check_pot_"+id);
+		var is_aktif=0;
+
+		if (cekbox.checked == true){
+			is_aktif = 0;
+		} else {
+			is_aktif = 1;
+		}
+
+		$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_admin_hitung_gaji/setaktif_potongan/",
+			data: {
+				id_potongan: id_potongan,
+				is_aktif: is_aktif
+			},
+			success:function(data)
+			{
+				console.log(data);
+				//window.location.reload();
+			}
+		});
+	}
+
+	function setAktifTunjangan(id)
+	{
+		var id_tunjangan = $('#id_tunjangan_'+id).val();
+		var cekbox = document.getElementById("check_tunj_"+id);
+		var is_aktif=0;
+		//alert(cekbox);
+		if (cekbox.checked == true){
+			is_aktif = 0;
+		} else {
+			is_aktif = 1;
+		}
+
+		$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_admin_hitung_gaji/setaktif_tunjangan/",
+			data: {
+				id_tunjangan: id_tunjangan,
+				is_aktif: is_aktif
+			},
+			success:function(data)
+			{
+				console.log(data);
+				//window.location.reload();
+			}
+		});
+	}
+
+	function prosesGaji()
+	{
+		$('#table_proses').html('<div class="overlay" id="loading-late"><i class="fa fa-refresh fa-spin"></i></div>');
+		$('#btn_proses').attr('disabled',true);
+
+		var periode = $('#periode').val();
+
+		$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_admin_hitung_gaji/cek_closing/",
+			data: {
+				periode:periode,
+			},
+			success:function(data)
+			{
+				if(data == '1')
+				{
+					alert('Gagal proses data. Periode bulan ini sudah closing!!!');
+					//$('#btn_setahun').attr('disabled',false);
+					return;
+				} else {
+					$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_admin_hitung_gaji/proses_gaji/",
+						data: {
+							periode:periode,
+						},
+						success:function(data)
+						{
+							console.log(data);
+							$('#table_proses').html('');
+							$('#btn_proses').attr('disabled',false);
+						}
+					});
+				}
+			}
+		});
+
+		
+	}
+
+	function isNumberKey(evt)
+	{
+    	var charCode = (evt.which) ? evt.which : event.keyCode
+    	if (charCode > 31 && (charCode < 48 || charCode > 57))
+
+    	return false;
+    	return true;
+	}
+
+	function RestrictSpace()
+	{
+		if (event.keyCode == 32)
+		{
+			return false;
+		}
+	}
+
+
+	function FormatCurrency(objNum)
+	{
+	   var num = objNum.value
+	   var ent, dec;
+	   if (num != '' && num != objNum.oldvalue)
+	   {
+		 num = HapusTitik(num);
+		 if (isNaN(num))
+		 {
+		   objNum.value = (objNum.oldvalue)?objNum.oldvalue:'';
+		 } else {
+		   var ev = (navigator.appName.indexOf('Netscape') != -1)?Event:event;
+		   if (ev.keyCode == 190 || !isNaN(num.split('.')[1]))
+		   {
+			 alert(num.split('.')[1]);
+			 objNum.value = TambahTitik(num.split('.')[0])+'.'+num.split('.')[1];
+		   }
+		   else
+		   {
+			 objNum.value = TambahTitik(num.split('.')[0]);
+		   }
+		   objNum.oldvalue = objNum.value;
+		 }
+	   }
+	}
+	function HapusTitik(num)
+	{
+	   return (num.replace(/\./g, ''));
+	}
+
+	function TambahTitik(num)
+	{
+	   numArr=new String(num).split('').reverse();
+	   for (i=3;i<numArr.length;i+=3)
+	   {
+		 numArr[i]+='.';
+	   }
+	   return numArr.reverse().join('');
+	}
+
+	function formatCurrency(num) {
+	   num = num.toString().replace(/\$|\./g,'');
+	   if(isNaN(num))
+	   num = "0";
+	   sign = (num == (num = Math.abs(num)));
+	   num = Math.floor(num*100+0.50000000001);
+	   cents = num0;
+	   num = Math.floor(num/100).toString();
+	   for (var i = 0; i < Math.floor((num.length-(1+i))/3); i++)
+	   num = num.substring(0,num.length-(4*i+3))+'.'+
+	   num.substring(num.length-(4*i+3));
+	   return (((sign)?'':'-') + num);
+	}
+</script>
+
+<script type="text/javascript">
+//Date picker
+$('#periode').datepicker({
+  autoclose: true,
+		format: 'yyyy-mm',
+		placeholder: 'yyyy-mm',
+})
+
+</script>

@@ -1,0 +1,129 @@
+ <title>DataPenerimaanProduk</title>
+ 
+ <?php
+ $title = "DataPenerimaanProduk";
+ header("Content-type: application/vnd-ms-excel");
+ header("Content-Disposition: attachment; filename=$title.xls");
+ header("Pragma: no-cache");
+ header("Expires: 0");
+ 
+ ?>
+
+<?php
+	//TABLE
+	if(!empty($list_penerimaan_produk))
+	{
+		//$sum_laporan_h_penjualan = $sum_laporan_h_penjualan->row();
+		
+		echo'<table width="100%" id="example2" class="table table-hover hoverTable">';
+			
+			$list_result = $list_penerimaan_produk->result();
+			
+			
+			$no = 1;
+			$grand_total = 0;
+			$subtotal = 0;
+			
+			$isProduk_cur = "";
+			$isProduk_old = "";
+			echo '<tbody>';
+			echo'
+			<tr>
+				<td colspan="7" style="text-align:center;">
+					<b>LAPORAN TRANSAKSI</b>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="7" style="text-align:center;">
+					<b>'.$this->session->userdata('ses_nama_kantor').'</b>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="7" style="text-align:center;">
+					'.$this->session->userdata('ses_alamat_kantor').'
+				</td>
+			</tr>
+			<tr>
+				<td colspan="7" style="text-align:center;">
+					<b>Per '.$dari.' Sampai '.$sampai.'</b>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="7" style="text-align:center;">
+					<br/>
+				</td>
+			</tr>
+			';
+			
+			//echo '<thead>';
+			echo'
+					<tr>';
+						echo '<th style="background-color:green;" width="5%">NO</th>';
+						echo '<th style="background-color:green;" width="10%">TGL TERIMA</th>';
+						echo '<th style="background-color:green;" width="5%">NO SJ</th>';
+																
+						echo '<th style="background-color:green;" width="10%">NO PO</th>';
+						echo '<th style="background-color:green;" width="20%">SUPPLIER</th>';
+						echo '<th style="background-color:green;" width="10%">KODE PRODUK</th>';
+						echo '<th style="background-color:green;" width="10%">NAMA PRODUK</th>';
+						echo '<th style="background-color:green;" width="10%">TERIMA</th>';
+						echo '<th style="background-color:green;" width="10%">HARGA</th>';
+						echo '<th style="background-color:green;" width="10%">NOMINAL</th>';
+			echo '</tr>';
+			//echo'</thead>';
+			foreach($list_result as $row)
+			{
+				//UNTUK GROUPING
+				/*
+				$isProduk_cur = $row->no_surat_jalan;
+				if($isProduk_cur != $isProduk_old)
+				{
+					echo'<tr class="tr_utama">';
+						echo'<td colspan="7" style="text-align:left;font-weight:bold;">
+						No Surat Jalan : '.$isProduk_cur.'
+						<br/>
+						No PO : '.$row->NO_PEMBELIAN.'
+						</td>';
+					echo'</tr>';
+					
+					$isProduk_old = $isProduk_cur;
+					$no = 1;
+				}
+				*/
+				//UNTUK GROUPING
+				
+				echo'<tr class="tr_utama">';
+					echo'<td>'.$no.'</td>';
+					echo'<td>'.substr($row->tgl_terima,0,10).'</td>';
+					echo'<td>'.$row->no_surat_jalan.'</td>';
+															
+					echo'<td>'.$row->NO_PEMBELIAN.'</td>';
+					echo'<td>'.$row->NAMA_SUPPLIER.'</td>';
+					echo'<td>'.$row->kode_produk.'</td>';
+					echo'<td>'.$row->nama_produk.'</td>';
+					echo'<td style="text-align:right;">'. $row->DITERIMA_SAT_BELI .' '.$row->KODE_SATUAN.'</td>';
+					
+					echo'<td style="text-align:right;">'. $row->HARGA_PENERIMAAN .'</td>';
+					
+					$subtotal = ($row->DITERIMA_SAT_BELI * $row->HARGA_PENERIMAAN);
+					echo'<td style="text-align:right;">'. $subtotal .'</td>';
+				echo'</tr>';
+				$no++;
+				$grand_total = $grand_total + ($row->DITERIMA_SAT_BELI * $row->HARGA_PENERIMAAN);
+			}		
+			
+				echo'<tr>';
+					echo'<td colspan="8" style="text-align:right;font-weight:bold;">GRAND TOTAL</td>';
+					echo'<td style="text-align:right;font-weight:bold;">'. $grand_total.'</td>';
+				echo'</tr>';
+			echo '</tbody>';
+		echo'</table>';
+	}
+	else
+	{
+		echo'<center>';
+		echo'Tidak Ada Data Yang Ditampilkan !';
+		echo'</center>';
+	}
+	//TABLE
+?>

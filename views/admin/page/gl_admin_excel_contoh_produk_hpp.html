@@ -1,0 +1,117 @@
+ <!-- <title>LaporanPemasukanPeriode<?php echo $_GET['tahun'];?><?php echo $_GET['bulan'];?></title> -->
+ <title>DataProdukStock</title>
+ 
+ <?php
+ $title = "DataProdukStock";
+ header("Content-type: application/vnd-ms-excel");
+ header("Content-Disposition: attachment; filename=$title.xls");
+ header("Pragma: no-cache");
+ header("Expires: 0");
+ 
+ ?>
+
+<?php
+	//TABLE
+	if(!empty($list_produk))
+		{
+			echo'<table width="100%" id="example2" class="table table-bordered table-hover">';
+				echo '<thead>
+<tr>';
+							echo '<th>KODE PRODUK</th>';
+							echo '<th>NAMA PRODUK</th>';
+							echo '<th>NAMA UMUM</th>';
+							echo '<th>SUPPLIER</th>';
+							echo '<th>PRODUKSI OLEH</th>';
+							echo '<th>MIN STOCK</th>';
+							echo '<th>MAX STOCK</th>';
+							echo '<th>LATE TIME (HARI)</th>';
+							echo '<th>MOVING</th>';
+							echo '<th>PRODUK/JASA/CONSUMABLE</th>';
+							echo '<th>HPP JASA</th>';
+							
+							echo '<th style="background-color:green;">KODE SATUAN</th>';
+							echo '<th style="background-color:green;">KONVERSI</th>';
+							echo '<th style="background-color:green;">HPP</th>';
+							echo '<th style="background-color:green;">KODE SATUAN</th>';
+							echo '<th style="background-color:green;">KONVERSI</th>';
+							echo '<th style="background-color:green;">HPP</th>';
+							echo '<th style="background-color:green;">KODE SATUAN</th>';
+							echo '<th style="background-color:green;">KONVERSI</th>';
+							echo '<th style="background-color:green;">HPP</th>';
+							
+							echo '<th style="background-color:green;">BUKAN PKP (YA/TIDAK)</th>';
+							echo '<th style="background-color:green;">KODE KATEGORI 1</th>';
+							echo '<th style="background-color:green;">KODE KATEGORI 2</th>';
+							
+							echo '<th>AKTIF/TIDAK AKTIF</th>';
+							
+				echo '</tr>
+</thead>';
+				$list_result = $list_produk->result();
+				$no = 1;
+				
+				
+				echo '<tbody>';
+				foreach($list_result as $row)
+				{
+					echo'<tr>';
+						echo"<td>".(string)$row->kode_produk."</td>";
+						echo'<td>'.$row->nama_produk.'</td>';
+						echo'<td>'.$row->nama_umum.'</td>';
+						echo'<td>'.$row->pencipta.'</td>';
+						echo'<td>'.$row->produksi_oleh.'</td>';
+						echo'<td>'.$row->min_stock.'</td>';
+						echo'<td>'.$row->max_stock.'</td>';
+						echo'<td>'.$row->late_time.'</td>';
+						echo'<td>'.$row->jenis_moving.'</td>';
+						echo'<td>'.$row->isProduk.'</td>';
+						echo'<td>'.$row->hpp.'</td>';
+						
+						
+						
+						
+						//echo'<td style="text-align:right;">Rp.'.number_format($row->NOMINAL,0,",",".").'</td>';
+						//echo'<td>'.word_limiter(strip_tags($row->ART_ISI),20,'...').'</td>';
+						echo'<td>'.$row->kode_satuan_1.'</td>';
+						echo'<td>'.$row->besar_konversi_1.'</td>';
+						echo'<td>'.$row->harga_jual_1.'</td>';
+						
+						echo'<td></td>';
+						echo'<td></td>';
+						echo'<td></td>';
+						
+						echo'<td></td>';
+						echo'<td></td>';
+						echo'<td></td>';
+						echo'<td>'.$row->isNotActive.'</td>';
+						echo'<td>'.$row->isNPKP.'</td>';
+						echo'<td></td>';
+						echo'<td></td>';
+					echo'</tr>';
+						
+					$no++;
+				}
+				
+				/*
+				echo'<tr>';
+					echo'<td colspan="7" style="text-align:right;font-weight:bold;">SUB TOTAL</td>';
+					echo'<td style="text-align:right;">Rp.'.number_format($sub_total,0,",",".").'</td>';
+				echo'</tr>';
+				
+				echo'<tr>';
+					echo'<td colspan="7" style="text-align:right;font-weight:bold;">GRAND TOTAL</td>';
+					echo'<td style="text-align:right;">Rp.'.number_format($grand_total,0,",",".").'</td>';
+				echo'</tr>';
+				*/
+				
+				echo '</tbody>';
+			echo'</table>';
+		}
+		else
+		{
+			echo'<center>';
+			echo'Tidak Ada Data Yang Ditampilkan !';
+			echo'</center>';
+		}
+	//TABLE
+?>

@@ -1,0 +1,291 @@
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.4 -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <!-- Ionicons 2.0.0 -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/dist/css/AdminLTE.min.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/dist/css/skins/_all-skins.min.css">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/plugins/iCheck/flat/blue.css">
+    <!-- Morris chart -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/plugins/morris/morris.css">
+    <!-- jvectormap -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/plugins/jvectormap/jquery-jvectormap-1.2.2.css">
+    <!-- Date Picker -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/plugins/datepicker/datepicker3.css">
+    <!-- Daterange picker -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/plugins/daterangepicker/daterangepicker-bs3.css">
+    <!-- bootstrap wysihtml5 - text editor -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
+    
+    
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+        
+    
+    <!-- Content Wrapper. Contains page content -->
+	<script type="text/javascript">
+		var htmlobjek;
+		$(document).ready(function()
+		{	
+			$('#dashboard').attr('class', 'active treeview');
+		});
+	</script>
+	
+	<script src="<?=base_url();?>assets/js/highcharts.js" type="text/javascript"></script>
+    <script type="text/javascript">
+	var chart1; // globally available
+	$(document).ready(function() 
+	{
+		chart1 = new Highcharts.Chart(
+		{
+			chart: 
+				{
+					renderTo: 'tampilkan-grafik-persentage',
+					type: 'column'
+				},   
+				title: 
+					{
+						text: 'Grafik Persentase Laporan Kecamatan'
+					},
+				xAxis: 
+					{
+						categories: ['Kecamatan']
+					},
+				yAxis: 
+					{
+						title: 
+							{
+								text: 'Persentase'
+							}
+					},
+						series:             
+						[
+							
+							<?php 
+								if (!empty($list_persen_laporan_kecamatan))
+								{
+									$list_result = $list_persen_laporan_kecamatan->result();
+									foreach($list_result as $row)
+									{
+										//echo '<option value="'.$row->id_prov.'">'.$row->nama_prov.'</option>';
+										$merek=$row->KEC_NAMA;
+										$jumlah=$row->PRSN;
+									
+							?>
+									{
+										name: '<?php echo $merek; ?>',data: [<?php echo $jumlah; ?>]
+									},
+							<?php
+									}
+								 }
+							?>
+						]
+					});
+				});	
+	</script>
+	
+	
+	
+      <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+          <h1>
+            Dashboard
+            <small>Control panel</small>
+          </h1>
+          <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active">Dashboard</li>
+          </ol>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+          <!-- Small boxes (Stat box) -->
+          <div class="row">
+			<div class="col-lg-12 col-xs-12">
+			<h3>Selamat Datang <?php echo $this->session->userdata('ses_nama_karyawan'); ?></h3>
+			</div>
+			<hr/>
+
+				<!-- Main content -->
+				<section class="content">
+				  <!-- =========================================================== -->
+
+				  <div class="row">
+					<div class="col-md-12">
+					  
+					  <!-- Perbatasan table dan form -->
+					  
+							<div class="box">
+								<div class="box-header">
+								<h3 class="box-title">Periode laporan aktif</h3>
+								</div><!-- /.box-header -->
+								<div class="box-body">
+								
+								
+								
+								<?php
+										if(!empty($list_periode_aktif))
+										{
+											echo'<table width="100%" id="example2" class="table table-bordered table-hover">';
+												echo '<thead>
+														<tr>';
+															echo '<th width="5%">No</th>';
+															echo '<th width="15%">Kode</th>';
+															echo '<th width="30%">Nama Periode</th>';
+															echo '<th width="15%">KATEGORI</th>';
+															echo '<th width="40%">Berlaku/Aktif</th>';
+												echo '</tr>
+												</thead>';
+												$list_result = $list_periode_aktif->result();
+												$no =$this->uri->segment(2,0)+1;
+												echo '<tbody>';
+												foreach($list_result as $row)
+												{
+													
+													echo'
+														<tr>
+															<td>'.$no.'</td>
+															<td>'.$row->PER_KODE.'</td>
+															<td>'.$row->PER_NAMA.'</td>
+															<td>'.$row->PER_KATEGORI.'</td>
+															<td>'.$row->PER_DARI.' - '.$row->PER_SAMPAI.'</td>
+														</tr>
+													';
+													$no++;
+												}
+												
+												echo '</tbody>';
+											echo'</table>';
+										}
+										else
+										{
+											echo'<center>';
+											echo'Tidak Ada Data Yang Ditampilkan !';
+											echo'</center>';
+										}
+									?>
+								<center>
+								<div class="halaman"><?php //echo $halaman;?></div>
+								</center>
+								</div><!-- /.box-body -->
+							</div><!-- /.box -->
+							
+							
+							<div class="box">
+								<div class="box-header">
+								<h3 class="box-title">Table Laporan</h3>
+									<div class="pull-right">
+										<!-- <form action="<?=base_url();?>admin/pendaftaran-klinik-cari" method="post" class="frm-cari"> -->
+										<form action="<?=base_url();?>kecamatan-admin-dashboard" method="get" class="frm-cari">
+											<table>
+												<tr>
+													<!-- <td>Berdasarkan</td><td>:</td> -->
+													<!-- <td>
+														<select name="berdasarkan" title="Cari Berdasarkan" class="form-control">
+															<option value=""><?php if (!empty($_GET['berdasarkan'])){echo $_GET['berdasarkan'];} ?></option>
+															<option value="spesialisasi">Spesialisasi</option>
+															<option value="pendidikan">Pendidikan</option>
+														</select>
+													</td> -->
+													<td>
+														<!-- <input type="text" name="cari"  maxlength="35" class="text form-control" size="35" alt="tlp" title="Cari data" placeholder="...Cari" value="<?php if (!empty($_GET['berdasarkan'])){echo $_GET['cari'];} ?>"/> -->
+														<input type="text" name="cari"  maxlength="35" class="text form-control" size="35" alt="tlp" title="Cari data" placeholder="...Cari" value="<?php if (!empty($_GET['cari'])){echo $_GET['cari'];} ?>"/>
+													</td>
+												</tr>
+											</table>
+										</form>
+									</div>
+								</div><!-- /.box-header -->
+								<div class="box-body">
+								
+								
+								
+								<?php
+										if(!empty($list_klaporan))
+										{
+											echo'<table width="100%" id="example2" class="table table-bordered table-hover">';
+												/*echo '<thead>
+			<tr>';
+															echo '<th width="5%">No</th>';
+															echo '<th width="10%">Kode</th>';
+															echo '<th width="15%">Nama</th>';
+															//echo '<th width="10%">Periode</th>';
+															echo '<th width="40%">Keterangan</th>';
+															echo '<th width="30%">Aksi</th>';
+												echo '</tr>
+			</thead>';*/
+												$list_result = $list_klaporan->result();
+												$no =$this->uri->segment(2,0)+1;
+												echo '<tbody>';
+												foreach($list_result as $row)
+												{
+													
+													echo'
+														<tr style="text-align:center;font-weight:bold;background-color:green;">
+															<td>'.$no.'</td>
+															<td colspan="6">'.$row->KLAP_NAMA.'</td>
+														</tr>
+													';
+													
+													//DETAIL JENIS LAPORAN
+														$jenis_laporan = $this->M_laporan->list_laporan_limit_perkecamatan($this->session->userdata("ses_KEC_ID")," WHERE A.KLAP_ID = '".$row->KLAP_ID."' ".$cari,100,0);
+														if(!empty($jenis_laporan))
+														{
+															$list_result2 = $jenis_laporan->result();
+															$no2 = 1;
+															
+															echo'<tr style="text-align:center;font-weight:bold;background-color:green;">';
+																echo'<td></td> <td>NO</td> <td>Kode</td> <td>Nama</td> <td>Periode</td> 
+																<td colspan="2">Keterangan</td>';
+															echo'</tr>';
+															foreach($list_result2 as $row2)
+															{
+																echo'<tr>';
+																	echo'<td></td> <td>'.$no2.'</td> <td>'.$row2->LAP_KODE.'</td> 
+																	<td>'.$row2->LAP_NAMA.'</td>
+																	<td>'.$row2->LAP_PERIODE.'</td>
+																	<td>'.$row2->LAP_KET.'</td>
+																	<td>
+																		<a class="confirm-btn btn btn-success btn-sm" href="'.base_url().'buat-laporan/'.$row2->LAP_ID.'" title = "Buat Laporan '.$row2->LAP_NAMA.'" alt = "Buat Laporan '.$row2->LAP_NAMA.'">Buat laporan('.$row2->JUMLAH.')</a>
+																	</td>
+																	
+																	';
+																echo'</tr>';
+																$no2++;
+															}
+															echo'<tr><td colspan="5"></td></tr>';
+														}
+													//DETAIL JENIS LAPORAN
+													
+													$no++;
+												}
+												
+												echo '</tbody>';
+											echo'</table>';
+										}
+										else
+										{
+											echo'<center>';
+											echo'Tidak Ada Data Yang Ditampilkan !';
+											echo'</center>';
+										}
+									?>
+								<center>
+								<div class="halaman"><?php //echo $halaman;?></div>
+								</center>
+								</div><!-- /.box-body -->
+							</div><!-- /.box -->

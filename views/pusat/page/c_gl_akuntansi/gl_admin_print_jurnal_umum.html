@@ -1,0 +1,263 @@
+<html>
+	<head>
+		<?php
+			echo '<title>'.$this->session->userdata('ses_gnl_nama_aplikasi').'</title>';
+		?>
+		
+		<!-- @page { size: auto;  margin: 0mm; } -->
+		<style>
+			@page { size: auto; margin-top:0mm;margin-bottom:0mm; }	
+		</style>
+	</head>
+	<body onload="window.print();">
+	<!-- <body> -->
+		<center style="margin:0;">
+			<!-- <img class="profile-user-img img-responsive" style="border:0px;width:50%;" src= "<?php echo base_url().'/'.$this->session->userdata('ses_gnl_logo_aplikasi_besar');?>" alt="User profile picture"> -->
+			<!-- <br/> -->
+			<?php //echo $this->session->userdata('ses_alamat_kantor') .'<br/>';?>
+			<?php //echo $this->session->userdata('ses_alamat_kantor') .'<br/><font style="font-size:60px;font-weight:bold;">'.$data_h_penjualan->no_antrian.'</font>';?>
+			<?php //echo '<h1 style="font-size:60px;">'.$data_h_penjualan->no_antrian.'</h1>';?>
+			<?php //echo $this->session->userdata('ses_alamat_kantor');?>
+		</center>
+			
+		
+			
+			<div class="box-body table-responsive no-padding" style="">
+				<table width="100%" id="table_transaksi" class="table table-hover" style="border-collapse: collapse;">
+					<!-- <thead> -->
+						
+						<tr>
+							<td colspan="4">
+							<img class="profile-user-img img-responsive" style="border:0px;width:15%;" src= "<?php echo base_url().'/'.$this->session->userdata('ses_gnl_logo_aplikasi_besar');?>" alt="User profile picture">
+							</td>
+						</tr>
+						
+						<tr>
+							<td colspan="4" style="text-align:center;"><b>JURNAL TRANSAKSI</b></td>
+						</tr>
+						<tr>
+							<td colspan="4" style="text-align:center;"><b><?php echo $this->session->userdata('ses_gnl_nama_aplikasi');?></b></td>
+						</tr>
+						
+						<tr>
+							<td colspan="4" style="text-align:center;"><br/></td>
+						</tr>
+						
+						<tr>
+							<td colspan="1"></td>
+							<td colspan="1">No Bukti</td>
+							<td colspan="1">: <?php echo $get_jurnal->no_bukti;?></td>
+							<td colspan="1"></td>
+						</tr>
+						<tr>
+							<td colspan="1"></td>
+							<td colspan="1">Tanggal Transaksi</td>
+							<td colspan="1">: <?php echo $get_jurnal->tgl_transaksi;?></td>
+							<td colspan="1"></td>
+						</tr>
+						
+						<!--
+						<tr>
+							<td colspan="1"></td>
+							<td colspan="1"></td>
+							<td colspan="1"></td>
+							<td colspan="1"></td>
+						</tr>
+						<tr>
+							<td colspan="1"></td>
+							<td colspan="1"> Dari Rekening</td>
+							<td colspan="1"> : <?php echo $get_uang_masuk->NAMA_AKUN.' ('.$get_uang_masuk->KODE_AKUN.')';?></td>
+							<td colspan="1">NO : <?php echo $get_uang_masuk->no_bukti;?></td>
+						</tr>
+						<tr>
+							<td colspan="1"></td>
+							<td colspan="1"> Jumlah</td>
+							<td colspan="1"> : Rp.<?php echo number_format($get_uang_masuk->nominal,0,'.',',');?></td>
+							<td colspan="1">Tanggal : <?php echo $get_uang_masuk->tgl_uang_masuk;?></td>
+						</tr>
+						-->
+					
+						<tr style="background-color:silver;color:black;text-align:center;">
+							<th width="5%" style="text-align:center;
+														border-top:1px black solid;
+														border-right:1px black solid;
+														border-left:1px black solid;
+														border-bottom:1px black solid;
+														">NO</th>
+							<th width="15%" style="text-align:center;
+														border-top:1px black solid;
+														border-right:1px black solid;
+														border-left:1px black solid;
+														border-bottom:1px black solid;
+														">ACCOUNT</th>
+							<th width="50%" style="text-align:center;
+														border-top:1px black solid;
+														border-right:1px black solid;
+														border-left:1px black solid;
+														border-bottom:1px black solid;
+														">KETERANGAN</th>
+							<!-- <th width="15%" style="text-align:right;">HARGA</th> -->
+							<th width="15%" style="text-align:center;
+														border-top:1px black solid;
+														border-right:1px black solid;
+														border-left:1px black solid;
+														border-bottom:1px black solid;
+														">DEBIT</th>
+							<th width="15%" style="text-align:center;
+														border-top:1px black solid;
+														border-right:1px black solid;
+														border-left:1px black solid;
+														border-bottom:1px black solid;
+														">KREDIT</th>
+						</tr>
+					<!-- </thead> -->
+			<?php
+			
+				if(!empty($list_jurnal))
+				{
+						$list_result = $list_jurnal->result();
+						//$no =$this->uri->segment(2,0)+1;
+						$total_debit = 0;
+						$total_kredit = 0;
+						$no = 1;
+						foreach($list_result as $row)
+						{
+							//echo'<tr id="tr_'.$no.'">';
+							
+							echo'<tr id="tr_list_transaksi-'.$row->id_jurnal_umum.'" >';
+								
+								echo'<td width="10%" style="text-align:center;width:10%;
+														border-right:1px black solid;
+														border-left:1px black solid;
+														border-bottom:1px black solid;
+														">'.$no.'</td>';
+								echo'<td width="10%" style="text-align:center;width:10%;
+														border-right:1px black solid;
+														border-bottom:1px black solid;
+														">'.$row->kode_akun.'</td>';
+								echo'<td width="50%" style="text-align:left;width:50%;
+														border-right:1px black solid;
+														border-bottom:1px black solid;
+														">'.$row->ket.'</td>';
+								if($row->debit>0)
+								{
+									echo'<td width="15%" style="text-align:right;width:15%;
+														border-right:1px black solid;
+														border-bottom:1px black solid;
+														">'.number_format($row->debit,0,'.',',').'</td>';
+								}
+								else
+								{
+									echo'<td width="15%" style="text-align:right;width:15%;
+														border-right:1px black solid;
+														border-bottom:1px black solid;
+														"></td>';
+								}
+								
+														
+								if($row->kredit>0)
+								{
+									echo'<td width="15%" style="text-align:right;width:15%;
+														border-right:1px black solid;
+														border-bottom:1px black solid;
+														">'.number_format($row->kredit,0,'.',',').'</td>';
+								}
+								else
+								{
+									echo'<td width="15%" style="text-align:right;width:15%;
+														border-right:1px black solid;
+														border-bottom:1px black solid;
+														"></td>';
+								}
+								
+							echo'</tr>';
+							$total_debit = $total_debit + ($row->debit);
+							$total_kredit = $total_kredit + ($row->kredit);
+							$no++;
+						}
+						
+						echo'
+							<tr style="border-bottom:1px solid black;font-weight:bold;">
+								<td colspan="3" style="text-align:right;
+														border-left:1px black solid;
+														border-right:1px black solid;
+														border-bottom:1px black solid;
+															">TOTAL</td>
+								<td style="text-align:right;border-left:1px black solid;
+														border-right:1px black solid;
+														border-bottom:1px black solid;">'.number_format($total_debit,0,'.',',').'</td>
+								<td style="text-align:right;border-left:1px black solid;
+														border-right:1px black solid;
+														border-bottom:1px black solid;">'.number_format($total_kredit,0,'.',',').'</td>
+							</tr>
+						';
+						
+						echo'
+							<tr style="font-weight:bold;">
+								<td colspan="1"></td>
+								<td colspan="2" style="text-align:left;">Sebesar : '.ucfirst(Terbilang($total_kredit)).' Rupiah</td>
+								<td style="text-align:right;"><br/><br/><br/></td>
+							</tr>
+						';
+						
+						
+						echo'
+							<tr style="font-weight:bold;">
+								<td colspan="1"></td>
+								<td colspan="1" style="text-align:center;">Diserahkan</td>
+								<td colspan="1" style="text-align:center;">Disetujui</td>
+								<td colspan="1" style="text-align:center;">Diterima</td>
+								
+							</tr>
+						';
+						
+						echo'
+							<tr style="font-weight:bold;">
+								<td colspan="1"></td>
+								<td colspan="1" style="text-align:center;"><br/><br/><br/></td>
+								<td colspan="1" style="text-align:center;"></td>
+								<td colspan="1" style="text-align:center;"></td>
+								
+							</tr>
+						';
+						
+						echo'
+							<tr style="font-weight:bold;">
+								<td colspan="1"></td>
+								<td colspan="1" style="text-align:center;">_______________</td>
+								<td colspan="1" style="text-align:center;">_______________</td>
+								<td colspan="1" style="text-align:center;">_______________</td>
+								
+							</tr>
+						';
+						
+						
+						
+						
+				}
+				else
+				{
+					echo "TIDAK ADA DATA YANG DITAMPILKAN";
+				}
+			
+			?>
+				</table>
+			</div>
+			
+		
+		
+		
+		<center>
+			<?php
+				//echo '<br/>'.$data_h_penjualan->type_h_penjualan;
+			?>
+			<!-- <table style="width:100%; text-align:center;"> -->
+				<!-- <tr><td> -->
+					<!-- <font style="text-align:right;">TERIMA KASIH TELAH BERKUNJUNG, KAMI TUNGGU KEDATANGAN ANDA SELANJUTNYA</font> -->
+				<!-- </td></tr> -->
+			<!-- </table> -->
+			
+			
+		</center>
+	</body>
+</html>

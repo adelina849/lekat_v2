@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>SIPEKA (Sistem Pelaporan PKK) Kabupaten Cianjur</title>
+		<meta name="keywords" content="SIPEKA, Sistem, Pelaporan, PKK,Cianjur, kecamatan, bupati cianjur, setda cianjur" />
+		<meta name="description" content="SIPEKA (Sistem Pelaporan PKK) adalah aplikasi terintegrasi yang dirancang oleh pemerintah Kab. Cianjur untuk mempermudah PKK untuk melakukan pelaporan yang dilakukan oleh kecamatan - kecamatan di kab. Cianjur." />
+		<meta name="Author" content="Mulyana Yusuf,ST" />
+		<link rel="shortcut icon" href="<?php echo base_url();?>assets/public/public/images/logo.png">
+
+		<!-- mobile settings -->
+		<meta name="viewport" content="width=device-width, maximum-scale=1, initial-scale=1, user-scalable=0" />
+		<!--[if IE]><meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'><![endif]-->
+
+		<!-- WEB FONTS : use %7C instead of | (pipe) -->
+		<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600%7CRaleway:300,400,500,600,700%7CLato:300,400,400italic,600,700" rel="stylesheet" type="text/css" />
+
+		<!-- CORE CSS -->
+		<link href="<?php echo base_url();?>assets/public/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+
+		<!-- REVOLUTION SLIDER -->
+		<link href="<?php echo base_url();?>assets/public/assets/plugins/slider.revolution/css/extralayers.css" rel="stylesheet" type="text/css" />
+		<link href="<?php echo base_url();?>assets/public/assets/plugins/slider.revolution/css/settings.css" rel="stylesheet" type="text/css" />
+
+		<!-- THEME CSS -->
+		<link href="<?php echo base_url();?>assets/public/assets/css/essentials.css" rel="stylesheet" type="text/css" />
+		<link href="<?php echo base_url();?>assets/public/assets/css/layout.css" rel="stylesheet" type="text/css" />
+
+		<!-- PAGE LEVEL SCRIPTS -->
+		<link href="<?php echo base_url();?>assets/public/assets/css/header-1.css" rel="stylesheet" type="text/css" />
+		<link href="<?php echo base_url();?>assets/public/assets/css/color_scheme/green.css" rel="stylesheet" type="text/css" id="color_scheme" />
+	</head>
+
+	<!--
+		AVAILABLE BODY CLASSES:
+		
+		smoothscroll 			= create a browser smooth scroll
+		enable-animation		= enable WOW animations
+
+		bg-grey					= grey background
+		grain-grey				= grey grain background
+		grain-blue				= blue grain background
+		grain-green				= green grain background
+		grain-blue				= blue grain background
+		grain-orange			= orange grain background
+		grain-yellow			= yellow grain background
+		
+		boxed 					= boxed layout
+		pattern1 ... patern11	= pattern background
+		menu-vertical-hide		= hidden, open on click
+		
+		BACKGROUND IMAGE [together with .boxed class]
+		data-background="assets/images/_smarty/boxed_background/1.jpg"
+	-->
+	<body class="smoothscroll enable-animation">
+
+		<!-- SLIDE TOP -->
+		<div id="slidetop">
+
+			<div class="container">
+				
+				<div class="row">
+
+					<div class="col-md-4">
+						<h6><i class="icon-heart"></i> SIPEKA</h6>
+						<p>SIPEKA (Sistem Pelaporan PKK) adalah aplikasi terintegrasi yang dirancang oleh pemerintah Kab. Cianjur untuk mempermudah PKK untuk melakukan pelaporan yang dilakukan oleh kecamatan - kecamatan di kab. Cianjur.</p>
+						<a href="<?php echo base_url();?>kecamatan-login" style="background-color:green;padding:5%;">
+							Masuk Aplikasi 
+							<span class="word-rotator" data-delay="2000">
+								<span class="items">
+									<span>Mudah</span>
+									<span>Cepat</span>
+								</span>
+							</span>
+							<i class="glyphicon glyphicon-menu-right fs-12"></i>
+						</a>
+					</div>
+
+					<div class="col-md-4">
+						<h6><i class="fa-facheck"></i>Pemerintah Kab. Cianjur</h6>
+						<ul class="list-unstyled">
+							<li><a href="#"><i class="fa fa-angle-right"></i> Pemerintah kab. Cianjur</a></li>
+							<li><a href="#"><i class="fa fa-angle-right"></i> SETDA Kab. Cianjur</a></li>
+							<li><a href="#"><i class="fa fa-angle-right"></i> PKK kab. Cianjur</a></li>
+							<li><a href="#"><i class="fa fa-angle-right"></i> Kecamatan - kecamatan Kab. Cianjur</a></li>
+						</ul>
+					</div>
+
+					<div class="col-md-4">
+						<h6><i class="icon-envelope"></i> Kontak/Informasi</h6>
+						
+						<ul class="list-unstyled">
+							<li><b>Alamat:</b> Jl. Siliwangi No.40, Pamoyanan, Kec. Cianjur, Kabupaten Cianjur, Jawa Barat 43211</li>
+						</ul>
+						
+						<br/>
+						
+						<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d9422.176486013801!2d107.13856985367936!3d-6.825997501662358!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e685257cb82d7b7%3A0x123055d21b3bc393!2sPemda+Cianjur!5e0!3m2!1sid!2sid!4v1508127240221" width="100%" height="60%" frameborder="0" style="border:0" allowfullscreen></iframe>
+					</div>
+				</div>
+			</div>
+			<a class="slidetop-toggle" href="#"></a>
+		</div>
+		<!-- /SLIDE TOP -->
+
+
+		<!-- wrapper -->
+		<div id="wrapper">
+
+			<!-- 
+				AVAILABLE HEADER CLASSES
+
+				Default nav height: 96px
+				.header-md 		= 70px nav height
+				.header-sm 		= 60px nav height
+
+				.b-0 		= remove bottom border (only with transparent use)
+				.transparent	= transparent header
+				.translucent	= translucent header
+				.sticky			= sticky header
+				.static			= static header
+				.dark			= dark header
+				.bottom			= header on bottom
+				
+				shadow-before-1 = shadow 1 header top
+				shadow-after-1 	= shadow 1 header bottom
+				shadow-before-2 = shadow 2 header top
+				shadow-after-2 	= shadow 2 header bottom
+				shadow-before-3 = shadow 3 header top
+				shadow-after-3 	= shadow 3 header bottom
+
+				.clearfix		= required for mobile menu, do not remove!
+
+				Example Usage:  class="clearfix sticky header-sm transparent b-0"
+			-->
+			<div id="header" class="navbar-toggleable-md translucent clearfix">
+
+				<!-- TOP NAV -->
+				<header id="topNav">
+					<div class="container">
+
+						<!-- Mobile Menu Button -->
+						<!-- <button class="btn btn-mobile" data-toggle="collapse" data-target=".nav-main-collapse"> -->
+							<!-- <i class="fa fa-bars"></i> -->
+						<!-- </button> -->
+
+						<!-- BUTTONS -->
+						<ul class="float-right nav nav-pills nav-second-main">
+
+							<!-- SEARCH -->
+							<!-- <li class="search"> -->
+								<!-- <a href="javascript:;"> -->
+									<!-- <i class="fa fa-search"></i> -->
+								<!-- </a> -->
+								<!-- <div class="search-box"> -->
+									<!-- <form action="page-search-result-1.html" method="get"> -->
+										<!-- <div class="input-group"> -->
+											<!-- <input type="text" name="src" placeholder="Search" class="form-control" /> -->
+											<!-- <span class="input-group-btn"> -->
+												<!-- <button class="btn btn-primary" type="submit">Search</button> -->
+											<!-- </span> -->
+										<!-- </div> -->
+									<!-- </form> -->
+								<!-- </div>  -->
+							<!-- </li> -->
+							<!-- /SEARCH -->
+
+						</ul>
+						<!-- /BUTTONS -->
+
+						<!-- Logo -->
+						<a class="logo float-left" href="index.html">
+							<img src="<?php echo base_url();?>assets/public/public/images/logo.png" alt="" />
+						</a>
+
+						<!-- 
+							Top Nav 
+							
+							AVAILABLE CLASSES:
+							submenu-dark = dark sub menu
+						-->
+						<div class="navbar-collapse collapse float-right nav-main-collapse submenu-dark">
+							<nav class="nav-main">
+
+								<!--
+									NOTE
+									
+									For a regular link, remove "dropdown" class from LI tag and "dropdown-toggle" class from the href.
+									Direct Link Example: 
+
+									<li>
+										<a href="#">HOME</a>
+									</li>
+								-->
+								<ul id="topMain" class="nav nav-pills nav-main">
+									<!-- <li class="dropdown active"> -->
+										<!-- <a class="dropdown-toggle" href="#"> -->
+											<!-- HOME -->
+										<!-- </a> -->
+										<!-- <ul class="dropdown-menu"> -->
+											<!-- <li class="dropdown"> -->
+												<!-- <a class="dropdown-toggle" href="#"> -->
+													<!-- HOME CORPORATE -->
+												<!-- </a> -->
+												<!-- <ul class="dropdown-menu"> -->
+													<!-- <li><a href="index-corporate-1.html">CORPORATE LAYOUT 1</a></li> -->
+													<!-- <li><a href="index-corporate-2.html">CORPORATE LAYOUT 2</a></li> -->
+													<!-- <li><a href="index-corporate-3.html">CORPORATE LAYOUT 3</a></li> -->
+													<!-- <li><a href="index-corporate-4.html">CORPORATE LAYOUT 4</a></li> -->
+													<!-- <li><a href="index-corporate-5.html">CORPORATE LAYOUT 5</a></li> -->
+													<!-- <li><a href="index-corporate-6.html">CORPORATE LAYOUT 6</a></li> -->
+													<!-- <li><a href="index-corporate-7.html">CORPORATE LAYOUT 7</a></li> -->
+												<!-- </ul> -->
+											<!-- </li> -->
+											<!-- <li class="dropdown"> -->
+												<!-- <a class="dropdown-toggle" href="#"> -->
+													<!-- HOME PORTFOLIO -->
+												<!-- </a> -->
+												<!-- <ul class="dropdown-menu"> -->
+													<!-- <li><a href="index-portfolio-1.html">PORTFOLIO LAYOUT 1</a></li> -->
+													<!-- <li><a href="index-portfolio-2.html">PORTFOLIO LAYOUT 2</a></li> -->
+													<!-- <li><a href="index-portfolio-masonry.html">PORTFOLIO MASONRY</a></li> -->
+												<!-- </ul> -->
+											<!-- </li> -->
+											<!-- <li class="dropdown"> -->
+												<!-- <a class="dropdown-toggle" href="#"> -->
+													<!-- HOME BLOG -->
+												<!-- </a> -->
+												<!-- <ul class="dropdown-menu"> -->
+													<!-- <li><a href="index-blog-1.html">BLOG LAYOUT 1</a></li> -->
+													<!-- <li><a href="index-blog-2.html">BLOG LAYOUT 2</a></li> -->
+													<!-- <li><a href="index-blog-3.html">BLOG LAYOUT 3</a></li> -->
+													<!-- <li><a href="index-blog-4.html">BLOG LAYOUT 4</a></li> -->
+												<!-- </ul> -->
+											<!-- </li> -->
+											<!-- <li class="dropdown"> -->
+												<!-- <a class="dropdown-toggle" href="#"> -->
+													<!-- HOME SHOP -->
+												<!-- </a> -->
+												<!-- <ul class="dropdown-menu"> -->
+													<!-- <li><a href="index-shop-1.html">SHOP LAYOUT 1</a></li> -->
+													<!-- <li><a href="index-shop-2.html">SHOP LAYOUT 2</a></li> -->
+													<!-- <li><a href="index-shop-3.html">SHOP LAYOUT 3</a></li> -->
+													<!-- <li><a href="index-shop-4.html">SHOP LAYOUT 4</a></li> -->
+													<!-- <li><a href="index-shop-5.html">SHOP LAYOUT 5</a></li> -->
+												<!-- </ul> -->
+											<!-- </li> -->
+											<!-- <li class="dropdown"> -->
+												<!-- <a class="dropdown-toggle" href="#"> -->
+													<!-- HOME MAGAZINE -->
+												<!-- </a> -->
+												<!-- <ul class="dropdown-menu"> -->
+													<!-- <li><a href="index-magazine-1.html">MAGAZINE LAYOUT 1</a></li> -->
+													<!-- <li><a href="index-magazine-2.html">MAGAZINE LAYOUT 2</a></li> -->
+												<!-- </ul> -->
+											<!-- </li> -->
+											<!-- <li class="dropdown"> -->
+												<!-- <a class="dropdown-toggle" href="#"> -->
+													<!-- HOME LANDING PAGE -->
+												<!-- </a> -->
+												<!-- <ul class="dropdown-menu"> -->
+													<!-- <li><a href="index-landing-1.html">LANDING PAGE LAYOUT 1</a></li> -->
+													<!-- <li><a href="index-landing-2.html">LANDING PAGE LAYOUT 2</a></li> -->
+													<!-- <li><a href="index-landing-3.html">LANDING PAGE LAYOUT 3</a></li> -->
+													<!-- <li><a href="index-landing-4.html">LANDING PAGE LAYOUT 4</a></li> -->
+													<!-- <li><a href="index-landing-5.html">LANDING PAGE LAYOUT 5</a></li> -->
+												<!-- </ul> -->
+											<!-- </li> -->
+											<!-- <li class="dropdown active"> -->
+												<!-- <a class="dropdown-toggle" href="#"> -->
+													<!-- HOME FULLSCREEN -->
+												<!-- </a> -->
+												<!-- <ul class="dropdown-menu"> -->
+													<!-- <li class="active"><a href="index-fullscreen-revolution.html">FULLSCREEN - REVOLUTION</a></li> -->
+													<!-- <li><a href="index-fullscreen-youtube.html">FULLSCREEN - YOUTUBE</a></li> -->
+													<!-- <li><a href="index-fullscreen-local-video.html">FULLSCREEN - LOCAL VIDEO</a></li> -->
+													<!-- <li><a href="index-fullscreen-image.html">FULLSCREEN - IMAGE</a></li> -->
+													<!-- <li><a href="index-fullscreen-txt-rotator.html">FULLSCREEN - TEXT ROTATOR</a></li> -->
+												<!-- </ul> -->
+											<!-- </li> -->
+											<!-- <li class="dropdown"> -->
+												<!-- <a class="dropdown-toggle" href="#"> -->
+													<!-- HOME ONE PAGE -->
+												<!-- </a> -->
+												<!-- <ul class="dropdown-menu"> -->
+													<!-- <li><a href="index-onepage-default.html">ONE PAGE - DEFAULT</a></li> -->
+													<!-- <li><a href="index-onepage-revolution.html">ONE PAGE - REVOLUTION</a></li> -->
+													<!-- <li><a href="index-onepage-image.html">ONE PAGE - IMAGE</a></li> -->
+													<!-- <li><a href="index-onepage-parallax.html">ONE PAGE - PARALLAX</a></li> -->
+													<!-- <li><a href="index-onepage-youtube.html">ONE PAGE - YOUTUBE</a></li> -->
+													<!-- <li><a href="index-onepage-text-rotator.html">ONE PAGE - TEXT ROTATOR</a></li> -->
+													<!-- <li><a href="start.html#onepage"><span class="badge badge-success float-right">new</span> 10+ MORE LAYOUTS</a></li> -->
+												<!-- </ul> -->
+											<!-- </li> -->
+											<!-- <li class="divider"></li> -->
+											<!-- <li class="dropdown"> -->
+												<!-- <a class="dropdown-toggle" href="#"> -->
+													<!-- HOME - THEMATICS <i class="fa fa-heart ml-10"></i> -->
+												<!-- </a> -->
+												<!-- <ul class="dropdown-menu"> -->
+													<!-- <li><a href="index-thematics-restaurant.html">HOME - RESTAURANT</a></li> -->
+													<!-- <li><a href="index-thematics-education.html">HOME - EDUCATION</a></li> -->
+													<!-- <li><a href="index-thematics-construction.html">HOME - CONSTRUCTION</a></li> -->
+													<!-- <li><a href="index-thematics-medical.html">HOME - MEDICAL</a></li> -->
+													<!-- <li><a href="index-thematics-church.html">HOME - CHURCH</a></li> -->
+													<!-- <li><a href="index-thematics-fashion.html">HOME - FASHION</a></li> -->
+													<!-- <li><a href="index-thematics-wedding.html">HOME - WEDDING</a></li> -->
+													<!-- <li><a href="index-thematics-events.html">HOME - EVENTS</a></li> -->
+													<!-- <li><a href="index-thematics-hosting.html">HOME - HOSTING</a></li> -->
+													<!-- <li><a href="index-thematics-lawyer.html">HOME - LAWYER</a></li> -->
+												<!-- <li><a href="http://www.stepofweb.com/propose-design.html" data-toggle="tooltip" data-placement="top" title="Do you need a specific home design? We can include it in the next update!" target="_blank"><span class="badge badge-danger float-right">hot</span> PROPOSE THEMATIC</a></li> -->
+												<!-- </ul> -->
+											<!-- </li> -->
+											<!-- <li class="divider"></li> -->
+											<!-- <li><a href="start.html#newrevslider" data-toggle="tooltip" data-placement="top" title="57 More Revolution Slider V5"><span class="badge badge-danger float-right">new</span> 57 MORE LAYOUTS</a></li> -->
+											<!-- <li class="divider"></li> -->
+											<!-- <li><a href="index-simple-revolution.html">HOME SIMPLE - REVOLUTION</a></li> -->
+											<!-- <li><a href="index-simple-layerslider.html">HOME SIMPLE - LAYERSLIDER</a></li> -->
+											<!-- <li><a href="index-simple-parallax.html">HOME SIMPLE - PARALLAX</a></li> -->
+											<!-- <li><a href="index-simple-youtube.html">HOME SIMPLE - YOUTUBE</a></li> -->
+										<!-- </ul> -->
+									<!-- </li> -->
+									
+
+
+
+									<!-- 
+										MENU ANIMATIONS
+											.nav-animate-fadeIn
+											.nav-animate-fadeInUp
+											.nav-animate-bounceIn
+											.nav-animate-bounceInUp
+											.nav-animate-flipInX
+											.nav-animate-flipInY
+											.nav-animate-zoomIn
+											.nav-animate-slideInUp
+
+											.nav-hover-animate 		= animate text on hover
+
+											.hover-animate-bounceIn = bounceIn effect on mouse over of main menu
+									-->
+									
+									<!-- <li class="dropdown mega-menu nav-animate-fadeIn nav-hover-animate hover-animate-bounceIn"> -->
+										<!-- <a class="dropdown-toggle noicon" href="#"> -->
+											<!-- <span class="badge badge-danger float-right fs-11">v2</span> -->
+											<!-- <b>NEW</b> -->
+										<!-- </a> -->
+										<!-- <ul class="dropdown-menu dropdown-menu-clean"> -->
+											<!-- <li> -->
+												<!-- <div class="row"> -->
+
+													<!-- <div class="col-md-5th"> -->
+														<!-- <ul class="list-unstyled"> -->
+															<!-- <li><span>PACKS : READY TO USE</span></li> -->
+															<!-- <li class="divider"></li> -->
+															<!-- <li> -->
+																<!-- <span class="fs-11 mt-0 pb-15 pt-15 text-info">NEW AND HOT: COMPLETE PACKAGES READY TO USE</span> -->
+															<!-- </li> -->
+															<!-- <li class="divider"></li> -->
+															<!-- <li><a target="_blank" href="pack-realestate-home-1.html">REAL ESTATE</a></li> -->
+															<!-- <li><a target="_blank" href="pack-megashop-home-1.html">MEGA SHOP</a></li> -->
+															<!-- <li><a target="_blank" href="pack-hotel-home-1.html">HOTEL v1</a></li> -->
+															<!-- <li><a target="_blank" href="pack-hotel-v2-home-1.html">HOTEL v2</a></li> -->
+															<!-- <li><a target="_blank" href="pack-photography-home-1.html">PHOTOGRAPHY / PORTFOLIO</a></li> -->
+															<!-- <li><a target="_blank" href="pack-caffe-home-1.html">CAFFE</a></li> -->
+															<!-- <li><a target="_blank" href="pack-caffe-onepage.html">CAFFE - ONEPAGE</a></li> -->
+														<!-- </ul> -->
+													<!-- </div> -->
+
+													<!-- <div class="col-md-5th"> -->
+														<!-- <ul class="list-unstyled"> -->
+															<!-- <li><span>NEW PAGES</span></li> -->
+															<!-- <li><a target="_blank" href="portfolio-single-project.html">PORTFOLIO SINGLE</a></li> -->
+															<!-- <li><a target="_blank" href="page-cookie-alert.html">COOKIE ALERT</a></li> -->
+															<!-- <li><a target="_blank" href="page-category.html">CATEGORY PAGE</a></li> -->
+
+															<!-- <li><span>IMPROVED</span></li> -->
+															<!-- <li><a target="_blank" href="index-thematics-hosting.html">HOMEPAGE : <b>HOSTING</b></a></li> -->
+															<!-- <li><a target="_blank" href="index-thematics-restaurant.html">HOMEPAGE : <b>RESTAURANT</b></a></li> -->
+															<!-- <li><a target="_blank" href="index-thematics-lawyer.html">HOMEPAGE : <b>LAWYER</b></a></li> -->
+															<!-- <li><a target="_blank" href="index-thematics-fashion.html">HOMEPAGE : <b>FASHION</b></a></li> -->
+														<!-- </ul> -->
+													<!-- </div> -->
+
+													<!-- <div class="col-md-5th"> -->
+														<!-- <ul class="list-unstyled"> -->
+															<!-- <li><span>NEW COMPONENTS</span></li> -->
+															<!-- <li><a target="_blank" href="shortcode-material-design-badges.html">MATERIAL DESIGN LITE</a></li> -->
+
+															<!-- <li><span>NEW FEATURES</span></li> -->
+															<!-- <li><a target="_blank" href="feature-menu-12.html">NEW HEADER/MENU</a></li> -->
+															<!-- <li><a target="_blank" href="feature-menu-dd-effects.html">MENU DROPDOWN EFFECTS</a></li> -->
+															<!-- <li><a target="_blank" href="shortcode-carousel-2.html">OWL CAROUSEL 2</a></li> -->
+															<!-- <li><a target="_blank" href="shortcode-thumbnails.html">IMAGE HOVER/STYLES</a></li> -->
+														<!-- </ul> -->
+													<!-- </div> -->
+
+													<!-- <div class="col-md-6 hidden-sm text-center"> -->
+														<!-- <div class="p-15 block"> -->
+															<!-- <img class="img-fluid" src="demo_files/images/new_menu.png" alt="" /> -->
+														<!-- </div> -->
+														<!-- <p class="menu-caption hidden-xs-down text-muted text-center"> -->
+															<!-- THE MOST COMPLETE HTML TEMPLATE -->
+														<!-- </p> -->
+													<!-- </div> -->
+
+												<!-- </div> -->
+											<!-- </li> -->
+										<!-- </ul> -->
+									<!-- </li> -->
+								</ul>
+
+							</nav>
+						</div>
+
+					</div>
+				</header>
+				<!-- /Top Nav -->
+
+			</div>
+
+
+
+			<!-- REVOLUTION SLIDER -->
+				<?php $this->load->view('slider.html') ?>
+			<!-- /REVOLUTION SLIDER -->
+
+
+
+			<!-- FOOTER -->
+			<footer id="footer">
+				<div class="container">
+
+					<div class="row">
+						
+						<div class="col-md-8">
+
+							<!-- Footer Logo -->
+							<!-- <img class="footer-logo footer-2" src="assets/images/_smarty/logo-footer.png" alt="" /> -->
+							<h2 class="letter-spacing-1">SIPEKA</h2>
+							<!-- Small Description -->
+							<p>SIPEKA (Sistem Pelaporan PKK) adalah aplikasi terintegrasi yang dirancang oleh pemerintah Kab. Cianjur untuk mempermudah PKK untuk melakukan pelaporan yang dilakukan oleh kecamatan - kecamatan di kab. Cianjur.</p>
+
+							<hr />
+
+							<div class="row">
+								<div class="col-md-6 col-sm-6">
+
+									<!-- Newsletter Form -->
+									<p class="mb-10">Masuk Aplikasi <strong>LEKAT</strong></p>
+									<br/>
+									<a href="<?php echo base_url();?>kecamatan-login" style="background-color:green;padding:5%;">
+										Masuk Aplikasi 
+										<!-- /word rotator -->
+										<span class="word-rotator" data-delay="2000">
+											<span class="items">
+												<span style="pading:0%;height:100%;">Mudah</span>
+												<span style="pading:0%;height:100%;">Cepat</span>
+											</span>
+										</span>
+										<!-- /word rotator -->
+										<i class="glyphicon glyphicon-menu-right fs-12"></i>
+									</a>
+									
+									<!-- <form id="newsletterForm" action="php/newsletter.php".box-shadow- method="post"> -->
+										<!-- <div class="input-group"> -->
+											<!-- <span class="input-group-addon"><i class="fa fa-envelope"></i></span> -->
+											<!-- <input type="email" id="email" name="email" class="form-control" placeholder="Enter your Email" required="required"> -->
+											<!-- <span class="input-group-btn"> -->
+												<!-- <button class="btn btn-success" type="submit">Subscribe</button> -->
+											<!-- </span> -->
+										<!-- </div> -->
+									<!-- </form> -->
+									<!-- /Newsletter Form -->
+								</div>
+
+								<!-- <div class="col-md-6 col-sm-6 hidden-xs-down"> -->
+
+									
+									<!-- <div class="ml-50 clearfix"> -->
+
+										<!-- <p class="mb-10">Ikuti Kami</p> -->
+										<!-- <a href="#" class="social-icon social-icon-sm social-icon-transparent social-facebook float-left" data-toggle="tooltip" data-placement="top" title="Facebook"> -->
+											<!-- <i class="icon-facebook"></i> -->
+											<!-- <i class="icon-facebook"></i> -->
+										<!-- </a> -->
+
+										<!-- <a href="#" class="social-icon social-icon-sm social-icon-transparent social-twitter float-left" data-toggle="tooltip" data-placement="top" title="Twitter"> -->
+											<!-- <i class="icon-twitter"></i> -->
+											<!-- <i class="icon-twitter"></i> -->
+										<!-- </a> -->
+
+										<!-- <a href="#" class="social-icon social-icon-sm social-icon-transparent social-gplus float-left" data-toggle="tooltip" data-placement="top" title="Google plus"> -->
+											<!-- <i class="icon-gplus"></i> -->
+											<!-- <i class="icon-gplus"></i> -->
+										<!-- </a> -->
+
+										<!-- <a href="#" class="social-icon social-icon-sm social-icon-transparent social-linkedin float-left" data-toggle="tooltip" data-placement="top" title="Linkedin"> -->
+											<!-- <i class="icon-linkedin"></i> -->
+											<!-- <i class="icon-linkedin"></i> -->
+										<!-- </a> -->
+
+										<!-- <a href="#" class="social-icon social-icon-sm social-icon-transparent social-rss float-left" data-toggle="tooltip" data-placement="top" title="Rss"> -->
+											<!-- <i class="icon-rss"></i> -->
+											<!-- <i class="icon-rss"></i> -->
+										<!-- </a> -->
+
+									<!-- </div> -->
+									
+
+								<!-- </div> -->
+								
+							</div>
+
+
+
+						</div>
+
+						<div class="col-md-4">
+
+							<h2 class="letter-spacing-1">Temui Kami</h2>
+							Jl. Siliwangi No.40, Pamoyanan, Kec. Cianjur, Kabupaten Cianjur, Jawa Barat 43211
+							</br>
+							</br>
+							<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d9422.176486013801!2d107.13856985367936!3d-6.825997501662358!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e685257cb82d7b7%3A0x123055d21b3bc393!2sPemda+Cianjur!5e0!3m2!1sid!2sid!4v1508127240221" width="100%" height="75%" frameborder="0" style="border:0" allowfullscreen></iframe>
+							
+							<!-- CONTACT MESSAGES -->
+							<!-- <p id="alert_success" class="alert alert-success alert-mini">Message sent! Thank You!</p> -->
+							<!-- <p id="alert_failed" class="alert alert-danger alert-mini">Message not sent!</p> -->
+							<!-- <p id="alert_mandatory" class="alert alert-danger alert-mini">Please, complete all mandatory fields</p> -->
+
+							<!-- CONTACT FORM -->
+							<!-- <form class="validate" method="post" action="php/contact.php"> -->
+								
+								<!-- <input type="text" value="" placeholder="Name*" maxlength="100" class="form-control required" name="contact[name]" /> -->
+								<!-- <input type="email" value="" placeholder="Email*" data-msg-email="Please enter a valid email address." class="form-control required" name="contact[email]" /> -->
+								<!-- <textarea maxlength="5000" placeholder="Message*" rows="3" class="form-control required" name="contact[message]"></textarea> -->
+								<!-- <input type="submit" value="SUBMIT MESSAGE" class="btn btn-success" /> -->
+
+							<!-- </form> -->
+							<!-- /CONTACT FORM -->
+
+						</div>
+
+					</div>
+
+				</div>
+
+				<div class="copyright">
+					<div class="container">
+						<ul class="list-inline inline-links mobile-block float-right m-0">
+							<!-- <li><a href="#">Home</a></li> -->
+							<!-- <li><a href="#">About Us</a></li> -->
+							<!-- <li><a href="#">Portfolio</a></li> -->
+							<!-- <li><a href="#">Pricing</a></li> -->
+							<!-- <li><a href="#">Contact</a></li> -->
+						</ul>
+
+						&copy; All Rights Reserved, IMS Software
+					</div>
+				</div>
+			</footer>
+			<!-- /FOOTER -->
+
+		</div>
+		<!-- /wrapper -->
+
+
+		<!-- SCROLL TO TOP -->
+		<a href="#" id="toTop"></a>
+
+
+		<!-- PRELOADER -->
+		<div id="preloader">
+			<div class="inner">
+				<span class="loader"></span>
+			</div>
+		</div><!-- /PRELOADER -->
+
+
+		<!-- JAVASCRIPT FILES -->
+		<script type="text/javascript">var plugin_path = '<?php echo base_url();?>assets/public/assets/plugins/';</script>
+		<script type="text/javascript" src="<?php echo base_url();?>assets/public/assets/plugins/jquery/jquery-3.2.1.min.js"></script>
+
+		<!-- REVOLUTION SLIDER -->
+		<script type="text/javascript" src="<?php echo base_url();?>assets/public/assets/plugins/slider.revolution/js/jquery.themepunch.tools.min.js"></script>
+		<script type="text/javascript" src="<?php echo base_url();?>assets/public/assets/plugins/slider.revolution/js/jquery.themepunch.revolution.min.js"></script>
+		<script type="text/javascript" src="<?php echo base_url();?>assets/public/assets/js/view/demo.revolution_slider.js"></script>
+
+		<!-- SCRIPTS -->
+		<script type="text/javascript" src="<?php echo base_url();?>assets/public/assets/js/scripts.js"></script>
+		
+		<!-- STYLESWITCHER - REMOVE -->
+		<!-- <script async type="text/javascript" src="<?php echo base_url();?>assets/public/demo_files/styleswitcher/styleswitcher.js"></script> -->
+	</body>
+</html>

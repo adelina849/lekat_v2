@@ -1,0 +1,122 @@
+<!-- sample modal content -->
+		
+
+								<form class="frm-input" method="post" action="<?php echo base_url();?>muzaqi-login" autocomplete="on" enctype="multipart/form-data" data-success="Sent! Thank you!" data-toastr-position="top-right">
+								<!-- <form class="validate" action="php/contact.php" method="post" enctype="multipart/form-data" data-success="Sent! Thank you!" data-toastr-position="top-right"> -->
+								
+								<!-- <form role="form" action="<?php echo base_url();?>donasi-sesama" method="post" class="frm-input" enctype="multipart/form-data"> -->
+									<!-- <div class="clearfix"> -->
+										
+										<!-- Email -->
+										<!-- <div class="form-group"> -->
+											<!-- <input type="text" name="email" class="form-control" placeholder="Email" required=""> -->
+										<!-- </div> -->
+										
+										<!-- Password -->
+										<!-- <div class="form-group"> -->
+											<!-- <input type="password" name="password" class="form-control" placeholder="Password" required=""> -->
+										<!-- </div> -->
+										
+										
+										<!-- Useful Elements -->
+											<div class="card card-default">
+												<div class="card-heading card-heading-transparent">
+													<h2 class="card-title">Login Sistem BAZNAS Kab.Sukabumi</h2>
+												</div>
+
+												<div class="card-block">
+
+													<!-- <form class="validate" action="<?php echo base_url();?>" method="post" enctype="multipart/form-data" data-success="Sent! Thank you!" data-toastr-position="top-right"> -->
+													
+													<!-- <form class="validate" action="<?php echo base_url();?>" method="post" enctype="multipart/form-data"> -->
+														<fieldset>
+															<!-- required [php action request] -->
+															<input type="hidden" name="LINK_URL" value="<?php echo (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";?>" />
+
+															<div class="row">
+																<div class="col-md-12 col-sm-12">
+																	<label>Email *</label>
+																	<input type="email" name="MUZ_EMAIL" placeholder="<?php echo $error_email;?>" value="<?php echo $MUZ_EMAIL;?>" class="required email form-control">
+																</div>
+																<!-- <div class="col-md-6 col-sm-6"> -->
+																	<!-- <label>Phone *</label> -->
+																	<!-- <input type="text" name="contact[phone]" value="" class="form-control required"> -->
+																<!-- </div> -->
+															</div>
+															
+															<div class="row">
+																<div class="col-md-12 col-sm-12">
+																	<label>Password</label>
+																	<input type="password" name="MUZ_PASS" class="required form-control">
+																</div>
+															</div>
+															
+
+														</fieldset>
+
+														<div class="row">
+															<div class="col-md-12">
+																<button type="submit" class="confirm-btn btn btn-3d btn-teal btn-xlg btn-block mt-30">
+																	MASUK SISTEM
+																	<!-- <span class="block font-lato">Tulis email dengan benar, karena kami akan melakukan validasi email</span> -->
+																</button>
+																<!-- <button type="submit" class="btn btn-primary">OK, LOG IN</button> -->
+															</div>
+														</div>
+
+													</form>
+
+
+												</div>
+												
+											</div>
+											<!-- /Useful Elements -->
+											
+									<!-- </div> -->
+									
+									<div class="row">
+										
+										<div class="col-md-6 col-sm-6 col-xs-6">
+											
+											<!-- Inform Tip -->                                        
+											<div class="form-tip pt-20">
+												<a class="no-text-decoration fs-13 mt-10 block" href="#">Syarat dan ketentuan</a>
+											</div>
+											
+										</div>
+										
+										<div class="col-md-6 col-sm-6 col-xs-6 text-right">
+
+											<!-- <button class="btn btn-primary">OK, LOG IN</button> -->
+											<div class="form-tip pt-20">
+												<a class="no-text-decoration fs-13 mt-10 block" href="#">Tata cara penggunaan</a>
+											</div>
+
+										</div>
+										
+									</div>
+									
+								<!-- </form> -->
+
+							<!-- </div> -->
+							
+							<!-- <div class="mt-30 text-center"> -->
+								<!-- <a href="page-register-1.html"><strong>Create Account</strong></a> -->
+
+							<!-- </div> -->
+							
+							
+							
+						
+			
+			<script type='text/javascript'>
+	
+				function isNumberKey(evt)
+				{
+					var charCode = (evt.which) ? evt.which : event.keyCode
+					if (charCode > 31 && (charCode < 48 || charCode > 57))
+					
+					return false;
+					return true;
+				}
+			</script>

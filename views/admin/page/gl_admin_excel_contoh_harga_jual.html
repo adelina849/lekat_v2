@@ -1,0 +1,155 @@
+ <!-- <title>LaporanPemasukanPeriode<?php echo $_GET['tahun'];?><?php echo $_GET['bulan'];?></title> -->
+ <title>DataProdukStock</title>
+ 
+ <?php
+ $title = "DataProdukStock";
+ header("Content-type: application/vnd-ms-excel");
+ header("Content-Disposition: attachment; filename=$title.xls");
+ header("Pragma: no-cache");
+ header("Expires: 0");
+ 
+ ?>
+
+<?php
+	//TABLE
+	if(!empty($list_produk))
+		{
+			echo'<table width="100%" id="example2" class="table table-bordered table-hover">';
+				echo '<thead>
+<tr>';
+							echo '<th>KODE PRODUK</th>';
+							echo '<th>NAMA PRODUK</th>';
+							
+							echo '<th style="background-color:green;">(1) KODE JENIS PELANGGAN</th>';
+							echo '<th style="background-color:green;">KODE SATUAN</th>';
+							echo '<th style="background-color:green;">VIA</th>';
+							echo '<th style="background-color:green;">HARGA JUAL</th>';
+							
+							echo '<th style="background-color:green;">(2)KODE JENIS PELANGGAN</th>';
+							echo '<th style="background-color:green;">KODE SATUAN</th>';
+							echo '<th style="background-color:green;">VIA</th>';
+							echo '<th style="background-color:green;">HARGA JUAL</th>';
+							
+							echo '<th style="background-color:green;">(3)KODE JENIS PELANGGAN</th>';
+							echo '<th style="background-color:green;">KODE SATUAN</th>';
+							echo '<th style="background-color:green;">VIA</th>';
+							echo '<th style="background-color:green;">HARGA JUAL</th>';
+							
+							echo '<th style="background-color:green;">(4)KODE JENIS PELANGGAN</th>';
+							echo '<th style="background-color:green;">KODE SATUAN</th>';
+							echo '<th style="background-color:green;">VIA</th>';
+							echo '<th style="background-color:green;">HARGA JUAL</th>';
+							
+							echo '<th style="background-color:green;">(5)KODE JENIS PELANGGAN</th>';
+							echo '<th style="background-color:green;">KODE SATUAN</th>';
+							echo '<th style="background-color:green;">VIA</th>';
+							echo '<th style="background-color:green;">HARGA JUAL</th>';
+							
+							echo '<th style="background-color:green;">(6)KODE JENIS PELANGGAN</th>';
+							echo '<th style="background-color:green;">KODE SATUAN</th>';
+							echo '<th style="background-color:green;">VIA</th>';
+							echo '<th style="background-color:green;">HARGA JUAL</th>';
+							
+							echo '<th style="background-color:green;">(7)KODE JENIS PELANGGAN</th>';
+							echo '<th style="background-color:green;">KODE SATUAN</th>';
+							echo '<th style="background-color:green;">VIA</th>';
+							echo '<th style="background-color:green;">HARGA JUAL</th>';
+							
+							echo '<th style="background-color:green;">(8)KODE JENIS PELANGGAN</th>';
+							echo '<th style="background-color:green;">KODE SATUAN</th>';
+							echo '<th style="background-color:green;">VIA</th>';
+							echo '<th style="background-color:green;">HARGA JUAL</th>';
+							
+							echo '<th style="background-color:green;">(9) KODE JENIS PELANGGAN</th>';
+							echo '<th style="background-color:green;">KODE SATUAN</th>';
+							echo '<th style="background-color:green;">VIA</th>';
+							echo '<th style="background-color:green;">HARGA JUAL</th>';
+							
+							
+				echo '</tr>
+</thead>';
+				$list_result = $list_produk->result();
+				$no = 1;
+				
+				
+				echo '<tbody>';
+				foreach($list_result as $row)
+				{
+					echo'<tr>';
+						echo"<td>".(string)$row->kode_produk."</td>";
+						echo'<td>'.$row->nama_produk.'</td>';
+						
+						
+						echo'<td>'.$row->nama_kat_costumer_harga.'</td>';
+						echo'<td>'.$row->kode_satuan_hpp_1.'</td>';
+						echo'<td>'.$row->media_harga.'</td>';
+						echo'<td>'.$row->harga_jual.'</td>';
+						
+						echo'<td></td>';
+						echo'<td></td>';
+						echo'<td></td>';
+						echo'<td></td>';
+						
+						echo'<td></td>';
+						echo'<td></td>';
+						echo'<td></td>';
+						echo'<td></td>';
+						
+						echo'<td></td>';
+						echo'<td></td>';
+						echo'<td></td>';
+						echo'<td></td>';
+						
+						echo'<td></td>';
+						echo'<td></td>';
+						echo'<td></td>';
+						echo'<td></td>';
+						
+						echo'<td></td>';
+						echo'<td></td>';
+						echo'<td></td>';
+						echo'<td></td>';
+						
+						echo'<td></td>';
+						echo'<td></td>';
+						echo'<td></td>';
+						echo'<td></td>';
+						
+						echo'<td></td>';
+						echo'<td></td>';
+						echo'<td></td>';
+						echo'<td></td>';
+						
+						echo'<td></td>';
+						echo'<td></td>';
+						echo'<td></td>';
+						echo'<td></td>';
+						
+					echo'</tr>';
+						
+					$no++;
+				}
+				
+				/*
+				echo'<tr>';
+					echo'<td colspan="7" style="text-align:right;font-weight:bold;">SUB TOTAL</td>';
+					echo'<td style="text-align:right;">Rp.'.number_format($sub_total,0,",",".").'</td>';
+				echo'</tr>';
+				
+				echo'<tr>';
+					echo'<td colspan="7" style="text-align:right;font-weight:bold;">GRAND TOTAL</td>';
+					echo'<td style="text-align:right;">Rp.'.number_format($grand_total,0,",",".").'</td>';
+				echo'</tr>';
+				*/
+				
+				echo '</tbody>';
+			echo'</table>';
+		}
+		else
+		{
+			echo'<center>';
+			echo'Tidak Ada Data Yang Ditampilkan !';
+			echo'</center>';
+		}
+	//TABLE
+?>

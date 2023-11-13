@@ -1,0 +1,973 @@
+	<!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.4 -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/dist/css/AdminLTE.min.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/dist/css/skins/_all-skins.min.css">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/plugins/select2/select2.min.css">
+	<link rel="stylesheet" href="<?=base_url();?>assets/adminlte/bower_components/bootstrap-daterangepicker/daterangepicker.css">
+	<link rel="stylesheet" href="<?=base_url();?>assets/adminlte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+	<link rel="stylesheet" href="<?=base_url();?>assets/adminlte/bower_components/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css">
+	<link rel="stylesheet" href="<?=base_url();?>assets/adminlte/plugins/timepicker/bootstrap-timepicker.min.css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+		
+		
+			<style type="text/css">
+			.labelfrm {
+				display:block;
+				font-size:small;
+				margin-top:5px;
+			}
+			.error {
+				font-size:small;
+				color:red;
+			}
+			</style>
+			
+			<script type="text/javascript" src="<?=base_url();?>assets/admin/js/jquery.validate.min.js"></script>
+			
+			<script type="text/javascript">
+			$(document).ready(function() {
+				$('.frm-input').validate
+                (
+                    {
+        				rules: 
+                        {
+        					pass2: 
+                            {
+        						equalTo: "#pass"
+        					}
+        				},
+        				messages: 
+                        {
+        					pass2: {
+        						equalTo: "Password tidak sama"
+        					}
+        				}
+        			}
+                );
+				$('.confirm-btn').click(function(){
+				var answer = confirm(jQuery(this).attr('title'));
+				return answer;
+				});
+			});
+			</script>
+			
+			<script type="text/javascript">
+				var htmlobjek;
+				$(document).ready(function()
+				{	
+					$('#2_basis_data').attr('class', 'active treeview');
+					$('#23_basis_data_pasien').attr('class', 'active treeview');
+					$('#232_basis_data_pasien_pasien').attr('class', 'active treeview');
+					
+					$("#no_costumer").change(function()
+                    {  
+                
+                        var no_costumer = $("#no_costumer").val();
+                        $("#pesan").html("<img src='<?php echo base_url();?>assets/global/loading.gif'>Cek <?php echo $msgbox_title;?> ...");
+                
+                        if(no_costumer=='')
+                        {
+                          $("#pesan").html('<img src="<?php echo base_url();?>assets/global/salah.png"> Kolom Tidak Boleh Kosong');
+                          $("#no_costumer").css('border', '3px #C33 solid');
+                        }
+						else
+						$.ajax({type: "POST", url: "<?php echo base_url();?>gl-admin-pasien-cek/", data: "no_costumer="+no_costumer, success:function(data)
+                        { 
+                        	if(data==0 || ($("#no_costumer").val() == $("#cek_no_costumer").val()))
+                            //if(data==0)
+                        	  {
+                        	  	$("#pesan").html('<img src="<?php echo base_url();?>assets/global/true.png">');
+                                $("#no_costumer").css('border', '3px #090 solid');
+								
+								/*
+								$("#KPOS_ID").attr("disabled", false);
+								$("#POS_NAMA").attr("disabled", false);
+								$("#POS_PIC").attr("disabled", false);
+								*/
+								
+                                $("#btnsimpan").attr("disabled", false);
+                            }
+                              else
+                              {
+                              	$("#pesan").html('<img src="<?php echo base_url();?>assets/global/salah.png"> No/Kode <?php echo $msgbox_title;?> Telah Digunakan, Tombol Save Terkunci');
+                				//$("#pesan").html(data); 
+                              	$("#no_costumer").css('border', '3px #C33 solid');
+								/*
+								$("#KPOS_ID").attr("disabled", true);
+								$("#POS_NAMA").attr("disabled", true);
+								*/
+                                $("#btnsimpan").attr("disabled", true);
+                              }
+                              
+                        } 
+                        });
+                    });
+					
+					/*
+					$("#nama_lengkap").change(function()
+                    {  
+                
+                        var nama_lengkap = $("#nama_lengkap").val();
+                        $("#pesan_nama").html("<img src='<?php echo base_url();?>assets/global/loading.gif'>Cek <?php echo $msgbox_title;?> ...");
+                
+                        if(nama_lengkap=='')
+                        {
+                          $("#pesan_nama").html('<img src="<?php echo base_url();?>assets/global/salah.png"> Kolom Tidak Boleh Kosong');
+                          $("#nama_lengkap").css('border', '3px #C33 solid');
+                        }
+						else
+						$.ajax({type: "POST", url: "<?php echo base_url();?>gl-admin-pasien-cek-nama/", data: "nama_lengkap="+nama_lengkap, success:function(data)
+                        { 
+                        	if(data==0 || ($("#nama_lengkap").val() == $("#cek_nama_lengkap").val()))
+                        	  {
+                        	  	$("#pesan_nama").html('<img src="<?php echo base_url();?>assets/global/true.png">');
+                                $("#nama_lengkap").css('border', '3px #090 solid');
+								
+                                $("#btnsimpan").attr("disabled", false);
+                            }
+                              else
+                              {
+                              	$("#pesan_nama").html('<img src="<?php echo base_url();?>assets/global/salah.png"> Nama Sudah Terdaftar <?php echo $msgbox_title;?> Telah Digunakan, Tombol Save Terkunci');
+                              	$("#nama_lengkap").css('border', '3px #C33 solid');
+								
+                                $("#btnsimpan").attr("disabled", true);
+                              }
+                              
+                        } 
+                        });
+                    });
+					*/
+				});
+			</script>
+			
+	<div class="content-wrapper">
+		<!-- Content Header (Page header) -->
+		<section class="content-header">
+		
+		<h1>
+			<?php
+				echo $this->session->userdata('ses_gnl_nama_aplikasi');
+				/*
+				if(!empty($this->M_gl_pengaturan->get_data_by_id(1))) 
+				{
+					//echo $this->M_gl_pengaturan->get_data_by_id(1)->nilai; 
+					echo $this->M_gl_pengaturan->get_data_by_id(1)->nilai;
+				}
+				else
+				{
+					echo "Aplikasi Sistem Informasi dan Maagement Klinik 1.0";
+				} 
+				*/
+			?>
+			<?php 
+				//echo $msgbox_title;
+			?> 
+			<?php 
+				//echo $this->session->userdata("ses_nama_kantor"); 
+			?>
+		</h1>
+		
+		
+		
+		<ol class="breadcrumb">
+			<li><a href="<?php echo base_url()?>gl-admin"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+			<li><a href="#"><i class="fa fa-dashboard"></i> Data Dasar</a></li>
+			<li><a href="#"><i class="fa fa-folder"></i> Data costumer</a></li>
+			
+		</ol>
+		</section>
+
+		<!-- Main content -->
+		<section class="content">
+		<!-- =========================================================== -->
+
+		<div class="row">
+			<div class="col-md-12">
+			<!-- <div class="box box-warning collapsed-box box-solid"> -->
+			<div  id="box-form" class="box box-warning collapsed-box box-solid">
+				<div class="box-header with-border">
+				<h3 class="box-title">Formulir Input <?php echo $msgbox_title;?></h3>
+				<div class="box-tools pull-right">
+					<button class="btn btn-box-tool" data-widget="collapse"><i id="icon_form" class="fa fa-plus"></i></button>
+				</div><!-- /.box-tools -->
+				</div><!-- /.box-header -->
+				<div class="box-body">
+				
+				
+				<!-- ISI FORM -->
+						<form role="form" action="<?php echo base_url();?>gl-admin-pasien-simpan" method="post" class="frm-input" enctype="multipart/form-data">
+						<input type="hidden" name="stat_edit" id="stat_edit"/>
+						<input type="hidden" name="id_costumer" id="id_costumer"/>
+						<div class="box-body">
+							
+							<div class="form-group">
+                              <label for="avatar">Foto Customer/Cabang</label>
+                              <span id="img_edit"></span>
+                              <input type="file" id="foto" name="foto">
+                              <p class="help-block">Pilih untuk memasukan foto Customer/Cabang</p>
+                            </div>
+							<br/>
+							
+							<div class="form-group">
+							<label for="no_costumer">No Customer/Cabang</label>
+							<input type="hidden" id="cek_no_costumer" name="cek_no_costumer" />
+							<input type="text" id="no_costumer" name="no_costumer"  maxlength="15" class="required form-control" size="15" alt="No Pasien" value="<?php echo $no_cos;?>" title="No Pasien" placeholder="*No Pasien adalah no unik yang diberikan sebagai penanda atau identitas bagi Pasien tersebut, No ini bersifat unik atau tidak ada yang sama." /><span id="pesan"></span>
+							</div>
+							
+							<div class="form-group">
+                              <label for="id_kat_costumer">Kategori Customer/Cabang</label>
+                              <select name="id_kat_costumer" id="id_kat_costumer" class="required form-control select2" title="Pasien">
+										<option value="">== Pilih Kategori Customer/Cabang ==</option>
+								<?php
+									if(!empty($list_kat_costumer))
+									{
+										$list_result = $list_kat_costumer->result();
+										foreach($list_result as $row)
+										{
+							echo'<option value="'.$row->id_kat_costumer.'">'.$row->nama_kat_costumer.'</option>';
+										}
+									}
+								?>
+                               </select>
+                            </div>
+							
+							<!-- <div class="form-group"> -->
+							  <!-- <label for="jenis_kunjungan">Jenis Kunjungan</label> -->
+							  <!-- <select name="jenis_kunjungan" id="jenis_kunjungan" class="required form-control select2" title="Jenis Kunjungan"> -->
+									<!-- <option value="">== Pilih Jenis Kunjungan ==</option> -->
+									<!-- <option value="KONSULTASI KECANTIKAN">KONSULTASI KECANTIKAN</option> -->
+									<!-- <option value="KONSULTASI UMUM">KONSULTASI UMUM</option> -->
+									<!-- <option value="TINDAKAN LANGSUNG">TINDAKAN LANGSUNG</option> -->
+									<!-- <option value="OBAT DAN TINDAKAN">OBAT DAN TINDAKAN</option> -->
+							   <!-- </select> -->
+							<!-- </div> -->
+							
+							<input type="hidden" name="jenis_kunjungan" id="jenis_kunjungan" value="OBAT DAN TINDAKAN" />
+							
+							<!-- <div class="form-group"> -->
+							<!-- <label for="nik">NIK Pasien</label> -->
+							<!-- <input type="text" id="nik" name="nik"  maxlength="25" class=" form-control" size="35" alt="NIK Pasien" title="NIK Pasien" placeholder="*NIK Pasien" onkeypress="return isNumberKey(event)"/> -->
+							<!-- </div> -->
+							<input type="hidden" name="nik" id="nik" value="" />
+							
+							<div class="form-group">
+							<label for="nama_lengkap">Nama Customer/Cabang</label>
+							<input type="hidden" id="cek_nama_lengkap" name="cek_nama_lengkap" />
+							<input type="text" id="nama_lengkap" name="nama_lengkap"  maxlength="35" class="required form-control" size="35" alt="Nama Lengkap" title="Nama Lengkap" placeholder="*Nama Lengkap" /><span id="pesan_nama"></span>
+							</div>
+							
+							<!-- <div class="form-group"> -->
+							<!-- <label for="panggilan">Nama Panggilan</label> -->
+							<!-- <input type="text" id="panggilan" name="panggilan"  maxlength="35" class=" form-control" size="35" alt="Nama Panggilan" title="Nama Panggilan" placeholder="*Nama Panggilan"/> -->
+							<!-- </div> -->
+							<input type="hidden" name="panggilan" id="panggilan" value="" />
+							
+							<!-- <div class="form-group"> -->
+								<!-- <label for="tmp_lahir">Tempat Lahir</label> -->
+								<!-- <input type="text" id="tmp_lahir" name="tmp_lahir"  maxlength="15" class=" form-control" size="35" alt="Tempat Lahir" title="Tempat Lahir" placeholder="*Tempat Lahir, Isikan dengan nama kota/kabupaten saja"/> -->
+							<!-- </div> -->
+							<input type="hidden" name="tmp_lahir" id="tmp_lahir" value="" />
+							
+							<!-- <div class="form-group"> -->
+								<!-- <label>Tanggal Lahir</label> -->
+								<!-- <div class="input-group date"> -->
+								  <!-- <div class="input-group-addon"> -->
+									<!-- <i class="fa fa-calendar"></i> -->
+								  <!-- </div> -->
+								  <!-- <input name="tgl_lahir" id="tgl_lahir" type="text" class=" form-control pull-right settingDate" alt="Tanggal Lahir" title="Tanggal Lahir" value="<?php echo date("Y-m-d"); ?>" data-date-format="yyyy-mm-dd"> -->
+								<!-- </div> -->
+							<!-- </div> -->
+							<input type="hidden" name="tgl_lahir" id="tgl_lahir" value="<?php echo date("Y-m-d"); ?>" />
+							
+							<!-- <div class="form-group"> -->
+                              <!-- <label for="jenis_kelamin">Jenis Kelamin</label> -->
+                              <!-- <select name="jenis_kelamin" id="jenis_kelamin" class="required form-control select2" title="Jenis Kelamin"> -->
+									<!-- <option value=""></option> -->
+									<!-- <option value="LAKI-LAKI">LAKI-LAKI</option> -->
+									<!-- <option value="PEREMPUAN">PEREMPUAN</option> -->
+                               <!-- </select> -->
+                            <!-- </div> -->
+							<input type="hidden" name="jenis_kelamin" id="jenis_kelamin" value="Customer/Cabang" />
+							
+							<!-- <div class="form-group"> -->
+                              <!-- <label for="status">Status Pernikahan</label> -->
+                              <!-- <select name="status" id="status" class=" form-control select2" title="Status Pernikahan"> -->
+									<!-- <option value=""></option> -->
+									<!-- <option value="LAJANG">LAJANG</option> -->
+									<!-- <option value="MENIKAH">MENIKAH</option> -->
+									<!-- <option value="DUDA">DUDA</option> -->
+									<!-- <option value="JANDA">JANDA</option> -->
+                               <!-- </select> -->
+                            <!-- </div> -->
+							<input type="hidden" name="status" id="status" value="LAJANG" />
+							
+							<div class="form-group">
+                              <label for="hp">No Telpon/Hp</label>
+							  <input type="text" id="hp" name="hp"  maxlength="25" onkeypress="return isNumberKey(event)" class="required form-control" size="35" alt="No Telpon/Hp" title="No Telpon/Hp" placeholder="*No Telpon/Hp"/>
+							  
+								<!-- <div class="row"> -->
+									<!-- <div class="col-lg-6"> -->
+										<!-- <div class="input-group"> -->
+											<!-- <span class="input-group-addon"> -->
+												<!-- HP1 -->
+											<!-- </span> -->
+											<!-- <input type="text" id="hp" name="hp"  maxlength="25" onkeypress="return isNumberKey(event)" class=" form-control" size="35" alt="No Telpon/Hp" title="No Telpon/Hp" placeholder="*No Telpon/Hp"/> -->
+										<!-- </div> -->
+									<!-- </div> -->
+									<!-- <div class="col-lg-6"> -->
+										<!-- <div class="input-group"> -->
+											<!-- <span class="input-group-addon"> -->
+												<!-- HP2 -->
+											<!-- </span> -->
+											<!-- <input type="text" id="hp_pnd" name="hp_pnd"  maxlength="25" onkeypress="return isNumberKey(event)" class="form-control" size="35" alt="No Telpon/Hp" title="No Telpon/Hp" placeholder="*No Telpon/Hp"/> -->
+										<!-- </div> -->
+									<!-- </div> -->
+								<!-- </div> -->
+                            </div>
+							<input type="hidden" name="hp_pnd" id="hp_pnd" value="" />
+							
+							<div class="form-group">
+                              <input type="hidden" id="cek_email" name="cek_email" />
+                              <label for="email_costumer">Email</label>
+                              <input type="text" id="email_costumer" name="email_costumer"  maxlength="50" class="email form-control" size="35" alt="Email Harus Valid" title="Email Harus Valid" placeholder="Email Harus Valid"/> <span id="pesan2"></span>
+                            </div>
+							
+							<!-- <div class="form-group"> -->
+							<!-- <label for="pendidikan">Gelar Pendidikan</label> -->
+							<!-- <input type="text" id="pendidikan" name="pendidikan"  maxlength="35" class=" form-control" size="35" alt="Gelar Pendidikan" title="Gelar Pendidikan" placeholder="*Gelar Pendidikan"/> -->
+							<!-- </div> -->
+							<input type="hidden" name="pendidikan" id="pendidikan" value="" />
+							
+							<!-- <div class="form-group"> -->
+							<!-- <label for="pekerjaan">Pekerjaan</label> -->
+							<!-- <input type="text" id="pekerjaan" name="pekerjaan"  maxlength="35" class="required form-control" size="35" alt="Pekerjaan" title="Pekerjaan" placeholder="*Pekerjaan"/> -->
+							<!-- </div> -->
+							
+							<!-- <div class="form-group"> -->
+                              <!-- <label for="pekerjaan">Pekerjaan</label> -->
+                              <!-- <select name="pekerjaan" id="pekerjaan" class=" form-control select2" title="Status Pekerjaan"> -->
+									<!-- <option value=""></option> -->
+									<!-- <option value="KARYAWAN SWASTA">KARYAWAN SWASTA</option> -->
+									<!-- <option value="WIRASWASTA">WIRASWASTA</option> -->
+									<!-- <option value="ASN">ASN</option> -->
+									<!-- <option value="TNI">TNI</option> -->
+									<!-- <option value="POLRI">POLRI</option> -->
+									<!-- <option value="DPR">DPR</option> -->
+									<!-- <option value="PEJABAT">PEJABAT</option> -->
+									<!-- <option value="ARTIS">ARTIS</option> -->
+									<!-- <option value="GURU">GURU</option> -->
+									<!-- <option value="IRT">IRT</option> -->
+									<!-- <option value="LAINYA">LAINYA</option> -->
+                               <!-- </select> -->
+                            <!-- </div> -->
+							<input type="hidden" name="pekerjaan" id="pekerjaan" value="" />
+							
+							<!-- <div class="form-group"> -->
+							<!-- <label for="nama_perusahaan">Nama Perusahaan/Instansi</label> -->
+							<!-- <input type="text" id="nama_perusahaan" name="nama_perusahaan"  maxlength="50" class=" form-control" size="35" alt="Nama Perusahaan/Instansi" title="Nama Perusahaan/Instansi" placeholder="*Nama Perusahaan/Instansi"/> -->
+							<!-- </div> -->
+							<input type="hidden" name="nama_perusahaan" id="nama_perusahaan" value="" />
+							
+							<div class="form-group">
+								<label>Tanggal Registrasi</label>
+								<div class="input-group date">
+								  <div class="input-group-addon">
+									<i class="fa fa-calendar"></i>
+								  </div>
+								  <input name="tgl_registrasi" idtgl_registrasitgl_lahir" type="text" class=" form-control pull-right settingDate" alt="Tanggal Registrasi" title="Tanggal Registrasi" value="<?php echo date("Y-m-d"); ?>" data-date-format="yyyy-mm-dd">
+								</div>
+								<!-- /.input group -->
+							</div>
+							
+							
+							<div class="form-group">
+                              <label for="alamat_rumah_sekarang">Alamat Lengkap</label>
+                              <textarea name="alamat_rumah_sekarang" id="alamat_rumah_sekarang" class=" form-control" title="Isi dengan alamat lengkap beserta RT dan RW" placeholder="*Isi dengan alamat lengkap beserta RT dan RW"></textarea>
+                            </div>
+							
+							<div class="form-group">
+                              <label for="ket_costumer">Keterangan</label>
+                              <textarea name="ket_costumer" id="ket_costumer" class=" form-control" title="Katerangan lengkap tentang Pasien" placeholder="*Katerangan lengkap tentang Pasien"></textarea>
+                            </div>
+							
+						</div><!-- /.box-body -->
+		
+						<div class="box-footer">
+							<button type="reset" id="btnbatal" class="btn btn-default">Batal</button>
+							<button type="submit" id="btnsimpan" class="confirm-btn btn btn-primary" title="Simpan Data <?php echo $msgbox_title;?> ?">Simpan</button>
+						</div>
+						</form>
+					<!-- ISI FORM -->
+				
+				
+				</div><!-- /.box-body -->
+			</div><!-- /.box -->
+			
+			
+			<!-- Perbatasan table dan form -->
+					
+					<div class="box">
+						<div class="box-header">
+							<h3 class="box-title">Tabel <?php echo $msgbox_title;?> <?php echo $this->session->userdata("ses_nama_kantor"); ?>
+							</h3>
+							<div class="pull-right">
+								<!-- <form action="<?=base_url();?>admin/pendaftaran-klinik-cari" method="post" class="frm-cari"> -->
+								<form action="<?=base_url();?>gl-admin-pasien" method="get" class="frm-cari">
+									<table>
+										<tr>
+											<!-- <td>Berdasarkan</td><td>:</td> -->
+											<td>
+												<select name="kode_kantor" id="kode_kantor" class="required form-control select2" title="Jenis Moving">
+												<option value="<?php if (!empty($_GET['kode_kantor'])){echo $_GET['kode_kantor'];}else{echo"";} ?>"><?php if (!empty($_GET['kode_kantor'])){echo $_GET['kode_kantor'];}else{echo"== Pilih Cabang ==";} ?></option>
+												<?php
+													
+													if(!empty($list_kantor))
+													{
+														$list_result = $list_kantor->result();
+														
+														foreach($list_result as $row)
+														{
+															echo'<option value="'.$row->kode_kantor.'">'.$row->nama_kantor.'</option>';
+														}
+													}
+													
+												?>
+													<option value="">SEMUA</option>
+											   </select>
+											</td>
+											<td>
+												<select name="nama_kat_costumer" id="nama_kat_costumer" class="required form-control select2" title="Kategori Pasien">
+													<option value="<?php if (!empty($_GET['nama_kat_costumer'])){echo $_GET['nama_kat_costumer'];}else{echo"";} ?>"><?php if (!empty($_GET['nama_kat_costumer'])){echo $_GET['nama_kat_costumer'];}else{echo"== Kategori Pasien ==";} ?></option>
+													
+													<?php
+														if(!empty($list_kat_costumer))
+														{
+															$list_result = $list_kat_costumer->result();
+															foreach($list_result as $row)
+															{
+												echo'<option value="'.$row->nama_kat_costumer.'">'.$row->nama_kat_costumer.'</option>';
+															}
+														}
+													?>
+											   </select>
+											</td>
+											
+											<td>
+												<select name="cari_jenis_kunjungan" id="cari_jenis_kunjungan" class="required form-control select2" title="Jenis Kunjungan">
+													<option value="<?php if (!empty($_GET['cari_jenis_kunjungan'])){echo $_GET['cari_jenis_kunjungan'];}else{echo"";} ?>"><?php if (!empty($_GET['cari_jenis_kunjungan'])){echo $_GET['cari_jenis_kunjungan'];}else{echo"== Pilih Jenis Kunjungan ==";} ?></option>
+													<option value="KONSULTASI KECANTIKAN">KONSULTASI KECANTIKAN</option>
+													<option value="KONSULTASI UMUM">KONSULTASI UMUM</option>
+													<option value="TINDAKAN LANGSUNG">TINDAKAN LANGSUNG</option>
+													<option value="OBAT DAN TINDAKAN">OBAT DAN TINDAKAN</option>
+													<option value=""></option>
+											   </select>
+											</td>
+											<td>
+												<!-- <input type="text" name="cari"  maxlength="35" class="text form-control" size="35" alt="tlp" title="Cari data" placeholder="...Cari" value="<?php if (!empty($_GET['berdasarkan'])){echo $_GET['cari'];} ?>"/> -->
+												<input type="text" name="cari"  maxlength="35" class="text form-control" size="35" alt="tlp" title="Cari data" placeholder="...Cari" value="<?php if (!empty($_GET['cari'])){echo $_GET['cari'];} ?>"/>
+											</td>
+											<td>	
+												<button type="submit" id="btnsimpan" class="btn btn-success btn-block btn-flat" title="Pencarian Data <?php echo $msgbox_title;?> ?">CARI</button>
+											</td>
+											
+											<!-- <td> -->
+												<!-- <a class="confirm-btn btn btn-success btn-sm" href="#">DITERIMA</a> -->
+												<!-- <a class="confirm-btn btn btn-danger btn-sm" href="#">DITOLAK</a> -->
+											<!-- </td> -->
+										</tr>
+									</table>
+								</form>
+							</div>
+							<br/>
+							<br/>
+							<br/>
+							<p style="color:red;"><?php echo $sum_pesan; ?></p>
+						</div><!-- /.box-header -->
+						<div class="box-body table-responsive no-padding">
+						
+						
+						<?php
+							//TABLE
+							if(!empty($list_costumer))
+								{
+									//echo gethostname();
+									//echo $this->M_gl_pengaturan->getUserIpAddr();
+									//$sts_query = strpos(base_url(),"localhost");
+									//echo $sts_query;
+									//$nama = "Mulyana Yusuf";
+									//echo str_replace("f","849",$nama);
+									echo'<table width="100%" id="example2" class="table table-hover">';
+										echo '<thead>
+	<tr>';
+													echo '<th width="5%">NO</th>';
+													echo '<th width="10%">FOTO PROFILE</th>';
+													echo '<th width="35%">BIODATA</th>';
+													echo '<th width="35%">ALAMAT</th>';
+													echo '<th width="5%">DEFAULT</th>';
+													echo '<th width="10%">AKSI</th>';
+										echo '</tr>
+	</thead>';
+										$list_result = $list_costumer->result();
+										$no =$this->uri->segment(2,0)+1;
+										echo '<tbody>';
+										foreach($list_result as $row)
+										{
+											
+											echo'<tr id="tr_'.$no.'">';
+												echo'<td>'.$no.'</td>';
+												
+												
+												if($row->avatar == "")
+												{
+													$src = base_url().'assets/global/costumer/loading.gif';
+													echo '<td><img id="IMG_'.$no.'"  width="100px" height="100px" style="border:1px solid #C8C8C8; padding:5px; float:left; margin-right:20px;" src="'.$src.'" />
+													</td>';
+												}
+												else
+												{
+													//$src = base_url().'assets/global/costumer/'.$row->avatar;
+													$src = base_url().''.$row->avatar_url.''.$row->avatar;
+													echo '<td><img id="IMG_'.$no.'"  width="100px" height="100px" style="border:1px solid #C8C8C8; padding:5px; float:left; margin-right:20px;" src="'.$src.'" />
+													</td>';
+												}
+												
+												
+												/*
+												echo'<td>
+													<b style="background-color:green;padding:1%;color:white;">'.$row->nama_kat_costumer.' | ('.$row->tgl_registrasi.')</b>
+													<br/> <b>NO : </b>'.$row->no_costumer.' 
+													<br/> <b>KUNJUNGAN : </b>'.$row->jenis_kunjungan.' 
+													<br/> <b>NIK : </b>'.$row->nik.' 
+													<br/> <b>NAMA : </b>'.$row->nama_lengkap.' ('.$row->panggilan.')
+													<br/> <b>PENDIDIKAN : </b>'.$row->pendidikan.'
+													<br/> <b>PEKERJAAN : </b>'.$row->pekerjaan.' ('.$row->nama_perusahaan.')
+												</td>';
+												*/
+												
+												echo'<td>
+													<b style="background-color:green;padding:1%;color:white;">'.$row->nama_kat_costumer.' | ('.$row->tgl_registrasi.')</b>
+													<br/> <b>NO : </b>'.$row->no_costumer.' 
+													<br/> <b>NAMA : </b>'.$row->nama_lengkap.'
+													<br/>'.$row->jenis_kunjungan.' 
+												</td>';
+												
+												
+												/*
+												echo'<td>
+														<b>TELPON : </b>'.$row->hp.'/'.$row->hp_pnd.' 
+														<br/> <b>EMAIL : </b>'.$row->email_costumer.' 
+														<br/> <b>KELAMIN : </b>'.$row->jenis_kelamin.'
+														<br/> <b>STS MENIKAH : </b>'.$row->status.' 
+														<br/> <b>TTL : </b>'.$row->tmp_lahir.','.$row->tgl_lahir.' ('.$row->USIA.')
+														<br/> <b>ALAMAT : </b>'.$row->alamat_rumah_sekarang.'
+														<br/> <b>KETERANGAN : </b>'.$row->ket_costumer.' 
+													</td>';
+												*/
+												
+												if($row->hp <> "")
+												{
+													echo'<td>
+														'.$row->alamat_rumah_sekarang.' ('.$row->hp.'/'.$row->hp_pnd.' )
+														<br/>'.$row->ket_costumer.' 
+													</td>';
+												}
+												else
+												{
+													echo'<td>
+														'.$row->alamat_rumah_sekarang.'
+														<br/>'.$row->ket_costumer.' 
+													</td>';
+												}
+												
+												
+													if($row->isDefault == '0')
+													{
+														echo '<td>
+															<div class="form-group">
+															<label>
+															  <input type="checkbox"  id="isDefault_'.$no.'" name="isDefault_'.$no.'" class="flat-red" onclick="cek_aktif('.$no.')">
+															</label>
+															</div>
+														</td>';
+													}
+													else
+													{
+														echo '<td>
+															<div class="form-group">
+															<label>
+															  <input type="checkbox" id="isDefault_'.$no.'" name="isDefault_'.$no.'" class="flat-red" onclick="cek_aktif('.$no.')" checked>
+															</label>
+															</div>
+														</td>';
+													}
+												
+													
+													echo'<td>
+			
+			<a class="confirm-btn btn btn-success btn-sm btn-block btn-flat" href="'.base_url().'gl-admin-pasien-detail/'.md5($row->id_costumer).'?kode_kantor='.($kode_kantor).'" title = "Detail Data '.$row->nama_lengkap.'" alt = "Detail Data '.$row->nama_lengkap.'">Detail</a>
+			
+			
+			<a href="javascript:void(0)" class="btn btn-warning btn-sm btn-block btn-flat" onclick="edit('.$no.')" title = "Ubah Data '.$row->nama_lengkap.'" alt = "Ubah Data '.$row->nama_lengkap.'">Edit</a>
+			
+			<a class="confirm-btn btn btn-danger btn-sm btn-block btn-flat" href="'.base_url().'gl-admin-pasien-hapus/'.($row->id_costumer).'" title = "Hapus Data '.$row->nama_lengkap.'" alt = "Hapus Data '.$row->nama_lengkap.'">Hapus</a>
+													</td>';
+													
+													echo'<input type="hidden" id="url_fix_'.$no.'" name="url_fix_'.$no.'" value="'.$src.'" />';
+													echo'<input type="hidden" id="no_'.$no.'" name="no_'.$no.'" value="'.$no.'" />';
+													echo'<input type="hidden" id="id_costumer_'.$no.'" name="id_costumer_'.$no.'" value="'.$row->id_costumer.'" />';
+													//echo'<input type="hidden" id="id_karyawan_'.$no.'" name="id_karyawan_'.$no.'" value="'.$row->id_karyawan.'" />';
+													echo'<input type="hidden" id="id_kat_costumer_'.$no.'" name="id_kat_costumer_'.$no.'" value="'.$row->id_kat_costumer.'" />';
+													echo'<input type="hidden" id="nama_kat_costumer_'.$no.'" name="nama_kat_costumer_'.$no.'" value="'.$row->nama_kat_costumer.'" />';
+													//echo'<input type="hidden" id="id_kat_costumer2_'.$no.'" name="id_kat_costumer2_'.$no.'" value="'.$row->id_kat_costumer2.'" />';
+													//echo'<input type="hidden" id="tgl_pengajuan_'.$no.'" name="tgl_pengajuan_'.$no.'" value="'.$row->tgl_pengajuan.'" />';
+													echo'<input type="hidden" id="no_costumer_'.$no.'" name="no_costumer_'.$no.'" value="'.$row->no_costumer.'" />';
+													echo'<input type="hidden" id="nama_lengkap_'.$no.'" name="nama_lengkap_'.$no.'" value="'.$row->nama_lengkap.'" />';
+													echo'<input type="hidden" id="panggilan_'.$no.'" name="panggilan_'.$no.'" value="'.$row->panggilan.'" />';
+													echo'<input type="hidden" id="nik_'.$no.'" name="nik_'.$no.'" value="'.$row->nik.'" />';
+													//echo'<input type="hidden" id="no_ktp_'.$no.'" name="no_ktp_'.$no.'" value="'.$row->no_ktp.'" />';
+													echo'<input type="hidden" id="tmp_lahir_'.$no.'" name="tmp_lahir_'.$no.'" value="'.$row->tmp_lahir.'" />';
+													echo'<input type="hidden" id="tgl_lahir_'.$no.'" name="tgl_lahir_'.$no.'" value="'.$row->tgl_lahir.'" />';
+													echo'<input type="hidden" id="jenis_kelamin_'.$no.'" name="jenis_kelamin_'.$no.'" value="'.$row->jenis_kelamin.'" />';
+													echo'<input type="hidden" id="status_'.$no.'" name="status_'.$no.'" value="'.$row->status.'" />';
+													echo'<input type="hidden" id="alamat_rumah_sekarang_'.$no.'" name="alamat_rumah_sekarang_'.$no.'" value="'.$row->alamat_rumah_sekarang.'" />';
+													echo'<input type="hidden" id="hp_'.$no.'" name="hp_'.$no.'" value="'.$row->hp.'" />';
+													//echo'<input type="hidden" id="status_rumah_'.$no.'" name="status_rumah_'.$no.'" value="'.$row->status_rumah.'" />';
+													//echo'<input type="hidden" id="lama_menempati_'.$no.'" name="lama_menempati_'.$no.'" value="'.$row->lama_menempati.'" />';
+													echo'<input type="hidden" id="pendidikan_'.$no.'" name="pendidikan_'.$no.'" value="'.$row->pendidikan.'" />';
+													//echo'<input type="hidden" id="ibu_kandung_'.$no.'" name="ibu_kandung_'.$no.'" value="'.$row->ibu_kandung.'" />';
+													echo'<input type="hidden" id="nama_perusahaan_'.$no.'" name="nama_perusahaan_'.$no.'" value="'.$row->nama_perusahaan.'" />';
+													//echo'<input type="hidden" id="alamat_perusahaan_'.$no.'" name="alamat_perusahaan_'.$no.'" value="'.$row->alamat_perusahaan.'" />';
+													//echo'<input type="hidden" id="bidang_usaha_'.$no.'" name="bidang_usaha_'.$no.'" value="'.$row->bidang_usaha.'" />';
+													echo'<input type="hidden" id="jabatan_'.$no.'" name="jabatan_'.$no.'" value="'.$row->jabatan.'" />';
+													//echo'<input type="hidden" id="penghasilan_perbulan_'.$no.'" name="penghasilan_perbulan_'.$no.'" value="'.$row->penghasilan_perbulan.'" />';
+													//echo'<input type="hidden" id="nama_lengkap_pnd_'.$no.'" name="nama_lengkap_pnd_'.$no.'" value="'.$row->nama_lengkap_pnd.'" />';
+													//echo'<input type="hidden" id="alamat_rumah_pnd_'.$no.'" name="alamat_rumah_pnd_'.$no.'" value="'.$row->alamat_rumah_pnd.'" />';
+													echo'<input type="hidden" id="hp_pnd_'.$no.'" name="hp_pnd_'.$no.'" value="'.$row->hp_pnd.'" />';
+													echo'<input type="hidden" id="pekerjaan_'.$no.'" name="pekerjaan_'.$no.'" value="'.$row->pekerjaan.'" />';
+													//echo'<input type="hidden" id="hubungan_'.$no.'" name="hubungan_'.$no.'" value="'.$row->hubungan.'" />';
+													//echo'<input type="hidden" id="username_'.$no.'" name="username_'.$no.'" value="'.$row->username.'" />';
+													//echo'<input type="hidden" id="pass_'.$no.'" name="pass_'.$no.'" value="'.$row->pass.'" />';
+													echo'<input type="hidden" id="avatar_'.$no.'" name="avatar_'.$no.'" value="'.$row->avatar.'" />';
+													echo'<input type="hidden" id="avatar_url_'.$no.'" name="avatar_url_'.$no.'" value="'.$row->avatar_url.'" />';
+													//echo'<input type="hidden" id="piutang_awal_'.$no.'" name="piutang_awal_'.$no.'" value="'.$row->piutang_awal.'" />';
+													//echo'<input type="hidden" id="tgl_piutang_awal_'.$no.'" name="tgl_piutang_awal_'.$no.'" value="'.$row->tgl_piutang_awal.'" />';
+													//echo'<input type="hidden" id="isDefault_'.$no.'" name="isDefault_'.$no.'" value="'.$row->isDefault.'" />';
+													//echo'<input type="hidden" id="point_awal_'.$no.'" name="point_awal_'.$no.'" value="'.$row->point_awal.'" />';
+													echo'<input type="hidden" id="tgl_registrasi_'.$no.'" name="tgl_registrasi_'.$no.'" value="'.$row->tgl_registrasi.'" />';
+													
+													echo'<input type="hidden" id="email_costumer_'.$no.'" name="email_costumer_'.$no.'" value="'.$row->email_costumer.'" />';
+													echo'<input type="hidden" id="ket_costumer_'.$no.'" name="ket_costumer_'.$no.'" value="'.$row->ket_costumer.'" />';
+													
+													echo'<input type="hidden" id="jenis_kunjungan_'.$no.'" name="jenis_kunjungan_'.$no.'" value="'.$row->jenis_kunjungan.'" />';
+
+												
+												
+											echo'</tr>';
+											$no++;
+										}
+										
+										echo '</tbody>';
+									echo'</table>';
+								}
+								else
+								{
+									echo'<center>';
+									echo'Tidak Ada Data Yang Ditampilkan !';
+									echo'</center>';
+								}
+							//TABLE
+						?>
+						<center>
+						<div class="halaman"><?php echo $halaman;?></div>
+						</center>
+						</div><!-- /.box-body -->
+					</div><!-- /.box -->
+					
+					
+					
+					
+			</div><!-- /.col -->
+		</div><!-- /.row -->
+		<!-- =========================================================== -->
+		</section><!-- /.content -->
+	</div><!-- /.content-wrapper -->
+			
+			
+		
+<script type='text/javascript'>
+	function cek_aktif(no)
+	{
+		//alert($("#isAktif_"+no).val());
+		/*JIKA CEK LANGSUNG*/
+		//$(".checkbox").change(function() {
+			//if(this.checked) {
+				//PERINTH DISISNI Do stuff
+			//}
+		//});
+		/*JIKA CEK LANGSUNG*/
+		
+		var id_costumer = $("#id_costumer_"+no).val(); 
+		$.ajax
+		(
+			{
+				type: "POST", 
+				url: "<?php echo base_url();?>gl-admin-pasien-cek-default/",
+				data: "id_costumer="+id_costumer,
+				success:function(data)
+				{ 
+					//if(data=='BERHASIL')
+					//{
+						//BERHASIL
+					//}
+					//else
+					//{
+						//alert("Ada masalah dengan koneksi ke server");
+					//}
+				} 
+			}
+		);
+		
+	}
+	
+	function edit(id)
+	{
+		$("#img_edit").html("<img style='border:1px solid #C8C8C8; padding:5px; float:left; margin-right:20px;' src='"+$('#url_fix_'+id).val()+"' width='100px' height='100px'>");
+		
+		
+		
+		$('input[name=stat_edit]').val($('#id_costumer_'+id).val());
+		$('input[name=id_costumer]').val($('#id_costumer_'+id).val());
+		$('input[name=id_karyawan]').val($('#id_karyawan_'+id).val());
+		
+		//$('input[name=id_kat_costumer]').val($('#id_kat_costumer_'+id).val());
+		document.getElementById("id_kat_costumer").options.item(0).text = $('#nama_kat_costumer_'+id).val();
+		document.getElementById("id_kat_costumer").options.item(0).value = $('#id_kat_costumer_'+id).val();
+		
+		$('input[name=id_kat_costumer2]').val($('#id_kat_costumer2_'+id).val());
+		//$('input[name=tgl_pengajuan]').val($('#tgl_pengajuan_'+id).val());
+		$('input[name=no_costumer]').val($('#no_costumer_'+id).val());
+		$('input[name=cek_no_costumer]').val($('#no_costumer_'+id).val());
+		$('input[name=nama_lengkap]').val($('#nama_lengkap_'+id).val());
+		$('input[name=panggilan]').val($('#panggilan_'+id).val());
+		$('input[name=nik]').val($('#nik_'+id).val());
+		//$('input[name=no_ktp]').val($('#no_ktp_'+id).val());
+		$('input[name=tmp_lahir]').val($('#tmp_lahir_'+id).val());
+		$('input[name=tgl_lahir]').val($('#tgl_lahir_'+id).val());
+		
+		
+		$('input[name=jenis_kelamin]').val($('#jenis_kelamin_'+id).val());
+		//document.getElementById("jenis_kelamin").options.item(0).text = $('#jenis_kelamin_'+id).val();
+		//document.getElementById("jenis_kelamin").options.item(0).value = $('#jenis_kelamin_'+id).val();
+		
+		$('input[name=status]').val($('#status_'+id).val());
+		//document.getElementById("status").options.item(0).text = $('#status_'+id).val();
+		//document.getElementById("status").options.item(0).value = $('#status_'+id).val();
+		
+		
+		//$('input[name=alamat_rumah_sekarang]').val($('#alamat_rumah_sekarang_'+id).val());
+		document.getElementById("alamat_rumah_sekarang").value = $('#alamat_rumah_sekarang_'+id).val();
+		
+		$('input[name=hp]').val($('#hp_'+id).val());
+		//$('input[name=status_rumah]').val($('#status_rumah_'+id).val());
+		//$('input[name=lama_menempati]').val($('#lama_menempati_'+id).val());
+		$('input[name=pendidikan]').val($('#pendidikan_'+id).val());
+		//$('input[name=ibu_kandung]').val($('#ibu_kandung_'+id).val());
+		$('input[name=nama_perusahaan]').val($('#nama_perusahaan_'+id).val());
+		//$('input[name=alamat_perusahaan]').val($('#alamat_perusahaan_'+id).val());
+		//$('input[name=bidang_usaha]').val($('#bidang_usaha_'+id).val());
+		//$('input[name=jabatan]').val($('#jabatan_'+id).val());
+		//$('input[name=penghasilan_perbulan]').val($('#penghasilan_perbulan_'+id).val());
+		//$('input[name=nama_lengkap_pnd]').val($('#nama_lengkap_pnd_'+id).val());
+		//$('input[name=alamat_rumah_pnd]').val($('#alamat_rumah_pnd_'+id).val());
+		$('input[name=hp_pnd]').val($('#hp_pnd_'+id).val());
+		
+		$('input[name=pekerjaan]').val($('#pekerjaan_'+id).val());
+		//document.getElementById("pekerjaan").options.item(0).text = $('#pekerjaan_'+id).val();
+		//document.getElementById("pekerjaan").options.item(0).value = $('#pekerjaan_'+id).val();
+		
+		//$('input[name=hubungan]').val($('#hubungan_'+id).val());
+		//$('input[name=username]').val($('#username_'+id).val());
+		//$('input[name=pass]').val($('#pass_'+id).val());
+		//$('input[name=avatar]').val($('#avatar_'+id).val());
+		//$('input[name=avatar_url]').val($('#avatar_url_'+id).val());
+		//$('input[name=piutang_awal]').val($('#piutang_awal_'+id).val());
+		//$('input[name=tgl_piutang_awal]').val($('#tgl_piutang_awal_'+id).val());
+		//$('input[name=isDefault]').val($('#isDefault_'+id).val());
+		//$('input[name=point_awal]').val($('#point_awal_'+id).val());
+		$('input[name=tgl_registrasi]').val($('#tgl_registrasi_'+id).val());
+		$('input[name=email_costumer]').val($('#email_costumer_'+id).val());
+		
+		//$('input[name=ket_costumer]').val($('#ket_costumer_'+id).val());
+		document.getElementById("ket_costumer").value = $('#ket_costumer_'+id).val();
+		
+		$('input[name=jenis_kunjungan]').val($('#jenis_kunjungan_'+id).val());
+		//document.getElementById("jenis_kunjungan").options.item(0).text = $('#jenis_kunjungan_'+id).val();
+		//document.getElementById("jenis_kunjungan").options.item(0).value = $('#jenis_kunjungan_'+id).val();
+
+		
+		alert("Mode Perubahan Aktif Untuk Data "+ $('#nama_lengkap_'+id).val());
+		
+		/*Buka Form*/
+			$('#icon_form').attr('class', 'fa fa-minus');
+			$('#box-form').attr('class', 'box box-warning ellapsed-box box-solid');
+		/*Buka Form*/
+	}
+	
+	$('#btnbatal').click(function(){
+		$('input[name=stat_edit]').val("");
+		
+		
+		/*Tutup Dulu Form*/
+			$('#icon_form').attr('class', 'fa fa-plus');
+			$('#box-form').attr('class', 'box box-warning collapsed-box box-solid');
+		/*Tutup Dulu Form*/
+	});
+	
+	
+	function isNumberKey(evt)
+	{
+    	var charCode = (evt.which) ? evt.which : event.keyCode
+    	if (charCode > 31 && (charCode < 48 || charCode > 57))
+    	
+    	return false;
+    	return true;
+	}
+	
+	
+	function FormatCurrency(objNum)
+	{
+	   var num = objNum.value
+	   var ent, dec;
+	   if (num != '' && num != objNum.oldvalue)
+	   {
+		 num = HapusTitik(num);
+		 if (isNaN(num))
+		 {
+		   objNum.value = (objNum.oldvalue)?objNum.oldvalue:'';
+		 } else {
+		   var ev = (navigator.appName.indexOf('Netscape') != -1)?Event:event;
+		   if (ev.keyCode == 190 || !isNaN(num.split('.')[1]))
+		   {
+			 alert(num.split('.')[1]);
+			 objNum.value = TambahTitik(num.split('.')[0])+'.'+num.split('.')[1];
+		   }
+		   else
+		   {
+			 objNum.value = TambahTitik(num.split('.')[0]);
+		   }
+		   objNum.oldvalue = objNum.value;
+		 }
+	   }
+	}
+	function HapusTitik(num)
+	{
+	   return (num.replace(/\./g, ''));
+	}
+
+	function TambahTitik(num)
+	{
+	   numArr=new String(num).split('').reverse();
+	   for (i=3;i<numArr.length;i+=3)
+	   {
+		 numArr[i]+='.';
+	   }
+	   return numArr.reverse().join('');
+	} 
+			
+	function formatCurrency(num) {
+	   num = num.toString().replace(/\$|\./g,'');
+	   if(isNaN(num))
+	   num = "0";
+	   sign = (num == (num = Math.abs(num)));
+	   num = Math.floor(num*100+0.50000000001);
+	   cents = num0;
+	   num = Math.floor(num/100).toString();
+	   for (var i = 0; i < Math.floor((num.length-(1+i))/3); i++)
+	   num = num.substring(0,num.length-(4*i+3))+'.'+
+	   num.substring(num.length-(4*i+3));
+	   return (((sign)?'':'-') + num);
+	}
+</script>
+      
+    <!-- Bootstrap 3.3.4 -->
+	<script src="<?=base_url();?>assets/adminlte/bootstrap/js/bootstrap.min.js"></script>
+	<!-- Slimscroll -->
+	<script src="<?=base_url();?>assets/adminlte/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+	<!-- FastClick -->
+	<script src="<?=base_url();?>assets/adminlte/plugins/fastclick/fastclick.min.js"></script>
+	<!-- AdminLTE App -->
+	<script src="<?=base_url();?>assets/adminlte/dist/js/app.min.js"></script>
+	<!-- Page script -->
+    <!-- InputMask -->
+    <script src="<?=base_url();?>/assets/adminlte/plugins/input-mask/jquery.inputmask.js"></script>
+    <script src="<?=base_url();?>/assets/adminlte/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+    <script src="<?=base_url();?>/assets/adminlte/plugins/input-mask/jquery.inputmask.extensions.js"></script>
+	
+	<!-- bootstrap datepicker -->
+	<script src="<?=base_url();?>/assets/adminlte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+    
+    <script>
+      $(function () {
+		//Date picker
+		$('.settingDate').datepicker({
+			autoclose: true
+		});
+		
+		
+        //Initialize Select2 Elements
+        //$(".select2").select2();
+
+        //Datemask yyyy-mm-dd
+        $(".datemask_mysql").inputmask("yyyy-mm-dd", {"placeholder": "yyyy-mm-dd"});
+        //Datemask dd/mm/yyyy
+        //$("#datemask").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});
+        //Datemask2 mm/dd/yyyy
+        //$("#datemask2").inputmask("mm/dd/yyyy", {"placeholder": "mm/dd/yyyy"});
+        //TimeMask hh:mm:ss
+        $(".time_mysql").inputmask("hh:mm:ss", {"placeholder": "hh:mm:ss"});
+        //Money Euro
+        //$("[data-mask]").inputmask();
+
+        //iCheck for checkbox and radio inputs
+        $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+          checkboxClass: 'icheckbox_minimal-blue',
+          radioClass: 'iradio_minimal-blue'
+        });
+        //Red color scheme for iCheck
+        $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
+          checkboxClass: 'icheckbox_minimal-red',
+          radioClass: 'iradio_minimal-red'
+        });
+        //Flat red color scheme for iCheck
+        $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+          checkboxClass: 'icheckbox_flat-green',
+          radioClass: 'iradio_flat-green'
+        });
+
+        //Colorpicker
+        $(".my-colorpicker1").colorpicker();
+        //color picker with addon
+        $(".my-colorpicker2").colorpicker();
+
+        //Timepicker
+        $(".timepicker").timepicker({
+          showInputs: false
+        });
+      });
+    </script>
+	

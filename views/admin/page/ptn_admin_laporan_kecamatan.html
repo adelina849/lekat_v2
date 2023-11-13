@@ -1,0 +1,273 @@
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.4 -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/dist/css/AdminLTE.min.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/dist/css/skins/_all-skins.min.css">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/plugins/select2/select2.min.css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+        
+		
+    		<style type="text/css">
+    		.labelfrm {
+    			display:block;
+    			font-size:small;
+    			margin-top:5px;
+    		}
+    		.error {
+    			font-size:small;
+    			color:red;
+    		}
+    		</style>
+    		
+    		<script type="text/javascript" src="<?=base_url();?>assets/admin/js/jquery.validate.min.js"></script>
+    		
+    		<script type="text/javascript">
+    		$(document).ready(function() {
+    			$('.frm-input').validate();
+                
+                $('.confirm-btn').click(function(){
+    			var answer = confirm(jQuery(this).attr('title'));
+                return answer;
+                });
+    		});
+            </script>
+            
+            <script type="text/javascript">
+                var htmlobjek;
+                $(document).ready(function()
+                {	
+					$('#hasil-laporan').attr('class', 'active treeview');
+					
+					$("#KEC_ID").change(function()
+                    {  
+						var KEC_ID = $("#KEC_ID").val();
+						//alert(KEC_ID);
+						
+						$.ajax({type: "POST", url: "<?=base_url();?>index.php/C_admin_hasil_laporan/createKecSession/", data: "KEC_ID="+KEC_ID, success:function(data)
+                        { 
+                        	if(data==0)
+                        	{
+                        	  	//ADA DATA
+								location.reload();
+                            }
+                            else
+                            {
+                              	//TIDAK ADA DATA
+                            }
+                              
+                        } 
+                        });
+						
+						
+                     });
+                });
+            </script>
+            
+     <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+          <h1>
+            Hasil Laporan Kecamatan
+          </h1>
+		  <p>
+			Halaman ini berisi tentang laporan - laporan yang dibuat oleh admin paten di kecamatan - kecamatan. Silahkan lakukan pemilihan kecamatan untuk mellihat laporan yang dihasilkan.
+		  <p>
+          <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+			<li><a href="#"><i class="fa fa-dashboard"></i> Jenis</a></li>
+            <li class="active">Laporan</li>
+            
+          </ol>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+          <!-- =========================================================== -->
+
+          <div class="row">
+            <div class="col-md-12">
+              <!-- Perbatasan table dan form -->
+					
+					<div class="box">
+						<div class="box-header">
+						<h3 class="box-title">Table Laporan</h3>
+							<div class="pull-right">
+								<!-- <form action="<?=base_url();?>admin/pendaftaran-klinik-cari" method="post" class="frm-cari"> -->
+								
+									<table>
+										<tr>
+											<!-- <td>Berdasarkan</td><td>:</td> -->
+											<!-- <td>
+												<select name="berdasarkan" title="Cari Berdasarkan" class="form-control">
+													<option value=""><?php if (!empty($_GET['berdasarkan'])){echo $_GET['berdasarkan'];} ?></option>
+													<option value="spesialisasi">Spesialisasi</option>
+													<option value="pendidikan">Pendidikan</option>
+												</select>
+											</td> -->
+											<td style="padding:1%;">
+												<select name="KEC_ID" id="KEC_ID" class="required form-control select2" title="Nama Kecamatan">
+													<?php
+														if(($this->session->userdata('ses_filter_KEC_ID') == null) or ($this->session->userdata('ses_filter_KEC_ID') == null))
+														{
+													?>
+														<option value="">--Pilih Kecamatan--</option>
+													<?php
+														}
+														else
+														{
+													?>
+														<option value="<?php echo $this->session->userdata('ses_filter_KEC_ID'); ?>">
+															<?php echo $this->session->userdata('ses_filter_KEC_NAMA'); ?>
+														</option>
+													<?php
+														}
+													?>
+													
+													<?php
+														if (!empty($list_kecamatan))
+														{
+															$list_result = $list_kecamatan->result();
+															foreach($list_result as $row)
+															{
+																echo '<option value="'.$row->KEC_ID.'">'.$row->KEC_NAMA.'</option>';
+															}
+														 }
+													 ?>
+												</select>
+											</td>
+											<td style="padding:1%;">
+											<form action="<?=base_url();?>laporan-kecamatan" method="get" class="frm-cari">
+												<!-- <input type="text" name="cari"  maxlength="35" class="text form-control" size="35" alt="tlp" title="Cari data" placeholder="...Cari" value="<?php if (!empty($_GET['berdasarkan'])){echo $_GET['cari'];} ?>"/> -->
+												<input type="text" name="cari"  maxlength="35" class="text form-control" size="35" alt="tlp" title="Cari data" placeholder="...Cari" value="<?php if (!empty($_GET['cari'])){echo $_GET['cari'];} ?>"/>
+											</form>
+											</td>
+										</tr>
+									</table>
+								
+							</div>
+						</div><!-- /.box-header -->
+						<div class="box-body">
+						
+						
+						<?php
+								if(!empty($list_laporan))
+								{
+									echo'<table width="100%" id="example2" class="table table-bordered table-hover">';
+										echo '<thead>
+	<tr>';
+													echo '<th width="5%">No</th>';
+													echo '<th width="20%">Kategori</th>';
+													echo '<th width="10%">Kode</th>';
+													echo '<th width="20%">Nama</th>';
+													echo '<th width="10%">Periode</th>';
+													echo '<th width="20%">Keterangan</th>';
+													echo '<th width="15%">Jumlah Laporan</th>';
+										echo '</tr>
+	</thead>';
+										$list_result = $list_laporan->result();
+										$no =$this->uri->segment(2,0)+1;
+										echo '<tbody>';
+										foreach($list_result as $row)
+										{
+											echo'<input type="hidden" name="LAP_ID_'.$no.'" id="LAP_ID_'.$no.'" value="'.$row->LAP_ID.'" />';
+											echo'<input type="hidden" name="LAP_KODE_'.$no.'" id="LAP_KODE_'.$no.'" value="'.$row->LAP_KODE.'" />';
+											echo'<input type="hidden" name="LAP_NAMA_'.$no.'" id="LAP_NAMA_'.$no.'" value="'.$row->LAP_NAMA.'" />';
+											echo'<input type="hidden" name="LAP_PERIODE_'.$no.'" id="LAP_PERIODE_'.$no.'" value="'.$row->LAP_PERIODE.'" />';
+											echo'<input type="hidden" name="LAP_DASAR_HUKUM_'.$no.'" id="LAP_DASAR_HUKUM_'.$no.'" value="'.$row->LAP_DASAR_HUKUM.'" />';
+											echo'<input type="hidden" name="LAP_KET_'.$no.'" id="LAP_KET_'.$no.'" value="'.$row->LAP_KET.'" />';
+											
+											echo'<input type="hidden" name="KLAP_ID_'.$no.'" id="KLAP_ID_'.$no.'" value="'.$row->KLAP_ID.'" />';
+											echo'<input type="hidden" name="KLAP_NAMA_'.$no.'" id="KLAP_NAMA_'.$no.'" value="'.$row->KLAP_NAMA.'" />';
+											
+											
+											if(($this->session->userdata('ses_filter_KEC_ID') == null) or ($this->session->userdata('ses_filter_KEC_ID') == null))
+											{
+												echo'
+													<tr>
+														<td>'.$no.'</td>
+														<td>'.$row->KLAP_NAMA.'</td>
+														<td>'.$row->LAP_KODE.'</td>
+														<td>'.$row->LAP_NAMA.'</td>
+														<td>'.$row->LAP_PERIODE.'</td>
+														<td>'.$row->LAP_KET.'</td>
+														<td>
+															
+														</td>
+													</tr>
+												';
+											}
+											else
+											{
+																								
+												echo'
+													<tr>
+														<td>'.$no.'</td>
+														<td>'.$row->KLAP_NAMA.'</td>
+														<td>'.$row->LAP_KODE.'</td>
+														<td>'.$row->LAP_NAMA.'</td>
+														<td>'.$row->LAP_PERIODE.'</td>
+														<td>'.$row->LAP_KET.'</td>
+														<td>
+															<a href="'.base_url().'laporan-kecamatan-perjenis/'.$row->LAP_ID.'">'.$row->JUMLAH.' Laporan</a>
+														</td>
+													</tr>
+												';
+
+											}
+											
+											$no++;
+										}
+										
+										echo '</tbody>';
+									echo'</table>';
+								}
+								else
+								{
+									echo'<center>';
+									echo'Tidak Ada Data Yang Ditampilkan !';
+									echo'</center>';
+								}
+							?>
+						<center>
+                        <div class="halaman"><?php echo $halaman;?></div>
+                        </center>
+						</div><!-- /.box-body -->
+					</div><!-- /.box -->
+					
+					
+			</div><!-- /.col -->
+		</div><!-- /.row -->
+          <!-- =========================================================== -->
+        </section><!-- /.content -->
+      </div><!-- /.content-wrapper -->
+            
+    		
+		
+<script type='text/javascript'>
+	
+</script>
+      
+    <!-- Bootstrap 3.3.4 -->
+    <script src="<?=base_url();?>assets/adminlte/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Slimscroll -->
+    <script src="<?=base_url();?>assets/adminlte/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+    <!-- FastClick -->
+    <script src="<?=base_url();?>assets/adminlte/plugins/fastclick/fastclick.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="<?=base_url();?>assets/adminlte/dist/js/app.min.js"></script>
+    <!-- Page script -->
+    

@@ -1,0 +1,405 @@
+<?php
+    
+header("Content-type: application/octet-stream");
+header("Content-Disposition: attachment; filename=LAPORANPATEN.xls");
+header("Pragma: no-cache");
+header("Expires: 0");
+
+?>
+	
+
+              
+              <!-- Perbatasan table dan form -->
+					<?php
+					$jum_periode = $_POST['jum_periode'];
+					$jum_kecamatan = $_POST['jum_kecamatan'];
+					
+					
+					//echo'PERIODE';
+					//echo'</br>';
+					for($no = 1;$no<=$jum_periode;$no++)
+					{
+						if(!empty($_POST['per_'.$no]))
+						{
+							echo '<h4>Akumulasi Laporan '.$data_laporan->LAP_NAMA.' '. $_POST['perNama_'.$no].'</h4></br>';
+							$PER_KODE = $_POST['per_'.$no];
+							
+							
+							
+							for($no2 = 1;$no2<=$jum_kecamatan;$no2++)
+							{
+							
+								$arrayTotal = array();
+								$arrayTotal[0] = 0;
+								$arrayTotal[1] = 0;
+								$arrayTotal[2] = 0;
+								$arrayTotal[3] = 0;
+								$arrayTotal[4] = 0;
+								$arrayTotal[5] = 0;
+								$arrayTotal[6] = 0;
+								$arrayTotal[7] = 0;
+								$arrayTotal[8] = 0;
+								$arrayTotal[9] = 0;
+								$arrayTotal[10] = 0;
+								$arrayTotal[11] = 0;
+								$arrayTotal[12] = 0;
+								$arrayTotal[13] = 0;
+								$arrayTotal[14] = 0;
+								$arrayTotal[15] = 0;
+								$arrayTotal[16] = 0;
+								$arrayTotal[17] = 0;
+								
+							
+								if(!empty($_POST['kec_'.$no2]))
+								{
+				/*echo'<div class="row">
+					<div class="col-md-12">
+					  <!-- <div class="box box-warning collapsed-box box-solid"> -->
+					  <div  id="box-form" class="box box-warning ellapsed-box box-solid">
+						<div class="box-header with-border">
+						  <h3 class="box-title">Kecamatan : '.$_POST['kecNama_'.$no2].'</h3>
+						  <div class="box-tools pull-right">
+							<button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+						  </div><!-- /.box-tools -->
+						</div><!-- /.box-header -->
+						<div class="box-body">';*/
+									//echo '<h5>Kecamatan : '.$_POST['kecNama_'.$no2].'</h5>';
+									$KEC_ID = $_POST['kec_'.$no2];
+									
+									$list_buat_laporan = $this->M_buat_laporan->get_laporan_yang_sudah_buat_by_periode($data_laporan->LAP_ID,$KEC_ID,$PER_KODE);
+									
+									if(!empty($list_buat_laporan))
+									{
+															
+										$list_result = $list_buat_laporan->result();
+										foreach($list_result as $row)
+										{
+											//echo '<center><h5>'.$row->BLAP_JUDUL.'</h5></center><br/>';
+											echo '<center><h5>'.$data_laporan->LAP_NAMA;
+											echo '</br>'.$_POST['kecNama_'.$no2];
+											echo '</br>'.$_POST['perNama_'.$no].'</h5></center><br/>';
+											
+											//TAMPILKAN ISI LAPORAN
+												if(!empty($data_item_laporan))
+												{
+													echo'<table id="example1" class="table table-bordered table-striped">';
+													//echo'<table id="example2" class="table table-bordered table-striped">';
+														
+														if($data_laporan->LAP_ID == "KL2017121700001") //Data Jumlah Fasilitas Kesehatn/DJFK
+														{
+															
+						echo'<thead style="background-color:green;"> <th rowspan="2" class="frmt1">NO</th> <th rowspan="2" class="frmt1">DESA</th> <th rowspan="2" class="frmt1">RUMAH SAKIT</th> <th colspan="3" style="text-align:center;border:solid 1px white;">PUSKESMAS</th> <th rowspan="2" class="frmt1">PUSTU</th> <th rowspan="2" class="frmt1">BALAI PENGOBATAN</th> <th rowspan="2" class="frmt1">RUMAH BERSALIN</th> <th rowspan="2" class="frmt1">PRAKTEK DOKTER</th> <th rowspan="2" class="frmt1">PRAKTEK DOKTER GIGI</th> <th rowspan="2" class="frmt1">PRAKTEK BIDAN</th> </thead>';
+						echo'<thead style="background-color:green;"><th></th> <th></th> <th></th> <th style="text-align:center;">RAWAT INAP/DTP</th> <th style="text-align:center;">TANPA PERAWATAN</th> <th style="text-align:center;">PONED</th> <th></th> <th></th> <th></th> <th></th> <th></th> <th></th>  </thead>';
+															
+														}
+														else if($data_laporan->LAP_ID == "KL2017110400002") //GUANTRANTIB
+														{
+						echo'<thead style="background-color:green;">
+								<th rowspan="2" class="frmt1">NO</th> <th rowspan="2">NAMA DESA</th>
+								<th colspan="4" class="frmt1" style="text-align:center;border:solid 1px white;">PENYAKIT MASYARAKAT</th>
+								<th colspan="3" class="frmt1" style="text-align:center;border:solid 1px white;">GUANTRIBUM</th>
+								<th colspan="5" class="frmt1" style="text-align:center;border:solid 1px white;">BENCANA ALAM</th>
+								<th colspan="3" class="frmt1" style="text-align:center;border:solid 1px white;">LAIN-LAIN</th>
+								<th rowspan="2" class="frmt1">KETERANGAN</th>
+							</thead>';
+						echo'<thead style="background-color:green;">
+								<th></th><th></th>
+								<th>JUDI</th><th>PROSTITUSI</th><th>NAP2A</th><th>MIRAS</th>
+								<th>PENCURIAN</th><th>PENIMBUNAN</th><th>HURU HARA</th>
+								<th>LONGSOR</th><th>BANJIR</th><th>ANGIN TOPAN</th><th>GEMPA BUMI</th><th>KEBAKARAN</th>
+								<th>LAKA LALU LINTAS</th><th>PENEMUAN MAYAT</th><th>HANYUT</th>
+								<th></th>
+							</thead>';
+														}
+														else if($data_laporan->LAP_ID == "KL2017101800001") //LAPORAN JUMLAH PENDUDUK
+														{
+						echo'<thead style="background-color:green;">
+								<th rowspan="2" class="frmt1">NO</th> <th rowspan="2" class="frmt1">NAMA DESA</th> <th rowspan="2" class="frmt1">JUMLAH KK</th>
+								<th colspan="3" style="text-align:center;border:solid 1px white;">PENDUDUK AWAL BULAN</th>
+								<th colspan="3" style="text-align:center;border:solid 1px white;">LAHIR</th> 
+								<th colspan="3" style="text-align:center;border:solid 1px white;">MATI</th> 
+								<th colspan="3" style="text-align:center;border:solid 1px white;">PINDAH</th> 
+								<th colspan="3" style="text-align:center;border:solid 1px white;">DATANG</th>
+								<th colspan="3" style="text-align:center;border:solid 1px white;">PENDUDUK AKHIR BULAN</th>
+							</thead>';
+						echo'<thead style="background-color:green;">
+								<th></th><th></th><th></th>
+								<th>L</th><th>P</th><th>JML</th>
+								<th>L</th><th>P</th><th>JML</th>
+								<th>L</th><th>P</th><th>JML</th>
+								<th>L</th><th>P</th><th>JML</th>
+								<th>L</th><th>P</th><th>JML</th>
+								<th>L</th><th>P</th><th>JML</th>
+							</thead>';
+														}
+														else if($data_laporan->LAP_ID == "KL2017110400001") //LAPORAN NTCR
+														{
+						echo'<thead style="background-color:green;">
+								<th rowspan="2" class="frmt1">NO</th> <th rowspan="2" class="frmt1">DESA</th>
+								<th colspan="2" class="frmt1" style="text-align:center;border:solid 1px white;">NIKAH</th>
+								<th rowspan="2" class="frmt1">TALAK</th>
+								<th rowspan="2" class="frmt1">CERAI</th>
+								<th rowspan="2" class="frmt1">RUJUK</th>
+								<th rowspan="2" class="frmt1">KETERANGAN</th>
+							</thead>';
+						echo'<thead style="background-color:green;">
+								<th></th> <th></th>
+								<th>Dikantor</th> <th>Diluar Kantor</th>
+								<th></th><th></th><th></th><th></th>
+							</thead>';
+														}
+														else if($data_laporan->LAP_ID == "KL2017121800001") //LAPORAN KARTU INVENTARIS BARANG - A (KIB - A)
+														{
+						echo'<thead style="background-color:green;border:solid 1px white;">
+								<th rowspan="3" class="frmt1">No Urut</th> <th rowspan="3" class="frmt1">Jenis Barang/Nama Barang</th>
+								<th colspan="3" class="frmt1" style="text-align:center;border:solid 1px white;">Nomor</th>
+								<th rowspan="3" class="frmt1">Luas(M2)</th>
+								<th rowspan="3" class="frmt1">Tahun Pengadaan</th>
+								<th rowspan="3" class="frmt1">Letak/Alamat</th>
+								<th colspan="3" class="frmt1" style="text-align:center;border:solid 1px white;">Status Tanah</th>
+								<th rowspan="3" class="frmt1">Letak/Pengguna</th>
+								<th rowspan="3" class="frmt1">Letak/Asal-usul</th>
+								<th rowspan="3" class="frmt1">Letak/Harga(Rp)</th>
+								<th rowspan="3" class="frmt1">Letak/Keterangan</th>
+							</thead>';
+						echo'<thead style="background-color:green;border:solid 1px white;">
+								<th></th> <th></th>
+								<th rowspan="2" class="frmt1">Kode Rekening</th> <th rowspan="2" class="frmt1">Kode Barang</th> <th rowspan="2" class="frmt1">Register</th>
+								<th></th><th></th><th></th>
+								<th rowspan="2" class="frmt1">Hak</th> 
+								<th colspan="2" class="frmt1" style="text-align:center;border:solid 1px white;">Sertifikat</th> 
+								<th></th><th></th><th></th><th></th>
+							</thead>';
+						echo'<thead style="background-color:green;border:solid 1px white;">
+								<th></th> <th></th> <th></th> <th></th> <th></th> <th></th> <th></th> <th></th> <th></th> <th>Tanggal</th> <th>Nomor</th>
+								<th></th><th></th><th></th><th></th>
+							</thead>';
+														}
+														else if($data_laporan->LAP_ID == "KL2017121800002") //LAPORAN KARTU INVENTARIS BARANG - B (KIB - B)
+														{
+						echo'<thead style="background-color:green;border:solid 1px white;">
+								<th rowspan="2" class="frmt1">No Urut</th> <th rowspan="2" class="frmt1">Jenis Barang/Nama Barang</th>
+								<th rowspan="2" class="frmt1">Kode Rekening</th>
+								<th rowspan="2" class="frmt1">Kode Barang</th>
+								<th rowspan="2" class="frmt1">Nomor Register</th>
+								<th rowspan="2" class="frmt1">Merek Type</th>
+								<th rowspan="2" class="frmt1">Ukuran CC</th>
+								<th rowspan="2" class="frmt1">Bahan</th>
+								<th rowspan="2" class="frmt1">Tahun Pembelian</th>
+								<th colspan="5" class="frmt1" style="text-align:center;border:solid 1px white;">Nomor</th>
+								<th rowspan="2" class="frmt1">Asal-usul Acara Perolehan</th>
+								<th rowspan="2" class="frmt1">Harga(Rp)</th>
+							</thead>';
+						echo'<thead style="background-color:green;border:solid 1px white;">
+								<th></th> <th></th> <th></th> <th></th> <th></th> <th></th> <th></th> <th></th> <th></th>
+								<th>Pabrik</th> <th>Rangka</th> <th>Mesin</th> <th>Polisi</th> <th>BPKB</th>
+								<th></th><th></th>
+							</thead>';
+														}
+														else
+														{
+															//TAMPILKAN HEADER DEFAULT
+															$list_result = $data_item_laporan->result();
+															$no2 = 0;
+															
+															
+															echo '<thead>';
+															echo'<th>NO</th>';
+															foreach($list_result as $row2)
+															{
+																echo'<th>'.$row2->ILAP_NAMA.'</th>';
+															}
+																//echo'<th>AKSI</th>';
+															echo'</thead>';
+														}
+														
+														
+														
+														//PANGGIL PROCEDURE ISI LAPORAN
+														$list_d_buat_laporan = $this->M_d_buat_laporan->list_d_buat_laporan_proc($KEC_ID,$data_laporan->LAP_ID,$row->BLAP_ID);
+														if(!empty($list_d_buat_laporan))
+														{
+															
+															$list_result2 = $list_d_buat_laporan->result_array();
+															//$array = array();
+															$no_index = 1;
+															
+															$subtot = array();
+															$subtot[0] = 0;
+															$subtot[1] = 0;
+															$subtot[2] = 0;
+															$subtot[3] = 0;
+															$subtot[4] = 0;
+															$subtot[5] = 0;
+															$subtot[6] = 0;
+															$subtot[7] = 0;
+															$subtot[8] = 0;
+															$subtot[9] = 0;
+															$subtot[10] = 0;
+															$subtot[11] = 0;
+															$subtot[12] = 0;
+															$subtot[13] = 0;
+															$subtot[14] = 0;
+															$subtot[15] = 0;
+															$subtot[16] = 0;
+															$subtot[17] = 0;
+															
+															
+															foreach($list_result2 as $row3 => $val)
+															//foreach($list_result as $row)
+															{
+																echo'<tr>';
+																echo'<td>'.$no_index.'</td>';
+																for($no22 = 1;$no22 <= $jum_col;$no22++)
+																{
+																	$temp = array_values($val);
+																	////$array[] = $temp[0];
+																	echo'<td>'.$temp[$no22].'</td>';
+																	
+																	if(is_numeric($temp[$no22]))
+																	{
+																		if($no22 == 1){$subtot[0] = $subtot[0] + $temp[$no22];}
+																		if($no22 == 2){$subtot[1] = $subtot[1] + $temp[$no22];}
+																		if($no22 == 3){$subtot[2] = $subtot[2] + $temp[$no22];}
+																		if($no22 == 4){$subtot[3] = $subtot[3] + $temp[$no22];}
+																		if($no22 == 5){$subtot[4] = $subtot[4] + $temp[$no22];}
+																		if($no22 == 6){$subtot[5] = $subtot[5] + $temp[$no22];}
+																		if($no22 == 7){$subtot[6] = $subtot[6] + $temp[$no22];}
+																		if($no22 == 8){$subtot[7] = $subtot[7] + $temp[$no22];}
+																		if($no22 == 9){$subtot[8] = $subtot[8] + $temp[$no22];}
+																		if($no22 == 10){$subtot[9] = $subtot[9] + $temp[$no22];}
+																		if($no22 == 11){$subtot[10] = $subtot[10] + $temp[$no22];}
+																		if($no22 == 12){$subtot[11] = $subtot[11] + $temp[$no22];}
+																		if($no22 == 13){$subtot[12] = $subtot[12] + $temp[$no22];}
+																		if($no22 == 14){$subtot[13] = $subtot[13] + $temp[$no22];}
+																		if($no22 == 15){$subtot[14] = $subtot[14] + $temp[$no22];}
+																		if($no22 == 16){$subtot[15] = $subtot[15] + $temp[$no22];}
+																		if($no22 == 17){$subtot[16] = $subtot[16] + $temp[$no22];}
+																		if($no22 == 18){$subtot[17] = $subtot[17] + $temp[$no22];}
+																		
+																		if($no22 == 1){$arrayTotal[0] = $arrayTotal[0] + $temp[$no22];}
+																		if($no22 == 2){$arrayTotal[1] = $arrayTotal[1] + $temp[$no22];}
+																		if($no22 == 3){$arrayTotal[2] = $arrayTotal[2] + $temp[$no22];}
+																		if($no22 == 4){$arrayTotal[3] = $arrayTotal[3] + $temp[$no22];}
+																		if($no22 == 5){$arrayTotal[4] = $arrayTotal[4] + $temp[$no22];}
+																		if($no22 == 6){$arrayTotal[5] = $arrayTotal[5] + $temp[$no22];}
+																		if($no22 == 7){$arrayTotal[6] = $arrayTotal[6] + $temp[$no22];}
+																		if($no22 == 8){$arrayTotal[7] = $arrayTotal[7] + $temp[$no22];}
+																		if($no22 == 9){$arrayTotal[8] = $arrayTotal[8] + $temp[$no22];}
+																		if($no22 == 10){$arrayTotal[9] = $arrayTotal[9] + $temp[$no22];}
+																		if($no22 == 11){$arrayTotal[10] = $arrayTotal[10] + $temp[$no22];}
+																		if($no22 == 12){$arrayTotal[11] = $arrayTotal[11] + $temp[$no22];}
+																		if($no22 == 13){$arrayTotal[12] = $arrayTotal[12] + $temp[$no22];}
+																		if($no22 == 14){$arrayTotal[13] = $arrayTotal[13] + $temp[$no22];}
+																		if($no22 == 15){$arrayTotal[14] = $arrayTotal[14] + $temp[$no22];}
+																		if($no22 == 16){$arrayTotal[15] = $arrayTotal[15] + $temp[$no22];}
+																		if($no22 == 17){$arrayTotal[16] = $arrayTotal[16] + $temp[$no22];}
+																		if($no22 == 18){$arrayTotal[17] = $arrayTotal[17] + $temp[$no22];}
+																		
+																	}
+																}
+																	
+																echo'</tr>';
+																$no_index++;
+															}
+															echo'<tr>';
+																echo'<td colspan="2"><b>JUMLAH</td>';
+																for($no4 = 2;$no4<=$jum_col;$no4++)
+																{
+																	echo'<td><b>'.$subtot[$no4-1].'</td>';
+																}
+															echo'</tr>';
+														}
+														//PANGGIL PROCEDURE ISI LAPORAN
+														/*echo'<tr>';
+															echo'<td colspan="2"><b>GRAND TOTAL</td>';
+															for($no4 = 2;$no4<=$jum_col;$no4++)
+															{
+																echo'<td><b>'.$arrayTotal[$no4-1].'</td>';
+															}
+														echo'</tr>';*/
+													echo'</table>';
+												}
+											//TAMPILKAN ISI LAPORAN
+											
+										}
+									}
+									else
+									{
+										/*echo '<center><h5>'.$data_laporan->LAP_NAMA;
+											echo '</br>'.$_POST['kecNama_'.$no2];
+										echo'<center><h5>'.$_POST['kecNama_'.$no2].' Belum Membuat Laporan '.$data_laporan->LAP_NAMA.'</h5></center>';*/
+									}
+									
+									/*echo'
+										</div>
+										</div>
+										</div>
+										</div>
+									';*/
+								}
+							}
+							
+							//UNTUK GRAND TOTAL
+							/*echo'<table id="example1" class="table table-bordered table-striped">';
+								echo'<tr>';
+									echo'<td colspan="2"><b>GRAND TOTAL</td>';
+									for($no4 = 2;$no4<=$jum_col;$no4++)
+									{
+										echo'<td><b>'.$arrayTotal[$no4-1].'</td>';
+									}
+								echo'</tr>';
+							echo'</table>';*/
+							//UNTUK GRAND TOTAL
+						}
+					}
+					// // echo'</br>KECAMATAN';
+					// // echo'</br>';
+					// for($no = 1;$no<=$jum_kecamatan;$no++)
+					// {
+						// //echo $no.'</br>';
+					// }
+					?>
+					
+					
+					
+					
+					
+					<!-- <div class="box"> -->
+						<!-- <div class="box-header"> -->
+						  <!-- <h3 class="box-title">Data Table With Full Features</h3> -->
+						<!-- </div> -->
+						
+						<!-- <div class="box-body"> -->
+						  <!-- <table id="example1" class="table table-bordered table-striped"> -->
+							<!-- <thead> -->
+							<!-- <tr> -->
+							  <!-- <th>Rendering engine</th> -->
+							  <!-- <th>Browser</th> -->
+							  <!-- <th>Platform(s)</th> -->
+							  <!-- <th>Engine version</th> -->
+							  <!-- <th>CSS grade</th> -->
+							<!-- </tr> -->
+							<!-- </thead> -->
+							<!-- <tbody> -->
+							<!-- <tr> -->
+							  <!-- <td>Trident</td> -->
+							  <!-- <td>Internet -->
+								<!-- Explorer 4.0 -->
+							  <!-- </td> -->
+							  <!-- <td>Win 95+</td> -->
+							  <!-- <td> 4</td> -->
+							  <!-- <td>X</td> -->
+							<!-- </tr> -->
+							<!-- </tfoot> -->
+						  <!-- </table> -->
+						<!-- </div> -->
+						
+					  <!-- </div> -->
+					
+					
+					
+					
+					
+			
+    

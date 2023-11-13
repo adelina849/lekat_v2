@@ -1,0 +1,513 @@
+			<!-- <div id="header" class="navbar-toggleable-md sticky header-sm clearfix" style="background-color:#196619;color:yellow;"> -->
+			<div id="header" class="navbar-toggleable-md sticky header-md dark clearfix" style="background-color:#196619;color:yellow;">
+				<header id="topNav">
+					<div class="container">
+
+						<!-- Mobile Menu Button -->
+						<button class="btn btn-mobile" data-toggle="collapse" data-target=".nav-main-collapse">
+							<i class="fa fa-bars"></i>
+						</button>
+
+						<!-- BUTTONS -->
+						<ul class="float-right nav nav-pills nav-second-main">
+
+							<!-- SEARCH -->
+							<li class="search">
+								<a href="javascript:;">
+									<i class="fa fa-search"></i>
+								</a>
+								<div class="search-box">
+									<form action="<?php echo (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";?>" method="get">
+										<div class="input-group">
+											<!-- <input type="text" style="color:white;" name="cari" placeholder="Search" class="form-control" /> -->
+											<input type="text" 
+											name="cari"  maxlength="35" style="color:white;" 
+											class="text form-control" size="35" alt="Cari Data" 
+											title="Cari data" placeholder="...Cari" 
+											value="<?php if (!empty($_GET['cari'])){echo $_GET['cari'];} ?>"/>
+											<span class="input-group-btn">
+												<button class="btn btn-primary" type="submit">Search</button>
+											</span>
+										</div>
+									</form>
+								</div> 
+								
+							</li>
+							
+							<?php
+								if(($this->session->userdata('ses_MUZ_ID') != null) or ($this->session->userdata('ses_MUZ_ID') != null))
+								{
+							?>
+									<!-- <li class="text-welcome hidden-xs-down">Welcome to Smarty, <strong>John Doe</strong></li> -->
+									<li style="padding:2px;">
+										<!-- <a class="dropdown-toggle no-text-underline" data-toggle="dropdown" href="#"><i class="fa fa-user hidden-xs-down"></i> MY ACCOUNT</a> -->
+										
+										<a class="no-text-underline" href="<?php echo base_url();?>public-profile"><i class="fa fa-user hidden-xs-down"></i> <?php echo $this->session->userdata('ses_MUZ_NAMA');?></a>
+										
+										<!-- <ul class="dropdown-menu float-right" style="background-color:green;color:black;"> -->
+											<!-- <li><a tabindex="-1" href="#"><i class="fa fa-history"></i> ORDER HISTORY</a></li> -->
+											<!-- <li class="divider"></li> -->
+											<!-- <li><a tabindex="-1" href="#"><i class="fa fa-bookmark"></i> MY WISHLIST</a></li> -->
+											<!-- <li><a tabindex="-1" href="#"><i class="fa fa-edit"></i> MY REVIEWS</a></li> -->
+											<!-- <li><a tabindex="-1" href="#"><i class="fa fa-cog"></i> MY SETTINGS</a></li> -->
+											<!-- <li class="divider"></li> -->
+											<!-- <li><a tabindex="-1" href="#"><i class="glyphicon glyphicon-off"></i> LOGOUT</a></li> -->
+										<!-- </ul> -->
+									</li>
+							<?php
+								}
+								else
+								{
+							?>
+							
+									<li>
+										<a class="no-text-underline" data-toggle="modal" data-target="#modalLogin"> 
+											<!-- <i class="fa fa-user hidden-xs-down"></i>  -->
+											<i class="glyphicon glyphicon-log-in"></i> 
+											MASUK
+										</a>
+									</li>
+									
+									<li>
+										<a class="no-text-underline" data-toggle="modal" data-target="#myModal">
+											<!-- <i class="fa fa-user hidden-xs-down"></i>  -->
+											<i class="glyphicon glyphicon-user"></i> 
+											DAFTAR
+										</a>
+									</li>
+									<!-- /SEARCH -->
+							
+							<?php
+								}
+							?>
+
+						</ul>
+						<!-- /BUTTONS -->
+
+						<!-- Logo -->
+						<a class="logo float-left" href="index.html">
+							<img src="<?php echo base_url();?>assets/global/images/logo_hijau_kuning_bg.png" alt="Logo Baznas Kab.Sukabumi" />
+						</a>
+
+						<!-- 
+							Top Nav 
+							
+							AVAILABLE CLASSES:
+							submenu-dark = dark sub menu
+						-->
+						<div class="navbar-collapse collapse float-right nav-main-collapse submenu-dark">
+							<nav class="nav-main">
+
+								<!--
+									NOTE
+									
+									For a regular link, remove "dropdown" class from LI tag and "dropdown-toggle" class from the href.
+									Direct Link Example: 
+
+									<li>
+										<a href="#">HOME</a>
+									</li>
+								-->
+								<ul id="topMain" class="nav nav-pills nav-main">
+									<?php
+										$list_main_menu = $this->M_public->list_main_menu(" WHERE A.MENU_ISMAINMENU = 1 ");
+										if(!empty($list_main_menu)) 
+										{  
+											$list_result = $list_main_menu->result();
+											foreach($list_result as $row)
+											{
+												//CEK APAKAH ADA SUB MENU
+													$list_sub_menu = $this->M_public->list_main_menu(" WHERE A.MENU_ISMAINMENU = 0 AND A.MENU_MAINID = '".$row->MENU_KODE."' ");
+													if(!empty($list_sub_menu)) 
+													{
+														echo'<li class="dropdown"><!-- HOME -->
+																<a class="dropdown-toggle" href="#" style="color:yellow;">
+																	'.$row->MENU_NAMA.'
+																</a>
+																	<ul class="dropdown-menu" style="background-color:#196619;">';
+														$list_result = $list_sub_menu->result();
+														foreach($list_result as $row2)
+														{
+															if($row2->MENU_ISPUNYAHAL == 1)
+															{
+																echo'
+																<li>
+																	<a href="'.base_url().''.$row2->LINK.'" style="color:yellow;">
+																		'.$row2->MENU_NAMA.'
+																	</a>
+																</li>';
+															}
+															else
+															{
+																echo'
+																<li>
+																	<a href="'.base_url().'pages/'.$row2->LINK.'" style="color:yellow;">
+																		'.$row2->MENU_NAMA.'
+																	</a>
+																</li>';
+															}
+														}
+														echo'		</ul>
+																</li>';
+													}
+													else
+													{
+														if($row->MENU_ISPUNYAHAL == 1)
+														{
+															echo'
+																<li><!-- HOME -->
+																	<a href="'.base_url().''.$row->LINK.'" style="color:yellow;">
+																		'.$row->MENU_NAMA.'
+																	</a>
+																</li>
+															';
+														}
+														else
+														{
+															echo'
+																<li><!-- HOME -->
+																	<a href="'.base_url().'pages/'.$row->LINK.'" style="color:yellow;">
+																		'.$row->MENU_NAMA.'
+																	</a>
+																</li>
+															';
+														}
+														
+													}
+												
+												//CEK APAKAH ADA SUB MENU
+											}
+										}
+									?>
+								</ul>
+
+							</nav>
+						</div>
+
+					</div>
+				</header>
+
+			</div>
+			
+			
+			<!-- MODAL REGISTER -->
+			<div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content" style="background-color:green;">
+
+						<!-- Modal Header -->
+						<!-- <div class="modal-header" style="background-color:white;"> -->
+							<!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> -->
+							<!-- <h4 class="modal-title" id="myModalLabel">FORMULIR PENDAFTARAN</h4> -->
+						<!-- </div> -->
+
+						<!-- Modal Body -->
+						<div class="modal-body">
+							<!-- <div class="box-static box-border-top p-30"> -->
+								<!-- <div class="box-title mb-30"> -->
+									<!-- <h2 class="fs-20">Silahkan isi formulir dibawah dengan baik dan benar sesuai data yang anda miliki</h2> -->
+									<!-- <center> -->
+									<!-- <p class="fs-20">Silahkan isi formulir dibawah dengan baik dan benar sesuai data yang anda miliki</p> -->
+									<!-- </center> -->
+								<!-- </div> -->
+
+								<form class="frm-input" method="post" action="<?php echo base_url();?>donasi-daftar" autocomplete="on" enctype="multipart/form-data" data-success="Sent! Thank you!" data-toastr-position="top-right">
+								<!-- <form class="validate" action="php/contact.php" method="post" enctype="multipart/form-data" data-success="Sent! Thank you!" data-toastr-position="top-right"> -->
+								
+								<!-- <form role="form" action="<?php echo base_url();?>donasi-sesama" method="post" class="frm-input" enctype="multipart/form-data"> -->
+									<!-- <div class="clearfix"> -->
+										
+										<!-- Email -->
+										<!-- <div class="form-group"> -->
+											<!-- <input type="text" name="email" class="form-control" placeholder="Email" required=""> -->
+										<!-- </div> -->
+										
+										<!-- Password -->
+										<!-- <div class="form-group"> -->
+											<!-- <input type="password" name="password" class="form-control" placeholder="Password" required=""> -->
+										<!-- </div> -->
+										
+										
+										<!-- Useful Elements -->
+											<div class="card card-default">
+												<div class="card-heading card-heading-transparent">
+													<h2 class="card-title">Formulir Pendaftaran</h2>
+												</div>
+
+												<div class="card-block">
+
+													<!-- <form class="validate" action="<?php echo base_url();?>" method="post" enctype="multipart/form-data" data-success="Sent! Thank you!" data-toastr-position="top-right"> -->
+													
+													<!-- <form class="validate" action="<?php echo base_url();?>" method="post" enctype="multipart/form-data"> -->
+														<fieldset>
+															<!-- required [php action request] -->
+															<!-- <input type="text" name="action" value="<?php echo (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";?>" /> -->
+
+															<div class="row">
+																<div class="col-md-12 col-sm-12">
+																	<label>Nama Lengkap</label>
+																	<input type="text" name="MUZ_NAMA" value="" class="required form-control">
+																</div>
+															</div>
+
+															<div class="row">
+																<div class="col-md-12 col-sm-12">
+																	<label>Email *</label>
+																	<input type="email" name="MUZ_EMAIL" value="" class="required email form-control">
+																</div>
+																<!-- <div class="col-md-6 col-sm-6"> -->
+																	<!-- <label>Phone *</label> -->
+																	<!-- <input type="text" name="contact[phone]" value="" class="form-control required"> -->
+																<!-- </div> -->
+															</div>
+															
+															<div class="row">
+																<!-- <div class="col-md-12 col-sm-12"> -->
+																	<!-- <label>Email *</label> -->
+																	<!-- <input type="email" name="contact[email]" value="" class="form-control required"> -->
+																<!-- </div> -->
+																<div class="col-md-12 col-sm-12">
+																	<label>Telpone/Hp *</label>
+																	<input type="text" name="MUZ_TLP" value="" class="required form-control" onkeypress="return isNumberKey(event)">
+																</div>
+															</div>
+															
+															<div class="row">
+																<div class="col-md-12 col-sm-12">
+																	<label>Password</label>
+																	<input type="password" name="MUZ_PASS" value="" class="required form-control">
+																</div>
+															</div>
+															
+															<div class="row">
+																<div class="col-md-12 col-sm-12">
+																	<label>Konfirmasi Password</label>
+																	<input type="password" name="MUZ_PASS2" value="" class="required form-control">
+																</div>
+															</div>
+															
+
+														</fieldset>
+
+														<div class="row">
+															<div class="col-md-12">
+																<button type="submit" class="confirm-btn btn btn-3d btn-teal btn-xlg btn-block mt-30">
+																	SIMPAN DATA
+																	<span class="block font-lato">Tulis email dengan benar, karena kami akan melakukan validasi email</span>
+																</button>
+																<!-- <button type="submit" class="btn btn-primary">OK, LOG IN</button> -->
+															</div>
+														</div>
+
+													</form>
+
+
+												</div>
+												
+											</div>
+											<!-- /Useful Elements -->
+											
+									<!-- </div> -->
+									
+									<div class="row">
+										
+										<div class="col-md-6 col-sm-6 col-xs-6">
+											
+											<!-- Inform Tip -->                                        
+											<div class="form-tip pt-20">
+												<a class="no-text-decoration fs-13 mt-10 block" href="#">Syarat dan ketentuan</a>
+											</div>
+											
+										</div>
+										
+										<div class="col-md-6 col-sm-6 col-xs-6 text-right">
+
+											<!-- <button class="btn btn-primary">OK, LOG IN</button> -->
+											<div class="form-tip pt-20">
+												<a class="no-text-decoration fs-13 mt-10 block" href="#">Tata cara penggunaan</a>
+											</div>
+
+										</div>
+										
+									</div>
+									
+								<!-- </form> -->
+
+							<!-- </div> -->
+							
+							<!-- <div class="mt-30 text-center"> -->
+								<!-- <a href="page-register-1.html"><strong>Create Account</strong></a> -->
+
+							<!-- </div> -->
+							
+							
+							
+						</div>
+
+						<!-- Modal Footer -->
+						<!-- <div class="modal-footer"> -->
+							<!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
+							<!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+						<!-- </div> -->
+
+					</div>
+				</div>
+			</div>
+			<!-- MODAL REGISTER -->
+			
+			
+			
+			<!-- MODAL LOGIN -->
+			<div id="modalLogin" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content" style="background-color:green;">
+
+						<!-- Modal Header -->
+						<!-- <div class="modal-header" style="background-color:white;"> -->
+							<!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> -->
+							<!-- <h4 class="modal-title" id="myModalLabel">FORMULIR PENDAFTARAN</h4> -->
+						<!-- </div> -->
+
+						<!-- Modal Body -->
+						<div class="modal-body">
+							<!-- <div class="box-static box-border-top p-30"> -->
+								<!-- <div class="box-title mb-30"> -->
+									<!-- <h2 class="fs-20">Silahkan isi formulir dibawah dengan baik dan benar sesuai data yang anda miliki</h2> -->
+									<!-- <center> -->
+									<!-- <p class="fs-20">Silahkan isi formulir dibawah dengan baik dan benar sesuai data yang anda miliki</p> -->
+									<!-- </center> -->
+								<!-- </div> -->
+
+								<form class="frm-input" method="post" action="<?php echo base_url();?>muzaqi-login" autocomplete="on" enctype="multipart/form-data" data-success="Sent! Thank you!" data-toastr-position="top-right">
+								<!-- <form class="validate" action="php/contact.php" method="post" enctype="multipart/form-data" data-success="Sent! Thank you!" data-toastr-position="top-right"> -->
+								
+								<!-- <form role="form" action="<?php echo base_url();?>donasi-sesama" method="post" class="frm-input" enctype="multipart/form-data"> -->
+									<!-- <div class="clearfix"> -->
+										
+										<!-- Email -->
+										<!-- <div class="form-group"> -->
+											<!-- <input type="text" name="email" class="form-control" placeholder="Email" required=""> -->
+										<!-- </div> -->
+										
+										<!-- Password -->
+										<!-- <div class="form-group"> -->
+											<!-- <input type="password" name="password" class="form-control" placeholder="Password" required=""> -->
+										<!-- </div> -->
+										
+										
+										<!-- Useful Elements -->
+											<div class="card card-default">
+												<div class="card-heading card-heading-transparent">
+													<h2 class="card-title">Login Sistem BAZNAS Kab.Sukabumi</h2>
+												</div>
+
+												<div class="card-block">
+
+													<!-- <form class="validate" action="<?php echo base_url();?>" method="post" enctype="multipart/form-data" data-success="Sent! Thank you!" data-toastr-position="top-right"> -->
+													
+													<!-- <form class="validate" action="<?php echo base_url();?>" method="post" enctype="multipart/form-data"> -->
+														<fieldset>
+															<!-- required [php action request] -->
+															<input type="hidden" name="LINK_URL" value="<?php echo (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";?>" />
+
+															<div class="row">
+																<div class="col-md-12 col-sm-12">
+																	<label>Email *</label>
+																	<input type="email" name="MUZ_EMAIL" value="" class="required email form-control">
+																</div>
+																<!-- <div class="col-md-6 col-sm-6"> -->
+																	<!-- <label>Phone *</label> -->
+																	<!-- <input type="text" name="contact[phone]" value="" class="form-control required"> -->
+																<!-- </div> -->
+															</div>
+															
+															<div class="row">
+																<div class="col-md-12 col-sm-12">
+																	<label>Password</label>
+																	<input type="password" name="MUZ_PASS" value="" class="required form-control">
+																</div>
+															</div>
+															
+														</fieldset>
+
+														<div class="row">
+															<div class="col-md-12">
+																<button type="submit" class="confirm-btn btn btn-3d btn-teal btn-xlg btn-block mt-30">
+																	MASUK SISTEM
+																	<!-- <span class="block font-lato">Tulis email dengan benar, karena kami akan melakukan validasi email</span> -->
+																</button>
+																<!-- <button type="submit" class="btn btn-primary">OK, LOG IN</button> -->
+															</div>
+														</div>
+
+													</form>
+
+
+												</div>
+												
+											</div>
+											<!-- /Useful Elements -->
+											
+									<!-- </div> -->
+									
+									<div class="row">
+										
+										<div class="col-md-6 col-sm-6 col-xs-6">
+											
+											<!-- Inform Tip -->                                        
+											<div class="form-tip pt-20">
+												<a class="no-text-decoration fs-13 mt-10 block" href="#">Syarat dan ketentuan</a>
+											</div>
+											
+										</div>
+										
+										<div class="col-md-6 col-sm-6 col-xs-6 text-right">
+
+											<!-- <button class="btn btn-primary">OK, LOG IN</button> -->
+											<div class="form-tip pt-20">
+												<a class="no-text-decoration fs-13 mt-10 block" href="#">Tata cara penggunaan</a>
+											</div>
+
+										</div>
+										
+									</div>
+									
+								<!-- </form> -->
+
+							<!-- </div> -->
+							
+							<!-- <div class="mt-30 text-center"> -->
+								<!-- <a href="page-register-1.html"><strong>Create Account</strong></a> -->
+
+							<!-- </div> -->
+							
+							
+							
+						</div>
+
+						<!-- Modal Footer -->
+						<!-- <div class="modal-footer"> -->
+							<!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
+							<!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+						<!-- </div> -->
+
+					</div>
+				</div>
+			</div>
+			<!-- MODAL LOGIN -->
+			
+			
+			
+			
+			
+			<script type='text/javascript'>
+	
+				function isNumberKey(evt)
+				{
+					var charCode = (evt.which) ? evt.which : event.keyCode
+					if (charCode > 31 && (charCode < 48 || charCode > 57))
+					
+					return false;
+					return true;
+				}
+			</script>

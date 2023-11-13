@@ -1,0 +1,337 @@
+ <title>LaporanJurnalUmum</title>
+ 
+ <?php
+ 
+ $title = "LaporanJurnalUmum";
+ header("Content-type: application/vnd-ms-excel");
+ header("Content-Disposition: attachment; filename=$title.xls");
+ header("Pragma: no-cache");
+ header("Expires: 0");
+ 
+ ?>
+
+<?php
+	//TABLE
+	if(!empty($list_lap_keuangan))
+	{
+	//echo gethostname();
+	//echo $this->M_gl_pengaturan->getUserIpAddr();
+	//$sts_query = strpos(base_url(),"localhost");
+	//echo $sts_query;
+	//$nama = "Mulyana Yusuf";
+	//echo str_replace("f","849",$nama);
+
+	echo'<center>';
+	//echo'<table width="85%" id="example2" class="table table-hover">';
+	echo'<table style="width:90%;" class="table table-hover">;';
+		//echo '<thead style="background-color:green;"><tr>';
+		
+		
+		if((!empty($_GET['dari'])) && ($_GET['dari']!= "")  )
+		{
+			$dari = $_GET['dari'];
+			$sampai = $_GET['sampai'];
+		}
+		else
+		{
+			$dari = date("Y-m-d");
+			$sampai = date("Y-m-d");
+		}
+		echo'
+			<tr>
+				<td colspan="6" style="text-align:center;font-weight:bold;">Jurnal Umum '.$this->session->userdata("ses_nama_kantor").'</td>
+			</tr>
+			<tr>
+				<td colspan="6" style="text-align:center;font-weight:bold;">PER '.$dari.' SAMPAI '.$sampai.'</td>
+			</tr>
+			
+		';
+		echo'<tr>';
+					echo '<th style="border:1px black solid;background-color:green;font-weight:bold;" width="10%">TANGGAL</th>';
+					echo '<th style="border:1px black solid;background-color:green;font-weight:bold;" width="10%">ACCOUNT</th>';
+					echo '<th style="border:1px black solid;background-color:green;font-weight:bold;" width="15%">NAMA ACC</th>';
+					
+					echo '<th style="border:1px black solid;background-color:green;font-weight:bold;" width="30%">KETERANGAN</th>';
+					
+					echo '<th style="border:1px black solid;background-color:green;font-weight:bold;" width="15%">BUKTI</th>';
+					echo '<th style="border:1px black solid;background-color:green;font-weight:bold;" width="10%">DEBIT</th>';
+					echo '<th style="border:1px black solid;background-color:green;font-weight:bold;" width="10%">KREDIT</th>';
+					//echo '<th style="border:1px black solid;" width="12%">AKSI</th>';
+		//echo '</tr></thead>';
+		echo'</tr>';
+		$list_result = $list_lap_keuangan->result();
+		$no =$this->uri->segment(2,0)+1;
+		$sub_total_debit = 0;
+		$sub_total_kredit = 0;
+		
+		$cur_no = "";
+		$old_no = "";
+		
+		echo '<tbody>';
+		foreach($list_result as $row)
+		{
+			$cur_no = $row->NO_BUKTI;
+										
+			if($cur_no != $old_no)
+			{
+				echo'<tr>';
+					echo'<td colspan="7" style="border-top: 1px black solid;"></td>';
+				echo'</tr>';
+			}
+		
+			if($row->OPCD == 'MUTASI')
+			{
+				echo'
+					<tr>
+						<td>'.$row->tgl_dikeluarkan.'</td>
+						<td>'.$row->KODE_AKUN.'</td>
+						<td>MUTASI KAS</td>
+						<td>'.$row->NAMA_AKUN.'</td>
+						<td>'.$row->NO_BUKTI.'</td>
+						<td style="text-align:right;">'.$row->DEBET.'</td>
+						<td></td>
+					</tr>
+				';
+				
+				echo'
+					<tr>
+						<td>'.$row->tgl_dikeluarkan.'</td>
+						<td>'.$row->KODE_2.'</td>
+						<td>MUTASI KAS</td>
+						<td>'.$row->NAMA_2.'</td>
+						<td>'.$row->NO_BUKTI.'</td>
+						<td></td>
+						<td style="text-align:right;">'.$row->KREDIT.'</td>
+					</tr>
+				';
+			}
+			elseif($row->OPCD == 'PENJUALAN')
+			{
+				echo'
+					<tr>
+						<td>'.$row->tgl_dikeluarkan.'</td>
+						<!-- <td>get_kode_akun_cashintransit</td> -->
+						<td>'.$row->KODE_AKUN.'</td>
+						<td>PENJUALAN</td>
+						<td>'.$row->NAMA_AKUN.'</td>
+						<td>'.$row->NO_BUKTI.'</td>
+						<td style="text-align:right;">'.$row->DEBET.'</td>
+						<td></td>
+					</tr>
+				';
+				
+				$strKetjurnalJual = '';
+				if(strtoupper( substr($row->keterangan,10,4) ) == 'JASA')
+				{
+					$strKetjurnalJual = 'PENJUALAN JASA';
+				}
+				else
+				{
+					$strKetjurnalJual = 'PENJUALAN PRODUK';
+				}
+				
+				//$strKetjurnalJual = substr($row->keterangan,10,4);
+				echo'
+					<tr>
+						<td>'.$row->tgl_dikeluarkan.'</td>
+						<!-- <td>get_kode_akun_pendapatan</td> -->
+						<td>'.$row->KODE_2.'</td>
+						<td>'.$strKetjurnalJual.'</td>
+						<td>'.$row->keterangan.'</td>
+						<td>'.$row->NO_BUKTI.'</td>
+						<td></td>
+						<td style="text-align:right;">'.$row->DEBET.'</td>
+					</tr>
+				';
+			}
+			
+			elseif($row->OPCD == 'PENJUALAN-LAIN')
+			{
+				echo'
+					<tr>
+						<td>'.$row->tgl_dikeluarkan.'</td>
+						<!-- <td>get_kode_akun_cashintransit</td> -->
+						<td>'.$row->KODE_AKUN.'</td>
+						<td>PENJUALAN</td>
+						<td>'.$row->NAMA_AKUN.'</td>
+						<td>'.$row->NO_BUKTI.'</td>
+						<td style="text-align:right;">'.$row->DEBET.'</td>
+						<td></td>
+					</tr>
+				';
+				
+				echo'
+					<tr>
+						<td>'.$row->tgl_dikeluarkan.'</td>
+						<!-- <td>get_kode_akun_pendapatan</td> -->
+						<td>'.$row->KODE_2.'</td>
+						<td>PENDAPATAN LAIN</td>
+						<td>'.$row->keterangan.'</td>
+						<td>'.$row->NO_BUKTI.'</td>
+						<td></td>
+						<td style="text-align:right;">'.$row->DEBET.'</td>
+					</tr>
+				';
+			}
+			elseif($row->OPCD == 'PEMBELIAN')
+			{
+				echo'
+					<tr>
+						<td>'.$row->tgl_dikeluarkan.'</td>
+						<td>'.$row->KODE_AKUN.'</td>
+						<td>PEMBELIAN</td>
+						<td>'.$row->NAMA_AKUN.'</td>
+						<td>'.$row->NO_BUKTI.'</td>
+						<td style="text-align:right;">'.$row->DEBET.'</td>
+						<td></td>
+					</tr>
+				';
+				
+				echo'
+					<tr>
+						<td>'.$row->tgl_dikeluarkan.'</td>
+						<td>'.$row->KODE_2.'</td>
+						<td>PRODUK</td>
+						<td>'.$row->keterangan.'</td>
+						<td>'.$row->NO_BUKTI.'</td>
+						<td></td>
+						<td style="text-align:right;">'.$row->DEBET.'</td>
+					</tr>
+				';
+			}
+			elseif($row->OPCD == 'KELUAR')
+			{
+				echo'
+					<tr>
+						<td>'.$row->tgl_dikeluarkan.'</td>
+						<td>'.$row->KODE_AKUN.'</td>
+						<td>'.$row->NAMA_AKUN.'</td>
+						<td>'.$row->keterangan.'</td>
+						<td>'.$row->NO_BUKTI.'</td>
+						';
+						
+						if($row->DEBET <> 0)
+						{
+							echo'<td style="text-align:right;">'.$row->DEBET.'</td>';
+						}
+						else
+						{
+							echo'<td></td>';
+						}
+						
+						if($row->KREDIT <> 0)
+						{
+							echo'<td style="text-align:right;">'.$row->KREDIT.'</td>';
+						}
+						else
+						{
+							echo'<td></td>';
+						}
+						
+					echo'
+					</tr>
+				';
+				
+				if($row->biaya > 0)
+				{
+					echo'
+						<tr>
+							<td>'.$row->tgl_dikeluarkan.'</td>
+							<td>'.$row->akun_biaya_lain.'</td>
+							<td>Biaya Lain</td>
+							<td>Biaya Lain '.$row->keterangan.'</td>
+							<td>'.$row->NO_BUKTI.'</td>
+							';
+							
+							echo'<td style="text-align:right;">'.$row->biaya.'</td>';
+							echo'<td></td>';
+							
+							
+						echo'
+						</tr>
+					';
+				}
+				if($row->pendapatan > 0)
+				{
+					echo'
+						<tr>
+							<td>'.$row->tgl_dikeluarkan.'</td>
+							<td>'.$row->akun_pendapatan_lain.'</td>
+							<td>Pendapatan Lain</td>
+							<td>Pendapatan Lain '.$row->keterangan.'</td>
+							<td>'.$row->NO_BUKTI.'</td>
+							';
+							
+							echo'<td></td>';
+							echo'<td style="text-align:right;">'.$row->pendapatan.'</td>';
+							
+							
+							
+						echo'
+						</tr>
+					';
+				}
+			}
+			else
+			{
+				echo'
+					<tr>
+						<td>'.$row->tgl_dikeluarkan.'</td>
+						<td>'.$row->KODE_AKUN.'</td>
+						<td>'.$row->NAMA_AKUN.'</td>
+						<td>'.$row->keterangan.'</td>
+						<td>'.$row->NO_BUKTI.'</td>
+						';
+						
+						if($row->DEBET <> 0)
+						{
+							echo'<td style="text-align:right;">'.$row->DEBET.'</td>';
+						}
+						else
+						{
+							echo'<td></td>';
+						}
+						
+						if($row->KREDIT <> 0)
+						{
+							echo'<td style="text-align:right;">'.$row->KREDIT.'</td>';
+						}
+						else
+						{
+							echo'<td></td>';
+						}
+						
+					echo'
+					</tr>
+				';
+			}
+			
+			$old_no = $row->NO_BUKTI;
+			
+			$sub_total_debit = $sub_total_debit + $row->DEBET;
+			$sub_total_kredit = $sub_total_kredit + $row->KREDIT;
+		}
+		
+			echo'
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td><b>TOTAL</b></td>
+					<td style="text-align:right;"><b>'.$sub_total_debit.'</b></td>
+					<td style="text-align:right;"><b>'.$sub_total_kredit.'</b></td>
+				</tr>
+			';
+		echo '</tbody>';
+	echo'</table>';
+	echo'</center>';
+	}
+	else
+	{
+	echo'<center>';
+	echo'Tidak Ada Data Yang Ditampilkan !';
+	echo'</center>';
+	}
+	//TABLE
+?>

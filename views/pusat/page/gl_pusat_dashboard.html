@@ -1,0 +1,766 @@
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.4 -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <!-- Ionicons 2.0.0 -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/dist/css/AdminLTE.min.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/dist/css/skins/_all-skins.min.css">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/plugins/iCheck/flat/blue.css">
+    <!-- Morris chart -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/plugins/morris/morris.css">
+    <!-- jvectormap -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/plugins/jvectormap/jquery-jvectormap-1.2.2.css">
+    <!-- Date Picker -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/plugins/datepicker/datepicker3.css">
+    <!-- Daterange picker -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/plugins/daterangepicker/daterangepicker-bs3.css">
+    <!-- bootstrap wysihtml5 - text editor -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
+    
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+        
+    
+    <!-- Content Wrapper. Contains page content -->
+	<script type="text/javascript">
+		var htmlobjek;
+		$(document).ready(function()
+		{	
+			$('#1_dashboard').attr('class', 'active treeview');
+		});
+	</script>
+	
+	<script src="<?=base_url();?>assets/js/highcharts.js" type="text/javascript"></script>
+    <script type="text/javascript">
+	var chart1; // globally available
+	$(document).ready(function() 
+	{
+		chart1 = new Highcharts.Chart(
+		{
+			chart: 
+				{
+					renderTo: 'id_tampilkan_grafik',
+					type: 'column'
+				},   
+				title: 
+					{
+						text: 'Grafik Kunjungan Pasien Bulan <?php echo  date("d")." ".date("M")." ".date("Y");?>'
+					},
+				xAxis: 
+					{
+						categories: ['PERIODE']
+					},
+				yAxis: 
+					{
+						title: 
+							{
+								text: 'Kunjungan (Orang)'
+							}
+					},
+						series:             
+						[
+							
+							<?php 
+								if (!empty($statistik_kunjungan_cabang))
+								{
+									$list_result = $statistik_kunjungan_cabang->result();
+									foreach($list_result as $row)
+									{
+										//echo '<option value="'.$row->id_prov.'">'.$row->nama_prov.'</option>';
+										$merek=$row->kode_kantor;
+										$jumlah=$row->KUNJUNGAN;
+									
+							?>
+									{
+										name: '<?php echo $merek; ?>',data: [<?php echo $jumlah; ?>]
+									},
+							<?php
+									}
+								 }
+							?>
+						]
+					});
+				});	
+	</script>
+	
+	
+      <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+          <h1>
+            Dashboard
+            <small>Control panel</small>
+          </h1>
+          <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active">Dashboard <?php //echo $this->session->userdata('ses_kode_kantor'); ?></li>
+          </ol>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+          <!-- Small boxes (Stat box) -->
+          <div class="row" style="background-color:white;">
+		  
+			<!-- <div class="col-md-12"> -->
+				<!-- <div class="box box-primary"> -->
+					<!-- <div class="box-header with-border"> -->
+					  <!-- <div class="box-tools pull-right"> -->
+						<!-- <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i> -->
+						<!-- </button> -->
+						<!-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button> -->
+					  <!-- </div> -->
+					<!-- </div> -->
+					<!-- <div class="box-body"> -->
+						<!-- <div id="id_tampilkan_grafik" style="height:350px;"></div>	 -->
+					<!-- </div> -->
+				<!-- </div> -->
+			<!-- </div> -->
+			
+			
+			<!-- PERSEDIAAN STOCK -->
+			<!-- <div class="col-md-12"> -->
+			<!-- <div class="col-md-12"> -->
+				<!-- <div class="box box-primary"> -->
+					<!-- <div class="box-header with-border"> -->
+					  <!-- <h3 class="box-title">Table Persediaan Percabang</h3> -->
+
+					  <!-- <div class="box-tools pull-right"> -->
+						<!-- <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i> -->
+						<!-- </button> -->
+						<!-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button> -->
+					  <!-- </div> -->
+					<!-- </div> -->
+					<!-- <div class="box-body"> -->
+					  <!-- <ul class="products-list product-list-in-box"> -->
+						<!-- <div class="box-body table-responsive no-padding"> -->
+						<?php
+							//TABLE
+							//AKUMULASI PRODUK ISREPORT
+							/*
+							echo'<table width="100%" id="example2" class="table table-hover hoverTable">';
+							if(!empty($list_nominal_stock_percabang))
+							{
+								
+								echo'<tr style="font-weight:bold;background-color:green;">
+									<td colspan="1" width="25%">TGL UPDATE</td>
+								
+									<td colspan="1" width="50%">NAMA CABANG</td>
+								
+									<td colspan="1" width="25%">NOMINAL</td>
+									<!-- <td colspan="2">SUBTOTAL</td> -->
+								</tr>';
+								
+								
+								$total_persediaan = 0;
+								$data_perubahan = $list_nominal_stock_percabang->result();
+								foreach($data_perubahan as $row_persediaan)
+								{
+									echo'<tr style="font-weight:normal">
+									<td colspan="1">'.($row_persediaan->TGL).'</td>
+									<td colspan="1">'.($row_persediaan->nama_kantor).'</td>
+									
+									<td colspan="1" style="text-align:right;">'.number_format($row_persediaan->NOMINAL_STOCK,0,'.',',').'</td>
+									
+									';
+									echo'</tr>';
+									
+									$total_persediaan = $total_persediaan + $row_persediaan->NOMINAL_STOCK;
+									
+								}
+								
+								echo'<tr style="font-weight:bold;text-align:right;">
+									<td colspan="2">GRAND TOTAL</td>
+								
+									<td colspan="1" style="text-align:right;">'.number_format($total_persediaan,0,'.',',').'</td>
+								</tr>';
+							}
+							echo'</table>';
+							//AKUMULASI PRODUK ISREPORT
+							//TABLE
+							*/
+						?>
+						<!-- </div> -->
+						<!-- <div class="box-footer text-center"> -->
+						  <!-- <a href="<?php echo base_url();?>gl-pusat-inventori-produk-stock" class="uppercase">Tampilkan Lebih Banyak</a> -->
+						<!-- </div> -->
+				<!-- </div> -->
+			<!-- </div> -->
+			<!-- </div> -->
+			<!-- </div> -->
+			<!-- PERSEDIAAN STOCK -->
+			
+			
+			<!-- PENGATURAN TANGGAL -->
+			<div class="col-md-12">
+				<div class="box-header">
+				<h3 class="box-title"><?php echo $msgbox_title;?> <?php echo $this->session->userdata("ses_nama_kantor"); ?>
+					</h3>
+					<div class="pull-right">
+						<form action="<?=base_url();?>gl-pusat-dashboard" method="get" class="frm-cari">
+						
+						<input type="hidden" name="ses_kode_kantor" id="ses_kode_kantor" value="<?php echo $this->session->userdata('ses_kode_kantor'); ?>" />
+						
+						<!--
+						<form action="<?=base_url();?>gl-admin-laporan-transaksi" method="get" class="frm-cari">
+						-->
+							<table>
+								<tr>
+									<!-- <td>Berdasarkan</td><td>:</td> -->
+									<!-- <td>
+										<select name="berdasarkan" title="Cari Berdasarkan" class="form-control">
+											<option value=""><?php if (!empty($_GET['berdasarkan'])){echo $_GET['berdasarkan'];} ?></option>
+											<option value="spesialisasi">Spesialisasi</option>
+											<option value="pendidikan">Pendidikan</option>
+										</select>
+									</td> -->
+									<td>
+										<input type="hidden" id="col_active" value="activity" />
+									</td>
+									<td>
+										<div class="form-group">
+											<label></label>
+											<div class="input-group date">
+											  <div class="input-group-addon">
+												<i class="fa fa-calendar"></i>
+											  </div>
+											  <input name="dari" id="dari" type="text" class="required form-control pull-right settingDate" alt="TANGGAL TRANSAKSI" title="TANGGAL TRANSAKSI" value="<?php if (!empty($_GET['dari'])){ echo $_GET['dari'];} else {echo date("Y-m-d");} ?>"  data-date-format="yyyy-mm-dd">
+											</div>
+											<!-- /.input group -->
+										</div>
+									</td>
+									<td>
+										<div class="form-group">
+											<label></label>
+											<div class="input-group date">
+											  <div class="input-group-addon">
+												<i class="fa fa-calendar"></i>
+											  </div>
+											  <input name="sampai" id="sampai" type="text" class="required form-control pull-right settingDate" alt="TANGGAL TRANSAKSI" title="TANGGAL TRANSAKSI" value="<?php if (!empty($_GET['sampai'])){ echo $_GET['sampai'];} else {echo date("Y-m-d");} ?>" data-date-format="yyyy-mm-dd">
+											</div>
+											<!-- /.input group -->
+										</div>
+									</td>
+									
+									<td>
+										<div class="form-group">
+											<label for="nama_satuan"></label>
+											
+											<!-- <button type="button" id="btnsimpan" onclick="cari_col_active()" class="btn btn-success btn-block btn-flat" title="Pencarian Data <?php echo $msgbox_title;?> ?">CARI</button> -->
+											
+											<button type="submit" id="btnsimpan" class="btn btn-success btn-block btn-flat" title="Pencarian Data <?php echo $msgbox_title;?> ?">CARI</button>
+										</div>
+									</td>
+								</tr>
+							</table>
+						
+						</form>
+					</div>
+					
+				
+				</div><!-- /.box-header -->
+			</div>
+			<!-- PENGATURAN TANGGAL -->
+			
+			<!-- PENDATAPATAN PERBULAN -->
+			<div class="col-md-12">
+			<div class="col-md-12">
+				<div class="box box-primary">
+					<div class="box-header with-border">
+					  <h3 class="box-title">Table Pendapatan Perbulan <?php echo $this->session->userdata('ses_nama_jabatan');?> <?php echo date('Y - M');?></h3>
+					  <!-- <h3 class="box-title">Table Pendapatan Perbulan <?php echo date('Y - M');?></h3> -->
+
+					  <div class="box-tools pull-right">
+						<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+						</button>
+						<button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+					  </div>
+					</div>
+					<div class="box-body">
+					  <ul class="products-list product-list-in-box">
+						<div class="box-body table-responsive no-padding">
+						<?php
+							//TABLE
+							//AKUMULASI PRODUK ISREPORT
+							echo'<table width="100%" id="example2" class="table table-hover hoverTable">';
+							if(!empty($akumulasi_pendapatan_percabang_perbulan))
+							{
+								
+								echo'<tr style="font-weight:bold;background-color:green;">
+									<td colspan="1" width="50%">NAMA CABANG</td>
+								
+									<td colspan="1" width="25%">BANYAK TRANSAKSI</td>
+								
+									<td colspan="1" width="25%">NOMINAL</td>
+									<!-- <td colspan="2">SUBTOTAL</td> -->
+								</tr>';
+								
+								
+								$total_persediaan = 0;
+								$data_perubahan = $akumulasi_pendapatan_percabang_perbulan->result();
+								foreach($data_perubahan as $row_persediaan)
+								{
+									echo'<tr style="font-weight:normal">
+									<td colspan="1">'.($row_persediaan->nama_kantor).'</td>
+									
+									<td colspan="1" style="text-align:right;">'.number_format($row_persediaan->CNT,0,'.',',').'</td>
+									<td colspan="1" style="text-align:right;">'.number_format($row_persediaan->NONTUNAI,0,'.',',').'</td>
+									
+									';
+									echo'</tr>';
+									
+									$total_persediaan = $total_persediaan + $row_persediaan->NONTUNAI;
+									
+								}
+								
+								echo'<tr style="font-weight:bold;text-align:right;">
+									<td colspan="2">GRAND TOTAL</td>
+								
+									<td colspan="1" style="text-align:right;">'.number_format($total_persediaan,0,'.',',').'</td>
+								</tr>';
+							}
+							echo'</table>';
+							//AKUMULASI PRODUK ISREPORT
+							//TABLE
+						?>
+						</div>
+						<!-- <div class="box-footer text-center"> -->
+						  <!-- <a href="<?php echo base_url();?>gl-pusat-inventori-produk-stock" class="uppercase">Tampilkan Lebih Banyak</a> -->
+						<!-- </div> -->
+				</div>
+			</div>
+			</div>
+			</div>
+			<!-- PENDATAPATAN PERBULAN -->
+			
+			<div class="col-md-12">
+			<!-- GRAFIK TRANSAKSI -->
+			<div class="col-md-6">
+				<div class="box box-primary">
+					<div class="box-header with-border">
+					  <h3 class="box-title">Grafik Transaksi Cabang</h3>
+
+					  <div class="box-tools pull-right">
+						<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+						</button>
+						<button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+					  </div>
+					</div>
+					
+					<!-- /.box-header -->
+					<div class="box-body">
+					  <ul class="products-list product-list-in-box">
+						<div id="id_tampilkan_grafik" style="height:350px;"></div>	
+					  </ul>
+					</div>
+					<!-- /.box-body -->
+					<?php
+						if( ($this->session->userdata('ses_akses_lvl3_719') > 0) or ($this->session->userdata('ses_nama_jabatan') == 'Admin Aplikasi') )
+						{
+					?>
+							<!-- <div class="box-footer text-center"> -->
+							  <!-- <a href="javascript:void(0)" class="uppercase">Tampilkan Lebih Banyak</a> -->
+							<!-- </div> -->
+					<?php
+						}
+					?>
+					
+					<!-- /.box-footer -->
+				</div>
+			</div>
+			<!-- GRAFIK TRANSAKSI -->
+			
+			<!-- PERUBAHAN -->
+			<div class="col-md-6">
+				<div class="box box-primary">
+					<div class="box-header with-border">
+					  <h3 class="box-title">Table Perubahan Transaksi Cabang</h3>
+
+					  <div class="box-tools pull-right">
+						<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+						</button>
+						<button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+					  </div>
+					</div>
+					<!-- /.box-header -->
+					<div class="box-body">
+					  <ul class="products-list product-list-in-box">
+						<div class="box-body table-responsive no-padding">
+						<?php
+							//TABLE
+							//AKUMULASI PRODUK ISREPORT
+							echo'<table width="100%" id="example2" class="table table-hover hoverTable">';
+							if(!empty($list_perubahan_transaksi_cabang))
+							{
+								
+								echo'<tr style="font-weight:bold;background-color:green;">
+									<td colspan="1" width="25%">KODE CABANG</td>
+								
+									<td colspan="1" width="50%">NAMA CABANG</td>
+								
+									<td colspan="1" width="25%">PERUBAHAN</td>
+									<!-- <td colspan="2">SUBTOTAL</td> -->
+								</tr>';
+								
+								
+								
+								$data_perubahan = $list_perubahan_transaksi_cabang->result();
+								foreach($data_perubahan as $row_perubahan)
+								{
+									echo'<tr style="font-weight:normal">
+									<td colspan="1">'.($row_perubahan->kode_kantor).'</td>
+									<td colspan="1">'.($row_perubahan->nama_kantor).'</td>
+									
+									<td colspan="1" style="text-align:center;">'.number_format($row_perubahan->CNT_UBAH,0,'.',',').'</td>
+									
+									';
+									echo'</tr>';
+								}
+								
+							}
+							echo'</table>';
+							//AKUMULASI PRODUK ISREPORT
+							//TABLE
+						?>
+						</div>
+						<div class="box-footer text-center">
+						  <a href="<?php echo base_url();?>gl-pusat-aktifitas-request-perubahan" class="uppercase">Tampilkan Lebih Banyak</a>
+						</div>
+					<!-- /.box-footer -->
+				</div>
+			</div>
+			</div><!-- /.row -->
+			<!-- PERUBAHAN -->
+			</div>
+			
+			
+			<div class="col-md-12">
+			<!-- List uang per akun bank -->
+			<div class="col-md-6">
+				<div class="box box-primary">
+					<div class="box-header with-border">
+					  <h3 class="box-title">Akumulasi Pendapatan Percabang</h3>
+
+					  <div class="box-tools pull-right">
+						<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+						</button>
+						<button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+					  </div>
+					</div>
+					
+					<!-- /.box-header -->
+					<div class="box-body">
+					  <ul class="products-list product-list-in-box">
+						<?php
+							//TABLE
+							//AKUMULASI PEMBAYARAN
+							echo'<table width="100%" id="example2" class="table table-hover hoverTable">';
+							if(!empty($akumulasi_pendapatan_percabang))
+							{
+								echo'<tr style="font-weight:bold;background-color:green;">
+									<td colspan="2">CABANG</td>
+								
+									<td colspan="1">TRANSAKSI</td>
+								
+									<td colspan="1">NOMINAL</td>
+								</tr>';
+								
+								$grandcntsum =0;
+								$grandtunaisum =0;
+								$grandnontunaisum =0;
+								
+								$list_result_allgrandtotal = $akumulasi_pendapatan_percabang->result();
+								foreach($list_result_allgrandtotal as $row_allgrandtotal)
+								{
+									echo'<tr style="font-weight:normal">
+									<td colspan="2">'.($row_allgrandtotal->nama_kantor).'</td>
+									
+									<td colspan="1" style="text-align:center;">'.number_format($row_allgrandtotal->CNT,0,'.',',').'</td>
+									
+									';
+									
+									echo'
+									<td colspan="1" style="text-align:right;">'.number_format($row_allgrandtotal->NONTUNAI,0,'.',',').'</td>
+									</tr>';
+									
+									$grandnontunaisum = $grandnontunaisum + $row_allgrandtotal->NONTUNAI;
+									
+								
+									
+									$grandcntsum = $row_allgrandtotal->CNT;
+								}
+								
+								echo'<tr style="font-weight:bold;">
+									<td colspan="2">GRAND TOTAl</td>
+								
+									<td colspan="1" style="text-align:center;">'.number_format($grandcntsum,0,'.',',').'</td>
+								
+									<td colspan="1" style="text-align:right;">'.number_format($grandtunaisum + $grandnontunaisum,0,'.',',').'</td>
+								</tr>';
+							}
+							echo'</table>';
+							//AKUMULASI PEMBAYARAN
+						?>
+					  
+					  
+						
+					  </ul>
+					</div>
+					<!-- /.box-body -->
+					<?php
+						if( ($this->session->userdata('ses_akses_lvl3_719') > 0) or ($this->session->userdata('ses_nama_jabatan') == 'Admin Aplikasi') )
+						{
+					?>
+							<!-- <div class="box-footer text-center"> -->
+							  <!-- <a href="javascript:void(0)" class="uppercase">Tampilkan Lebih Banyak</a> -->
+							<!-- </div> -->
+					<?php
+						}
+					?>
+					
+					<!-- /.box-footer -->
+				</div>
+			</div>
+			<!-- List uang per akun bank -->
+			
+			<!-- Produk Terlaris -->
+			<div class="col-md-6">
+				<div class="box box-primary">
+					<div class="box-header with-border">
+					  <h3 class="box-title">Produk Favorit Percabang</h3>
+
+					  <div class="box-tools pull-right">
+						<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+						</button>
+						<button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+					  </div>
+					</div>
+					<!-- /.box-header -->
+					<div class="box-body">
+					  <ul class="products-list product-list-in-box">
+						<div class="box-body table-responsive no-padding">
+						<?php
+							//TABLE
+							//AKUMULASI PRODUK ISREPORT
+							echo'<table width="100%" id="example2" class="table table-hover hoverTable">';
+							if(!empty($list_produk_terlaris_percabang))
+							{
+								/*
+								echo'<tr style="font-weight:bold;background-color:green;">
+									<td colspan="1" width="40%">CABANG</td>
+									<td colspan="1" width="45%">NAMA JASA/PRODUK</td>
+								
+									<td colspan="1" width="15%">NOMINAL</td>
+									<!-- <td colspan="2">SUBTOTAL</td> -->
+								</tr>';
+								*/
+								echo'<tr style="font-weight:bold;background-color:green;">
+									<td colspan="1" >CABANG</td>
+									<td colspan="1" >NAMA JASA/PRODUK</td>
+								
+									<td colspan="1" >NOMINAL</td>
+									<!-- <td colspan="2">SUBTOTAL</td> -->
+								</tr>';
+								
+								
+								$grand_total = 0;
+								$list_result_allgrandtotal = $list_produk_terlaris_percabang->result();
+								foreach($list_result_allgrandtotal as $row_allgrandtotal)
+								{
+									echo'<tr style="font-weight:normal">
+									<td colspan="1">'.($row_allgrandtotal->nama_kantor).'</td>
+									<td colspan="1">'.($row_allgrandtotal->nama_produk).'</td>
+									';
+									
+									
+									echo'
+									<td colspan="1" style="text-align:right;">'.number_format($row_allgrandtotal->SUBTOTAL,0,'.',',').'</td>';
+									
+									echo'</tr>';
+									/*
+									echo'
+									<td colspan="2" style="text-align:right;">'.number_format($row_allgrandtotal->jumlah * $row_allgrandtotal->SUBTOTAL,0,'.',',').'</td>
+									</tr>';
+									*/
+										
+									$grand_total = $grand_total + ( $row_allgrandtotal->SUBTOTAL);
+									
+									
+								}
+								
+								/*
+								echo'<tr style="font-weight:bold;">
+									<td colspan="5">GRAND TOTAl</td>
+								
+									<td colspan="1" style="text-align:right;">'.number_format($grand_total,0,'.',',').'</td>
+								*/
+								
+								echo'</tr>';
+							}
+							echo'</table>';
+							//AKUMULASI PRODUK ISREPORT
+							//TABLE
+						?>
+						</div>
+					<!-- /.box-footer -->
+				</div>
+			</div>
+			</div><!-- /.row -->
+			<!-- Produk Terlaris -->
+			</div>
+			
+			
+			
+			<!-- <div class="col-lg-3 col-xs-6"> -->
+				<!-- <div class="small-box bg-yellow"> -->
+					<!-- <div class="inner"> -->
+						<!-- <h4>27 Orang</h4> -->
+
+						<!-- <p>Pasien Hari ini</p> -->
+					<!-- </div> -->
+					<!-- <div class="icon"> -->
+						<!-- <i class="ion ion-stats-bars"></i> -->
+					<!-- </div> -->
+					<!-- <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a> -->
+				<!-- </div> -->
+			<!-- </div> -->
+			
+			
+			
+				<!-- UNUTUK KAM}LENDER -->
+				<!-- <div class="col-md-9"> -->
+				  <!-- <div class="box box-primary"> -->
+					<!-- <div class="box-body no-padding"> -->
+						<!-- ISI THE CALENDAR -->
+						<!-- ISI THE CALENDAR -->
+					  <!-- <div id="calendar"></div> -->
+					<!-- </div> -->
+				  <!-- </div> -->
+				<!-- </div> -->
+				<!-- UNUTUK KAM}LENDER -->
+				
+				
+			<!-- PROMO DISKON -->	
+			
+			<!-- PROMO DISKON -->
+			
+			<!-- 10 LOG AKtifitAS terbaru -->
+			
+			<!-- 10 LOG AKtifitAS terbaru -->
+			
+			<!-- PRODUK LIMIT -->
+			
+					
+			<!-- PRODUK LIMIT -->
+			
+			<!-- PEMESANAN DARI CABANG LAIN -->
+			
+			<!-- PEMESANAN DARI CABANG LAIN -->
+			
+			
+			
+				
+			
+          
+          <!-- Main row -->
+		  
+		  
+			<!-- Show MOdal - TABLE 1 -->
+				
+			<!-- Show MOdal - TABLE 1-->
+			
+        </section><!-- /.content -->
+      
+	  
+	  </div><!-- /.content-wrapper -->
+      
+    
+	
+	
+	
+	
+	
+	<!-- Bootstrap 3.3.4 -->
+	<script src="<?=base_url();?>assets/adminlte/bootstrap/js/bootstrap.min.js"></script>
+	<!-- Slimscroll -->
+	<script src="<?=base_url();?>assets/adminlte/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+	<!-- FastClick -->
+	<script src="<?=base_url();?>assets/adminlte/plugins/fastclick/fastclick.min.js"></script>
+	<!-- AdminLTE App -->
+	<script src="<?=base_url();?>assets/adminlte/dist/js/app.min.js"></script>
+	<!-- Page script -->
+    <!-- InputMask -->
+    <script src="<?=base_url();?>/assets/adminlte/plugins/input-mask/jquery.inputmask.js"></script>
+    <script src="<?=base_url();?>/assets/adminlte/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+    <script src="<?=base_url();?>/assets/adminlte/plugins/input-mask/jquery.inputmask.extensions.js"></script>
+	
+	<!-- bootstrap datepicker -->
+	<script src="<?=base_url();?>/assets/adminlte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+    
+    <script>
+      $(function () {
+		//Date picker
+		$('.settingDate').datepicker({
+			autoclose: true
+		});
+		
+		$('.settingTime').datepicker({
+			autoclose: true
+		});
+		
+		
+        //Initialize Select2 Elements
+        //$(".select2").select2();
+
+        //Datemask yyyy-mm-dd
+        $(".datemask_mysql").inputmask("yyyy-mm-dd", {"placeholder": "yyyy-mm-dd"});
+        //Datemask dd/mm/yyyy
+        //$("#datemask").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});
+        //Datemask2 mm/dd/yyyy
+        //$("#datemask2").inputmask("mm/dd/yyyy", {"placeholder": "mm/dd/yyyy"});
+        //TimeMask hh:mm:ss
+        $(".time_mysql").inputmask("hh:mm:ss", {"placeholder": "hh:mm:ss"});
+        //Money Euro
+        //$("[data-mask]").inputmask();
+
+        //iCheck for checkbox and radio inputs
+        $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+          checkboxClass: 'icheckbox_minimal-blue',
+          radioClass: 'iradio_minimal-blue'
+        });
+        //Red color scheme for iCheck
+        $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
+          checkboxClass: 'icheckbox_minimal-red',
+          radioClass: 'iradio_minimal-red'
+        });
+        //Flat red color scheme for iCheck
+        $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+          checkboxClass: 'icheckbox_flat-green',
+          radioClass: 'iradio_flat-green'
+        });
+
+        //Colorpicker
+        $(".my-colorpicker1").colorpicker();
+        //color picker with addon
+        $(".my-colorpicker2").colorpicker();
+
+        //Timepicker
+        $(".timepicker").timepicker({
+          showInputs: false
+        });
+      });
+    </script>
+	
+	

@@ -1,0 +1,128 @@
+ <!-- <title>LaporanPemasukanPeriode<?php echo $_GET['tahun'];?><?php echo $_GET['bulan'];?></title> -->
+ <title>LaporanTindakanDiskon</title>
+ 
+ <?php
+ $title = "LaporanPendapatan";
+ header("Content-type: application/vnd-ms-excel");
+ header("Content-Disposition: attachment; filename=$title.xls");
+ header("Pragma: no-cache");
+ header("Expires: 0");
+ 
+ ?>
+
+<?php
+
+	if(!empty($list_laporan_tindakan_dokter))
+	{
+		//echo gethostname();
+		//echo $this->M_gl_pengaturan->getUserIpAddr();
+		//$sts_query = strpos(base_url(),"localhost");
+		//echo $sts_query;
+		//$nama = "Mulyana Yusuf";
+		//echo str_replace("f","849",$nama);
+		echo'<table width="100%" id="example2" class="table table-hover">';
+			
+			echo '
+				<tr>
+					<td colspan="8" style="text-align:center;">
+						<b>LAPORAN TINDAKAN DAN PROMO DOKTER DAN THERAPIST</b>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="8" style="text-align:center;">
+						<b>'.$this->session->userdata('ses_nama_kantor').'</b>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="8" style="text-align:center;">
+						'.$this->session->userdata('ses_alamat_kantor').'
+					</td>
+				</tr>
+				<tr>
+					<td colspan="8" style="text-align:center;">
+						<b>Per '.$dari.' Sampai '.$sampai.'</b>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="8" style="text-align:center;">
+						<br/>
+					</td>
+				</tr>
+			
+			';
+		
+			echo '
+<tr style="background-color:green;">';
+						echo '<th width="5%">NO</th>';
+						echo '<th width="15%">NAMA</th>';
+						echo '<th width="10%">STATUS</th>';
+						echo '<th width="18%">FAKTUR</th>';
+						echo '<th width="25%">TINDAKAN</th>';
+						echo '<th width="8%">JUMLAH</th>';
+						echo '<th width="9%">HARGA</th>';
+						echo '<th width="10%">TGL</th>';
+			echo '</tr>
+';
+			$list_result = $list_laporan_tindakan_dokter->result();
+			$no =$this->uri->segment(2,0)+1;
+			echo '<tbody>';
+			foreach($list_result as $row)
+			{
+				echo'<tr>';
+					echo'<td>'.$no.'</td>';
+					
+					echo '<td>'.$row->nama_karyawan.'</td>';
+					echo '<td>'.$row->sebagai.'</td>';
+					
+					$nama = $row->type_h_penjualan;
+					$arr = explode(' ', $nama);
+					$singkatan = '';
+					foreach($arr as $kata)
+					{
+						$singkatan .= substr($kata, 0, 1);
+					}
+					
+					if($singkatan <> "")
+					{
+						$singkatan = "(".$singkatan.")";
+					}
+					
+					if($row->nama_diskon <> '')
+					{
+						echo '<td>
+						'.$row->no_faktur.' '.$singkatan.'
+						</br>
+						<font style="color:red;">('.$row->nama_diskon.')</font>
+						</td>';
+					}
+					else
+					{
+						echo '<td>
+						'.$row->no_faktur.' '.$singkatan.'
+						</td>';
+
+					}
+					
+					echo '<td>'.$row->nama_produk.'</td>';
+					echo '<td>'.$row->jumlah.' '.$row->satuan.'</td>';
+					echo '<td style="text-align:right;">'.$row->harga.'</td>';
+					echo '<td>'.$row->tgl.'</td>';
+					
+				echo'</tr>';
+				$no++;
+			}
+			
+			echo '</tbody>';
+		echo'</table>';
+	}
+	else
+	{
+		echo'<center>';
+		echo'Tidak Ada Data Yang Ditampilkan !';
+		echo'</center>';
+	}
+
+	
+	//TABLE 
+//TABLE
+?>

@@ -1,0 +1,260 @@
+						<div class="col-sm-9">
+
+							<!-- 
+								controlls-over		= navigation buttons over the image 
+								buttons-autohide 	= navigation buttons visible on mouse hover only
+								
+								data-plugin-options:
+									"singleItem": true
+									"autoPlay": true (or ms. eg: 4000)
+									"navigation": true
+									"pagination": true
+									"transitionStyle":"fadeUp" (fade,backSlide,goDown,fadeUp)
+							-->
+							<div class="owl-carousel buttons-autohide controlls-over" data-plugin-options='{"singleItem": true, "autoPlay": true, "navigation": true, "pagination": true, "transitionStyle":"fade"}'>
+							
+								<?php
+									$list_slider = $this->M_public->list_images(" WHERE COALESCE(B.KIMG_NAMA,'') = 'Slider' ");
+									if(!empty($list_slider)) 
+									{  
+										$list_result = $list_slider->result();
+										foreach($list_result as $row)
+										{
+								?>
+							
+											<a href="#">
+												<img class="img-fluid" src="<?php echo $row->IMG_LINK;?>" alt="<?php echo $row->IMG_NAMA;?>">
+											</a>
+								<?php
+										}
+									}
+								?>
+							</div>
+
+							<!-- breaking news -->
+							<div class="alert alert-mini alert-primary mb-30" style="background-color:#196619;"><!-- DANGER -->
+								<strong style="color:yellow;">BREAKING NEWS:</strong>
+								<div class="owl-carousel controlls-over m-0" data-plugin-options='{"autoPlay":3000, "stopOnHover":true, "items": 1, "singleItem": true, "navigation": false, "pagination": false, "transitionStyle":"fadeUp"}'>
+									<div class="text-left fs-14">
+										<a href="#" style="color:yellow;">1/3 Potential for the contamination of forensic DNA evidence has been highlighted by the Meredith Kercher murder trial.</a>
+									</div>
+									<div class="text-left fs-14">
+										<a href="#" style="color:yellow;">2/3 Australia thrash England to win T20 series in Melbourne</a>
+									</div>
+									<div class="text-left fs-14">
+										<a href="#" style="color:yellow;">3/3 China's bulldozer mayor kicked out of party, handed to prosecutors</a>
+									</div>
+								</div>
+							</div><!-- /breaking news -->
+
+
+							<h3 class="page-header fw-300 mt-60">
+								<a href="#" data-toggle="tooltip" title="view more"><i class="fa fa-plus-square-o"></i></a> 
+								The <strong>Future</strong> 
+							</h3>
+
+
+							<!-- THREE COLUMNS -->
+							<div class="row">
+
+								<div class="col-md-4">
+
+									<!-- article item -->
+									<div class="item-box">
+										<figure>
+											<a class="item-hover" href="#">
+												<span class="overlay color2"></span>
+												<span class="inner">
+													<span class="block fa fa-plus fsize20"></span>
+													<strong>READ</strong> ARTICLE
+												</span>
+											</a>
+											<img alt="" class="img-fluid" src="demo_files/images/magazine/thumbs/thumb_1-min.jpg" width="263" height="147" />
+										</figure>
+										<div class="item-box-desc">
+											<h4>Chinese New Year by the numbers</h4>
+											<small>29 June 2014, 9:55</small>
+											<p>Billions of people travel in China during Lunar New Year. Check out the mind-boggling figures.</p>
+										</div>
+									</div>
+									<!-- /article item -->
+
+								</div>
+
+
+								<div class="col-md-4">
+
+									<!-- article item -->
+									<div class="item-box">
+										<figure>
+											<a class="item-hover" href="#">
+												<span class="overlay color2"></span>
+												<span class="inner">
+													<span class="block fa fa-plus fsize20"></span>
+													<strong>READ</strong> ARTICLE
+												</span>
+											</a>
+											<img alt="" class="img-fluid" src="demo_files/images/magazine/thumbs/thumb_2-min.jpg" width="263" height="147" />
+										</figure>
+										<div class="item-box-desc">
+											<h4>Chinese New Year by the numbers</h4>
+											<small>29 June 2014, 9:55</small>
+											<p>Billions of people travel in China during Lunar New Year. Check out the mind-boggling figures.</p>
+										</div>
+									</div>
+									<!-- /article item -->
+
+								</div>
+
+								<div class="col-md-4">
+
+									<!-- article item -->
+									<div class="item-box">
+										<figure>
+											<a class="item-hover" href="#">
+												<span class="overlay color2"></span>
+												<span class="inner">
+													<span class="block fa fa-plus fsize20"></span>
+													<strong>READ</strong> ARTICLE
+												</span>
+											</a>
+											<img alt="" class="img-fluid" src="demo_files/images/magazine/thumbs/thumb_3-min.jpg" width="263" height="147" />
+										</figure>
+										<div class="item-box-desc">
+											<h4>Chinese New Year by the numbers</h4>
+											<small>29 June 2014, 9:55</small>
+											<p>Billions of people travel in China during Lunar New Year. Check out the mind-boggling figures.</p>
+										</div>
+									</div>
+									<!-- /article item -->
+
+								</div>
+
+								<!-- /article item -->
+							</div>
+							<!-- /THREE COLUMNS -->
+
+
+
+							<!-- TWO COLUMNS -->
+							<div class="row mt-60">
+
+								<!-- first column -->
+								<div class="col-md-8">
+
+									<h3 class="page-header fw-300">
+										<a href="#" data-toggle="tooltip" title="view more"><i class="fa fa-plus-square-o"></i></a>
+										<strong>Recent</strong> News
+									</h3>
+
+									<!-- article summary -->
+									<div class="row">
+										<div class="col-md-4 text-center">
+											<!-- carousel -->
+											<div class="owl-carousel controlls-over m-0" data-plugin-options='{"items": 1, "singleItem": true, "navigation": false, "pagination": true, "transitionStyle":"fadeUp", "itemsScaleUp":true}'>
+												<div>
+													<img alt="" class="img-fluid" src="demo_files/images/magazine/thumbs/thumb_1-min.jpg" />
+												</div>
+												<div>
+													<img alt="" class="img-fluid" src="demo_files/images/magazine/thumbs/thumb_2-min.jpg" />
+												</div>
+												<div>
+													<img alt="" class="img-fluid" src="demo_files/images/magazine/thumbs/thumb_3-min.jpg" />
+												</div>
+											</div>
+											<!-- /carousel -->
+											<!-- rating -->
+											<div class="rating rating-4 fs-13 mt-10 fw-100"><!-- rating-0 ... rating-5 --></div>
+											<!-- /rating -->
+										</div>
+										<div class="col-md-8">
+											<h4><a href="#">Boulder smashes through Italian farm</a></h4>
+											<p>
+												Dramatic pictures are released showing the destruction wrought by a huge boulder that smashed through a farm in northern Italy after being dislodged by a landslide.
+												<small class="block">29 June 2014, 9:55</small>
+											</p>
+										</div>
+									</div>
+									<!-- /article summary -->
+
+
+									<hr /><!-- separator -->
+
+
+									<!-- article summary -->
+									<div class="row">
+										<div class="col-md-4 text-center">
+											<img alt="" class="img-fluid" src="demo_files/images/magazine/thumbs/thumb_6-min.jpg" />
+											<!-- rating -->
+											<div class="rating rating-4 fs-13 mt-10 fw-100"><!-- rating-0 ... rating-5 --></div>
+											<!-- /rating -->
+										</div>
+										<div class="col-md-8">
+											<h4><a href="#">Fall in eurozone inflation rate fuels deflation concerns</a></h4>
+											<p>
+												Calls for European Central Bank action to help protect the eurozone's fragile recovery have grown after the release of inflation and jobless data.
+												<small class="block">29 June 2014, 9:55</small>
+											</p>
+										</div>
+									</div>
+									<!-- /article summary -->
+
+
+									<hr /><!-- separator -->
+
+
+									<!-- article summary -->
+									<div class="row">
+										<div class="col-md-4 text-center">
+											<img alt="" class="img-fluid" src="demo_files/images/magazine/thumbs/thumb_7-min.jpg" />
+											<!-- rating -->
+											<div class="rating rating-4 fs-13 mt-10 fw-100"><!-- rating-0 ... rating-5 --></div>
+											<!-- /rating -->
+										</div>
+										<div class="col-md-8">
+											<h4><a href="#">Australia to dump dredged sand in Great Barrier Reef Park</a></h4>
+											<p>
+												Australia's government approves plan to dump millions of tons of spoil at the Great Barrier Reef.
+												<small class="block">29 June 2014, 9:55</small>
+											</p>
+										</div>
+									</div>
+									<!-- /article summary -->
+
+								</div>
+
+								<!-- second column -->
+								<div class="col-md-4">
+
+									<h3 class="page-header fw-300">
+										<a href="#" data-toggle="tooltip" title="view more"><i class="fa fa-plus-square-o"></i></a> 
+										This <strong>Week</strong>  
+									</h3>
+
+									<h4><a href="#">Chinese New Year by the numbers</a></h4>
+									<p>
+										Billions of people travel in China during Lunar New Year. Check out the mind-boggling figures.
+										<small class="block">29 June 2014, 9:55</small>
+									</p>
+
+									<hr class="half-margins" /><!-- separator -->
+
+									<h4><a href="#">Chinese New Year by the numbers</a></h4>
+									<p>
+										Billions of people travel in China during Lunar New Year. Check out the mind-boggling figures.
+										<small class="block">29 June 2014, 9:55</small>
+									</p>
+
+									<hr class="half-margins" /><!-- separator -->
+
+									<h4><a href="#">Chinese New Year by the numbers</a></h4>
+									<p>
+										Billions of people travel in China during Lunar New Year. Check out the mind-boggling figures.
+										<small class="block">29 June 2014, 9:55</small>
+									</p>
+								</div>
+
+							</div>
+							<!-- /TWO COLUMNS -->
+
+						</div>

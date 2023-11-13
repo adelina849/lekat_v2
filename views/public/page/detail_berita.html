@@ -1,0 +1,239 @@
+			<section>
+				<div class="container">
+
+
+					<div class="clearfix mb-60">
+						<!-- OWL SLIDER -->
+						
+						<?php
+							$list_images_berita = $this->M_public->list_images(" WHERE A.IMG_GRUP = 'berita' AND A.ID = '".$data_berita->BRT_ID."' ",0,10);
+							if(!empty($list_images_berita)) 
+							{
+								if($list_images_berita->num_rows() > 1)
+								{
+								?>
+									<div class="owl-carousel buttons-autohide controlls-over" data-plugin-options='{"items": 1, "autoPlay": 4500, "autoHeight": false, "navigation": true, "pagination": true, "transitionStyle":"fadeUp", "progressBar":"false"}'>
+								<?php
+								}
+								else
+								{
+									echo'<div>';
+								}
+								
+								$list_result = $list_images_berita->result();
+								foreach($list_result as $row)
+								{
+						?>
+									<a class="lightbox" href="<?php echo $row->IMG_LINK;?>" data-plugin-options='{"type":"image"}'>
+										<img class="img-fluid" src="<?php echo $row->IMG_LINK;?>" alt="<?php echo $row->IMG_NAMA;?>" />
+									</a>
+									
+						<?php
+								}
+							}
+							else
+							{
+							?>
+								<div>
+									<a class="lightbox" href="http://maestroselectronics.com/wp-content/uploads/2017/12/No_Image_Available.jpg" data-plugin-options='{"type":"image"}'>
+										<img class="img-fluid" src="http://maestroselectronics.com/wp-content/uploads/2017/12/No_Image_Available.jpg" alt="No Images"/>
+									</a>
+						<?php	
+							}
+						?>
+						</div>
+						<!-- /OWL SLIDER -->
+
+						<!-- IMAGE -->
+						<!--
+						<figure>
+							<img class="img-fluid" src="demo_files/images/content_slider/10-min.jpg" alt="img" />
+						</figure>
+						-->
+						<!-- /IMAGE -->
+
+						<!-- VIDEO -->
+						<!--
+						<div class="embed-responsive embed-responsive-16by9">
+							<iframe class="embed-responsive-item" src="http://player.vimeo.com/video/8408210" width="800" height="450"></iframe>
+						</div>
+						-->
+						<!-- /VIDEO -->
+					</div>
+
+
+					<div class="row">
+
+						<!-- LEFT -->
+						<div class="col-md-12 col-sm-12">
+
+							<h1 class="blog-post-title"><?php echo $data_berita->BRT_NAMA;?></h1>
+							<ul class="blog-post-info list-inline">
+								<li>
+									<a href="#">
+										<i class="fa fa-clock-o"></i> 
+										<span class="font-lato"><?php echo $data_berita->BRT_DTINS;?></span>
+									</a>
+								</li>
+								<li>
+									<a href="#">
+										<i class="fa fa-comment-o"></i> 
+										<span class="font-lato">0 Comments</span>
+									</a>
+								</li>
+								<li>
+									<i class="fa fa-folder-open-o"></i> 
+
+									<a class="category" href="#">
+										<span class="font-lato"><?php echo $data_berita->KBRT_NAMA;?></span>
+									</a>
+								</li>
+								<li>
+									<a href="#">
+										<i class="fa fa-user"></i> 
+										<span class="font-lato">Administrator</span>
+									</a>
+								</li>
+							</ul>
+							
+							<!-- Go to www.addthis.com/dashboard to customize your tools --> 
+							<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a9379b24addc28a">
+							</script>
+
+							<?php echo $data_berita->BRT_ISI;?>
+
+
+							<!-- <div class="divider divider-dotted"> -->
+								<!-- divider -->
+							<!-- </div> -->
+
+
+							<!-- TAGS -->
+							<!-- <a class="tag" href="#"> -->
+								<!-- <span class="txt">RESPONSIVE</span> -->
+								<!-- <span class="num">12</span> -->
+							<!-- </a> -->
+							<!-- <a class="tag" href="#"> -->
+								<!-- <span class="txt">CSS</span> -->
+								<!-- <span class="num">3</span> -->
+							<!-- </a> -->
+							<!-- <a class="tag" href="#"> -->
+								<!-- <span class="txt">HTML</span> -->
+								<!-- <span class="num">1</span> -->
+							<!-- </a> -->
+							<!-- <a class="tag" href="#"> -->
+								<!-- <span class="txt">JAVASCRIPT</span> -->
+								<!-- <span class="num">28</span> -->
+							<!-- </a> -->
+							<!-- <a class="tag" href="#"> -->
+								<!-- <span class="txt">DESIGN</span> -->
+								<!-- <span class="num">6</span> -->
+							<!-- </a> -->
+							<!-- <a class="tag" href="#"> -->
+								<!-- <span class="txt">DEVELOPMENT</span> -->
+								<!-- <span class="num">3</span> -->
+							<!-- </a> -->
+							<!-- /TAGS -->
+
+
+
+							<!-- SHARE POST -->
+							<!-- <div class="clearfix mt-30"> -->
+
+								<!-- <span class="float-left mt-6 bold hidden-xs-down"> -->
+									<!-- Share Post:  -->
+								<!-- </span> -->
+
+								<!-- <a href="#" class="social-icon social-icon-sm social-icon-transparent social-facebook float-right" data-toggle="tooltip" data-placement="top" title="Facebook"> -->
+									<!-- <i class="icon-facebook"></i> -->
+									<!-- <i class="icon-facebook"></i> -->
+								<!-- </a> -->
+
+								<!-- <a href="#" class="social-icon social-icon-sm social-icon-transparent social-twitter float-right" data-toggle="tooltip" data-placement="top" title="Twitter"> -->
+									<!-- <i class="icon-twitter"></i> -->
+									<!-- <i class="icon-twitter"></i> -->
+								<!-- </a> -->
+
+								<!-- <a href="#" class="social-icon social-icon-sm social-icon-transparent social-gplus float-right" data-toggle="tooltip" data-placement="top" title="Google plus"> -->
+									<!-- <i class="icon-gplus"></i> -->
+									<!-- <i class="icon-gplus"></i> -->
+								<!-- </a> -->
+
+								<!-- <a href="#" class="social-icon social-icon-sm social-icon-transparent social-linkedin float-right" data-toggle="tooltip" data-placement="top" title="Linkedin"> -->
+									<!-- <i class="icon-linkedin"></i> -->
+									<!-- <i class="icon-linkedin"></i> -->
+								<!-- </a> -->
+
+								<!-- <a href="#" class="social-icon social-icon-sm social-icon-transparent social-pinterest float-right" data-toggle="tooltip" data-placement="top" title="Pinterest"> -->
+									<!-- <i class="icon-pinterest"></i> -->
+									<!-- <i class="icon-pinterest"></i> -->
+								<!-- </a> -->
+
+								<!-- <a href="#" class="social-icon social-icon-sm social-icon-transparent social-call float-right" data-toggle="tooltip" data-placement="top" title="Email"> -->
+									<!-- <i class="icon-email3"></i> -->
+									<!-- <i class="icon-email3"></i> -->
+								<!-- </a> -->
+
+							<!-- </div> -->
+							<!-- /SHARE POST -->
+
+
+							<!-- <div class="divider"> -->
+								<!-- divider -->
+							<!-- </div> -->
+
+							
+							<!-- <ul class="pager"> -->
+								<!-- <li class="previous"><a class="b-0" href="#">&larr; Previous Post</a></li> -->
+								<!-- <li class="next"><a class="b-0" href="#">Next Post &rarr;</a></li> -->
+							<!-- </ul> -->
+
+
+							<div class="divider"><!-- divider --></div>
+
+							
+							<?php $uri = $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI']; ?>
+							<!-- LIKE -->
+								<div id="fb-root"></div>
+								<script>(function(d, s, id) {
+								  var js, fjs = d.getElementsByTagName(s)[0];
+								  if (d.getElementById(id)) return;
+								  js = d.createElement(s); js.id = id;
+								  js.src = 'https://connect.facebook.net/id_ID/sdk.js#xfbml=1&version=v2.12&appId=1547596675454558&autoLogAppEvents=1';
+								  fjs.parentNode.insertBefore(js, fjs);
+								}(document, 'script', 'facebook-jssdk'));</script>
+								
+								
+								
+								<!-- <div class="fb-like" data-href="https://developers.facebook.com/docs/plugins/" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div> -->
+								
+								<div class="fb-like" data-href="<?php echo $uri; ?>" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+							<!-- LIKE -->
+							
+							<!-- COMMENTS -->
+								<div id="fb-root"></div>
+								<script>(function(d, s, id) {
+								  var js, fjs = d.getElementsByTagName(s)[0];
+								  if (d.getElementById(id)) return;
+								  js = d.createElement(s); js.id = id;
+								  js.src = 'https://connect.facebook.net/id_ID/sdk.js#xfbml=1&version=v2.12&appId=1547596675454558&autoLogAppEvents=1';
+								  fjs.parentNode.insertBefore(js, fjs);
+								}(document, 'script', 'facebook-jssdk'));</script>
+
+								
+								<!-- <div class="fb-comments" data-href="https://developers.facebook.com/docs/plugins/comments#configurator" data-width="100%" data-numposts="30"></div> -->
+								
+								
+								<div class="fb-comments" data-href="<?php echo $uri; ?>" data-width="100%" data-numposts="30">
+								</div>
+							<!-- /COMMENTS -->
+
+
+						</div>
+
+
+					</div>
+
+
+				</div>
+			</section>

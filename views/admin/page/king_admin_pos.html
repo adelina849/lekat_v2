@@ -1,0 +1,866 @@
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.4 -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/dist/css/AdminLTE.min.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/dist/css/skins/_all-skins.min.css">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/plugins/select2/select2.min.css">
+	<link rel="stylesheet" href="<?=base_url();?>assets/adminlte/bower_components/bootstrap-daterangepicker/daterangepicker.css">
+	<link rel="stylesheet" href="<?=base_url();?>assets/adminlte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+	<link rel="stylesheet" href="<?=base_url();?>assets/adminlte/bower_components/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css">
+	<link rel="stylesheet" href="<?=base_url();?>assets/adminlte/plugins/timepicker/bootstrap-timepicker.min.css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+        
+		<style>
+		  /* Always set the map height explicitly to define the size of the div
+		   * element that contains the map. */
+		  #map {
+			height: 400px;
+		  }
+		  /* Optional: Makes the sample page fill the window. */
+		  html, body {
+			height: 100%;
+			margin: 0;
+			padding: 0;
+		  }
+		  .controls {
+			margin-top: 10px;
+			border: 1px solid transparent;
+			border-radius: 2px 0 0 2px;
+			box-sizing: border-box;
+			-moz-box-sizing: border-box;
+			height: 32px;
+			outline: none;
+			box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+		  }
+
+		  #pac-input {
+			background-color: #fff;
+			font-family: Roboto;
+			font-size: 15px;
+			font-weight: 300;
+			margin-left: 12px;
+			padding: 0 11px 0 13px;
+			text-overflow: ellipsis;
+			width: 300px;
+		  }
+
+		  #pac-input:focus {
+			border-color: #4d90fe;
+		  }
+
+		  .pac-container {
+			font-family: Roboto;
+		  }
+
+		  #type-selector {
+			color: #fff;
+			background-color: #4d90fe;
+			padding: 5px 11px 0px 11px;
+		  }
+
+		  #type-selector label {
+			font-family: Roboto;
+			font-size: 13px;
+			font-weight: 300;
+		  }
+		  #target {
+			width: 345px;
+		  }
+		</style>
+		
+    		<style type="text/css">
+    		.labelfrm {
+    			display:block;
+    			font-size:small;
+    			margin-top:5px;
+    		}
+    		.error {
+    			font-size:small;
+    			color:red;
+    		}
+    		</style>
+    		
+    		<script type="text/javascript" src="<?=base_url();?>assets/admin/js/jquery.validate.min.js"></script>
+    		
+    		<script type="text/javascript">
+    		$(document).ready(function() {
+    			$('.frm-input').validate();
+                
+                $('.confirm-btn').click(function(){
+    			var answer = confirm(jQuery(this).attr('title'));
+                return answer;
+                });
+    		});
+            </script>
+            
+            <script type="text/javascript">
+                var htmlobjek;
+                $(document).ready(function()
+                {	
+					$('#inputdata').attr('class', 'active treeview');
+					$('#input-data-pos').attr('class', 'active treeview');
+					$('#input-data-pos-pos').attr('class', 'active treeview');
+					
+					$("#POS_PROV").change(function()
+                    {
+                        var POS_PROV = $("#POS_PROV").val();
+						$.ajax({type: "POST", url: "<?=base_url();?>index.php/C_admin_pos/tampilkan_kabkot/", data: "POS_PROV="+POS_PROV, success:function(data)
+                        { 
+							$("#POS_KAB").html(data);
+                        } 
+                        });
+                    });
+					
+					$("#POS_KAB").change(function()
+                    {
+                        var POS_KAB = $("#POS_KAB").val();
+						$.ajax({type: "POST", url: "<?=base_url();?>index.php/C_admin_pos/tampilkan_kec/", data: "POS_KAB="+POS_KAB, success:function(data)
+                        { 
+							$("#POS_KEC").html(data);
+                        } 
+                        });
+                    });
+					
+					$("#POS_KEC").change(function()
+                    {
+                        var POS_KEC = $("#POS_KEC").val();
+						$.ajax({type: "POST", url: "<?=base_url();?>index.php/C_admin_pos/tampilkan_desa/", data: "POS_KEC="+POS_KEC, success:function(data)
+                        {
+							$("#POS_DESA").html(data);
+                        } 
+                        });
+                    });
+					
+					
+					
+                    $("#POS_KODE").change(function()
+                    {  
+                
+                        var POS_KODE = $("#POS_KODE").val();
+                        $("#pesan").html("<img src='<?=base_url();?>assets/global/loading.gif'>Cek Kode Pos Pelayanan BAZNAS ...");
+                
+                        if(POS_KODE=='')
+                        {
+                          $("#pesan").html('<img src="<?=base_url();?>assets/global/salah.png"> Kode Pos Pelayanan BAZNAS tidak boleh kosong');
+                          $("#POS_KODE").css('border', '3px #C33 solid');
+                        }
+						else
+						$.ajax({type: "POST", url: "<?=base_url();?>index.php/C_admin_pos/cek_pos/", data: "POS_KODE="+POS_KODE, success:function(data)
+                        { 
+                        	if(data==0 || ($("#POS_KODE").val() == $("#cek_POS_KODE").val()))
+                            //if(data==0)
+                        	  {
+                        	  	$("#pesan").html('<img src="<?=base_url();?>assets/global/true.png">');
+                                $("#POS_KODE").css('border', '3px #090 solid');
+								$("#KPOS_ID").attr("disabled", false);
+								$("#POS_NAMA").attr("disabled", false);
+								$("#POS_PIC").attr("disabled", false);
+								$("#POS_PICTLP").attr("disabled", false);
+								$("#POS_NAMALOK").attr("disabled", false);
+								$("#POS_PICLOK").attr("disabled", false);
+								$("#POS_PICLOKTLP").attr("disabled", false);
+								$("#POS_KET").attr("disabled", false);
+								$("#POS_PROV").attr("disabled", false);
+								$("#POS_KAB").attr("disabled", false);
+								$("#POS_KEC").attr("disabled", false);
+								$("#POS_DESA").attr("disabled", false);
+								$("#POS_ALMTDETAIL").attr("disabled", false);
+								$("#POS_LONGI").attr("disabled", false);
+								$("#POS_LATI").attr("disabled", false);
+								$("#POS_START").attr("disabled", false);
+								$("#POS_END").attr("disabled", false);
+                                $("#btnsimpan").attr("disabled", false);
+                            }
+                              else
+                              {
+                              	$("#pesan").html('<img src="<?=base_url();?>assets/global/salah.png"> Kode Menu Tampilan telah digunakan');
+                				//$("#pesan").html(data); 
+                              	$("#POS_KODE").css('border', '3px #C33 solid');
+								$("#KPOS_ID").attr("disabled", true);
+								$("#POS_NAMA").attr("disabled", true);
+								$("#POS_PIC").attr("disabled", true);
+								$("#POS_PICTLP").attr("disabled", true);
+								$("#POS_NAMALOK").attr("disabled", true);
+								$("#POS_PICLOK").attr("disabled", true);
+								$("#POS_PICLOKTLP").attr("disabled", true);
+								$("#POS_KET").attr("disabled", true);
+								$("#POS_PROV").attr("disabled", true);
+								$("#POS_KAB").attr("disabled", true);
+								$("#POS_KEC").attr("disabled", true);
+								$("#POS_DESA").attr("disabled", true);
+								$("#POS_ALMTDETAIL").attr("disabled", true);
+								$("#POS_LONGI").attr("disabled", true);
+								$("#POS_LATI").attr("disabled", true);
+								$("#POS_START").attr("disabled", true);
+								$("#POS_END").attr("disabled", true);
+                                $("#btnsimpan").attr("disabled", true);
+                              }
+                              
+                        } 
+                        });
+                     });
+                });
+            </script>
+            
+			
+			
+			
+     <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+          <h1>
+            Tempat Pembayaran dan pelayanan BAZNAS
+          </h1>
+          <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+            <li class="active">Pos dan Pelayanan</li>
+            
+          </ol>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+          <!-- =========================================================== -->
+
+          <div class="row">
+            <div class="col-md-12">
+              <!-- <div class="box box-warning collapsed-box box-solid"> -->
+			  <div  id="box-form" class="box box-warning collapsed-box box-solid">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Formulir Input Tempat Pembayaran dan pelayanan</h3>
+                  <div class="box-tools pull-right">
+                    <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+                  </div><!-- /.box-tools -->
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                  
+                  
+                  <!-- ISI FORM -->
+					
+				  
+						<form role="form" action="<?=base_url();?>admin-pos-simpan" method="post" class="frm-input">
+						<input type="hidden" name="stat_edit" id="stat_edit"/>
+						
+						
+						
+						<div class="box-body">
+						
+							<div class="form-group">
+                              <label for="KPOS_ID">Kategori Pos/Pelayanan</label>
+                              <select name="KPOS_ID" id="KPOS_ID" class="required form-control select2" title="Kategori Pos/Pelayanan">
+                                <option value="">--Pilih Kategori Pos/Pelayanan--</option>
+                                <?php
+                                	if (!empty($list_kat_pos))
+                                    {
+                                    	$list_result = $list_kat_pos->result();
+                                    	foreach($list_result as $row)
+                                        {
+                                            echo '<option value="'.$row->KPOS_ID.'">'.$row->KPOS_NAMA.'</option>';
+                                        }
+                                     }
+                                 ?>
+                                </select>
+                            </div>
+							
+							<div class="form-group">
+								<label for="POS_KODE">Kode Pos Pelayanan</label>
+								<input type="hidden" id="cek_POS_KODE" name="cek_POS_KODE" />
+								<input type="text" id="POS_KODE" name="POS_KODE"  maxlength="20" class="required form-control" size="20" alt="Kode Pos Pelayanan" title="Kode Pos Pelayanan" placeholder="*Kode Pos Pelayanan"/>
+								<span id="pesan"></span>
+							</div>
+						
+							<div class="form-group">
+								<label for="POS_NAMA">Nama Pos Pelayanan</label>
+								<input type="text" id="POS_NAMA" name="POS_NAMA"  maxlength="35" class="required form-control" size="35" alt="Nama Pos Pelayanan" title="Nama Pos Pelayanan" placeholder="*Nama Pos Pelayanan"/>
+							</div>
+							
+							<div class="form-group">
+								<label for="POS_PIC">PIC (kantor BAZNAS)</label>
+								<input type="text" id="POS_PIC" name="POS_PIC"  maxlength="35" class="required form-control" size="35" alt="PIC (kantor BAZNAS)" title="PIC (kantor BAZNAS)" placeholder="*PIC (kantor BAZNAS)"/>
+							</div>
+							
+							<div class="form-group">
+								<label for="POS_PICTLP">Tlp PIC (kantor BAZNAS)</label>
+								<input type="text" id="POS_PICTLP" name="POS_PICTLP" onkeypress="return isNumberKey(event)"  maxlength="20" class="required form-control" size="35" alt="Telpon PIC (kantor BAZNAS)" title="Telpon PIC (kantor BAZNAS)" placeholder="*Telpon PIC (kantor BAZNAS)"/>
+							</div>
+							
+							<div class="form-group">
+								<label for="POS_PICLOK">PIC (Lokasi Pos Pelayanan)</label>
+								<input type="text" id="POS_PICLOK" name="POS_PICLOK"  maxlength="35" class="required form-control" size="35" alt="PIC (kantor Pos Pelayanan)" title="PIC (kantor Pos Pelayanan)" placeholder="*PIC (kantor Pos Pelayanan)"/>
+							</div>
+							
+							<div class="form-group">
+								<label for="POS_PICLOKTLP">Tlp PIC (kantor Pos Pelayanan)</label>
+								<input type="text" id="POS_PICLOKTLP" name="POS_PICLOKTLP" onkeypress="return isNumberKey(event)"  maxlength="20" class="required form-control" size="35" alt="Telpon PIC (kantor Pos Pelayanan)" title="Telpon PIC (kantor Pos Pelayanan)" placeholder="*Telpon PIC (kantor Pos Pelayanan)"/>
+							</div>
+							
+							<div class="form-group">
+								<label>Tanggal Mulai Beroperasi</label>
+								<div class="input-group date">
+								  <div class="input-group-addon">
+									<i class="fa fa-calendar"></i>
+								  </div>
+								  <input name="POS_START" type="text" class="required form-control pull-right settingDate" id="POS_START" alt="Tanggal Mulai Beroperasi" title="Tanggal Mulai Beroperasi" value="<?php echo date("Y-m-d"); ?>" data-date-format="yyyy-mm-dd">
+								</div>
+								<!-- /.input group -->
+							</div>
+							
+							<div class="form-group">
+								<label>Tanggal Akhir Beroperasi</label>
+								<div class="input-group date">
+								  <div class="input-group-addon">
+									<i class="fa fa-calendar"></i>
+								  </div>
+								  <input name="POS_END" type="text" class="required form-control pull-right settingDate" id="POS_END" alt="Tanggal Akhir Beroperasi" title="Tanggal Akhir Beroperasi" value="<?php echo date("Y-m-d"); ?>" data-date-format="yyyy-mm-dd">
+								</div>
+								<!-- /.input group -->
+							</div>
+							
+							<div class="form-group">
+                              <label for="POS_PROV">Provinsi</label>
+                              <select name="POS_PROV" id="POS_PROV" class="required form-control select2" title="Provinsi">
+                                <option value="">--Pilih Provinsi--</option>
+                                <?php
+                                	if (!empty($list_prov))
+                                    {
+                                    	$list_result = $list_prov->result();
+                                    	foreach($list_result as $row)
+                                        {
+                                            echo '<option value="'.$row->id.'">'.$row->name.'</option>';
+                                        }
+                                    }
+                                 ?>
+                                </select>
+                            </div>
+							
+							
+							<div class="form-group">
+								<label for="POS_KAB">Kabupaten/Kotamadya</label>
+									<select name="POS_KAB" id="POS_KAB" class="required form-control select2" title="Kabupaten/Kotamadya">
+										<option value="">--Pilih Kabupaten/Kotamadya--</option>
+									</select>
+                            </div>
+							
+							
+							<div class="form-group">
+								<label for="POS_KEC">Kecamatan</label>
+									<select name="POS_KEC" id="POS_KEC" class="required form-control select2" title="Kecamatan">
+										<option value="">--Pilih Kecamatan--</option>
+									</select>
+                            </div>
+							
+							
+							<div class="form-group">
+                              <label for="POS_DESA">Desa</label>
+                              <select name="POS_DESA" id="POS_DESA" class="required form-control select2" title="Desa">
+                                <option value="">--Pilih Desa--</option>
+                                </select>
+                            </div>
+							
+							<div class="form-group">
+								<label for="POS_ALMTDETAIL">Alamat Detail</label>
+								<input type="text" id="POS_ALMTDETAIL" name="POS_ALMTDETAIL"  maxlength="150" class="required form-control" size="35" alt="Alamat Detail" title="Alamat Detail" placeholder="*Alamat Detail"/>
+							</div>
+							
+							<div class="form-group">
+								<label for="POS_LATI">Latitude</label>
+								<input type="text" id="POS_LATI" name="POS_LATI"  maxlength="150" class="required form-control" size="35" alt="Latitude" title="Latitude" placeholder="*Latitude"/>
+							</div>
+							
+							<div class="form-group">
+								<label for="POS_LONGI">Longitude</label>
+								<input type="text" id="POS_LONGI" name="POS_LONGI"  maxlength="150" class="required form-control" size="35" alt="Longitude" title="Longitude" placeholder="*Longitude"/>
+							</div>
+							
+							<div class="box box-warning collapsed-box box-solid">
+								<div class="box-header with-border">
+								  <h3 class="box-title">Sematan Posisi Lewat Maps</h3>
+								  <div class="box-tools pull-right">
+									<button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+								  </div><!-- /.box-tools -->
+								</div><!-- /.box-header -->
+								<div class="box-body">
+								<div class="form-group">
+									<input id="pac-input" class="controls" type="text"
+										placeholder="Enter a location">
+									<div id="type-selector" class="controls">
+									  <input type="radio" name="type" id="changetype-all" checked="checked">
+									  <label for="changetype-all">All</label>
+
+									  <input type="radio" name="type" id="changetype-establishment">
+									  <label for="changetype-establishment">Establishments</label>
+
+									  <input type="radio" name="type" id="changetype-address">
+									  <label for="changetype-address">Addresses</label>
+
+									  <input type="radio" name="type" id="changetype-geocode">
+									  <label for="changetype-geocode">Geocodes</label>
+									</div>
+									<div id="map"></div>
+
+									<script>
+									  // This example requires the Places library. Include the libraries=places
+									  // parameter when you first load the API. For example:
+									  // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+
+									  function initMap() {
+										var map = new google.maps.Map(document.getElementById('map'), {
+										  center: {lat: -33.8688, lng: 151.2195},
+										  zoom: 13
+										});
+										var input = /** @type {!HTMLInputElement} */(
+											document.getElementById('pac-input'));
+
+										var types = document.getElementById('type-selector');
+										map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+										map.controls[google.maps.ControlPosition.TOP_LEFT].push(types);
+
+										var autocomplete = new google.maps.places.Autocomplete(input);
+										autocomplete.bindTo('bounds', map);
+
+										var infowindow = new google.maps.InfoWindow();
+										var marker = new google.maps.Marker({
+										  map: map,
+										  anchorPoint: new google.maps.Point(0, -29)
+										});
+
+										autocomplete.addListener('place_changed', function() 
+										{
+										  infowindow.close();
+										  marker.setVisible(false);
+										  var place = autocomplete.getPlace();
+										  if (!place.geometry) {
+											// User entered the name of a Place that was not suggested and
+											// pressed the Enter key, or the Place Details request failed.
+											window.alert("No details available for input: '" + place.name + "'");
+											return;
+										  }
+
+										  // If the place has a geometry, then present it on a map.
+										  if (place.geometry.viewport) {
+											map.fitBounds(place.geometry.viewport);
+										  } else {
+											map.setCenter(place.geometry.location);
+											map.setZoom(17);  // Why 17? Because it looks good.
+										  }
+										  marker.setIcon(/** @type {google.maps.Icon} */({
+											url: place.icon,
+											size: new google.maps.Size(71, 71),
+											origin: new google.maps.Point(0, 0),
+											anchor: new google.maps.Point(17, 34),
+											scaledSize: new google.maps.Size(35, 35)
+										  }));
+										  marker.setPosition(place.geometry.location);
+										  marker.setVisible(true);
+
+										  var address = '';
+										  if (place.address_components) {
+											address = [
+											  (place.address_components[0] && place.address_components[0].short_name || ''),
+											  (place.address_components[1] && place.address_components[1].short_name || ''),
+											  (place.address_components[2] && place.address_components[2].short_name || '')
+											].join(' ');
+										  }
+
+										  //infowindow.setContent('<div><strong>' + place.name + '</strong><br>' + address);
+										  infowindow.setContent('<div><strong>' + place.geometry.location + '</strong><br>' + address);
+										  
+										  //TAMBAHAN
+										  var str_posisi = place.geometry.location;
+										  /*var str_posisi_replace = str_posisi.replace("(","");
+										  var str_posisi_replace2 = str_posisi_replace.replace(")","");
+										  var str_posisi_replace3 = str_posisi_replace2.replace(" ","");*/
+										  
+										  //var posisi_split = str_posisi_replace3.split(',');
+										  $('input[name=POS_LATI]').val(place.geometry.location.lat());
+										  $('input[name=POS_LONGI]').val(place.geometry.location.lng());
+										  //TAMBAHAN
+										  
+										  infowindow.open(map, marker);
+										});
+
+										// Sets a listener on a radio button to change the filter type on Places
+										// Autocomplete.
+										function setupClickListener(id, types) {
+										  var radioButton = document.getElementById(id);
+										  radioButton.addEventListener('click', function() {
+											autocomplete.setTypes(types);
+										  });
+										}
+
+										setupClickListener('changetype-all', []);
+										setupClickListener('changetype-address', ['address']);
+										setupClickListener('changetype-establishment', ['establishment']);
+										setupClickListener('changetype-geocode', ['geocode']);
+									  }
+									</script>
+									<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAbuJ7CxY7gpUOIFYlslGyifOi8zgqtNR0&libraries=places&callback=initMap"
+										async defer></script>
+								</div>
+							</div>
+							</div>
+							
+							<div class="form-group">
+							<label for="POS_KET">Keterangan</label>
+							<textarea name="POS_KET" id="POS_KET" class="required form-control" title="Keterangan" placeholder="*Keterangan"></textarea>
+							</div>
+							
+						</div><!-- /.box-body -->
+		
+						<div class="box-footer">
+							<button type="reset" id="resetBox" onclick="resetBoxEvent()" class="btn btn-default">Batal</button>
+							<button type="submit" id="btnsimpan" class="confirm-btn btn btn-primary" title="Apakah Yakin Akan menyimpan data ini ? ">Submit</button>
+						</div>
+						</form>
+					<!-- ISI FORM -->
+                  
+                  
+                </div><!-- /.box-body -->
+              </div><!-- /.box -->
+              
+              
+              <!-- Perbatasan table dan form -->
+					
+					<div class="box">
+						<div class="box-header">
+						<h3 class="box-title">Table Pos Pelayanan </h3>
+							<div class="pull-right">
+								<!-- <form action="<?=base_url();?>admin/pendaftaran-klinik-cari" method="post" class="frm-cari"> -->
+								<!-- <form action="<?=base_url();?>admin-pos" method="get" class="frm-cari"> -->
+								<form action="<?=base_url();?>admin-pos" method="get" class="frm-cari">
+									<table>
+										<tr>
+											<!-- <td>Berdasarkan</td><td>:</td> -->
+											<!-- <td>
+												<select name="berdasarkan" title="Cari Berdasarkan" class="form-control">
+													<option value=""><?php if (!empty($_GET['berdasarkan'])){echo $_GET['berdasarkan'];} ?></option>
+													<option value="spesialisasi">Spesialisasi</option>
+													<option value="pendidikan">Pendidikan</option>
+												</select>
+											</td> -->
+											<td>
+												<!-- <input type="text" name="cari"  maxlength="35" class="text form-control" size="35" alt="tlp" title="Cari data" placeholder="...Cari" value="<?php if (!empty($_GET['berdasarkan'])){echo $_GET['cari'];} ?>"/> -->
+												<input type="text" name="cari"  maxlength="35" class="text form-control" size="35" alt="tlp" title="Cari data" placeholder="...Cari" value="<?php if (!empty($_GET['cari'])){echo $_GET['cari'];} ?>"/>
+											</td>
+										</tr>
+									</table>
+								</form>
+							</div>
+						</div><!-- /.box-header -->
+						<div class="box-body">
+						
+						
+						<?php
+								if(!empty($list_pos))
+								{
+									echo'<table width="100%" id="example2" class="table table-bordered table-hover">';
+										echo '<thead>
+	<tr>';
+													echo '<th width="5%">No</th>';
+													echo '<th width="10%">Foto</th>';
+													echo '<th width="30%">Info POS</th>';
+													echo '<th width="35%">Alamat</th>';
+													echo '<th width="20%">Aksi</th>';
+										echo '</tr>
+	</thead>';
+										$list_result = $list_pos->result();
+										$no =$this->uri->segment(2,0)+1;
+										echo '<tbody>';
+										foreach($list_result as $row)
+										{
+											echo'<tr>';
+												echo'<td>'.$no.'</td>';
+												if($row->IMG_FILE == "")
+												{
+													$src = base_url().'assets/global/karyawan/loading.gif';
+													echo '<td><img id="IMG_'.$no.'"  width="100px" height="100px" style="border:1px solid #C8C8C8; padding:5px; float:left; margin-right:20px;" src="'.$src.'" /></td>';
+												}
+												else
+												{
+													//$src = base_url().'assets/global/karyawan/'.$row->avatar;
+													$src = $row->IMG_LINK;
+													echo '<td><img id="IMG_'.$no.'"  width="100px" height="100px" style="border:1px solid #C8C8C8; padding:5px; float:left; margin-right:20px;" src="'.$src.'" /></td>';
+												}
+												echo'<td>
+														<b>Kode Pos : </b>'.$row->POS_KODE.' 
+														<br/> <b>Nama Pos : </b>'.$row->POS_NAMA.' 
+														<br/> <b>PIC BAZNAS : </b>'.$row->POS_PIC.' ('.$row->POS_PICTLP.')
+														<br/> <b>PIC Lokasi : </b>'.$row->POS_PICLOK.' ('.$row->POS_PICLOKTLP.')
+														<br/> <b>Tgl Mulai : </b>'.($row->POS_START).'
+													</td>';
+												
+												/*echo'<td>
+														'.$row->PROVINSI.'-'.$row->KABKOT.'-'.$row->KECAMATAN.'-'.$row->DESA.'
+														<br/>'.$row->POS_LATI.'-'.$row->POS_LONGI.'
+														<br/>
+														<div>
+															<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.8958450402242!2d'.$row->POS_LONGI.'!3d'.$row->POS_LATI.'!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNsKwNTQnMTEuMCJTIDEwNsKwNDknMjguMiJF!5e0!3m2!1sid!2sid!4v1517957409975" width="100%" height="100" frameborder="0" style="border:0" allowfullscreen></iframe>
+														</div>
+													</td>';*/
+												echo'<td>
+														'.$row->PROVINSI.'-'.$row->KABKOT.'-'.$row->KECAMATAN.'-'.$row->DESA.'
+														<br/>'.$row->POS_LATI.'-'.$row->POS_LONGI.'
+													</td>';
+												
+												echo'<input type="hidden" id="POS_ID_'.$no.'" name="POS_ID_'.$no.'" value="'.$row->POS_ID.'" />';
+												echo'<input type="hidden" id="KPOS_ID_'.$no.'" name="KPOS_ID_'.$no.'" value="'.$row->KPOS_ID.'" />';
+												echo'<input type="hidden" id="KPOS_NAMA_'.$no.'" name="KPOS_NAMA_'.$no.'" value="'.$row->KPOS_NAMA.'" />';
+												echo'<input type="hidden" id="POS_KODE_'.$no.'" name="POS_KODE_'.$no.'" value="'.$row->POS_KODE.'" />';
+												echo'<input type="hidden" id="POS_NAMA_'.$no.'" name="POS_NAMA_'.$no.'" value="'.$row->POS_NAMA.'" />';
+												echo'<input type="hidden" id="POS_PIC_'.$no.'" name="POS_PIC_'.$no.'" value="'.$row->POS_PIC.'" />';
+												echo'<input type="hidden" id="POS_PICTLP_'.$no.'" name="POS_PICTLP_'.$no.'" value="'.$row->POS_PICTLP.'" />';
+												echo'<input type="hidden" id="POS_PICLOK_'.$no.'" name="POS_PICLOK_'.$no.'" value="'.$row->POS_PICLOK.'" />';
+												echo'<input type="hidden" id="POS_PICLOKTLP_'.$no.'" name="POS_PICLOKTLP_'.$no.'" value="'.$row->POS_PICLOKTLP.'" />';
+												echo'<input type="hidden" id="POS_KET_'.$no.'" name="POS_KET_'.$no.'" value="'.$row->POS_KET.'" />';
+												
+												echo'<input type="hidden" id="POS_PROV_'.$no.'" name="POS_PROV_'.$no.'" value="'.$row->POS_PROV.'" />';
+												echo'<input type="hidden" id="PROVINSI_'.$no.'" name="PROVINSI_'.$no.'" value="'.$row->PROVINSI.'" />';
+												echo'<input type="hidden" id="POS_KAB_'.$no.'" name="POS_KAB_'.$no.'" value="'.$row->POS_KAB.'" />';
+												echo'<input type="hidden" id="KABKOT_'.$no.'" name="KABKOT_'.$no.'" value="'.$row->KABKOT.'" />';
+												echo'<input type="hidden" id="POS_KEC_'.$no.'" name="POS_KEC_'.$no.'" value="'.$row->POS_KEC.'" />';
+												echo'<input type="hidden" id="KECAMATAN_'.$no.'" name="KECAMATAN_'.$no.'" value="'.$row->KECAMATAN.'" />';
+												echo'<input type="hidden" id="POS_DESA_'.$no.'" name="POS_DESA_'.$no.'" value="'.$row->POS_DESA.'" />';
+												echo'<input type="hidden" id="DESA_'.$no.'" name="DESA_'.$no.'" value="'.$row->DESA.'" />';
+												
+												echo'<input type="hidden" id="POS_ALMTDETAIL_'.$no.'" name="POS_ALMTDETAIL_'.$no.'" value="'.$row->POS_ALMTDETAIL.'" />';
+												echo'<input type="hidden" id="POS_LONGI_'.$no.'" name="POS_LONGI_'.$no.'" value="'.$row->POS_LONGI.'" />';
+												echo'<input type="hidden" id="POS_LATI_'.$no.'" name="POS_LATI_'.$no.'" value="'.$row->POS_LATI.'" />';
+												echo'<input type="hidden" id="POS_START_'.$no.'" name="POS_START_'.$no.'" value="'.$row->POS_START.'" />';
+												echo'<input type="hidden" id="POS_END_'.$no.'" name="POS_END_'.$no.'" value="'.$row->POS_END.'" />';
+												
+												
+												echo'<td>
+												
+	<a class="confirm-btn btn btn-success btn-sm" href="'.base_url().'admin-images/pos/'.$row->POS_ID.'" title = "Input Gambar Untuk '.$row->POS_NAMA.'" alt = "Input Gambar Untuk '.$row->POS_NAMA.'">Foto</a>
+												
+	<a href="javascript:void(0)" class="btn btn-warning btn-sm" onclick="edit('.$no.')" title = "Ubah Data '.$row->POS_NAMA.'" alt = "Ubah Data '.$row->POS_NAMA.'">Edit</a>
+	
+	<a class="confirm-btn btn btn-danger btn-sm" href="'.base_url().'admin-pos-hapus/'.$row->POS_ID.'" title = "Hapus Data '.$row->POS_NAMA.'" alt = "Hapus Data '.$row->POS_NAMA.'">Hapus</a>
+												
+												</td>';
+											echo'</tr>';
+											$no++;
+										}
+										
+										echo '</tbody>';
+									echo'</table>';
+								}
+								else
+								{
+									echo'<center>';
+									echo'Tidak Ada Data Yang Ditampilkan !';
+									echo'</center>';
+								}
+							?>
+						<center>
+                        <div class="halaman"><?php echo $halaman;?></div>
+                        </center>
+						</div><!-- /.box-body -->
+					</div><!-- /.box -->
+					
+					
+			</div><!-- /.col -->
+		</div><!-- /.row -->
+          <!-- =========================================================== -->
+        </section><!-- /.content -->
+      </div><!-- /.content-wrapper -->
+            
+
+		
+<script type='text/javascript'>
+	function resetBoxEvent()
+	{
+		$("#stat_edit").val("");
+		//alert($("#stat_edit").val());
+	}
+
+	
+	function edit(id)
+	{
+		alert("Mode Perubahan Data, Silahkan Cek Formulir Isian !");
+		
+		
+		$('input[name=stat_edit]').val($('#POS_ID_'+id).val());
+		
+		$('input[name=POS_ID').val($('#POS_ID_'+id).val());
+		
+		document.getElementById("KPOS_ID").options.item(0).text = $('#KPOS_NAMA_'+id).val();
+		document.getElementById("KPOS_ID").options.item(0).value = $('#KPOS_ID_'+id).val();
+		
+		$('input[name=POS_KODE').val($('#POS_KODE_'+id).val());
+		$('input[name=POS_NAMA').val($('#POS_NAMA_'+id).val());
+		$('input[name=POS_PIC').val($('#POS_PIC_'+id).val());
+		$('input[name=POS_PICTLP').val($('#POS_PICTLP_'+id).val());
+		$('input[name=POS_NAMALOK').val($('#POS_NAMALOK_'+id).val());
+		$('input[name=POS_PICLOK').val($('#POS_PICLOK_'+id).val());
+		$('input[name=POS_PICLOKTLP').val($('#POS_PICLOKTLP_'+id).val());
+		
+		document.getElementById("POS_KET").value = $('#POS_KET_'+id).val();
+		
+		document.getElementById("POS_PROV").options.item(0).text = $('#PROVINSI_'+id).val();
+		document.getElementById("POS_PROV").options.item(0).value = $('#POS_PROV_'+id).val();
+		
+		document.getElementById("POS_KAB").options.item(0).text = $('#KABKOT_'+id).val();
+		document.getElementById("POS_KAB").options.item(0).value = $('#POS_KAB_'+id).val();
+		
+		document.getElementById("POS_KEC").options.item(0).text = $('#KECAMATAN_'+id).val();
+		document.getElementById("POS_KEC").options.item(0).value = $('#POS_KEC_'+id).val();
+		
+		document.getElementById("POS_DESA").options.item(0).text = $('#DESA_'+id).val();
+		document.getElementById("POS_DESA").options.item(0).value = $('#POS_DESA_'+id).val();
+		
+		
+		$('input[name=POS_ALMTDETAIL').val($('#POS_ALMTDETAIL_'+id).val());
+		$('input[name=POS_LONGI').val($('#POS_LONGI_'+id).val());
+		$('input[name=POS_LATI').val($('#POS_LATI_'+id).val());
+		$('input[name=POS_START').val($('#POS_START_'+id).val());
+		$('input[name=POS_END').val($('#POS_END_'+id).val());
+		
+		$('#box-form').attr('class', 'box box-warning ellapsed-box box-solid');
+	}
+	function isNumberKey(evt)
+	{
+    	var charCode = (evt.which) ? evt.which : event.keyCode
+    	if (charCode > 31 && (charCode < 48 || charCode > 57))
+    	
+    	return false;
+    	return true;
+	}
+	
+	
+	function FormatCurrency(objNum)
+	{
+	   var num = objNum.value
+	   var ent, dec;
+	   if (num != '' && num != objNum.oldvalue)
+	   {
+		 num = HapusTitik(num);
+		 if (isNaN(num))
+		 {
+		   objNum.value = (objNum.oldvalue)?objNum.oldvalue:'';
+		 } else {
+		   var ev = (navigator.appName.indexOf('Netscape') != -1)?Event:event;
+		   if (ev.keyCode == 190 || !isNaN(num.split('.')[1]))
+		   {
+			 alert(num.split('.')[1]);
+			 objNum.value = TambahTitik(num.split('.')[0])+'.'+num.split('.')[1];
+		   }
+		   else
+		   {
+			 objNum.value = TambahTitik(num.split('.')[0]);
+		   }
+		   objNum.oldvalue = objNum.value;
+		 }
+	   }
+	}
+	function HapusTitik(num)
+	{
+	   return (num.replace(/\./g, ''));
+	}
+
+	function TambahTitik(num)
+	{
+	   numArr=new String(num).split('').reverse();
+	   for (i=3;i<numArr.length;i+=3)
+	   {
+		 numArr[i]+='.';
+	   }
+	   return numArr.reverse().join('');
+	} 
+			
+	function formatCurrency(num) {
+	   num = num.toString().replace(/\$|\./g,'');
+	   if(isNaN(num))
+	   num = "0";
+	   sign = (num == (num = Math.abs(num)));
+	   num = Math.floor(num*100+0.50000000001);
+	   cents = num0;
+	   num = Math.floor(num/100).toString();
+	   for (var i = 0; i < Math.floor((num.length-(1+i))/3); i++)
+	   num = num.substring(0,num.length-(4*i+3))+'.'+
+	   num.substring(num.length-(4*i+3));
+	   return (((sign)?'':'-') + num);
+	}
+</script>
+      
+    <!-- Bootstrap 3.3.4 -->
+	<script src="<?=base_url();?>assets/adminlte/bootstrap/js/bootstrap.min.js"></script>
+	<!-- Slimscroll -->
+	<script src="<?=base_url();?>assets/adminlte/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+	<!-- FastClick -->
+	<script src="<?=base_url();?>assets/adminlte/plugins/fastclick/fastclick.min.js"></script>
+	<!-- AdminLTE App -->
+	<script src="<?=base_url();?>assets/adminlte/dist/js/app.min.js"></script>
+	<!-- Page script -->
+    <!-- InputMask -->
+    <script src="<?=base_url();?>/assets/adminlte/plugins/input-mask/jquery.inputmask.js"></script>
+    <script src="<?=base_url();?>/assets/adminlte/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+    <script src="<?=base_url();?>/assets/adminlte/plugins/input-mask/jquery.inputmask.extensions.js"></script>
+	
+	<!-- bootstrap datepicker -->
+	<script src="<?=base_url();?>/assets/adminlte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+    
+    <script>
+      $(function () {
+		//Date picker
+		$('.settingDate').datepicker({
+			autoclose: true
+		});
+		
+		
+        //Initialize Select2 Elements
+        //$(".select2").select2();
+
+        //Datemask yyyy-mm-dd
+        $(".datemask_mysql").inputmask("yyyy-mm-dd", {"placeholder": "yyyy-mm-dd"});
+        //Datemask dd/mm/yyyy
+        //$("#datemask").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});
+        //Datemask2 mm/dd/yyyy
+        //$("#datemask2").inputmask("mm/dd/yyyy", {"placeholder": "mm/dd/yyyy"});
+        //TimeMask hh:mm:ss
+        $(".time_mysql").inputmask("hh:mm:ss", {"placeholder": "hh:mm:ss"});
+        //Money Euro
+        //$("[data-mask]").inputmask();
+
+        //iCheck for checkbox and radio inputs
+        $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+          checkboxClass: 'icheckbox_minimal-blue',
+          radioClass: 'iradio_minimal-blue'
+        });
+        //Red color scheme for iCheck
+        $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
+          checkboxClass: 'icheckbox_minimal-red',
+          radioClass: 'iradio_minimal-red'
+        });
+        //Flat red color scheme for iCheck
+        $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+          checkboxClass: 'icheckbox_flat-green',
+          radioClass: 'iradio_flat-green'
+        });
+
+        //Colorpicker
+        $(".my-colorpicker1").colorpicker();
+        //color picker with addon
+        $(".my-colorpicker2").colorpicker();
+
+        //Timepicker
+        $(".timepicker").timepicker({
+          showInputs: false
+        });
+      });
+    </script>
+    

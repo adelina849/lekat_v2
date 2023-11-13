@@ -1,0 +1,481 @@
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.4 -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/dist/css/AdminLTE.min.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/dist/css/skins/_all-skins.min.css">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/plugins/select2/select2.min.css">
+	<link rel="stylesheet" href="<?=base_url();?>assets/adminlte/bower_components/bootstrap-daterangepicker/daterangepicker.css">
+	<link rel="stylesheet" href="<?=base_url();?>assets/adminlte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+	<link rel="stylesheet" href="<?=base_url();?>assets/adminlte/bower_components/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css">
+	<link rel="stylesheet" href="<?=base_url();?>assets/adminlte/plugins/timepicker/bootstrap-timepicker.min.css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+        
+		
+    		<style type="text/css">
+    		.labelfrm {
+    			display:block;
+    			font-size:small;
+    			margin-top:5px;
+    		}
+    		.error {
+    			font-size:small;
+    			color:red;
+    		}
+    		</style>
+    		
+    		<script type="text/javascript" src="<?=base_url();?>assets/admin/js/jquery.validate.min.js"></script>
+    		
+    		<script type="text/javascript">
+    		$(document).ready(function() {
+    			$('.frm-input').validate();
+                
+                $('.confirm-btn').click(function(){
+    			var answer = confirm(jQuery(this).attr('title'));
+                return answer;
+                });
+    		});
+            </script>
+            
+            <script type="text/javascript">
+                var htmlobjek;
+                $(document).ready(function()
+                {	
+					$('#inputdata').attr('class', 'active treeview');
+					$('#input-data-menu-halaman').attr('class', 'active treeview');
+					$('#input-data-halaman-halaman').attr('class', 'active treeview');
+					
+                    $("#HAL_NAMA").change(function()
+                    {  
+                
+                        var HAL_NAMA = $("#HAL_NAMA").val();
+                        $("#pesan").html("<img src='<?=base_url();?>assets/global/loading.gif'>Cek Nama/Judul halaman ...");
+                
+                        if(HAL_NAMA=='')
+                        {
+                          $("#pesan").html('<img src="<?=base_url();?>assets/global/salah.png"> Nama/Judul tidak boleh kosong');
+                          $("#HAL_NAMA").css('border', '3px #C33 solid');
+                        }
+						else
+						$.ajax({type: "POST", url: "<?=base_url();?>index.php/C_admin_halaman/cek_halaman/", data: "HAL_NAMA="+HAL_NAMA, success:function(data)
+                        { 
+                        	if(data==0 || ($("#HAL_NAMA").val() == $("#cek_HAL_NAMA").val()))
+                            //if(data==0)
+                        	  {
+                        	  	$("#pesan").html('<img src="<?=base_url();?>assets/global/true.png">');
+                                $("#HAL_NAMA").css('border', '3px #090 solid');
+								$("#MENU_MAINID").attr("disabled", false);
+								$("#MENU_KAT").attr("disabled", false);
+								$("#MENU_ISMAINMENU").attr("disabled", false);
+								$("#MENU_NAMA").attr("disabled", false);
+								$("#MENU_ISPUNYAHAL").attr("disabled", false);
+								$("#MENU_LINK").attr("disabled", false);
+								$("#MENU_KET").attr("disabled", false);
+                                $("#btnsimpan").attr("disabled", false);
+                            }
+                              else
+                              {
+                              	$("#pesan").html('<img src="<?=base_url();?>assets/global/salah.png"> Kode Menu Tampilan telah digunakan');
+                				//$("#pesan").html(data); 
+                              	$("#HAL_NAMA").css('border', '3px #C33 solid');
+								$("#MENU_MAINID").attr("disabled", true);
+                                $("#MENU_KAT").attr("disabled", true);
+								$("#MENU_ISMAINMENU").attr("disabled", true);
+								$("#MENU_NAMA").attr("disabled", true);
+								$("#MENU_ISPUNYAHAL").attr("disabled", true);
+								$("#MENU_LINK").attr("disabled", true);
+								$("#MENU_KET").attr("disabled", true);
+                                $("#btnsimpan").attr("disabled", true);
+                              }
+                              
+                        } 
+                        });
+                     });
+                });
+            </script>
+            
+			
+			<!-- Load Tiny MCE -->
+				<!--<script src="<?=base_url();?>assets/js/jquery-1.11.1.min.js"></script>-->
+				<script type="text/javascript" src="<?=base_url();?>assets/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
+				<script>
+					//var base_url = "<?=base_url();?>index.php/";
+					var base_url = "<?=base_url();?>";
+				</script>
+				<?php $this->load->view('tinymce') ?>
+			<!-- Load Tiny MCE -->
+			
+     <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+          <h1>
+            Pengaturan Halaman
+          </h1>
+          <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+			<li><a href="#"><i class="fa fa-dashboard"></i> Menu Dan Halaman</a></li>
+            <li class="active">Pengaturan Halaman</li>
+            
+          </ol>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+          <!-- =========================================================== -->
+
+          <div class="row">
+            <div class="col-md-12">
+              <!-- <div class="box box-warning collapsed-box box-solid"> -->
+			  <div  id="box-form" class="box box-warning collapsed-box box-solid">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Formulir Input Pengaturan Halaman</h3>
+                  <div class="box-tools pull-right">
+                    <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+                  </div><!-- /.box-tools -->
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                  
+                  
+                  <!-- ISI FORM -->
+					
+				  
+						<form role="form" action="<?=base_url();?>admin-halaman-simpan" method="post" class="frm-input">
+						<input type="hidden" name="stat_edit" id="stat_edit"/>
+						
+						<div class="box-body">
+						
+							<div class="form-group">
+                              <label for="MENU_ID">Pilih Menu</label>
+                              <select name="MENU_ID" id="MENU_ID" class="required form-control select2" title="Menu">
+                                <option value="">--Pilih Menu--</option>
+                                <?php
+                                	if (!empty($list_menu))
+                                    {
+                                    	$list_result = $list_menu->result();
+                                    	foreach($list_result as $row)
+                                        {
+                                            echo '<option value="'.$row->MENU_ID.'">'.$row->MENU_NAMA.'</option>';
+                                        }
+                                     }
+                                 ?>
+                                </select>
+                            </div>
+						
+							<div class="form-group">
+								<label for="HAL_KODE">Kode Halaman</label>
+								<input type="text" id="HAL_KODE" name="HAL_KODE"  maxlength="35" class="required form-control" size="20" alt="Kode Halaman" title="Kode Halaman" placeholder="*Kode Halaman"/>
+							</div>
+							
+							<div class="form-group">
+								<label for="HAL_NAMA">Nama Halaman/Judul</label>
+								<input type="hidden" id="cek_HAL_NAMA" name="cek_HAL_NAMA" />
+								<input type="text" id="HAL_NAMA" name="HAL_NAMA"  maxlength="100" class="required form-control" size="35" alt="Nama Halaman" title="Nama Halaman" placeholder="*Nama Halaman"/>
+								<span id="pesan"></span>
+							</div>
+							
+							<div class="form-group">
+								<label for="MENU_KEYWORDS">Kata Kunci halaman/Keywords</label>
+								<input type="text" id="MENU_KEYWORDS" name="MENU_KEYWORDS"  maxlength="100" class="required form-control" size="35" alt="Kata Kunci halaman/Keywords" title="Kata Kunci halaman/Keywords" placeholder="*Kata Kunci halaman/Keywords"/>
+							</div>
+							
+							<div class="form-group">
+								<label for="MENU_DESC">Keterangan halaman/Description</label>
+								<input type="text" id="MENU_DESC" name="MENU_DESC"  maxlength="150" class="required form-control" size="35" alt="Keterangan halaman/Description" title="Keterangan halaman/Description" placeholder="*Keterangan halaman/Description"/>
+							</div>
+							
+							<div class="form-group">
+							<label for="HAL_ISI">Keterangan</label>
+							<textarea name="HAL_ISI" id="HAL_ISI" class="required form-control" title="Keterangan" placeholder="*Keterangan"></textarea>
+							</div>
+							
+						</div><!-- /.box-body -->
+		
+						<div class="box-footer">
+							<button type="reset" id="resetBox" onclick="resetBoxEvent()" class="btn btn-default">Batal</button>
+							<button type="submit" id="btnsimpan" class="confirm-btn btn btn-primary" title="Apakah Yakin Akan menyimpan data ini ? ">Submit</button>
+						</div>
+						</form>
+					<!-- ISI FORM -->
+                  
+                  
+                </div><!-- /.box-body -->
+              </div><!-- /.box -->
+              
+              
+              <!-- Perbatasan table dan form -->
+					
+					<div class="box">
+						<div class="box-header">
+						<h3 class="box-title">Table Halaman Website</h3>
+							<div class="pull-right">
+								<!-- <form action="<?=base_url();?>admin/pendaftaran-klinik-cari" method="post" class="frm-cari"> -->
+								<form action="<?=base_url();?>admin-halaman" method="get" class="frm-cari">
+									<table>
+										<tr>
+											<!-- <td>Berdasarkan</td><td>:</td> -->
+											<!-- <td>
+												<select name="berdasarkan" title="Cari Berdasarkan" class="form-control">
+													<option value=""><?php if (!empty($_GET['berdasarkan'])){echo $_GET['berdasarkan'];} ?></option>
+													<option value="spesialisasi">Spesialisasi</option>
+													<option value="pendidikan">Pendidikan</option>
+												</select>
+											</td> -->
+											<td>
+												<!-- <input type="text" name="cari"  maxlength="35" class="text form-control" size="35" alt="tlp" title="Cari data" placeholder="...Cari" value="<?php if (!empty($_GET['berdasarkan'])){echo $_GET['cari'];} ?>"/> -->
+												<input type="text" name="cari"  maxlength="35" class="text form-control" size="35" alt="tlp" title="Cari data" placeholder="...Cari" value="<?php if (!empty($_GET['cari'])){echo $_GET['cari'];} ?>"/>
+											</td>
+										</tr>
+									</table>
+								</form>
+							</div>
+						</div><!-- /.box-header -->
+						<div class="box-body">
+						
+						
+						<?php
+								if(!empty($list_halaman))
+								{
+									echo'<table width="100%" id="example2" class="table table-bordered table-hover">';
+										echo '<thead>
+	<tr>';
+													echo '<th width="5%">No</th>';
+													echo '<th width="30%">Info Halaman</th>';
+													echo '<th width="50%">Isi Halmaan</th>';
+													echo '<th width="15%">Aksi</th>';
+										echo '</tr>
+	</thead>';
+										$list_result = $list_halaman->result();
+										$no =$this->uri->segment(2,0)+1;
+										echo '<tbody>';
+										foreach($list_result as $row)
+										{
+											echo'<tr>';
+												echo'<td>'.$no.'</td>';
+												echo'<td>
+														<b>Nama/Judul Halaman : </b>'.$row->HAL_NAMA.' 
+														<br/> <b>Menu : </b>'.$row->MENU_NAMA.' 
+														<br/> <b>Dibuat Oleh : </b>'.$row->CREATED_BY.'
+														<br/> <b>Tgl Buat : </b>'.($row->HAL_DTINS).'
+													</td>';
+												
+												echo'<td>'.word_limiter(strip_tags($row->HAL_ISI),20,'...').'</td>';
+												
+												
+												
+												echo'<input type="hidden" id="HAL_ID_'.$no.'" name="HAL_ID_'.$no.'" value="'.$row->HAL_ID.'" />';
+												echo'<input type="hidden" id="MENU_ID_'.$no.'" name="MENU_ID_'.$no.'" value="'.$row->MENU_ID.'" />';
+												echo'<input type="hidden" id="MENU_NAMA_'.$no.'" name="MENU_NAMA_'.$no.'" value="'.$row->MENU_NAMA.'" />';
+												echo'<input type="hidden" id="HAL_KODE_'.$no.'" name="HAL_KODE_'.$no.'" value="'.$row->HAL_KODE.'" />';
+												echo'<input type="hidden" id="HAL_NAMA_'.$no.'" name="HAL_NAMA_'.$no.'" value="'.$row->HAL_NAMA.'" />';
+												echo'<input type="hidden" id="MENU_KEYWORDS_'.$no.'" name="MENU_KEYWORDS_'.$no.'" value="'.$row->MENU_KEYWORDS.'" />';
+												echo'<input type="hidden" id="MENU_DESC_'.$no.'" name="MENU_DESC_'.$no.'"
+												value="'.$row->MENU_DESC.'" />';
+												echo'<input type="hidden" id="HAL_ISI_'.$no.'" name="HAL_ISI_'.$no.'" value="'.str_replace('"','',$row->HAL_ISI).'" />';
+												
+												
+												echo'<td>
+												
+	<a href="javascript:void(0)" class="btn btn-warning btn-sm" onclick="edit('.$no.')" title = "Ubah Data '.$row->HAL_NAMA.'" alt = "Ubah Data '.$row->HAL_NAMA.'">Edit</a>
+	
+	<a class="confirm-btn btn btn-danger btn-sm" href="'.base_url().'admin-halaman-hapus/'.$row->HAL_ID.'" title = "Hapus Data '.$row->HAL_NAMA.'" alt = "Hapus Data '.$row->HAL_NAMA.'">Hapus</a>
+												
+												</td>';
+											echo'</tr>';
+											$no++;
+										}
+										
+										echo '</tbody>';
+									echo'</table>';
+								}
+								else
+								{
+									echo'<center>';
+									echo'Tidak Ada Data Yang Ditampilkan !';
+									echo'</center>';
+								}
+							?>
+						<center>
+                        <div class="halaman"><?php echo $halaman;?></div>
+                        </center>
+						</div><!-- /.box-body -->
+					</div><!-- /.box -->
+					
+					
+			</div><!-- /.col -->
+		</div><!-- /.row -->
+          <!-- =========================================================== -->
+        </section><!-- /.content -->
+      </div><!-- /.content-wrapper -->
+            
+
+		
+<script type='text/javascript'>
+	function resetBoxEvent()
+	{
+		$("#stat_edit").val("");
+		//alert($("#stat_edit").val());
+	}
+
+	
+	function edit(id)
+	{
+		alert("Mode Perubahan Data, Silahkan Cek Formulir Isian !");
+		
+		
+		$('input[name=stat_edit]').val($('#HAL_ID_'+id).val());
+		document.getElementById("MENU_ID").options.item(0).text = $('#MENU_NAMA_'+id).val();
+		document.getElementById("MENU_ID").options.item(0).value = $('#MENU_ID_'+id).val();
+		
+		$('input[name=HAL_KODE').val($('#HAL_KODE_'+id).val());
+		$('input[name=HAL_NAMA').val($('#HAL_NAMA_'+id).val());
+		$('input[name=MENU_KEYWORDS').val($('#MENU_KEYWORDS_'+id).val());
+		$('input[name=MENU_DESC').val($('#MENU_DESC_'+id).val());
+		tinymce.get('HAL_ISI').getBody().innerHTML = $('#HAL_ISI_'+id).val();
+		
+		$('#box-form').attr('class', 'box box-warning ellapsed-box box-solid');
+	}
+	function isNumberKey(evt)
+	{
+    	var charCode = (evt.which) ? evt.which : event.keyCode
+    	if (charCode > 31 && (charCode < 48 || charCode > 57))
+    	
+    	return false;
+    	return true;
+	}
+	
+	
+	function FormatCurrency(objNum)
+	{
+	   var num = objNum.value
+	   var ent, dec;
+	   if (num != '' && num != objNum.oldvalue)
+	   {
+		 num = HapusTitik(num);
+		 if (isNaN(num))
+		 {
+		   objNum.value = (objNum.oldvalue)?objNum.oldvalue:'';
+		 } else {
+		   var ev = (navigator.appName.indexOf('Netscape') != -1)?Event:event;
+		   if (ev.keyCode == 190 || !isNaN(num.split('.')[1]))
+		   {
+			 alert(num.split('.')[1]);
+			 objNum.value = TambahTitik(num.split('.')[0])+'.'+num.split('.')[1];
+		   }
+		   else
+		   {
+			 objNum.value = TambahTitik(num.split('.')[0]);
+		   }
+		   objNum.oldvalue = objNum.value;
+		 }
+	   }
+	}
+	function HapusTitik(num)
+	{
+	   return (num.replace(/\./g, ''));
+	}
+
+	function TambahTitik(num)
+	{
+	   numArr=new String(num).split('').reverse();
+	   for (i=3;i<numArr.length;i+=3)
+	   {
+		 numArr[i]+='.';
+	   }
+	   return numArr.reverse().join('');
+	} 
+			
+	function formatCurrency(num) {
+	   num = num.toString().replace(/\$|\./g,'');
+	   if(isNaN(num))
+	   num = "0";
+	   sign = (num == (num = Math.abs(num)));
+	   num = Math.floor(num*100+0.50000000001);
+	   cents = num0;
+	   num = Math.floor(num/100).toString();
+	   for (var i = 0; i < Math.floor((num.length-(1+i))/3); i++)
+	   num = num.substring(0,num.length-(4*i+3))+'.'+
+	   num.substring(num.length-(4*i+3));
+	   return (((sign)?'':'-') + num);
+	}
+</script>
+      
+    <!-- Bootstrap 3.3.4 -->
+	<script src="<?=base_url();?>assets/adminlte/bootstrap/js/bootstrap.min.js"></script>
+	<!-- Slimscroll -->
+	<script src="<?=base_url();?>assets/adminlte/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+	<!-- FastClick -->
+	<script src="<?=base_url();?>assets/adminlte/plugins/fastclick/fastclick.min.js"></script>
+	<!-- AdminLTE App -->
+	<script src="<?=base_url();?>assets/adminlte/dist/js/app.min.js"></script>
+	<!-- Page script -->
+    <!-- InputMask -->
+    <script src="<?=base_url();?>/assets/adminlte/plugins/input-mask/jquery.inputmask.js"></script>
+    <script src="<?=base_url();?>/assets/adminlte/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+    <script src="<?=base_url();?>/assets/adminlte/plugins/input-mask/jquery.inputmask.extensions.js"></script>
+	
+	<!-- bootstrap datepicker -->
+	<script src="<?=base_url();?>/assets/adminlte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+    
+    <script>
+      $(function () {
+		//Date picker
+		$('.settingDate').datepicker({
+			autoclose: true
+		});
+		
+		
+        //Initialize Select2 Elements
+        //$(".select2").select2();
+
+        //Datemask yyyy-mm-dd
+        $(".datemask_mysql").inputmask("yyyy-mm-dd", {"placeholder": "yyyy-mm-dd"});
+        //Datemask dd/mm/yyyy
+        //$("#datemask").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});
+        //Datemask2 mm/dd/yyyy
+        //$("#datemask2").inputmask("mm/dd/yyyy", {"placeholder": "mm/dd/yyyy"});
+        //TimeMask hh:mm:ss
+        $(".time_mysql").inputmask("hh:mm:ss", {"placeholder": "hh:mm:ss"});
+        //Money Euro
+        //$("[data-mask]").inputmask();
+
+        //iCheck for checkbox and radio inputs
+        $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+          checkboxClass: 'icheckbox_minimal-blue',
+          radioClass: 'iradio_minimal-blue'
+        });
+        //Red color scheme for iCheck
+        $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
+          checkboxClass: 'icheckbox_minimal-red',
+          radioClass: 'iradio_minimal-red'
+        });
+        //Flat red color scheme for iCheck
+        $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+          checkboxClass: 'icheckbox_flat-green',
+          radioClass: 'iradio_flat-green'
+        });
+
+        //Colorpicker
+        $(".my-colorpicker1").colorpicker();
+        //color picker with addon
+        $(".my-colorpicker2").colorpicker();
+
+        //Timepicker
+        $(".timepicker").timepicker({
+          showInputs: false
+        });
+      });
+    </script>
+    

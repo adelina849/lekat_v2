@@ -1,0 +1,91 @@
+ <!-- <title>LaporanPemasukanPeriode<?php echo $_GET['tahun'];?><?php echo $_GET['bulan'];?></title> -->
+ <title>DataProdukStock</title>
+ 
+ <?php
+ $title = "DataProdukStock";
+ header("Content-type: application/vnd-ms-excel");
+ header("Content-Disposition: attachment; filename=$title.xls");
+ header("Pragma: no-cache");
+ header("Expires: 0");
+ 
+ ?>
+
+<?php
+	//TABLE
+	if(!empty($list_rata_produk_terjual))
+	{
+	
+		echo'<table width="100%" id="example2" class="table table-hover style="border: 1px black solid;">';
+			echo '<thead style="background-color:grey;">
+				<tr>
+					<td colspan="6" style="text-align:center;">
+						<b>LAPORAN RATA-RATA PENJUALAN PRODUK</b>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="6" style="text-align:center;">
+						<b>'.$this->session->userdata('ses_nama_kantor').'</b>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="6" style="text-align:center;">
+						'.$this->session->userdata('ses_alamat_kantor').'
+					</td>
+				</tr>
+				<tr>
+					<td colspan="6" style="text-align:center;">
+						<br/>
+					</td>
+				</tr>
+			
+				<tr>';
+				echo '<th style="border: 1px black solid;width:5%; background-color:black;color:white;">NO</th>';
+				echo '<th style="border: 1px black solid;width:25%;background-color:black;color:white;">KODE PRODUK</th>';
+				echo '<th style="border: 1px black solid;width:40%;background-color:black;color:white;">NAMA PRODUK</th>';
+				echo '<th style="border: 1px black solid;width:10%;text-align:center;background-color:black;color:white;">TERJUAL</th>';
+				echo '<th style="border: 1px black solid;width:10%;background-color:black;color:white;">RATA- RATA</th>';
+				echo '<th style="border: 1px black solid;width:10%;text-align:center;background-color:black;color:white;">SATUAN </th>';
+				
+				//echo '<th>PERSEDIAAN</th>';
+	echo '</tr>
+</thead>';
+	
+		$list_result = $list_rata_produk_terjual->result();
+		$no =$this->uri->segment(2,0)+1;
+		echo '<tbody>';
+		//$sub_total = 0;
+		foreach($list_result as $row)
+		{
+			echo'<tr>';
+				echo'<td style="border: 1px black solid;">'.$no.'</td>';
+				echo'<td style="border: 1px black solid;">'.$row->kode_produk.'</td>';
+				echo'<td style="border: 1px black solid;">'.$row->nama_produk.'</td>';
+				echo'<td style="border: 1px black solid;text-align:center;">
+				
+				'.number_format($row->jumlah,0,'.',',').'
+				
+				</td>';
+				echo'<td style="border: 1px black solid;text-align:center;">
+				
+				'.number_format($row->RATA,2,'.',',').'%
+				
+				</td>';
+				echo'<td style="border: 1px black solid;text-align:center;">'.$row->satuan_jual.'</td>';
+				
+				echo'<input type="hidden" id="id_produk_'.$no.'" name="id_produk_'.$no.'" value="'.md5($row->id_produk).'" />';
+				
+			echo'</tr>';
+			$no++;
+		}
+		
+		echo '</tbody>';
+		echo'</table>';
+	}
+	else
+	{
+		echo'<center>';
+		echo'Tidak Ada Data Yang Ditampilkan !';
+		echo'</center>';
+	}
+//TABLE
+?>

@@ -1,0 +1,1347 @@
+	<!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.4 -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/dist/css/AdminLTE.min.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/dist/css/skins/_all-skins.min.css">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/plugins/select2/select2.min.css">
+	<link rel="stylesheet" href="<?=base_url();?>assets/adminlte/bower_components/bootstrap-daterangepicker/daterangepicker.css">
+	<link rel="stylesheet" href="<?=base_url();?>assets/adminlte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+	<link rel="stylesheet" href="<?=base_url();?>assets/adminlte/bower_components/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css">
+	<link rel="stylesheet" href="<?=base_url();?>assets/adminlte/plugins/timepicker/bootstrap-timepicker.min.css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+		
+		
+			<style type="text/css">
+			.labelfrm {
+				display:block;
+				font-size:small;
+				margin-top:5px;
+			}
+			.error {
+				font-size:small;
+				color:red;
+			}
+			</style>
+			
+			<script type="text/javascript" src="<?=base_url();?>assets/admin/js/jquery.validate.min.js"></script>
+			
+			<script type="text/javascript">
+			$(document).ready(function() {
+				$('.frm-input').validate
+                (
+                    {
+        				rules: 
+                        {
+        					pass2: 
+                            {
+        						equalTo: "#pass"
+        					}
+        				},
+        				messages: 
+                        {
+        					pass2: {
+        						equalTo: "Password tidak sama"
+        					}
+        				}
+        			}
+                );
+				$('.confirm-btn').click(function(){
+				var answer = confirm(jQuery(this).attr('title'));
+				return answer;
+				});
+			});
+			</script>
+			
+			<script type="text/javascript">
+				var htmlobjek;
+				$(document).ready(function()
+				{	
+					//$('#2_basis_data').attr('class', 'active treeview');
+					$('#22_basis_data_produk').attr('class', 'active treeview');
+					$('#223_basis_data_produk_produk').attr('class', 'active treeview');
+					
+					$('body').attr('class', 'hold-transition skin-purple sidebar-collapse sidebar-mini');
+					
+					$("#kode_produk").change(function()
+                    {  
+                
+                        var kode_produk = $("#kode_produk").val();
+                        $("#pesan").html("<img src='<?php echo base_url();?>assets/global/loading.gif'>Cek <?php echo $msgbox_title;?> ...");
+                
+                        if(kode_produk=='')
+                        {
+                          $("#pesan").html('<img src="<?php echo base_url();?>assets/global/salah.png"> Kolom Tidak Boleh Kosong');
+                          $("#kode_produk").css('border', '3px #C33 solid');
+                        }
+						else
+						$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_pst_produk/cek_produk/", data: "kode_produk="+kode_produk, success:function(data)
+                        { 
+                        	if(data==0 || ($("#kode_produk").val() == $("#cek_kode_produk").val()))
+                            //if(data==0)
+                        	  {
+                        	  	$("#pesan").html('<img src="<?php echo base_url();?>assets/global/true.png">');
+                                $("#kode_produk").css('border', '3px #090 solid');
+                                $("#btnsimpan").attr("disabled", false);
+                            }
+                              else
+                              {
+                              	$("#pesan").html('<img src="<?php echo base_url();?>assets/global/salah.png"> No/Kode <?php echo $msgbox_title;?> Telah Digunakan, Tombol Save Terkunci');
+                				//$("#pesan").html(data); 
+                              	$("#kode_produk").css('border', '3px #C33 solid');
+                                $("#btnsimpan").attr("disabled", true);
+                              }
+                              
+                        } 
+                        });
+                    });
+					
+				});
+			</script>
+			
+	<div class="content-wrapper">
+		<!-- Content Header (Page header) -->
+		<section class="content-header">
+		
+		<h1>
+			<?php
+				echo $this->session->userdata('ses_gnl_nama_aplikasi');
+				/*
+				if(!empty($this->M_gl_pengaturan->get_data_by_id(1))) 
+				{
+					//echo $this->M_gl_pengaturan->get_data_by_id(1)->nilai; 
+					echo $this->M_gl_pengaturan->get_data_by_id(1)->nilai;
+				}
+				else
+				{
+					echo "Aplikasi Sistem Informasi dan Maagement Klinik 1.0";
+				} 
+				*/
+			?>
+			<?php 
+				//echo $msgbox_title;
+			?> 
+			<?php 
+				//echo $this->session->userdata("ses_nama_kantor"); 
+			?>
+		</h1>
+		
+		
+		
+		<ol class="breadcrumb">
+			<li><a href="<?php echo base_url()?>gl-admin"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+			<li><a href="#"><i class="fa fa-dashboard"></i> Data Dasar</a></li>
+			<li><a href="#"><i class="fa fa-folder"></i> Data Produk</a></li>
+			<li class="active"><i class="fa fa-edit"></i> Produk dan Jasa</li>
+			
+		</ol>
+		</section>
+
+		<!-- Main content -->
+		<section class="content">
+		<!-- =========================================================== -->
+
+		<div class="row">
+			<div class="col-md-12">
+			<!-- <div class="box box-warning collapsed-box box-solid"> -->
+			<div  id="box-form" class="box box-warning collapsed-box box-solid">
+				<div class="box-header with-border">
+				<h3 class="box-title">Formulir Input <?php echo $msgbox_title;?></h3>
+				<div class="box-tools pull-right">
+					<button class="btn btn-box-tool" data-widget="collapse"><i id="icon_form" class="fa fa-plus"></i></button>
+				</div><!-- /.box-tools -->
+				</div><!-- /.box-header -->
+				<div class="box-body">
+				
+				
+				<!-- ISI FORM -->
+						<form role="form" action="<?php echo base_url();?>gl-pusat-produk-jasa-simpan" method="post" class="frm-input">
+						<input type="hidden" name="stat_edit" id="stat_edit"/>
+						<input type="hidden" name="id_satuan" id="id_satuan"/>
+						<div class="box-body">
+						
+							<label for="id_supplier">Pilih Supplier</label>
+							<div class="input-group input-group-sm">
+								<input type="hidden" id="id_supplier" name="id_supplier" />
+								<input type="text" id="kode_supplier" name="kode_supplier"  maxlength="35" class="required form-control" size="35" alt="Kode Suppllier (NB: Tidak bisa diisi, hanya memilih)" title="Kode Suppllier (NB: Tidak bisa diisi, hanya memilih)" placeholder="*Kode Suppllier (NB: Tidak bisa diisi, hanya memilih)" disabled="true"/>
+								<span class="input-group-btn">
+								<button class="btn btn-info btn-flat" type="button" title="Cari Dokter" data-toggle="modal" data-target="#myModal_supplier" onclick="list_data_supplier()">...</button>
+								</span>
+							</div><!-- /input-group<br />-->
+							<br />
+							
+							<div class="form-group">
+								<label for="nama_supplier">Nama Supplier</label>
+								<input type="text" id="nama_supplier" name="nama_supplier"  maxlength="35" class="required form-control" size="35" alt="Nama Supplier (NB: Tidak bisa diisi, hanya memilih)" title="Nama Supplier (NB: Tidak bisa diisi, hanya memilih)" placeholder="*Nama Supplier (NB: Tidak bisa diisi, hanya memilih)" disabled="true"/>
+							</div>
+							
+							
+							<div class="form-group">
+							<label for="kode_produk">Kode Produk <i>(NB : Bisa digunakan sebagai barcode)</i></label>
+							<input type="hidden" id="cek_kode_produk" name="cek_kode_produk" />
+							<input type="text" id="kode_produk" name="kode_produk"  maxlength="35" class="required form-control" size="15" onkeypress="return RestrictSpace()" onkeyup="this.value = this.value.toUpperCase()" alt="Kode Produk" title="Kode Produk" placeholder="*Kode Produk" value="<?php echo $kode_produk;?>"/><span id="pesan"></span>
+							</div>
+							
+							<div class="form-group">
+							<label for="nama_produk">Nama Produk</label>
+							<input type="text" id="nama_produk" name="nama_produk"  maxlength="200" class="required form-control" size="35" onkeyup="this.value = this.value.toUpperCase()" alt="Nama Produk" title="Nama Produk" placeholder="*Nama Produk"/>
+							</div>
+							
+							<div class="form-group">
+							<label for="nama_umum">Nama Umum (nama ini akan muncul di faktur)</label>
+							<input type="text" id="nama_umum" name="nama_umum"  maxlength="200" class="required form-control" size="35" onkeyup="this.value = this.value.toUpperCase()" alt="Nama Umum" title="Nama Umum" placeholder="*Nama Umum"/>
+							</div>
+							
+							<div class="form-group">
+							<label for="produksi_oleh">Produksi Oleh</label>
+							<input type="text" id="produksi_oleh" name="produksi_oleh"  maxlength="50" class="required form-control" size="35" alt="Produksi Oleh" title="Produksi Oleh" placeholder="*Produksi Oleh"/>
+							</div>
+							
+							<div class="form-group">
+							<label for="pencipta">Pencipta/Penemu</label>
+							<input type="text" id="pencipta" name="pencipta"  maxlength="50" class="required form-control" size="35" alt="Pencipta/Penemu" title="Pencipta/Penemu" placeholder="*Pencipta/Penemu"/>
+							</div>
+							
+							<div class="box box-success collapsed-box box-solid">
+								<div class="box-header with-border">
+									<h3 class="box-title">Potongan/pengurangan Jika Barang Retur (<i>NB : Retur Penjualan/Dari Customer</i>)</h3>
+									<div class="box-tools pull-right">
+										<button class="btn btn-box-tool" data-widget="collapse"><i id="icon_form" class="fa fa-plus"></i></button>
+									</div><!-- /.box-tools -->
+								</div><!-- /.box-header -->
+								<div class="box-body">
+									
+									<div class="form-group">
+									  <label for="optr_charge">Operator/Jenis Potongan</label>
+									  <select name="optr_charge" id="optr_charge" class="form-control select2" title="Operator/Jenis Potongan ?">
+											<option value=""></option>
+											<option value="C">C</option>
+											<option value="%">%</option>
+									   </select>
+									</div>
+							
+									<div class="form-group">
+									  <label for="charge">Besar Potongan</label>
+									  <input type="text" id="charge" name="charge"  maxlength="25" onkeypress="return isNumberKey(event)"  onfocusout="getRupiah(this.id)" class="form-control" size="35" alt="Besar Potongan" title="Besar Potongan" placeholder="*Besar Potongan"/>
+									</div>
+									
+								</div>
+							</div>
+							
+							<div class="form-group">
+							  <label for="min_stock">Minimal Stock</label>
+							  <input type="text" id="min_stock" name="min_stock"  maxlength="10" onkeypress="return isNumberKey(event)" class="required form-control" size="35" alt="Minimal Stock" title="Minimal Stock" placeholder="*Minimal Stock"/>
+							</div>
+							
+							<div class="form-group">
+							  <label for="max_stock">Maximal Stock</label>
+							  <input type="text" id="max_stock" name="max_stock"  maxlength="10" onkeypress="return isNumberKey(event)" class="required form-control" size="35" alt="Maximal Stock" title="Maximal Stock" placeholder="*Maximal Stock"/>
+							</div>
+							
+							<div class="form-group">
+							  <label for="buf_stock">Buffer Stock</label>
+							  <input type="text" id="buf_stock" name="buf_stock"  maxlength="10" onkeypress="return isNumberKey(event)" class="required form-control" size="35" alt="Buffer Stock" title="Buffer Stock" placeholder="*Buffer Stock"/>
+							</div>
+							
+							<div class="form-group">
+							  <label for="late_time">Late Time (Hari)</label>
+							  <input type="text" id="late_time" name="late_time"  maxlength="10" onkeypress="return isNumberKey(event)" class="required form-control" size="35" alt="Late Time (Hari)" title="Late Time (Hari)" placeholder="*Late Time (Hari)"/>
+							</div>
+							
+							<div class="form-group">
+                              <label for="isProduk">Apakah Produk Atau Jasa ?</label>
+                              <select name="isProduk" id="isProduk" class="required form-control select2" title="Apakah Produk Atau Jasa ?">
+									<option value=""></option>
+									<option value="PRODUK">PRODUK</option>
+									<option value="JASA">JASA</option>
+									<option value="CONSUMABLE">CONSUMABLE</option>
+                               </select>
+                            </div>
+							
+							<div class="form-group">
+                              <label for="jenis_moving">Kategori Produk (Moving)</label>
+                              <select name="jenis_moving" id="jenis_moving" class="required form-control select2" title="Kategori Produk (Moving) ?">
+									<option value=""></option>
+									<option value="SLOW">SLOW</option>
+									<option value="MIDDLE">MIDDLE</option>
+									<option value="FAST">FAST</option>
+                               </select>
+                            </div>
+							
+							<div class="box box-success collapsed-box box-solid">
+								<div class="box-header with-border">
+									<h3 class="box-title">Pengaturan Besaran Fee</h3>
+									<div class="box-tools pull-right">
+										<button class="btn btn-box-tool" data-widget="collapse"><i id="icon_form" class="fa fa-plus"></i></button>
+									</div><!-- /.box-tools -->
+								</div><!-- /.box-header -->
+								<div class="box-body">
+			
+									<div class="form-group">
+									  <label for="kat_costumer_fee">Diberikan jika pasien ?</label>
+									  <select name="kat_costumer_fee" id="kat_costumer_fee" class="form-control select2" title="Diberikan jika pasien ?">
+											<option value="">== Pilih Kategori Pasien ==</option>
+										<?php
+											if(!empty($list_kat_costumer))
+											{
+												$list_result = $list_kat_costumer->result();
+												foreach($list_result as $row)
+												{
+									echo'<option value="'.$row->nama_kat_costumer.'">'.$row->nama_kat_costumer.' </option>';
+												}
+											}
+										?>
+											<option value="">ALL</option>
+									   </select>
+									</div>
+									
+									<div class="form-group">
+									  <label for="optr_kondisi_fee">Kondisi</label>
+									  <select name="optr_kondisi_fee" id="optr_kondisi_fee" class="form-control select2" title="Kondisi">
+											<option value="">== Pilih Kondisi ==</option>
+											<option value="==">==</option>
+											<option value=">=">>=</option>
+											<option value=">">></option>
+											<option value="<"><</option>
+											<option value="<="><=</option>
+									   </select>
+									</div>
+									
+									<div class="form-group">
+									  <label for="besar_penjualan_fee">Besar Penjualan</label>
+									  <input type="text" id="besar_penjualan_fee" name="besar_penjualan_fee"  maxlength="25" onkeypress="return isNumberKey(event)" onfocusout="getRupiah(this.id)"  class="form-control" size="35" alt="Besar Penjualan" title="Besar Penjualan" placeholder="*Besar Penjualan"/>
+									</div>
+									
+									<div class="form-group">
+									  <label for="satuan_jual_fee">Satuan Jual</label>
+									  <select name="satuan_jual_fee" id="satuan_jual_fee" class="form-control select2" title="Satuan Jual">
+											<option value="">== Pilih Satuan Jual ==</option>
+										<?php
+											if(!empty($list_satuan))
+											{
+												$list_result = $list_satuan->result();
+												foreach($list_result as $row)
+												{
+									echo'<option value="'.$row->kode_satuan.'">'.$row->kode_satuan.'</option>';
+												}
+											}
+										?>
+											<option value="">ALL</option>
+									   </select>
+									</div>
+							
+									<div class="form-group">
+									  <label for="optr_fee">Operator/Jenis Fee</label>
+									  <select name="optr_fee" id="optr_fee" class="form-control select2" title="Operator/Jenis Fee ?">
+											<option value=""></option>
+											<option value="C">C</option>
+											<option value="%">%</option>
+									   </select>
+									</div>
+							
+									<div class="form-group">
+									  <label for="besar_fee">Besar Fee</label>
+									  <input type="text" id="besar_fee" name="besar_fee"  maxlength="25" onkeypress="return isNumberKey(event)" onfocusout="getRupiah(this.id)"  class="form-control" size="35" alt="Besar Fee" title="Besar Fee" placeholder="*Besar Fee"/>
+									</div>
+									
+									<div class="form-group">
+										<label>
+											<input type="checkbox" id="isSattle" name="isSattle" class="minimal">
+										</label>
+										<label>
+											Pengaturan Selalu Aktif ? <small style="color:red;"><i>(Dengan melakukan cheklist pada kolom ini, produk/jasa tidak akan terpengaruh terhadap kebijakan pengaturan fee secara global)</i></small>
+										</label>
+									</div>
+								</div>
+							</div>
+							
+							<div class="form-group">
+                              <label for="spek_produk">Spesifikasi</label>
+                              <textarea name="spek_produk" id="spek_produk" class="required form-control" title="Isikan lengkap tentang Spesifikasi produk/jasa" placeholder="*Isikan lengkap tentang Spesifikasi produk/jasa"></textarea>
+                            </div>
+							
+							<div class="form-group">
+                              <label for="ket_produk">Keterangan</label>
+                              <textarea name="ket_produk" id="ket_produk" class="required form-control" title="Isikan lengkap tentang Keterangan, kegunaan produk/jasa" placeholder="*Isikan lengkap tentang Keterangan, kegunaan produk/jasa"></textarea>
+                            </div>
+							
+						</div><!-- /.box-body -->
+		
+						<div class="box-footer">
+							<button type="reset" id="btnbatal" class="btn btn-default">Batal</button>
+							<button type="submit" id="btnsimpan" class="confirm-btn btn btn-primary" title="Simpan Data <?php echo $msgbox_title;?> ?">Simpan</button>
+						</div>
+						</form>
+					<!-- ISI FORM -->
+				
+				
+				</div><!-- /.box-body -->
+			</div><!-- /.box -->
+			
+			
+			<!-- Perbatasan table dan form -->
+					
+					<div class="box">
+						<div class="box-header">
+							<h3 class="box-title">Tabel <?php echo $msgbox_title;?> <?php echo $this->session->userdata("ses_nama_kantor"); ?>
+							</h3>
+							<div class="pull-right">
+								<!-- <form action="<?=base_url();?>admin/pendaftaran-klinik-cari" method="post" class="frm-cari"> -->
+								<form action="<?=base_url();?>gl-pusat-produk-jasa" method="get" class="frm-cari">
+									<table>
+										<tr>
+											<!-- <td>Berdasarkan</td><td>:</td> -->
+											<td>
+												<select name="cari_jenis_produk" id="cari_jenis_produk" class="required form-control select2" title="Jenis Produk/Jasa">
+													<option value="<?php if (!empty($_GET['cari_jenis_produk'])){echo $_GET['cari_jenis_produk'];}else{echo"";} ?>"><?php if (!empty($_GET['cari_jenis_produk'])){echo $_GET['cari_jenis_produk'];}else{echo"== Pilih Jenis Produk/Jasa ==";} ?></option>
+													<option value="PRODUK">PRODUK</option>
+													<option value="JASA">JASA</option>
+													<option value="CONSUMABLE">CONSUMABLE</option>
+													<!-- <option value=""></option> -->
+											   </select>
+											</td>
+											
+											<td>
+												<select name="cari_jenis_moving" id="cari_jenis_moving" class="required form-control select2" title="Jenis Moving">
+													<option value="<?php if (!empty($_GET['cari_jenis_moving'])){echo $_GET['cari_jenis_moving'];}else{echo"";} ?>"><?php if (!empty($_GET['cari_jenis_moving'])){echo $_GET['cari_jenis_moving'];}else{echo"== Pilih Jenis Moving ==";} ?></option>
+													<option value="SLOW">SLOW</option>
+													<option value="MIDDLE">MIDDLE</option>
+													<option value="FAST">FAST</option>
+													<option value=""></option>
+											   </select>
+											</td>
+											<td>
+												<!-- <input type="text" name="cari"  maxlength="35" class="text form-control" size="35" alt="tlp" title="Cari data" placeholder="...Cari" value="<?php if (!empty($_GET['berdasarkan'])){echo $_GET['cari'];} ?>"/> -->
+												<input type="text" name="cari"  maxlength="35" class="text form-control" size="35" alt="tlp" title="Cari data" placeholder="...Cari" value="<?php if (!empty($_GET['cari'])){echo $_GET['cari'];} ?>"/>
+											</td>
+											<td>	
+												<button type="submit" id="btnsimpan" class="btn btn-success btn-block btn-flat" title="Pencarian Data <?php echo $msgbox_title;?> ?">CARI</button>
+											</td>
+										</tr>
+									</table>
+								</form>
+							</div>
+							<br/>
+							<br/>
+							<br/>
+							<p style="color:red;"><?php echo $sum_pesan; ?></p>
+							
+						</div><!-- /.box-header -->
+						<div class="box-body table-responsive no-padding">
+						
+						
+						<?php
+							//TABLE
+							if(!empty($list_produk))
+								{
+									//echo gethostname();
+									//echo $this->M_gl_pengaturan->getUserIpAddr();
+									//$sts_query = strpos(base_url(),"localhost");
+									//echo $sts_query;
+									//$nama = "Mulyana Yusuf";
+									//echo str_replace("f","849",$nama);
+									echo'<table width="100%" id="example2" class="table table-hover">';
+										echo '<thead>
+	<tr>';
+													echo '<th width="5%">NO</th>';
+													echo '<th width="5%">JENIS</th>';
+													echo '<th width="5%">FOTO</th>';
+													echo '<th width="10%">KODE PRODUK</th>';
+													echo '<th width="20%">NAMA PRODUK</th>';
+													echo '<th width="17%">KATEGORI</th>';
+													echo '<th width="13%">SUPPLIER</th>';
+													
+													/*
+													echo '<th width="30%">DATA PRODUK</th>';
+													echo '<th width="35%">KETERANGAN</th>';
+													*/
+													echo '<th width="5%">AKTIF</th>';
+													echo '<th width="5%">REPORT</th>';
+													echo '<th width="15%">AKSI</th>';
+										echo '</tr>
+	</thead>';
+										$list_result = $list_produk->result();
+										$no =$this->uri->segment(2,0)+1;
+										echo '<tbody>';
+										foreach($list_result as $row)
+										{
+											if( $row->isProduk == "JASA")
+											{
+												echo'<tr style="background-color:#FFB6C1;color:black;">';
+											}
+											else
+											{
+												echo'<tr>';
+											}
+												echo'<td>'.$no.'</td>';
+												echo'<td>'.$row->isProduk.'</td>';
+												
+												if($row->img_file == "")
+												{
+													$src = base_url().'assets/global/no-image.jpg';
+													echo '<td><img id="IMG_'.$no.'"  width="100px" height="100px" style="border:1px solid #C8C8C8; padding:5px; float:left; margin-right:20px;" src="'.$src.'" />
+													</td>';
+												}
+												else
+												{
+													//$src = base_url().'assets/global/karyawan/'.$row->avatar;
+													$src = base_url().''.$row->img_url.''.$row->img_file;
+													echo '<td><img id="IMG_'.$no.'"  width="100px" height="100px" style="border:1px solid #C8C8C8; padding:5px; float:left; margin-right:20px;" src="'.$src.'" />
+													</td>';
+												}
+												
+												echo'<td>'.$row->kode_produk.'</td>';
+												echo'<td>
+														<b>NAMA : </b>'.$row->nama_produk.'
+														</br><b>UMUM : </b>'.$row->nama_umum.'
+													</td>';
+												echo'<td>
+													<span id="view_kat_prod_'.$no.'">Kategori Aktif : '.$row->NAMA_KATEGORI.'</span>
+													</td>';
+												echo'<td>'.$row->pencipta.'</td>';
+												
+												if($row->isNotActive == '0')
+												{
+													echo '<td>
+														<div class="form-group">
+														<label>
+														  <input type="checkbox" id="isAktif_'.$no.'" name="isAktif_'.$no.'" class="flat-red" onclick="cek_aktif('.$no.')" checked>
+														</label>
+														</div>
+													</td>';
+												}
+												else
+												{
+													echo '<td>
+														<div class="form-group">
+														<label>
+														  <input type="checkbox"  id="isAktif_'.$no.'" name="isAktif_'.$no.'" class="flat-red" onclick="cek_aktif('.$no.')">
+														</label>
+														</div>
+													</td>';
+												}
+												
+												if($row->isReport == '1')
+												{
+													echo '<td>
+														<div class="form-group">
+														<label>
+														  <input type="checkbox" id="isReport_'.$no.'" name="isReport_'.$no.'" class="flat-red" onclick="cek_report('.$no.')" checked>
+														</label>
+														</div>
+													</td>';
+												}
+												else
+												{
+													echo '<td>
+														<div class="form-group">
+														<label>
+														  <input type="checkbox"  id="isReport_'.$no.'" name="isReport_'.$no.'" class="flat-red" onclick="cek_report('.$no.')">
+														</label>
+														</div>
+													</td>';
+												}
+												
+												
+												/*
+												if($row->besar_fee > 0)
+												{
+													$str_fee = '<br/> <b>FEE : </b>Diberikan kepada '.$row->kat_costumer_fee.' Jika melakukan transaksi sebanyak '.$row->optr_kondisi_fee.' '.$row->besar_penjualan_fee.' '.$row->satuan_jual_fee.' dengan besar fee '.number_format($row->besar_fee,2,'.',',').' '.$row->optr_fee;
+												}
+												else
+												{
+													$str_fee = "";
+												}
+												
+												if($row->isSattle == '1')
+												{
+													$strisSattle = "(TIDAK TERPENGARUH FEE GLOBAL)";
+												}
+												else
+												{
+													$strisSattle = "";
+												}
+												
+												if( $row->isProduk == "PRODUK")
+												{
+													echo'<td style="background-color:#90EE90;color:black;text-align:left;">
+														<b>POT. RETUR : </b>'.number_format($row->charge,2,'.',',').' '.$row->optr_charge.'
+														'.$str_fee.'
+														'.$strisSattle.'
+														<br/> <b>KATEGORI : </b>'.$row->isProduk.'
+														<br/> <b>MOVING : </b>'.$row->jenis_moving.'
+														<br/> <b>SPEK : </b>'.$row->spek_produk.' 
+														<br/> <b>KETERANGAN : </b>'.$row->ket_produk.'
+														
+														</br>
+														</br>
+														<span id="view_kat_prod_'.$no.'">Kategori Aktif : '.$row->NAMA_KATEGORI.'</span>
+													</td>';
+												
+												}
+												else if( $row->isProduk == "JASA")
+												{
+													echo'<td style="background-color:#FFB6C1;color:black;text-align:left;">
+														<b>POT. RETUR : </b>'.number_format($row->charge,2,'.',',').' '.$row->optr_charge.'
+														'.$str_fee.'
+														'.$strisSattle.'
+														<br/> <b>KATEGORI : </b>'.$row->isProduk.'
+														<br/> <b>SPEK : </b>'.$row->spek_produk.' 
+														<br/> <b>KETERANGAN : </b>'.$row->ket_produk.'
+														<br/> <b>HPP : </b>'.number_format($row->hpp,2,'.',',').'
+														
+														</br>
+														</br>
+														<span id="view_kat_prod_'.$no.'">Kategori Aktif : '.$row->NAMA_KATEGORI.'</span>
+													</td>';
+												}
+												else
+												{
+													echo'<td style="background-color:white;color:black;text-align:left;">
+														<b>POT. RETUR : </b>'.number_format($row->charge,2,'.',',').' '.$row->optr_charge.'
+														'.$str_fee.'
+														'.$strisSattle.'
+														<br/> <b>KATEGORI : </b>'.$row->isProduk.'
+														<br/> <b>MOVING : </b>'.$row->jenis_moving.'
+														<br/> <b>SPEK : </b>'.$row->spek_produk.' 
+														<br/> <b>KETERANGAN : </b>'.$row->ket_produk.'
+														
+														</br>
+														</br>
+														<span id="view_kat_prod_'.$no.'">Kategori Aktif : '.$row->NAMA_KATEGORI.'</span>
+													</td>';
+												}
+												*/
+												
+												
+												
+												
+												
+												
+												echo'<td>';
+												
+												if($row->isProduk == "JASA")
+												{
+													echo'<a class="confirm-btn" href="'.base_url().'gl-admin-produk-jasa-hpp-jasa/'.md5($row->id_produk).'" title = "Harga Pokok Penjualan '.$row->nama_produk.'" alt = "Harga Pokok Penjualan '.$row->nama_produk.'">
+														<i class="fa fa-money"></i> HPP
+													</a>
+													<br/>
+													';
+													
+												}
+												
+						echo'<a class="confirm-btn" href="javascript:void(0)" data-toggle="modal" data-target="#myModal_lihat_produk" id="view-'.$row->id_produk.'"  onclick="view('.$no.')" title = "Lihat Produk '.$row->nama_produk.'" alt = "Lihat Produk '.$row->nama_produk.'">
+							<i class="fa fa-eye"></i> LIHAT
+						</a>
+						<br/>
+						';
+	
+												
+												echo'
+	
+	
+	<a class="confirm-btn" href="#" title = "Atur kategori untuk produk '.$row->nama_produk.' ?" alt = "Atur kategori untuk produk '.$row->nama_produk.' ?" data-toggle="modal" data-target="#myModal_kategori_produk" onclick="list_kategori_produk('.$no.')">
+		<i class="fa fa-tasks"></i> ATUR KATEGORI
+	</a>
+	<br/>
+	
+	<a class="confirm-btn" href="javascript:void(0)" onclick="edit('.$no.')" title = "Ubah Data '.$row->nama_produk.'" alt = "Ubah Data '.$row->nama_produk.'">
+		<i class="fa fa-edit"></i> UBAH
+	</a>
+	<br/>
+	
+	<a class="confirm-btn" href="'.base_url().'gl-pusat-produk-jasa-hapus/'.($row->id_produk).'" title = "Hapus Data '.$row->nama_produk.'" alt = "Hapus Data '.$row->nama_produk.'">
+		<i class="fa fa-trash"></i> HAPUS
+	</a>
+												</td>';
+												
+											echo'</tr>';
+											
+											echo'<input type="hidden" id="id_produk_'.$no.'" name="id_produk_'.$no.'" value="'.$row->id_produk.'" />';
+											echo'<input type="hidden" id="id_supplier_'.$no.'" name="id_supplier_'.$no.'" value="'.$row->id_supplier.'" />';
+											echo'<input type="hidden" id="kode_supplier_'.$no.'" name="kode_supplier_'.$no.'" value="'.$row->kode_supplier.'" />';
+											echo'<input type="hidden" id="nama_supplier_'.$no.'" name="nama_supplier_'.$no.'" value="'.$row->nama_supplier.'" />';
+											echo'<input type="hidden" id="nama_umum_'.$no.'" name="nama_umum_'.$no.'" value="'.$row->nama_umum.'" />';
+											echo'<input type="hidden" id="kode_produk_'.$no.'" name="kode_produk_'.$no.'" value="'.$row->kode_produk.'" />';
+											echo'<input type="hidden" id="nama_produk_'.$no.'" name="nama_produk_'.$no.'" value="'.$row->nama_produk.'" />';
+											echo'<input type="hidden" id="produksi_oleh_'.$no.'" name="produksi_oleh_'.$no.'" value="'.$row->produksi_oleh.'" />';
+											echo'<input type="hidden" id="pencipta_'.$no.'" name="pencipta_'.$no.'" value="'.$row->pencipta.'" />';
+											
+											echo'<input type="hidden" id="charge_'.$no.'" name="charge_'.$no.'" value="'.number_format($row->charge,2,'.',',').'" />';
+											echo'<input type="hidden" id="optr_charge_'.$no.'" name="optr_charge_'.$no.'" value="'.$row->optr_charge.'" />';
+											
+											echo'<input type="hidden" id="min_stock_'.$no.'" name="min_stock_'.$no.'" value="'.$row->min_stock.'" />';
+											echo'<input type="hidden" id="max_stock_'.$no.'" name="max_stock_'.$no.'" value="'.$row->max_stock.'" />';
+											echo'<input type="hidden" id="harga_minimum_'.$no.'" name="harga_minimum_'.$no.'" value="'.$row->harga_minimum.'" />';
+											echo'<input type="hidden" id="spek_produk_'.$no.'" name="spek_produk_'.$no.'" value="'.$row->spek_produk.'" />';
+											echo'<input type="hidden" id="ket_produk_'.$no.'" name="ket_produk_'.$no.'" value="'.$row->ket_produk.'" />';
+											
+											echo'<input type="hidden" id="isProduk_'.$no.'" name="isProduk_'.$no.'" value="'.$row->isProduk.'" />';
+											
+											echo'<input type="hidden" id="kat_costumer_fee_'.$no.'" name="kat_costumer_fee_'.$no.'" value="'.$row->kat_costumer_fee.'" />';
+											echo'<input type="hidden" id="optr_kondisi_fee_'.$no.'" name="optr_kondisi_fee_'.$no.'" value="'.$row->optr_kondisi_fee.'" />';
+											echo'<input type="hidden" id="besar_penjualan_fee_'.$no.'" name="besar_penjualan_fee_'.$no.'" value="'.number_format($row->besar_penjualan_fee,2,'.',',').'" />';
+											echo'<input type="hidden" id="satuan_jual_fee_'.$no.'" name="satuan_jual_fee_'.$no.'" value="'.$row->satuan_jual_fee.'" />';
+											
+											echo'<input type="hidden" id="optr_fee_'.$no.'" name="optr_fee_'.$no.'" value="'.$row->optr_fee.'" />';
+											echo'<input type="hidden" id="besar_fee_'.$no.'" name="besar_fee_'.$no.'" value="'.number_format($row->besar_fee,2,'.',',').'" />';
+											
+											echo'<input type="hidden" id="isSattle_'.$no.'" name="isSattle_'.$no.'" value="'.$row->isSattle.'" />';
+											
+											echo'<input type="hidden" id="buf_stock_'.$no.'" name="buf_stock_'.$no.'" value="'.$row->buf_stock.'" />';
+											echo'<input type="hidden" id="late_time_'.$no.'" name="late_time_'.$no.'" value="'.$row->late_time.'" />';
+											
+											echo'<input type="hidden" id="jenis_moving_'.$no.'" name="jenis_moving_'.$no.'" value="'.$row->jenis_moving.'" />';
+											
+											echo'<input type="hidden" id="view_kat_prod_'.$no.'" name="view_kat_prod_'.$no.'" value="'.$row->NAMA_KATEGORI.'" />';
+											
+
+											$no++;
+										}
+										
+										echo '</tbody>';
+									echo'</table>';
+								}
+								else
+								{
+									echo'<center>';
+									echo'Tidak Ada Data Yang Ditampilkan !';
+									echo'</center>';
+								}
+							//TABLE
+						?>
+						<center>
+						<div class="halaman"><?php echo $halaman;?></div>
+						</center>
+						</div><!-- /.box-body -->
+					</div><!-- /.box -->
+					
+					<!-- Show MOdal - TABLE 1 -->
+					<div class="modal fade" id="myModal_supplier" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								<h4 class="modal-title" id="myModalLabel">Data Supplier</h4>
+							</div>
+							<div class="modal-body">
+								
+								
+								<!-- ISI BODY -->
+								<div class="box">
+									<div class="box-header">
+									<h3 class="box-title">Table List Supplier</h3>
+										<div class="pull-right">
+											<!-- <form action="<?=base_url();?>admin/pendaftaran-klinik-cari" method="post" class="frm-cari"> -->
+											<!--<form action="#" method="get" class="frm-cari">-->
+												<table>
+													<tr>
+														<td>
+															<input onkeydown="list_data_supplier_by_enter()" type="text" id="cari_json" name="cari_json"  maxlength="35" class="text form-control" size="35" alt="tlp" title="Cari data" placeholder="...Cari" value="<?php if (!empty($_GET['berdasarkan'])){echo $_GET['cari_json'];} ?>"/>
+														</td>
+														<!--
+														<td><a href="javascript:void(0)" id="btn_cari_json" class="btn btn-success btn-sm" onclick="list_data_supplier_by_enter('.$row->id_klinik.')" title = "Cari Dokter" >Cari</a></td>
+														-->
+														<td><a href="javascript:void(0)" id="btn_cari_json" class="btn btn-success btn-sm" onclick="list_data_supplier()" title = "Cari Dokter" >Cari</a></td>
+													</tr>
+												</table>
+											<!-- </form> -->
+										</div>
+									</div><!-- /.box-header -->
+									<div  id="tb_cari_supplier" class="box-body">
+										<!-- ISI DENGAN DATA supplier -->
+									</div><!-- /.box-body -->
+								</div><!-- /.box -->
+								<!-- ISI BODY -->
+								
+								
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+								<!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+							</div>
+							</div>
+						</div>
+					</div>
+					<!-- Show MOdal - TABLE 1-->
+					
+					<!-- Show MOdal - TABLE 2 KATEGORI PRODUK -->
+						<div class="modal fade" id="myModal_kategori_produk" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+									<h4 class="modal-title" id="myModalLabel">Table Kategori Produk</h4>
+								</div>
+								<div class="modal-body">
+									
+									
+									<!-- ISI BODY -->
+									<div class="box">
+										<div class="box-header">
+										<input type="hidden" id="id_produk_3" name="id_produk_3" />
+										<input type="hidden" id="no_id_3" name="no_id_3" />
+										<h3 class="box-title">Pilih Kategori dengan melakukan ceklist hari</h3>
+											<!-- <div class="pull-right"> -->
+													<!-- <table> -->
+														<!-- <tr> -->
+															<!-- <td> -->
+																<!-- <input onkeydown="list_data_produk_by_enter()" type="text" id="cari_json_produk" name="cari_json_produk"  maxlength="35" class="text form-control" size="35" alt="tlp" title="Cari data" placeholder="...Cari" value="<?php if (!empty($_GET['berdasarkan'])){echo $_GET['cari_json_produk'];} ?>"/> -->
+															<!-- </td> -->
+															<!-- <td><a href="javascript:void(0)" id="btn_cari_json_produk" class="btn btn-success btn-sm" onclick="list_data_produk()" title = "Cari Dokter" >Cari</a></td> -->
+														<!-- </tr> -->
+													<!-- </table> -->
+											<!-- </div> -->
+										</div><!-- /.box-header -->
+										<div  id="tb_kategori_produk" class="box-body">
+											<!-- ISI DENGAN DATA KARYAWAN -->
+										</div><!-- /.box-body -->
+									</div><!-- /.box -->
+									<!-- ISI BODY -->
+									
+									
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+									<!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+								</div>
+								</div>
+							</div>
+						</div>
+
+					<!-- Show MOdal - TABLE 2 KATEGORI PRODUK-->
+					
+					<!-- Show MOdal - TABLE 3 VIEW PRODUK -->
+						<div class="modal fade" id="myModal_lihat_produk" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+									<h4 class="modal-title" id="myModalLabel_ba">BERITA ACARA PERUBAHAN</h4>
+								</div>
+								<div class="modal-body">
+									
+									
+									<!-- ISI BODY -->
+										<div id="tb_berita_acara">								
+											<!-- UNTUK MNEMPILKAN GAMBAR -->
+											<form role="form" class="frm-input" id="submit" enctype="multipart/form-data">
+												<input type="hidden" name="stat_edit" id="stat_edit"/>
+												<input type="hidden" name="id_satuan" id="id_satuan"/>
+												<div class="box-body">
+
+													<div class="form-group">
+														<label for="kode_produk4">Kode Produk/Tindakan</label>
+														<input type="text" id="kode_produk4" name="kode_produk4"  maxlength="35" class="required form-control" size="35" onkeyup="this.value = this.value.toUpperCase()" readonly/>
+													</div>
+													
+													<div class="form-group">
+														<label for="nama_produk4">Nama Produk/Tindakan</label>
+														<input type="text" id="nama_produk4" name="nama_produk4"  maxlength="35" class="required form-control" size="35" onkeyup="this.value = this.value.toUpperCase()" readonly/>
+													</div>
+													
+													<div class="form-group">
+														<label for="nama_umum4">Nama Umum/Tindakan</label>
+														<input type="text" id="nama_umum4" name="nama_umum4"  maxlength="35" class="required form-control" size="35" onkeyup="this.value = this.value.toUpperCase()" readonly/>
+													</div>
+													
+													<div class="form-group">
+														<label for="produksi_oleh4">Supplier</label>
+														<input type="text" id="produksi_oleh4" name="nama_umum4"  maxlength="35" class="required form-control" size="35" onkeyup="this.value = this.value.toUpperCase()" readonly/>
+													</div>
+													
+													<div class="form-group">
+														<label for="kategori4">Kategori</label>
+														<input type="text" id="kategori4" name="kategori4"  maxlength="35" class="required form-control" size="35"readonly/>
+													</div>
+													
+													<div class="form-group">
+														<label for="min_stock4">Minimal Stock</label>
+														<input type="text" id="min_stock4" name="nama_umum4"  maxlength="35" class="required form-control" size="35" onkeyup="this.value = this.value.toUpperCase()" readonly/>
+													</div>
+													
+													<div class="form-group">
+														<label for="max_stock4">Maksimal Stock</label>
+														<input type="text" id="max_stock4" name="max_stock4"  maxlength="35" class="required form-control" size="35" onkeyup="this.value = this.value.toUpperCase()" readonly/>
+													</div>
+													
+													<div class="form-group">
+														<label for="buf_stock4">Buffer Stock</label>
+														<input type="text" id="buf_stock4" name="buf_stock4"  maxlength="35" class="required form-control" size="35" onkeyup="this.value = this.value.toUpperCase()" readonly/>
+													</div>
+													
+													<div class="form-group">
+														<label for="late_time4">Late Time</label>
+														<input type="text" id="late_time4" name="late_time4"  maxlength="35" class="required form-control" size="35" onkeyup="this.value = this.value.toUpperCase()" readonly/>
+													</div>
+													
+													<div class="form-group">
+														<label for="sepk_produk4">Spesifikasi</label>
+														<input type="text" id="sepk_produk4" name="sepk_produk4"  maxlength="35" class="required form-control" size="35" onkeyup="this.value = this.value.toUpperCase()" readonly/>
+													</div>
+													
+													<div class="form-group">
+														<label for="ket_produk4">Keterangan</label>
+														<input type="text" id="ket_produk4" name="ket_produk4"  maxlength="35" class="required form-control" size="35" onkeyup="this.value = this.value.toUpperCase()" readonly/>
+													</div>
+													
+													
+													
+
+												</div><!-- /.box-body -->
+											</form>
+					
+										</div>
+									<!-- ISI BODY -->
+									
+								</div>
+								<!-- <div class="modal-footer"> -->
+									<!-- <button type="button" class="btn btn-danger btn-block btn-flat" data-dismiss="modal">BATAL</button> -->
+									<!-- <button type="button" class="btn btn-primary btn-block btn-flat" data-dismiss="modal" onclick="add_produk_masal()">SIMPAN</button> -->
+								<!-- </div> -->
+								</div>
+							</div>
+						</div>
+
+					<!-- Show MOdal - TABLE 3 VIEW PRODUK -->
+					
+					
+			</div><!-- /.col -->
+		</div><!-- /.row -->
+		<!-- =========================================================== -->
+		</section><!-- /.content -->
+	</div><!-- /.content-wrapper -->
+			
+			
+		
+<script type='text/javascript'>
+	function list_kategori_produk(id)
+	{
+		var id_produk = $("#id_produk_"+id).val();
+		$("#id_produk_3").val(id_produk);
+		$("#no_id_3").val(id);
+		
+		$("#tb_kategori_produk").html("<img src='<?php echo base_url();?>assets/global/loading.gif'>Cek Data ...");
+		
+		$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_pst_produk/list_kategori_produk//", data: {id_produk:id_produk}, success:function(data)
+		{
+			if(data!=0)
+			{
+				$("#tb_kategori_produk").html(data);
+			} 
+			else
+			{
+				$("#tb_kategori_produk").html("Tidak Ada Data Yang Ditampilkan");
+			}
+		}
+		});
+	}
+	
+	function cek_aktif_kategori(no)
+	{
+		
+		var id_produk = $("#id_produk_3").val();
+		var no_id = $("#no_id_3").val();
+		var id_kat_produk = $("#id_kat_produk_3_"+no).val(); 
+				
+		//alert("hari");
+		
+		
+		$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_pst_produk/cek_isNotActiveKategori/", data: {id_produk:id_produk,id_kat_produk:id_kat_produk}, success:function(data)
+		{
+			/*
+			if(data!=0)
+			{
+				$("#view_hari_diskon_"+no).html(data);
+			}
+			else
+			{
+				alert("Ada masalah dengan koneksi ke server");
+			}
+			*/
+			$("#view_kat_prod_"+no_id).html(data);
+			//$("#view_kat_prod_"+no_id).val(data);
+		}
+		});
+	}
+	
+	function view(id)
+	{
+		$('input[name=kode_supplier4]').val($('#kode_supplier_'+id).val());
+		$('input[name=nama_supplier4]').val($('#nama_supplier_'+id).val());
+		$('input[name=kode_produk4]').val($('#kode_produk_'+id).val());
+		$('input[name=nama_produk4]').val($('#nama_produk_'+id).val());
+		$('input[name=nama_umum4]').val($('#nama_umum_'+id).val());
+		$('input[name=produksi_oleh4]').val($('#produksi_oleh_'+id).val());
+		$('input[name=pencipta4]').val($('#pencipta_'+id).val());
+		
+		$('input[name=min_stock4]').val($('#min_stock_'+id).val());
+		$('input[name=max_stock4]').val($('#max_stock_'+id).val());
+		$('input[name=harga_minimum4]').val($('#harga_minimum_'+id).val());
+		
+		$('input[name=buf_stock4]').val($('#buf_stock_'+id).val());
+		$('input[name=late_time4]').val($('#late_time_'+id).val());
+		
+		$('input[name=kategori4]').val($('#view_kat_prod_'+id).val());
+		
+		$('input[name=spek_produk4]').val($('#spek_produk_'+id).val());
+		$('input[name=ket_produk4]').val($('#ket_produk_'+id).val());
+		
+		
+		/*
+		//$('input[name=spek_produk]').val($('#spek_produk_'+id).val());
+		document.getElementById("spek_produk4").value = $('#spek_produk_'+id).val();
+		
+		//$('input[name=ket_produk]').val($('#ket_produk_'+id).val());
+		document.getElementById("ket_produk4").value = $('#ket_produk_'+id).val();
+		*/
+		
+	}
+	
+	function edit(id)
+	{
+		/*
+		$('input[name=stat_edit]').val($('#id_satuan_'+id).val());
+		$('input[name=id_satuan]').val($('#id_satuan_'+id).val());
+		$('input[name=kode_satuan]').val($('#kode_satuan_'+id).val());
+		$('input[name=cek_kode_satuan]').val($('#kode_satuan_'+id).val());
+		$('input[name=nama_satuan]').val($('#nama_satuan_'+id).val());
+		
+		document.getElementById("ket_satuan").value = $('#ket_satuan_'+id).val();
+		*/
+		
+		$('input[name=stat_edit]').val($('#id_produk_'+id).val());
+		$('input[name=id_produk]').val($('#id_produk_'+id).val());
+		$('input[name=id_supplier]').val($('#id_supplier_'+id).val());
+		$('input[name=kode_supplier]').val($('#kode_supplier_'+id).val());
+		$('input[name=nama_supplier]').val($('#nama_supplier_'+id).val());
+		$('input[name=kode_produk]').val($('#kode_produk_'+id).val());
+		$('input[name=nama_produk]').val($('#nama_produk_'+id).val());
+		$('input[name=nama_umum]').val($('#nama_umum_'+id).val());
+		$('input[name=produksi_oleh]').val($('#produksi_oleh_'+id).val());
+		$('input[name=pencipta]').val($('#pencipta_'+id).val());
+		
+		$('input[name=charge]').val($('#charge_'+id).val());
+		//$('input[name=optr_charge]').val($('#optr_charge_'+id).val());
+		document.getElementById("optr_charge").options.item(0).text = $('#optr_charge_'+id).val();
+		document.getElementById("optr_charge").options.item(0).value = $('#optr_charge_'+id).val();
+		
+		$('input[name=min_stock]').val($('#min_stock_'+id).val());
+		$('input[name=max_stock]').val($('#max_stock_'+id).val());
+		$('input[name=harga_minimum]').val($('#harga_minimum_'+id).val());
+		
+		$('input[name=buf_stock]').val($('#buf_stock_'+id).val());
+		$('input[name=late_time]').val($('#late_time_'+id).val());
+		
+		//$('input[name=spek_produk]').val($('#spek_produk_'+id).val());
+		document.getElementById("spek_produk").value = $('#spek_produk_'+id).val();
+		
+		//$('input[name=ket_produk]').val($('#ket_produk_'+id).val());
+		document.getElementById("ket_produk").value = $('#ket_produk_'+id).val();
+		
+		//$('input[name=isProduk]').val($('#isProduk_'+id).val());
+		document.getElementById("isProduk").options.item(0).text = $('#isProduk_'+id).val();
+		document.getElementById("isProduk").options.item(0).value = $('#isProduk_'+id).val();
+		
+		
+		
+		document.getElementById("kat_costumer_fee").options.item(0).text = $('#kat_costumer_fee_'+id).val();
+		document.getElementById("kat_costumer_fee").options.item(0).value = $('#kat_costumer_fee_'+id).val();
+		
+		document.getElementById("optr_kondisi_fee").options.item(0).text = $('#optr_kondisi_fee_'+id).val();
+		document.getElementById("optr_kondisi_fee").options.item(0).value = $('#optr_kondisi_fee_'+id).val();
+		
+		document.getElementById("satuan_jual_fee").options.item(0).text = $('#satuan_jual_fee_'+id).val();
+		document.getElementById("satuan_jual_fee").options.item(0).value = $('#satuan_jual_fee_'+id).val();
+		$('input[name=besar_penjualan_fee]').val($('#besar_penjualan_fee_'+id).val());
+		
+		$('input[name=besar_fee]').val($('#besar_fee_'+id).val());
+		document.getElementById("optr_fee").options.item(0).text = $('#optr_fee_'+id).val();
+		document.getElementById("optr_fee").options.item(0).value = $('#optr_fee_'+id).val();
+		
+		document.getElementById("jenis_moving").options.item(0).text = $('#jenis_moving_'+id).val();
+		document.getElementById("jenis_moving").options.item(0).value = $('#jenis_moving_'+id).val();
+		
+		var isSattle = $('#isSattle_'+id).val();
+		if(isSattle == 0)
+		{
+			$('input[name=isSattle]').attr('checked', false);
+		}
+		else
+		{
+			$('input[name=isSattle]').attr('checked', true);
+		}
+		
+		
+		alert("Mode Perubahan Aktif Untuk Data "+ $('#nama_produk_'+id).val());
+		
+		/*Buka Form*/
+			$('#icon_form').attr('class', 'fa fa-minus');
+			$('#box-form').attr('class', 'box box-warning ellapsed-box box-solid');
+		/*Buka Form*/
+	}
+	
+	$('#btnbatal').click(function(){
+		$('input[name=stat_edit]').val("");
+		
+		
+		/*Tutup Dulu Form*/
+			$('#icon_form').attr('class', 'fa fa-plus');
+			$('#box-form').attr('class', 'box box-warning collapsed-box box-solid');
+		/*Tutup Dulu Form*/
+	});
+	
+	function cek_aktif(no)
+	{
+		//alert($("#isAktif_"+no).val());
+		/*JIKA CEK LANGSUNG*/
+		//$(".checkbox").change(function() {
+			//if(this.checked) {
+				//PERINTH DISISNI Do stuff
+			//}
+		//});
+		/*JIKA CEK LANGSUNG*/
+		
+		var id_produk = $("#id_produk_"+no).val(); 
+		$.ajax
+		(
+			{
+				type: "POST", 
+				url: "<?php echo base_url();?>gl-admin-produk-jasa-isNotActive/",
+				data: "id_produk="+id_produk,
+				success:function(data)
+				{ 
+					if(data=='BERHASIL')
+					{
+						//BERHASIL
+					}
+					else
+					{
+						alert("Ada masalah dengan koneksi ke server");
+					}
+				} 
+			}
+		);
+		
+	}
+	
+	function cek_report(no)
+	{
+		//alert($("#isAktif_"+no).val());
+		/*JIKA CEK LANGSUNG*/
+		//$(".checkbox").change(function() {
+			//if(this.checked) {
+				//PERINTH DISISNI Do stuff
+			//}
+		//});
+		/*JIKA CEK LANGSUNG*/
+		
+		var id_produk = $("#id_produk_"+no).val(); 
+		$.ajax
+		(
+			{
+				type: "POST", 
+				url: "<?php echo base_url();?>gl-admin-produk-jasa-isReport/",
+				data: "id_produk="+id_produk,
+				success:function(data)
+				{ 
+					if(data=='BERHASIL')
+					{
+						//BERHASIL
+					}
+					else
+					{
+						alert("Ada masalah dengan koneksi ke server");
+					}
+				} 
+			}
+		);
+		
+	}
+	
+	
+	function list_data_supplier()
+	{
+		
+		var cari = $("#cari_json").val();
+		var limit = 15;
+		var offset = 0;
+		
+		$("#tb_cari_supplier").html("<img src='<?php echo base_url();?>assets/global/loading.gif'>Cek Data ...");
+		
+		$.ajax({type: "POST", url: "<?php echo base_url();?>gl-admin-produk-jasa-list-supplier/", data: {cari:cari,limit:limit,offset:offset}, success:function(data)
+		{
+			if(data!=0)
+			{
+				$("#tb_cari_supplier").html(data);
+			} 
+			else
+			{
+				$("#tb_cari_supplier").html("Tidak Ada Data Yang Ditampilkan");
+			}
+		}
+		});
+	}
+	
+	function list_data_supplier_by_enter()
+	{
+		//CEK KEY CODE : NB ENTRT : 13
+			if (event.type == "keydown") {
+				//some browsers support evt.charCode, some only evt.keyCode
+			   if (event.charCode) {
+				  var charCode = event.charCode;
+			   }
+			   else {
+				  var charCode = event.keyCode;
+			   }
+			}
+		//CEK KEY CODE : NB ENTRT : 13
+		if(charCode == 13)
+		{
+			var cari = $("#cari_json").val();
+			var limit = 15;
+			var offset = 0;
+			
+			$("#tb_cari_supplier").html("<img src='<?php echo base_url();?>assets/global/loading.gif'>Cek Data ...");
+			
+			$.ajax({type: "POST", url: "<?php echo base_url();?>gl-admin-produk-jasa-list-supplier/", data: {cari:cari,limit:limit,offset:offset}, success:function(data)
+			{
+				if(data!=0)
+				{
+					$("#tb_cari_supplier").html(data);
+				} 
+				else
+				{
+					$("#tb_cari_supplier").html("Tidak Ada Data Yang Ditampilkan");
+				}
+			}
+			});
+		}
+	}
+	
+	function insert_supplier(id)
+	{
+		$('input[name=id_supplier]').val($('#id_supplier_3_'+id).val());
+		$('input[name=kode_supplier]').val($('#kode_supplier_3_'+id).val());
+        $('input[name=nama_supplier]').val($('#nama_supplier_3_'+id).val());
+	}
+	
+	
+	function isNumberKey(evt)
+	{
+		var charCode = (evt.which) ? evt.which : event.keyCode
+		
+		//alert (charCode);
+		if((charCode != 44) && (charCode != 46))
+		{
+			if (charCode > 31 && (charCode < 48 || charCode > 57))
+			
+			return false;
+			return true;
+		}
+		
+	}
+	
+	function RestrictSpace() 
+	{
+		if (event.keyCode == 32) 
+		{
+			return false;
+		}
+	}
+	
+	
+	function getRupiah(id_objek)
+	//function getRupiah()
+	{
+		/*
+		var angka = $('#charge').val();
+		//return angka.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+		$('#charge').val(angka.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.'));
+		*/
+		var angka = $('#'+id_objek).val();
+		 //return angka.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+		 $('#'+id_objek).val(angka.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'));
+	}
+</script>
+      
+    <!-- Bootstrap 3.3.4 -->
+	<script src="<?=base_url();?>assets/adminlte/bootstrap/js/bootstrap.min.js"></script>
+	<!-- Slimscroll -->
+	<script src="<?=base_url();?>assets/adminlte/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+	<!-- FastClick -->
+	<script src="<?=base_url();?>assets/adminlte/plugins/fastclick/fastclick.min.js"></script>
+	<!-- AdminLTE App -->
+	<script src="<?=base_url();?>assets/adminlte/dist/js/app.min.js"></script>
+	<!-- Page script -->
+    <!-- InputMask -->
+    <script src="<?=base_url();?>/assets/adminlte/plugins/input-mask/jquery.inputmask.js"></script>
+    <script src="<?=base_url();?>/assets/adminlte/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+    <script src="<?=base_url();?>/assets/adminlte/plugins/input-mask/jquery.inputmask.extensions.js"></script>
+
+	<!-- bootstrap datepicker -->
+	<script src="<?=base_url();?>/assets/adminlte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+    
+    <script>
+      $(function () {
+		//Date picker
+		$('.settingDate').datepicker({
+			autoclose: true
+		});
+		
+		
+        //Initialize Select2 Elements
+        //$(".select2").select2();
+
+        //Datemask yyyy-mm-dd
+        $(".datemask_mysql").inputmask("yyyy-mm-dd", {"placeholder": "yyyy-mm-dd"});
+        //Datemask dd/mm/yyyy
+        //$("#datemask").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});
+        //Datemask2 mm/dd/yyyy
+        //$("#datemask2").inputmask("mm/dd/yyyy", {"placeholder": "mm/dd/yyyy"});
+        //TimeMask hh:mm:ss
+        $(".time_mysql").inputmask("hh:mm:ss", {"placeholder": "hh:mm:ss"});
+        //Money Euro
+        //$("[data-mask]").inputmask();
+
+        //iCheck for checkbox and radio inputs
+        $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+          checkboxClass: 'icheckbox_minimal-blue',
+          radioClass: 'iradio_minimal-blue'
+        });
+        //Red color scheme for iCheck
+        $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
+          checkboxClass: 'icheckbox_minimal-red',
+          radioClass: 'iradio_minimal-red'
+        });
+        //Flat red color scheme for iCheck
+        $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+          checkboxClass: 'icheckbox_flat-green',
+          radioClass: 'iradio_flat-green'
+        });
+
+        //Colorpicker
+        $(".my-colorpicker1").colorpicker();
+        //color picker with addon
+        $(".my-colorpicker2").colorpicker();
+
+        //Timepicker
+        $(".timepicker").timepicker({
+          showInputs: false
+        });
+      });
+    </script>
+	

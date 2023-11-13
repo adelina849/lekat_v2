@@ -1,0 +1,76 @@
+ <title>Laporan Detail Tindakan</title>
+ 
+ <?php
+ $title = "Laporan-Gaji";
+ header('Content-Type: application/vnd.ms-excel');
+ header('Content-Disposition: attachment;filename="Laporan Detail Tindakan.xls"');
+
+ 
+ ?>
+
+<table class="table table-bordered table-striped" id="mytable">
+    <thead>
+        <tr>
+            <th width="40px">No</th>
+            <th width="10%">Tanggal</th>
+            <th width="15%">Nama Pasien</th>
+            <th width="15%">Nama Promo/Diskon</th>
+            <th width="5%">Diskon</th>
+            <th width="10%">Infus/Inject</th>
+            <th width="5%">Jumlah</th>
+            <th width="10%">Asst Dokter</th>
+            <th width="5%">Jumlah</th>
+            <th width="10%">Fee</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+            $no=1;
+            $total_fee=0;
+
+            foreach($data as $row)
+            {
+        ?>
+            <tr>
+                <td><?=$no;?></td>
+                <td><?=$row->tgl_h_penjualan;?></td>
+                <td><?=$row->nama_costumer;?></td>
+                <td><?=$row->nama_diskon;?></td>
+                <td><?=$row->diskon;?></td>
+                <td><?=$row->infus_inject;?></td>
+                <td><?=$row->jumlah_insfus;?></td>
+                <td><?=$row->ass_dokter;?></td>
+                <td><?=$row->jumlah_ass;?></td>
+                <td class="text-right"><?=number_format($row->fee_terapis);?></td>
+            </tr>
+        <?php
+                $no++;
+                $total_fee += $row->fee_terapis;
+            }
+        ?>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><strong>Total</strong></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="text-right"><?=number_format($total_fee);?></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>

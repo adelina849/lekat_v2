@@ -1,0 +1,163 @@
+ <title>DataRetur</title>
+ 
+ <?php
+ 
+ $title = "DataRetur";
+ header("Content-type: application/vnd-ms-excel");
+ header("Content-Disposition: attachment; filename=$title.xls");
+ header("Pragma: no-cache");
+ header("Expires: 0");
+ 
+ ?>
+
+<?php
+	//TABLE
+	if(!empty($list_laporan_retur))
+	{
+		//$sum_laporan_h_penjualan = $sum_laporan_h_penjualan->row();
+		
+		echo'<table width="100%" id="example2" class="table table-hover hoverTable">';
+			
+			echo '
+				<tr>
+					<td colspan="7" style="text-align:center;">
+						<b>LAPORAN TRANSAKSI PER KASIR</b>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="7" style="text-align:center;">
+						<b>'.$this->session->userdata('ses_nama_kantor').'</b>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="7" style="text-align:center;">
+						'.$this->session->userdata('ses_alamat_kantor').'
+					</td>
+				</tr>
+				<tr>
+					<td colspan="7" style="text-align:center;">
+						<b>Per '.$dari.' Sampai '.$sampai.'</b>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="7" style="text-align:center;">
+						<br/>
+					</td>
+				</tr>
+			
+			';
+			
+			echo'<tr>';
+						echo '<th width="5%" style="background-color:black;color:white;font-weight:bold;">NO</th>';
+						echo '<th width="15%" style="background-color:black;color:white;font-weight:bold;">NO FAKTUR</th>';
+						echo '<th width="25%" style="background-color:black;color:white;font-weight:bold;">COSTUMER/SUPPLIER</th>';
+						echo '<th width="25%" style="background-color:black;color:white;font-weight:bold;">PRODUK</th>';
+						echo '<th width="10%" style="background-color:black;color:white;font-weight:bold;">JUMLAH</th>';
+						echo '<th width="10%" style="background-color:black;color:white;font-weight:bold;">HARGA</th>';
+						echo '<th width="10%" style="background-color:black;color:white;font-weight:bold;">SUBTOTAL</th>';
+			echo '</tr>';
+			
+			$list_result = $list_laporan_retur->result();
+										
+			$no = 1;
+			
+			$subtotal = 0;
+			$no_faktur_old = "";
+			$no_faktur_cur = "";
+			$status_group = 0;
+			$grandTotal = 0;
+			$grandTotalAll = 0;
+			
+			foreach($list_result as $row)
+			{
+				
+					
+					
+					//echo '<td>'.$row->no_faktur.'<br/><b>'.$row->status_penjualan.'</b></td>';
+					//GROUP NO FAKTUR
+					
+					$no_faktur_cur = $row->no_faktur;
+					if($no_faktur_cur != $no_faktur_old)
+					{
+						if($no > 1)
+						{
+							echo'<tr>';
+								echo'<td colspan="6" style="text-align:right;font-weight:bold;border-bottom:1px solid black;">TOTAL</td>';
+								echo'<td colspan="1" style="text-align:right;font-weight:bold;border-bottom:1px solid black;">'.$grandTotal.'</td>';
+							echo'</tr>';
+						}
+						
+						echo'<tr>';
+							echo'<td>'.$no.'</td>';
+							echo '<td>'.$row->no_faktur.'<br/><b>'.$row->status_penjualan.'</b></td>';
+							echo '<td>'.$row->nama_costumer.' '.$row->nama_supplier.'</td>';
+						
+						$status_group = 1;
+						$grandTotal = 0;
+						$no++;
+					}
+					else
+					{
+						echo'<tr>';
+							echo'<td></td>';
+							echo'<td></td>';
+							echo'<td></td>';
+						$status_group = 0;
+					}
+					//GROUP NO FAKTUR
+								
+					
+					
+					
+					echo '<td>'.$row->nama_produk.'</td>';
+					echo '<td>'.$row->jumlah.' '.$row->satuan_jual.'</td>';
+					echo '<td style="text-align:right;">'.$row->harga.'</td>';
+					
+					$subtotal = $row->jumlah * $row->harga;
+					$grandTotal = $grandTotal + $subtotal;
+					$grandTotalAll = $grandTotalAll + $subtotal;
+					echo '<td style="text-align:right;">'.$subtotal.'</td>';
+					
+					//echo'<input type="hidden" id="id_satuan_'.$no.'" name="id_satuan_'.$no.'" value="'.$row->id_satuan.'" />';
+					//echo'<input type="hidden" id="kode_satuan_'.$no.'" name="kode_satuan_'.$no.'" value="'.$row->kode_satuan.'" />';
+					//echo'<input type="hidden" id="nama_satuan_'.$no.'" name="nama_satuan_'.$no.'" value="'.$row->nama_satuan.'" />';
+					//echo'<input type="hidden" id="ket_satuan_'.$no.'" name="ket_satuan_'.$no.'" value="'.$row->ket_satuan.'" />';
+					
+					echo'<input type="hidden" id="tgl_ins_'.$no.'" name="tgl_ins_'.$no.'" value="'.$row->tgl_ins.'" />';
+					//echo'<input type="hidden" id="tgl_updt_'.$no.'" name="tgl_updt_'.$no.'" value="'.$row->tgl_updt.'" />';
+					//echo'<input type="hidden" id="user_ins_'.$no.'" name="user_ins_'.$no.'" value="'.$row->user_ins.'" />';
+					
+					//echo'<input type="hidden" id="user_updt_'.$no.'" name="user_updt_'.$no.'" value="'.$row->user_updt.'" />';
+					
+					echo'<input type="hidden" id="kode_kantor_'.$no.'" name="kode_kantor_'.$no.'" value="'.$row->kode_kantor.'" />';
+					
+					
+				echo'</tr>';
+				
+				
+				
+				//$no++;
+				//GROUP NO FAKTUR
+					$no_faktur_old = $row->no_faktur;
+				//GROUP NO FAKTUR
+			}
+			
+				echo'<tr>';
+					echo'<td colspan="6" style="text-align:right;font-weight:bold;border-bottom:1px solid black;">TOTAL</td>';
+					echo'<td colspan="1" style="text-align:right;font-weight:bold;border-bottom:1px solid black;">'.$grandTotal.'</td>';
+				echo'</tr>';
+				echo'<tr>';
+					echo'<td colspan="6" style="text-align:right;font-weight:bold;border-bottom:1px solid black;">GRAND TOTAL</td>';
+					echo'<td colspan="1" style="text-align:right;font-weight:bold;border-bottom:1px solid black;">'.$grandTotalAll.'</td>';
+				echo'</tr>';
+			
+		echo'</table>';	
+	}
+	else
+	{
+		echo'<center>';
+		echo'Tidak Ada Data Yang Ditampilkan !';
+		echo'</center>';
+	}
+	//TABLE
+?>

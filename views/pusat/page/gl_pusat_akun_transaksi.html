@@ -1,0 +1,1236 @@
+	<!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.4 -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/dist/css/AdminLTE.min.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/dist/css/skins/_all-skins.min.css">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/plugins/select2/select2.min.css">
+	<link rel="stylesheet" href="<?=base_url();?>assets/adminlte/bower_components/bootstrap-daterangepicker/daterangepicker.css">
+	<link rel="stylesheet" href="<?=base_url();?>assets/adminlte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+	<link rel="stylesheet" href="<?=base_url();?>assets/adminlte/bower_components/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css">
+	<link rel="stylesheet" href="<?=base_url();?>assets/adminlte/plugins/timepicker/bootstrap-timepicker.min.css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+		
+		
+			<style type="text/css">
+			.labelfrm {
+				display:block;
+				font-size:small;
+				margin-top:5px;
+			}
+			.error {
+				font-size:small;
+				color:red;
+			}
+			</style>
+			
+			<style>
+				.btn-pilih-pasien {
+					//text-shadow: 3px 2px 1px grey;
+					//font-size: 20px;
+					
+					box-shadow: 2px 2px 2px rgba(0,0,0,0.8);
+					//padding: 10px;
+					border: 1px dashed grey;
+				}
+			</style>
+			
+			
+
+			<style style="text/css">
+				/*
+				.hoverTable{
+					width:100%; 
+					border-collapse:collapse; 
+				}
+				.hoverTable td{ 
+				}
+				.hoverTable tr{
+					background: #E0FFFF;
+				}
+				.hoverTable tr:hover {
+					  background-color: #ffff99;
+				}
+				*/
+			</style>
+
+
+			
+			<script type="text/javascript" src="<?=base_url();?>assets/admin/js/jquery.validate.min.js"></script>
+			
+			<script type="text/javascript">
+			$(document).ready(function() {
+				$('.frm-input').validate
+                (
+                    {
+        				rules: 
+                        {
+        					pass2: 
+                            {
+        						equalTo: "#pass"
+        					}
+        				},
+        				messages: 
+                        {
+        					pass2: {
+        						equalTo: "Password tidak sama"
+        					}
+        				}
+        			}
+                );
+				$('.confirm-btn').click(function(){
+				var answer = confirm(jQuery(this).attr('title'));
+				return answer;
+				});
+			});
+			</script>
+			
+			<script type="text/javascript">
+				var htmlobjek;
+				$(document).ready(function()
+				{	
+					$('#5_akuntansi').attr('class', 'active treeview');
+					$('#51_akuntansi_transaksi').attr('class', 'active treeview');
+					
+				});
+			</script>
+			
+	<div class="content-wrapper">
+		<!-- Content Header (Page header) -->
+		<section class="content-header">
+		
+		<h1>
+			<?php
+				echo $this->session->userdata('ses_gnl_nama_aplikasi');
+				/*
+				if(!empty($this->M_gl_pengaturan->get_data_by_id(1))) 
+				{
+					//echo $this->M_gl_pengaturan->get_data_by_id(1)->nilai; 
+					echo $this->M_gl_pengaturan->get_data_by_id(1)->nilai;
+				}
+				else
+				{
+					echo "Aplikasi Sistem Informasi dan Maagement Klinik 1.0";
+				} 
+				*/
+			?>
+			<?php 
+				//echo $msgbox_title;
+			?> 
+			<?php 
+				//echo $this->session->userdata("ses_nama_kantor"); 
+			?>
+		</h1>
+		
+		
+		
+		<ol class="breadcrumb">
+			<li><a href="<?php echo base_url()?>gl-admin"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+			<li><a href="#"><i class="fa fa-dashboard"></i> Laporan</a></li>
+			<li class="active"><i class="fa fa-edit"></i> Penjualan</li>
+			
+		</ol>
+		</section>
+
+		<!-- Main content -->
+		<section class="content">
+		<!-- =========================================================== -->
+
+		<div class="row">
+			<div class="col-md-12">
+			
+			<!-- Perbatasan table dan form -->
+					
+					<div class="box">
+						<div class="box-header">
+						<h3 class="box-title"><?php echo $msgbox_title;?> <?php echo $this->session->userdata("ses_nama_kantor"); ?>
+							</h3>
+							<div class="pull-right">
+								<form action="<?=base_url();?>gl-pusat-akuntansi-transaksi" method="get" class="frm-cari">
+								
+								<!-- <input type="hidden" name="var_offset" id="var_offset" value="<?php echo $this->uri->segment(2,0);?>" /> -->
+								
+								<!--
+								<form action="<?=base_url();?>gl-admin-laporan-transaksi" method="get" class="frm-cari">
+								-->
+									<table>
+										<tr>
+											
+											<td>
+												<input type="hidden" id="col_active" value="activity" />
+											</td>
+											<td>
+												<select name="kode_kantor" id="kode_kantor" class="required form-control select2" title="Jenis Moving">
+												<option value="<?php if (!empty($_GET['kode_kantor'])){echo $_GET['kode_kantor'];}else{echo"";} ?>"><?php if (!empty($_GET['kode_kantor'])){echo $_GET['kode_kantor'];}else{echo"== Pilih Cabang ==";} ?></option>
+												<?php
+													if(!empty($list_kantor))
+													{
+														$list_result = $list_kantor->result();
+														foreach($list_result as $row)
+														{
+															echo'<option value="'.$row->kode_kantor.'">'.$row->nama_kantor.'</option>';
+														}
+													}
+												?>
+													<option value="">SEMUA</option>
+											   </select>
+											</td>
+											<td>
+												<div class="form-group">
+													<label></label>
+													<div class="input-group date">
+													  <div class="input-group-addon">
+														<i class="fa fa-calendar"></i>
+													  </div>
+													  <input name="dari" id="dari" type="text" class="required form-control pull-right settingDate" alt="TANGGAL TRANSAKSI" title="TANGGAL TRANSAKSI" value="<?php if (!empty($_GET['dari'])){ echo $_GET['dari'];} else {echo date("Y-m-d");} ?>"  data-date-format="yyyy-mm-dd">
+													</div>
+													<!-- /.input group -->
+												</div>
+											</td>
+											<td>
+												<div class="form-group">
+													<label></label>
+													<div class="input-group date">
+													  <div class="input-group-addon">
+														<i class="fa fa-calendar"></i>
+													  </div>
+													  <input name="sampai" id="sampai" type="text" class="required form-control pull-right settingDate" alt="TANGGAL TRANSAKSI" title="TANGGAL TRANSAKSI" value="<?php if (!empty($_GET['sampai'])){ echo $_GET['sampai'];} else {echo date("Y-m-d");} ?>" data-date-format="yyyy-mm-dd">
+													</div>
+													<!-- /.input group -->
+												</div>
+											</td>
+											<td>
+											
+												<div class="form-group">
+													<label for="nama_satuan"></label>
+													<input type="text" id="cari" name="cari"  maxlength="35" class="required form-control" size="35" alt="Cari Data" title="Cari Data" placeholder="*Cari Data" value="<?php if (!empty($_GET['cari'])){echo $_GET['cari'];} ?>"/>
+												</div>
+												
+												<!--
+												<input type="text" name="cari"  maxlength="35" class="text form-control" size="35" alt="tlp" title="Cari data" placeholder="...Cari" value="<?php if (!empty($_GET['cari'])){echo $_GET['cari'];} ?>"/>
+												-->
+											</td>
+											<td>
+												<div class="form-group">
+													<label for="nama_satuan"></label>
+													
+													<!-- <button type="button" id="btnsimpan" onclick="cari_col_active()" class="btn btn-success btn-block btn-flat" title="Pencarian Data <?php echo $msgbox_title;?> ?">CARI</button> -->
+													
+													<button type="submit" id="btnsimpan" class="btn btn-success btn-block btn-flat" title="Pencarian Data <?php echo $msgbox_title;?> ?">CARI</button>
+												</div>
+											</td>
+										</tr>
+									</table>
+								
+								</form>
+							</div>
+							
+							<br/>
+							<br/>
+							<br/>
+							<br/>
+							<br/>
+							<p style="color:red;"><?php echo $sum_pesan; ?></p>
+						</div><!-- /.box-header -->
+						
+						
+						
+						
+						
+						<div class="nav-tabs-custom">
+							<div class="tab-content">
+							
+								<!-- TAB ACTIVITY -->
+								<div class="tab-pane" id="activity">
+									<div  id="tb_lap_penjualan_general" class="box-body">
+										<!-- ISI DENGAN DATA LAPORAN GENERAL -->
+									</div><!-- /.box-body -->
+								</div>
+								<!-- TAB ACTIVITY -->
+								<!-- /.tab-pane -->
+							  
+							  
+							  <!-- TAB TIMELINE -->
+							  <div class="active tab-pane" id="timeline">
+								<div  id="tb_timeline" class="box-body">
+										<!-- ISI DENGAN DATA KARYAWAN -->
+									<?php
+										echo'<div class="box-body table-responsive no-padding">';
+										if(!empty($list_laporan_d_penjualan_row))
+										{
+											echo'<table width="100%" id="example2" class="table table-hover hoverTable">';
+												/*
+												echo '<thead>';
+												echo'
+														<tr style="background-color:green;text-align:center;">';
+															echo '<th width="5%">NO</th>';
+															echo '<th width="20%">KODE PRODUK</th>';
+															echo '<th width="35%">NAMA PRODUK</th>';
+															echo '<th width="10%">JUMLAH</th>';
+															echo '<th width="10%">DISKON</th>';
+															echo '<th width="10%">HARGA</th>';
+															echo '<th width="10%">SUBTOTAL</th>';
+												echo '</tr>
+												</thead>';
+												*/
+												$list_result = $list_laporan_d_penjualan_row->result();
+												
+												
+												$no = $this->uri->segment(2,0) + 1;
+												
+												$no_faktur_old = "";
+												$no_faktur_cur = "";
+												
+												$tunai = 0;
+												$nontunai = 0;
+												$nama_bank = "";
+												$diskon_lain = 0;
+												
+												
+												$grandTotal = 0;
+												$allgrandtotal = 0;
+												$status_sub = 0;
+												
+												echo '<tbody>';
+												
+												foreach($list_result as $row)
+												{
+													
+													
+														
+														//GROUP NO FAKTUR
+														$no_faktur_cur = $row->no_faktur;
+														if($no_faktur_cur != $no_faktur_old)
+														{
+															if($no > 1)
+															{
+																//SUBTOTAL
+																echo'
+																	<tr>';
+																	echo '<th colspan="6" style="text-align:right;">GRAND TOTAL</th>';
+																	echo '<th width="10%" style="text-align:right;">'.number_format($grandTotal,0,'.',',').'</th>';
+																echo '</tr>';
+																echo'
+																	<tr>';
+																	echo '<th colspan="6" style="text-align:right;">POTONGAN/DISKON LAIN</th>';
+																	echo '<th width="10%" style="text-align:right;">'.number_format($diskon_lain,0,'.',',').'</th>';
+																echo '</tr>';
+																echo'
+																	<tr>';
+																	echo '<th colspan="6" style="text-align:right;">PEMBAYARAN TUNAI</th>';
+																	echo '<th width="10%" style="text-align:right;">'.number_format($tunai,0,'.',',').'</th>';
+																echo '</tr>';
+																echo'
+																	<tr>';
+																	echo '<th colspan="6" style="text-align:right;">PEMBAYARAN NONTUNAI ('.$nama_bank.')</th>';
+																	echo '<th width="10%" style="text-align:right;">'.number_format($nontunai,0,'.',',').'</th>';
+																echo '</tr>';
+																echo'
+																	<tr>';
+																	echo '<th colspan="6" style="text-align:right;">KEMBALIAN</th>';
+																	echo '<th width="10%" style="text-align:right;">'.number_format(($tunai + $nontunai) - $grandTotal,0,'.',',').'</th>';
+																echo '</tr>';
+																$grandTotal = 0;
+																//SUBTOTAL
+															}
+															
+															//HEADER
+															$nama = $row->type_h_penjualan;
+															$arr = explode(' ', $nama);
+															$singkatan = '';
+															foreach($arr as $kata)
+															{
+																$singkatan .= substr($kata, 0, 1);
+															}
+															echo'
+															<tr>
+																<!-- <td><b style="color:red;">'.$singkatan.'</b></td> -->
+																<td><b style="color:red;">'.$row->kode_kantor.'</b></td>
+																<td colspan="2">
+																	<b>FAKTUR : </b>'.$row->no_faktur.'
+																	<br/> <b>NO PELANGGAN : </b>'.$row->no_costumer.'
+																	<br/> <b>NAMA PELANGGAN : </b>'.$row->nama_costumer.'
+																</td>
+																<td colspan="3">
+																	<b>DOKTER KONSUL : </b>'.$row->nama_dokter_konsul.'
+																	<br/> <b>DOKTER TINDAKAN : </b>'.$row->nama_dokter_tindakan.'
+																	<br/> <b>JENIS : </b>'.$row->type_h_penjualan.'
+																	';
+																	//echo'<a href="javascript:void(0)" class="btn btn-danger btn-block btn-flat" onclick="edit('.$no.')" title = "Ubah Data '.$row->no_faktur.'" alt = "Ubah Data '.$row->no_faktur.'">Approve Perubahan</a>';
+																	echo'
+																</td>';
+																
+				//if(!(file_exists("assets/global/images/".$row->img_file)))
+				if(!(file_exists($row->ba_url.''.$row->ba_file)))
+				{
+					$src = base_url().'assets/global/no-image.jpg';
+				}
+				else
+				{
+					//$src = base_url().'assets/global/karyawan/'.$row->avatar;
+					$src = base_url().''.$row->ba_url.''.$row->ba_file;
+				}		
+																
+				echo '<input type="hidden" id="txt_ba_img-'.$row->id_h_penjualan.'" value="'.$src.'" />';
+				
+				echo '<input type="hidden" id="petugas_salah-'.$row->id_h_penjualan.'" value="'.$row->petugas_salah.'" />';
+				
+				echo '<input type="hidden" id="isApprove-'.$row->id_h_penjualan.'" value="'.$row->isApprove.'" />';
+				
+				if($row->tgl_salah == "0000-00-00" )
+				{
+					echo '<input type="hidden" id="tgl_salah-'.$row->id_h_penjualan.'" value="'.date("Y-m-d").'" />';
+					echo '<input type="hidden" id="jam_salah-'.$row->id_h_penjualan.'" value="'.date("H:i").'" />';
+				}
+				else
+				{
+					echo '<input type="hidden" id="tgl_salah-'.$row->id_h_penjualan.'" value="'.$row->tgl_salah.'" />';
+					echo '<input type="hidden" id="jam_salah-'.$row->	id_h_penjualan.'" value="'.$row->jam_salah.'" />';
+				}
+				
+				echo '<input type="hidden" id="ket_salah-'.$row->id_h_penjualan.'" value="'.$row->ket_salah.'" />';
+																
+																if($row->isApprove > 0)
+																{
+																	echo'
+																		<td style="vertical-align: middle;">
+																			<center>
+																			
+														<a class="confirm-btn" href="javascript:void(0)" data-toggle="modal" data-target="#myModal_berita_acara" id="UBAH-'.$row->id_h_penjualan.'-'.$row->no_faktur.'"  onclick="upload_berita_acara(this)" title = "Ubah Transaksi '.$row->no_faktur.'" alt = "Ubah Transaksi '.$row->no_faktur.'">
+															<i class="fa fa-edit"></i> LIHAT
+														</a>
+														<br/>
+														
+																			
+				<select name="optr_charge" id="'.$row->id_h_penjualan.'" class="btn-pilih-pasien form-control select2" title="Operator/Jenis Potongan ?" onchange="ubah_status_approve(this.id)">
+																				
+																				
+																	';	
+																	if($row->isApprove == 1)
+																	{
+																		echo'<option value="">.:PILIH:.</option>';
+																	}
+																	elseif($row->isApprove == 2)
+																	{
+																		echo'<option value="2">YA</option>';
+																	}
+																	elseif($row->isApprove == 3)
+																	{
+																		echo'<option value="3">TIDAK</option>';
+																	}
+																	
+																	echo'		
+																				<option value="3">TIDAK</option>
+																				<option value="2">YA</option>
+																		   </select>
+									
+									<input type="hidden" id="kode_kantor-'.$row->id_h_penjualan.'" value="'.$row->kode_kantor.'" />
+																			</center>
+																		</td>
+																	';
+																}
+																else
+																{
+																}
+															echo'
+															</tr>';
+															
+															echo'
+																	<tr style="background-color:green;text-align:center;">';
+																		echo '<th width="5%">NO</th>';
+																		echo '<th width="20%">KODE PRODUK</th>';
+																		echo '<th width="35%">NAMA PRODUK</th>';
+																		echo '<th width="10%">JUMLAH</th>';
+																		echo '<th width="10%">DISKON</th>';
+																		echo '<th width="10%">HARGA</th>';
+																		echo '<th width="10%">SUBTOTAL</th>';
+															echo '</tr>';
+															//HEADER
+															
+															/*
+															echo'<td>'.$no.'</td>';
+															echo '<td>
+																<b>FAKTUR : </b>'.$row->no_faktur.'
+																<br/> <b>WAKTU INPUT : </b>'.$row->waktu_input.'
+																<br/> <b>NO PELANGGAN : </b>'.$row->no_costumer.'
+																<br/> <b>NAMA PELANGGAN : </b>'.$row->nama_costumer.'
+															</td>';
+															*/
+															echo'<tr>';
+																echo'<td>'.$no.'</td>';
+															
+															$no++;
+														}
+														else
+														{
+															echo'<tr>';
+																echo'<td></td>';
+															/*
+															echo'<td></td>';
+															echo'<td></td>';
+															*/
+														}
+														//GROUP NO FAKTUR
+														
+														if($row->isProduk == 'JASA')
+														{
+															echo'<td style="color:red;">'.$row->kode_produk.'</td>';
+															echo '<td style="color:red;">
+																'.$row->nama_produk.' 
+																<br/>
+																('.$row->nama_ass.')
+															</td>';
+														}
+														else
+														{
+															echo'<td>'.$row->kode_produk.'</td>';
+															echo '<td>
+																'.$row->nama_produk.'
+															</td>';
+														}
+														
+														
+														echo'<td>'.$row->jumlah.' '.$row->satuan_jual.'</td>';
+														echo'<td>'.$row->diskon.' '.$row->optr_diskon.'</td>';
+														echo'<td style="text-align:right;">'.number_format($row->harga,0,'.',',').'</td>';
+														echo'<td style="text-align:right;">'.number_format($row->jumlah * ($row->harga - $row->besar_diskon_ori),0,'.',',').'</td>';
+														//echo '<td>'.number_format($row->harga,0,'.',',').' </td>';
+														//<input type="checkbox" checked="checked">
+														
+														$grandTotal = $grandTotal + ($row->jumlah * ($row->harga - $row->besar_diskon_ori));
+																	
+													echo'</tr>';
+													
+													
+													
+													
+													echo'<input type="hidden" id="id_d_penjualan_'.$no.'" name="id_d_penjualan_'.$no.'" value="'.$row->id_d_penjualan.'" />';
+													
+													//CATATA PEMBAYARAN, HARUS DITARO DISINI KARENA LOPING
+														$tunai = $row->TUNAI;
+														$nontunai = $row->NONTUNAI;
+														$nama_bank = $row->nama_bank;
+														$diskon_lain = $row->diskon_lain;
+													//CATATA PEMBAYARAN, HARUS DITARO DISINI KARENA LOPING
+													
+													//GROUP NO FAKTUR
+														$no_faktur_old = $row->no_faktur;
+													//GROUP NO FAKTUR
+													
+													$allgrandtotal = $allgrandtotal + ($row->jumlah * ($row->harga - $row->besar_diskon_ori));
+													
+												}
+												
+												//SUBTOTAL AKHIR
+													//SUBTOTAL
+														echo'
+															<tr>';
+															echo '<th colspan="6" style="text-align:right;">GRAND TOTAL</td>';
+															echo '<th width="10%" style="text-align:right;">'.number_format($grandTotal,0,'.',',').'</td>';
+														echo '</tr>';
+														echo'
+															<tr>';
+															echo '<th colspan="6" style="text-align:right;">POTONGAN/DISKON LAIN</td>';
+															echo '<th width="10%" style="text-align:right;">'.number_format($diskon_lain,0,'.',',').'</td>';
+														echo '</tr>';
+														echo'
+															<tr>';
+															echo '<th colspan="6" style="text-align:right;">PEMBAYARAN TUNAI</td>';
+															echo '<th width="10%" style="text-align:right;">'.number_format($tunai,0,'.',',').'</td>';
+														echo '</tr>';
+														echo'
+															<tr>';
+															echo '<th colspan="6" style="text-align:right;">PEMBAYARAN NONTUNAI <font style="font-weight:normal;">('.$nama_bank.')</font></td>';
+															echo '<th width="10%" style="text-align:right;">'.number_format($nontunai,0,'.',',').'</td>';
+														echo '</tr>';
+														echo'
+															<tr>';
+															echo '<th colspan="6" style="text-align:right;">KEMBALIAN</td>';
+															echo '<th width="10%" style="text-align:right;">'.number_format(($tunai + $nontunai) - $grandTotal,0,'.',',').'</td>';
+														echo '</tr>';
+														$grandTotal = 0;
+													//SUBTOTAL
+												//SUBTOTAL AKHIR
+												
+												//GRANDTOTAL KESELURUHAN
+												
+												
+												if(!empty($sum_laporan_h_penjualan))
+												{
+													echo'<tr><td colspan="4"></td></tr>';
+													echo'<tr style="font-weight:bold; text-align:center;">
+														<td colspan="4">AKUMULASI TRANSAKSI</td>
+													</tr>';
+													echo'<tr style="font-weight:bold;background-color:gray;">
+														<td colspan="2">PEMBAYARAN</td>
+													
+														<td colspan="1">JUMLAH TRANSAKSI</td>
+													
+														<td colspan="1">NOMINAL</td>
+													</tr>';
+													
+													$grandcntsum =0;
+													$grandtunaisum =0;
+													$grandnontunaisum =0;
+													
+													$list_result_allgrandtotal = $sum_laporan_h_penjualan->result();
+													foreach($list_result_allgrandtotal as $row_allgrandtotal)
+													{
+														echo'<tr style="font-weight:normal">
+														<td colspan="2">'.($row_allgrandtotal->nama_bank).'</td>
+														
+														<td colspan="1" style="text-align:center;">'.number_format($row_allgrandtotal->CNT,0,'.',',').'</td>
+														
+														';
+														if($row_allgrandtotal->nama_bank == "TUNAI")
+														{
+															echo'
+															<td colspan="1" style="text-align:right;">'.number_format($row_allgrandtotal->NONTUNAI,0,'.',',').'</td>
+															</tr>';
+															
+															$grandtunaisum = $grandtunaisum + $row_allgrandtotal->NONTUNAI;
+														}
+														else
+														{
+															echo'
+															<td colspan="1" style="text-align:right;">'.number_format($row_allgrandtotal->NONTUNAI,0,'.',',').'</td>
+															</tr>';
+															
+															$grandnontunaisum = $grandnontunaisum + $row_allgrandtotal->NONTUNAI;
+															
+														}
+														
+														$grandcntsum = $row_allgrandtotal->CNT;
+													}
+													
+													echo'<tr style="font-weight:bold;">
+														<td colspan="2">GRAND TOTAl</td>
+													
+														<td colspan="1" style="text-align:center;">'.number_format($grandcntsum,0,'.',',').'</td>
+													
+														<td colspan="1" style="text-align:right;">'.number_format($grandtunaisum + $grandnontunaisum,0,'.',',').'</td>
+													</tr>';
+												}
+												
+												//GRANDTOTAL KESELURUHAN
+												echo '</tbody>';
+											echo'</table>';
+										}
+										else
+										{
+											echo'<center>';
+											echo'Tidak Ada Data Yang Ditampilkan !';
+											echo'</center>';
+										}
+										//TABLE
+													
+										echo'
+									</div><!-- /.box-body -->
+									';
+									?>
+								</div><!-- /.box-body -->
+							  </div>
+							  
+							  
+							  
+							  <!-- TAB PELATIHAN -->
+							  <div class="tab-pane" id="pelatihan">
+								<!-- The timeline -->
+								<div  id="tb_list_fee" class="box-body">
+										<!-- ISI DENGAN DATA KARYAWAN -->
+								</div><!-- /.box-body -->
+							  </div>
+							  
+							  
+							</div>
+							<!-- /.tab-content -->
+						</div>
+					</div><!-- /.box -->
+					
+					
+				<!-- Show MOdal - 1 DETAL PENJUALAN -->
+					<div class="modal fade" id="myModal_detail_penjualan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog" style="width:90%;margin-left:10%;">
+							<div class="modal-content" style="width:90%;">
+							<div class="modal-header" style="width:100%;">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								<h4 class="modal-title" id="myModalLabel">Detail Transaksi</h4>
+							</div>
+							<div class="modal-body" style="width:100%;">
+								
+								
+								<!-- ISI BODY -->
+									<div id="detail_penjualan" style="width:100%;">		
+										<ul class="timeline" id="container_rekam_medis" style="width:100%;">
+
+											<!-- TAMPUNG AJAX REKAM MEDIS -->
+
+										</ul>
+										<!-- UNTUK DETAIL -->
+									</div>
+								<!-- ISI BODY -->
+								
+								
+							</div>
+							<!-- <div class="modal-footer"> -->
+								<!-- <button type="button" class="btn btn-danger btn-block btn-flat" data-dismiss="modal">BATAL</button> -->
+								<!-- <button type="button" class="btn btn-primary btn-block btn-flat" data-dismiss="modal" onclick="add_produk_masal()">SIMPAN</button> -->
+							<!-- </div> -->
+							</div>
+						</div>
+					</div>
+				<!-- Show MOdal - 1 DETAL PENJUALAN -->
+				
+				<!-- Show MOdal - TABLE 3 FOTO PASIEN -->
+				<div class="modal fade" id="myModal_foto_pasien" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<h4 class="modal-title" id="myModalLabel">FOTO PERUBAHAN PASIEN</h4>
+						</div>
+						<div class="modal-body">
+							
+							
+							<!-- ISI BODY -->
+								<div id="gambar_rekam_medis">								
+									<!-- UNTUK MNEMPILKAN GAMBAR -->
+								</div>
+							<!-- ISI BODY -->
+							
+							
+						</div>
+						<!-- <div class="modal-footer"> -->
+							<!-- <button type="button" class="btn btn-danger btn-block btn-flat" data-dismiss="modal">BATAL</button> -->
+							<!-- <button type="button" class="btn btn-primary btn-block btn-flat" data-dismiss="modal" onclick="add_produk_masal()">SIMPAN</button> -->
+						<!-- </div> -->
+						</div>
+					</div>
+				</div>
+
+			<!-- Show MOdal - TABLE 3 FOTO PASIEN -->
+			
+			<!-- Show MOdal - TABLE 4 DATA PENGELUARAN PRODUK -->
+				<div class="modal fade" id="myModal_pengeluaran_produk" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<h4 class="modal-title" id="myModalLabel">DATA PENGELUARAN PRODUK</h4>
+						</div>
+						<div class="modal-body">
+							
+							
+							<!-- ISI BODY -->
+								<div id="tb_pengeluaran_produk">								
+									<!-- UNTUK MNEMPILKAN GAMBAR -->
+								</div>
+							<!-- ISI BODY -->
+							
+							
+						</div>
+						<!-- <div class="modal-footer"> -->
+							<!-- <button type="button" class="btn btn-danger btn-block btn-flat" data-dismiss="modal">BATAL</button> -->
+							<!-- <button type="button" class="btn btn-primary btn-block btn-flat" data-dismiss="modal" onclick="add_produk_masal()">SIMPAN</button> -->
+						<!-- </div> -->
+						</div>
+					</div>
+				</div>
+
+			<!-- Show MOdal - TABLE 4 DATA PENGELUARAN PRODUK -->
+			
+			<!-- Show MOdal - TABLE 5 DATA DETAIL FEE -->
+				<div class="modal fade" id="myModal_detail_fee" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<h4 class="modal-title" id="myModalLabel">DATA PEROLEHAN FEE KARYAWAN</h4>
+						</div>
+						<div class="modal-body">
+							
+							
+							<!-- ISI BODY -->
+								<div id="tb_detail_fee">								
+									<!-- UNTUK MNEMPILKAN GAMBAR -->
+								</div>
+							<!-- ISI BODY -->
+							
+							
+						</div>
+						<!-- <div class="modal-footer"> -->
+							<!-- <button type="button" class="btn btn-danger btn-block btn-flat" data-dismiss="modal">BATAL</button> -->
+							<!-- <button type="button" class="btn btn-primary btn-block btn-flat" data-dismiss="modal" onclick="add_produk_masal()">SIMPAN</button> -->
+						<!-- </div> -->
+						</div>
+					</div>
+				</div>
+
+			<!-- Show MOdal - TABLE 5 DATA DETAIL FEE -->
+			
+			
+			<!-- Show MOdal - TABLE 6 DATA BERITA ACARA -->
+				<div class="modal fade" id="myModal_berita_acara" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<h4 class="modal-title" id="myModalLabel_ba">BERITA ACARA PERUBAHAN</h4>
+						</div>
+						<div class="modal-body">
+							
+							
+							<!-- ISI BODY -->
+								<div id="tb_berita_acara">								
+									<!-- UNTUK MNEMPILKAN GAMBAR -->
+									<form role="form" class="frm-input" id="submit" enctype="multipart/form-data">
+										<input type="hidden" name="stat_edit" id="stat_edit"/>
+										<input type="hidden" name="id_satuan" id="id_satuan"/>
+										<div class="box-body">
+
+											<div class="form-group">
+												<label for="kode_satuan">Foto Berita Acara</label>
+												<span id="img_edit"></span>
+												<input type="file" name="file"><span id="pesan"></span>
+											</div>
+											
+											</br>
+											</br>
+											</br>
+											</br>
+											<div class="form-group">
+												<label for="petugas_salah">Petugas Yang Melakukan Kesalahan</label>
+												
+												<input type="hidden" name="nama_ba" id="nama_ba" />
+												
+												<input type="text" id="petugas_salah" name="petugas_salah"  maxlength="35" class="required form-control" size="35" onkeyup="this.value = this.value.toUpperCase()" alt="Petugas Yang Melakukan Kesalahan" title="Petugas Yang Melakukan Kesalahan" placeholder="*Petugas Yang Melakukan Kesalahan"/>
+											</div>
+											
+											<div class="form-group">
+											  <label for="hp">Waktu Kejadian</label>
+											  <!-- <input type="text" id="hp" name="hp"  maxlength="25" onkeypress="return isNumberKey(event)" class="required form-control" size="35" alt="No Telpon/Hp" title="No Telpon/Hp" placeholder="*No Telpon/Hp"/> -->
+											  
+												<div class="row">
+													<div class="col-lg-6">
+														<div class="input-group">
+															<span class="input-group-addon">
+																<!-- <input type="checkbox"> -->
+																Tanggal
+															</span>
+															<input name="tgl_salah" id="tgl_salah" type="text" class="required form-control pull-right settingDate" alt="Tanggal Lahir" title="Tanggal Lahir" value="<?php echo date("Y-m-d"); ?>" data-date-format="yyyy-mm-dd">
+														</div>
+													<!-- /input-group -->
+													</div>
+												<!-- /.col-lg-6 -->
+													<div class="col-lg-6">
+														<div class="input-group">
+															<span class="input-group-addon">
+																<!-- <input type="checkbox"> -->
+																Jam
+															</span>
+															<input type="text" id="jam_salah" name="jam_salah" onkeypress="return isNumberKey(event)" maxlength="5" class="form-control time" placeholder="00:00" value="<?php echo date("H:i"); ?>" >
+														</div>
+													<!-- /input-group -->
+													</div>
+												<!-- /.col-lg-6 -->
+												</div>
+												<!-- /.row -->
+											</div>
+
+											<div class="form-group">
+												<label for="ket_salah">Keterangan</label>
+												<textarea name="ket_salah" id="ket_salah" class="required form-control" title="Keterangan Tentang Kesalahan" placeholder="*Keterangan Tentang Kesalahan"></textarea>
+											</div>
+
+										</div><!-- /.box-body -->
+
+										<div class="box-footer">
+											<!-- <li class="user-footer"> -->
+											
+												<!-- <div class="pull-left"> -->
+												<!-- <button type="submit" id="btnsimpan" class="confirm-btn btn btn-primary" title="Simpan Data <?php echo $msgbox_title;?> ?">Simpan Berita Acara</button> -->
+												<!-- </div> -->
+
+
+												
+												<!-- <div class="pull-right"> -->
+												<!-- <a id="url_ubah" class="btn btn-primary btn-flat" style="visibility:hidden;">Lanjutkan</a> -->
+												<!-- </div> -->
+												
+												
+											<!-- </li> -->
+				  
+											<!-- <button type="reset" id="btnbatal" class="btn btn-default">Batal</button> -->
+											
+										</div>
+									</form>
+			
+								</div>
+							<!-- ISI BODY -->
+							
+							<!-- LIST PERUBAHAN -->
+							<div class="row">
+								<div class="col-lg-6">
+									<center><b>PENJUALAN PRODUK/JASA ASLI</b></center>
+									<div id="tb_d_penjualan_backup"></div>
+								</div>
+								<div class="col-lg-6">
+									<center><b>PENJUALAN PRODUK/JASA UBAH</b></center>
+									<div id="tb_d_penjualan"></div>
+								</div>
+								
+							</div>
+							<!-- LIST PERUBAHAN -->
+							
+						</div>
+						<!-- <div class="modal-footer"> -->
+							<!-- <button type="button" class="btn btn-danger btn-block btn-flat" data-dismiss="modal">BATAL</button> -->
+							<!-- <button type="button" class="btn btn-primary btn-block btn-flat" data-dismiss="modal" onclick="add_produk_masal()">SIMPAN</button> -->
+						<!-- </div> -->
+						</div>
+					</div>
+				</div>
+
+			<!-- Show MOdal - TABLE 6 DATA BERITA ACARA -->
+					
+			</div><!-- /.col -->
+		</div><!-- /.row -->
+		<!-- =========================================================== -->
+		</section><!-- /.content -->
+	</div><!-- /.content-wrapper -->
+			
+			
+		
+<script type='text/javascript'>
+	
+	function upload_berita_acara(evt)
+	{
+		//alert(evt.id);
+		//alert("<?php echo base_url(); ?>");
+		
+		var arrStrPenjualan = evt.id;
+		var arrStrPenjualan_split = arrStrPenjualan.split("-");
+		
+		var id_h_penjualan = arrStrPenjualan_split[1];
+		//$('#nama_ba').val("BA"+id_h_penjualan);
+		
+		//var isApprove = $('#isApprove-'+id_h_penjualan).val();
+		
+		
+		var kode_kantor = $("#kode_kantor-"+id_h_penjualan).val();
+		//UBAH JUDUL MOdal
+			$('#myModalLabel_ba').html("BERITA ACARA PERUBAHAN FAKTUR NO "+arrStrPenjualan_split[3]);
+		//UBAH JUDUL MOdal
+		
+		$('#petugas_salah').val($('#petugas_salah-'+id_h_penjualan).val());
+		
+		//TIDAK DIMUNCULKAN SEBELUM ADA APPROVAL
+		
+		/*
+		if( $('#isApprove-'+id_h_penjualan).val() == "2")
+		{
+			$('#url_ubah').css('visibility','visible');
+		}
+		else
+		{
+			$('#url_ubah').css('visibility','hidden');
+		}
+		*/
+		
+		//TIDAK DIMUNCULKAN SEBELUM ADA APPROVAL
+		
+		$('#tgl_salah').val($('#tgl_salah-'+id_h_penjualan).val());
+		$('#jam_salah').val($('#jam_salah-'+id_h_penjualan).val());
+		document.getElementById("ket_salah").value = $('#ket_salah-'+id_h_penjualan).val();
+		
+		//MASUKAN GAMBAR JIKA SUDAH ADA DARI TEXT BOX
+			$("#img_edit").html("<img style='border:1px solid #C8C8C8; padding:5px; float:left; margin-right:20px;' src='"+$('#txt_ba_img-'+id_h_penjualan).val()+"' width='100px' height='100px'>");
+		//MASUKAN GAMBAR JIKA SUDAH ADA DARI TEXT BOX
+		
+		//$('#url_ubah').attr('href','<?php echo base_url(); ?>gl-admin-pemeriksaan-dokter-proses/'+ubah_str_to_md5(id_h_penjualan));
+		
+		$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_admin_lap_h_penjualan/list_ba_penjualan/", data: 
+		{
+			nama_ba:"BA"+id_h_penjualan,
+			kode_kantor:kode_kantor
+		}, success:function(data1)
+		{
+		
+			if(data1!=0)
+			{
+				$("#tb_d_penjualan").html(data1);
+			}
+			else
+			{
+				
+			}
+		} 
+		});
+		
+		$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_admin_lap_h_penjualan/list_ba_penjualan_bck/", data: 
+		{
+			nama_ba:"BA"+id_h_penjualan,
+			kode_kantor:kode_kantor
+		}, success:function(data2)
+		{
+		
+			if(data2!=0)
+			{
+				
+				$("#tb_d_penjualan_backup").html(data2);
+			}
+			else
+			{
+				
+			}
+		} 
+		});
+		
+		
+	}
+
+	function ubah_status_approve(id)
+	{
+		var kode_kantor = $("#kode_kantor-"+id).val();
+		var nilai = $("#"+id).val();
+		//alert(nilai);
+		
+		$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_admin_lap_h_penjualan/ubah_status_approve/", data: 
+		{
+			id_h_penjualan:id,
+			kode_kantor:kode_kantor,
+			nilai:nilai
+		}, success:function(data2)
+		{
+		
+			if(data2!=0)
+			{
+				Alert("Approval diterima");
+				//$("#tb_d_penjualan_backup").html(data2);
+			}
+			else
+			{
+				
+			}
+		} 
+		});
+	}
+
+	function detail_penjualan_fee(evt)
+	{
+		//alert("FEE");
+		
+		var strId = evt.id;
+		var arrKode = strId.split("-");
+		
+		var id_karyawan = arrKode[1];
+		//var strKategori = arrKode[0];
+	
+		//alert("Detail Keluar Produk");
+		var dari = $("#dari").val();
+		var sampai = $("#sampai").val();
+		//var cari = $("#cari").val();
+		var cari = "";
+		var var_offset = $("#var_offset").val();
+		
+		
+		//$("#pesan-keluarga").html("<img src='<?php echo base_url();?>assets/global/loading.gif'>Loading ...");
+		 
+		$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_admin_lap_h_penjualan/detail_penjualan_fee/", data: 
+		{
+			dari:dari,
+			sampai:sampai,
+			cari:cari,
+			var_offset:var_offset,
+			id_karyawan:id_karyawan
+		}, success:function(data)
+		{
+		
+			
+			if(data!=0)
+			{
+				$("#tb_detail_fee").html(data);
+			}
+			else
+			{
+				
+			}
+		} 
+		});
+	}
+
+	
+	
+	//TIDAK DI PAKAI DULU
+		/*
+			function detail_penjualan(evt)
+			{
+				alert(evt.id);
+			}
+		*/
+	//TIDAK DI PAKAI DULU
+	
+	$('#btnbatal').click(function(){
+		$('input[name=stat_edit]').val("");
+		
+		
+		/*Tutup Dulu Form*/
+			$('#icon_form').attr('class', 'fa fa-plus');
+			$('#box-form').attr('class', 'box box-warning collapsed-box box-solid');
+		/*Tutup Dulu Form*/
+	});
+	
+	
+	function isNumberKey(evt)
+	{
+    	var charCode = (evt.which) ? evt.which : event.keyCode
+    	if (charCode > 31 && (charCode < 48 || charCode > 57))
+    	
+    	return false;
+    	return true;
+	}
+	
+	function RestrictSpace() 
+	{
+		if (event.keyCode == 32) 
+		{
+			return false;
+		}
+	}
+	
+	
+	function FormatCurrency(objNum)
+	{
+	   var num = objNum.value
+	   var ent, dec;
+	   if (num != '' && num != objNum.oldvalue)
+	   {
+		 num = HapusTitik(num);
+		 if (isNaN(num))
+		 {
+		   objNum.value = (objNum.oldvalue)?objNum.oldvalue:'';
+		 } else {
+		   var ev = (navigator.appName.indexOf('Netscape') != -1)?Event:event;
+		   if (ev.keyCode == 190 || !isNaN(num.split('.')[1]))
+		   {
+			 alert(num.split('.')[1]);
+			 objNum.value = TambahTitik(num.split('.')[0])+'.'+num.split('.')[1];
+		   }
+		   else
+		   {
+			 objNum.value = TambahTitik(num.split('.')[0]);
+		   }
+		   objNum.oldvalue = objNum.value;
+		 }
+	   }
+	}
+	function HapusTitik(num)
+	{
+	   return (num.replace(/\./g, ''));
+	}
+
+	function TambahTitik(num)
+	{
+	   numArr=new String(num).split('').reverse();
+	   for (i=3;i<numArr.length;i+=3)
+	   {
+		 numArr[i]+='.';
+	   }
+	   return numArr.reverse().join('');
+	} 
+			
+	function formatCurrency(num) {
+	   num = num.toString().replace(/\$|\./g,'');
+	   if(isNaN(num))
+	   num = "0";
+	   sign = (num == (num = Math.abs(num)));
+	   num = Math.floor(num*100+0.50000000001);
+	   cents = num0;
+	   num = Math.floor(num/100).toString();
+	   for (var i = 0; i < Math.floor((num.length-(1+i))/3); i++)
+	   num = num.substring(0,num.length-(4*i+3))+'.'+
+	   num.substring(num.length-(4*i+3));
+	   return (((sign)?'':'-') + num);
+	}
+</script>
+      
+    <!-- Bootstrap 3.3.4 -->
+	<script src="<?=base_url();?>assets/adminlte/bootstrap/js/bootstrap.min.js"></script>
+	<!-- Slimscroll -->
+	<script src="<?=base_url();?>assets/adminlte/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+	<!-- FastClick -->
+	<script src="<?=base_url();?>assets/adminlte/plugins/fastclick/fastclick.min.js"></script>
+	<!-- AdminLTE App -->
+	<script src="<?=base_url();?>assets/adminlte/dist/js/app.min.js"></script>
+	<!-- Page script -->
+    <!-- InputMask -->
+    <script src="<?=base_url();?>/assets/adminlte/plugins/input-mask/jquery.inputmask.js"></script>
+    <script src="<?=base_url();?>/assets/adminlte/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+    <script src="<?=base_url();?>/assets/adminlte/plugins/input-mask/jquery.inputmask.extensions.js"></script>
+	
+	<!-- bootstrap datepicker -->
+	<script src="<?=base_url();?>/assets/adminlte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+    
+    <script>
+      $(function () {
+		//Date picker
+		$('.settingDate').datepicker({
+			autoclose: true
+		});
+		
+		
+        //Initialize Select2 Elements
+        //$(".select2").select2();
+
+        //Datemask yyyy-mm-dd
+        $(".datemask_mysql").inputmask("yyyy-mm-dd", {"placeholder": "yyyy-mm-dd"});
+        //Datemask dd/mm/yyyy
+        //$("#datemask").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});
+        //Datemask2 mm/dd/yyyy
+        //$("#datemask2").inputmask("mm/dd/yyyy", {"placeholder": "mm/dd/yyyy"});
+        //TimeMask hh:mm:ss
+        $(".time_mysql").inputmask("hh:mm:ss", {"placeholder": "hh:mm:ss"});
+        //Money Euro
+        //$("[data-mask]").inputmask();
+
+        //iCheck for checkbox and radio inputs
+        $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+          checkboxClass: 'icheckbox_minimal-blue',
+          radioClass: 'iradio_minimal-blue'
+        });
+        //Red color scheme for iCheck
+        $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
+          checkboxClass: 'icheckbox_minimal-red',
+          radioClass: 'iradio_minimal-red'
+        });
+        //Flat red color scheme for iCheck
+        $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+          checkboxClass: 'icheckbox_flat-green',
+          radioClass: 'iradio_flat-green'
+        });
+
+        //Colorpicker
+        $(".my-colorpicker1").colorpicker();
+        //color picker with addon
+        $(".my-colorpicker2").colorpicker();
+
+        //Timepicker
+        $(".timepicker").timepicker({
+          showInputs: false
+        });
+      });
+    </script>
+	

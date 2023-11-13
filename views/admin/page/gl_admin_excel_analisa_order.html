@@ -1,0 +1,107 @@
+ <!-- <title>LaporanPemasukanPeriode<?php echo $_GET['tahun'];?><?php echo $_GET['bulan'];?></title> -->
+ <title>DataProdukStock</title>
+ 
+ <?php
+ $title = "DataProdukStock";
+ header("Content-type: application/vnd-ms-excel");
+ header("Content-Disposition: attachment; filename=$title.xls");
+ header("Pragma: no-cache");
+ header("Expires: 0");
+ 
+ ?>
+
+<?php
+	//TABLE
+	if(!empty($list_stock_produk))
+	{
+		//echo gethostname();
+		//echo $this->M_gl_pengaturan->getUserIpAddr();
+		//$sts_query = strpos(base_url(),"localhost");
+		//echo $sts_query;
+		//$nama = "Mulyana Yusuf";
+		//echo str_replace("f","849",$nama);
+		echo'<table width="100%" id="example2" class="table table-hover style="border: 1px black solid;">';
+			echo '<thead style="background-color:grey;">
+				<tr>
+					<td colspan="14" style="text-align:center;">
+						<b>LAPORAN ANALISA ORDER</b>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="14" style="text-align:center;">
+						<b>'.$this->session->userdata('ses_nama_kantor').'</b>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="14" style="text-align:center;">
+						'.$this->session->userdata('ses_alamat_kantor').'
+					</td>
+				</tr>
+				<tr>
+					<td colspan="15" style="text-align:center;">
+						<br/>
+					</td>
+				</tr>
+				<tr style="">';
+						echo '<th style="border: 1px black solid;">NO</th>';
+						echo '<th style="border: 1px black solid;">NAMA PRODUK</th>';
+						//echo '<th>HPP</th>';
+						//echo '<th>SATUAN</th>';
+						//echo '<th>BATASAN</th>';
+						//echo '<th>AWAL</th>';
+						
+						
+						echo '<th style="border: 1px black solid;">STOCK SAAT ORDER</th>';
+						echo '<th style="border: 1px black solid;">PEMAKAIAN/3 BULAN</th>';
+						echo '<th style="border: 1px black solid;">PEMAIKAIAN/BULAN</th>';
+						echo '<th style="border: 1px black solid;">BUFFER STOCK(20%)</th>';
+						echo '<th style="border: 1px black solid;">KEBUTUHAN+BUFFER</th>';
+						echo '<th style="border: 1px black solid;">KEBUTUHAN 1,5 BULAN</th>';
+						echo '<th style="border: 1px black solid;">STOCK+KEBUTUHAN</th>';
+						echo '<th style="border: 1px black solid;">JUMLAH PESAN</th>';
+						//echo '<th>PERSEDIAAN</th>';
+			echo '</tr>
+</thead>';
+			$list_result = $list_stock_produk->result();
+			$no =1;
+			$sub_total = 0;
+			echo '<tbody>';
+			foreach($list_result as $row)
+			{
+				echo'<tr>';
+					echo'<td style="border: 1px black solid;">'.$no.'</td>';
+					echo '<td style="border: 1px black solid;">
+						'.$row->nama_produk.'
+					</td>';
+					echo'<td style="text-align:center;border: 1px black solid;">'.number_format($row->STOCK_ALL,2,'.',',').' '.$row->kode_satuan.'</td>';
+					echo'<td style="text-align:center;border: 1px black solid;">'.number_format($row->TERJUAL_3_BULAN,2,'.',',').'</td>';
+					echo'<td style="text-align:center;border: 1px black solid;">'.number_format($row->TERJUAL_1_BULAN,2,'.',',').'</td>';
+					echo'<td style="text-align:center;border: 1px black solid;">'.number_format($row->BUFFER_STOCK,2,'.',',').'</td>';
+					echo'<td style="text-align:center;border: 1px black solid;">'.number_format($row->KEBUTUHAN_BUFFER_STOCK,2,'.',',').'</td>';
+					echo'<td style="text-align:center;border: 1px black solid;">'.number_format($row->KEBUTUHAN_1_5_BULAN,2,'.',',').'</td>';
+					echo'<td style="text-align:center;border: 1px black solid;">'.number_format($row->STOCK_ADA_KEBUTUHAN,2,'.',',').'</td>';
+					echo'<td style="text-align:center;border: 1px black solid;">'.number_format($row->JUMLAH_PESAN,2,'.',',').'</td>';
+					
+					//echo '<td style="border: 1px black solid;">'.$row->kode_satuan.'</td>';
+					
+					//echo'<td style="text-align:right;">'.number_format($row->NOMINAL_STOCK,0,'.',',').'</td>';
+					
+					
+					echo'<input type="hidden" id="id_produk_'.$no.'" name="id_produk_'.$no.'" value="'.md5($row->id_produk).'" />';
+					
+				echo'</tr>';
+				$no++;
+				//$sub_total = $sub_total + $row->nominal;
+				//sum_uang_keluar
+			}
+			echo '</tbody>';
+		echo'</table>';
+	}
+	else
+	{
+		echo'<center>';
+		echo'Tidak Ada Data Yang Ditampilkan !';
+		echo'</center>';
+	}
+//TABLE
+?>

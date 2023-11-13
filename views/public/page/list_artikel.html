@@ -1,0 +1,65 @@
+			<div class="heading-title heading-border">
+				<h3><span>List Artikel</span></h3>
+				<p class="font-lato fs-14">Menampilkan Artikel - Artikel terkait Zakat, Infaq dan Sadaqah BAZNAS Kab.Sukabumi.</p>
+			</div>
+			
+			<?php
+				if(!empty($list_artikel)) 
+				{  
+					$list_result = $list_artikel->result();
+					foreach($list_result as $row)
+					{
+			?>
+					<!-- POST ITEM -->
+						<div class="blog-post-item"><!-- .blog-post-item-inverse = image right side [left on RTL] -->
+
+							<div class="blog-item-small-image">
+								<!-- OWL SLIDER -->
+								<div class="owl-carousel buttons-autohide controlls-over" data-plugin-options='{"items": 1, "autoPlay": 3000, "autoHeight": false, "navigation": true, "pagination": true, "transitionStyle":"none", "progressBar":"false"}'>
+									<div>
+										<img class="img-fluid" src="<?php echo $row->IMG_LINK;?>" alt="<?php echo $row->ART_NAMA;?>">
+									</div>
+								</div>
+								<!-- /OWL SLIDER -->
+							</div>
+
+							<div class="blog-item-small-content">
+
+								<h2><a href="<?php echo base_url();?>detail-artikel/<?php echo $row->ART_LINKTAHUN?>/<?php echo $row->ART_LINKBULAN?>/<?php echo $row->ART_LINKTITLE?>"><?php echo $row->ART_NAMA;?></a></h2>
+
+								<ul class="blog-post-info list-inline">
+									<li>
+										<a href="#">
+											<i class="fa fa-clock-o"></i> 
+											<span class="font-lato"><?php echo $row->ART_DTINS;?></span>
+										</a>
+									</li>
+									<li>
+										<a href="#">
+											<i class="fa fa-comment-o"></i> 
+											<span class="font-lato">0 Comments</span>
+										</a>
+									</li>
+								</ul>
+
+								<p><?php echo substr(strip_tags($row->ART_ISI),0,150).'...';?></p>
+
+								<a href="<?php echo base_url();?>detail-artikel/<?php echo $row->ART_LINKTAHUN?>/<?php echo $row->ART_LINKBULAN?>/<?php echo $row->ART_LINKTITLE?>" class="btn btn-reveal btn-default">
+									<i class="fa fa-plus"></i>
+									<span>Read More</span>
+								</a>
+							
+							</div>
+
+						</div>
+					<!-- /POST ITEM -->
+			<?php
+					}
+				}
+			?>
+			
+			<center>
+				<?php
+					echo $halaman;
+				?>
+			</center>

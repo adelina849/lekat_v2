@@ -1,0 +1,3174 @@
+	<!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.4 -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/dist/css/AdminLTE.min.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/dist/css/skins/_all-skins.min.css">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/plugins/select2/select2.min.css">
+	<link rel="stylesheet" href="<?=base_url();?>assets/adminlte/bower_components/bootstrap-daterangepicker/daterangepicker.css">
+	<link rel="stylesheet" href="<?=base_url();?>assets/adminlte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+	<link rel="stylesheet" href="<?=base_url();?>assets/adminlte/bower_components/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css">
+	<link rel="stylesheet" href="<?=base_url();?>assets/adminlte/plugins/timepicker/bootstrap-timepicker.min.css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+		
+		
+			<style type="text/css">
+			.labelfrm {
+				display:block;
+				font-size:small;
+				margin-top:5px;
+			}
+			.error {
+				font-size:small;
+				color:red;
+			}
+			#table_transaksi input
+			{
+				-webkit-border-radius: 5px;
+				-moz-border-radius: 5px;
+				border-radius: 5px;
+			}
+			#table_transaksi input:hover{
+			  box-shadow:0 0 7px 5px lightblue;
+			}
+			
+			#kode_produk
+			{
+				-webkit-border-radius: 15px;
+				-moz-border-radius: 15px;
+				border-radius: 15px;
+			}
+			#kode_produk:hover{
+			  box-shadow:0 0 7px 5px lightblue;
+			}
+			
+			
+
+			select {
+			  width: 60px;
+			  height: 25px;
+			  overflow: hidden;
+			  background: no-repeat right #749ABE;
+			  border: 1px solid #ccc;
+			  border-radius: 5px;
+			  -webkit-border-radius: 5px;
+			  transition:ease all 0.3s;
+			  -webkit-transition:ease all 0.3s;
+			  
+			}
+			select:hover{
+			  box-shadow:0 0 7px 5px lightblue;
+			}
+			select select {
+			  background: transparent;
+			  width: 80px;
+			  padding: 5px;
+			  font-size: 16px;
+			  line-height: 1;
+			  border: 0;
+			  border-radius: 0;
+			  height: 34px;
+			  -webkit-appearance: none;
+			}
+
+			select select {
+			  color: #fff;
+			}
+
+
+			
+			</style>
+			
+			<script type="text/javascript" src="<?=base_url();?>assets/admin/js/jquery.validate.min.js"></script>
+			
+			<script type="text/javascript">
+			$(document).ready(function() {
+				$('.frm-input').validate
+                (
+                    {
+        				rules: 
+                        {
+        					pass2: 
+                            {
+        						equalTo: "#pass"
+        					}
+        				},
+        				messages: 
+                        {
+        					pass2: {
+        						equalTo: "Password tidak sama"
+        					}
+        				}
+        			}
+                );
+				$('.confirm-btn').click(function(){
+				var answer = confirm(jQuery(this).attr('title'));
+				return answer;
+				});
+			});
+			</script>
+			
+			<script type="text/javascript">
+				var htmlobjek;
+				$(document).ready(function()
+				{	
+					$('#5_transaksi').attr('class', 'active treeview');
+					
+					if( $('#is_dari_halaman_pembayaran').val() == 0)
+					{
+						$('#53_transaksi_pemeriksaan').attr('class', 'active treeview');
+					}
+					else
+					{
+						$('#54_transaksi_pembayaran').attr('class', 'active treeview');
+					}
+					
+					$('body').attr('class', 'hold-transition skin-purple sidebar-collapse sidebar-mini');
+					
+					//UNTUK LOADING JIKA EDIT
+					if( $('#id_h_penjualan').val() != '')
+					{
+						//alert("ADA NILAI :"+$('#id_h_pembelian').val());
+						tampilkan_list_d_penjualan();
+						//alert($('#pengurang').val());
+						//alert($('#pajak').val());
+						/*MUNCULKAN DATA PEMBAYARAN SEKALI LAGI DISNII, INI KARENA ADANY PERHITUNGAN AKUMULASI DISKON DULU DAN PASTIKAN ADA DISKON*/
+							
+							setTimeout(
+							  function() 
+							  {
+								//do something special
+								var pengurang = $('#pengurang').val();
+									pengurang = pengurang.replace(',','');
+									pengurang = pengurang.replace(',','');
+									pengurang = pengurang.replace(',','');
+									pengurang = pengurang.replace(',','');
+									
+									
+								if((pengurang*1) > 0)
+								{
+									//alert(pengurang);
+									var grandTotal2 = $('#grandTotal2').html();
+									grandTotal2 = grandTotal2.replace(',','');
+									grandTotal2 = grandTotal2.replace(',','');
+									grandTotal2 = grandTotal2.replace(',','');
+									grandTotal2 = grandTotal2.replace(',','');
+									
+									
+									
+									
+									var pembayaran_cash = $('#bayar_cash').val();
+									pembayaran_cash = pembayaran_cash.replace(',','');
+									pembayaran_cash = pembayaran_cash.replace(',','');
+									pembayaran_cash = pembayaran_cash.replace(',','');
+									pembayaran_cash = pembayaran_cash.replace(',','');
+									pembayaran_cash = pembayaran_cash.replace(',','');
+									
+									
+									// $('#nominal_pembayaran_bank_hide').val(); //GAK DIPAKAI LANGSUNG AJA GAK USAH DI HIDE
+									
+									var pembayaran_bank = $('#nominal_bank').val();
+												$('#nominal_pembayaran_bank_hide').val(format_str_to_currency(pembayaran_bank));
+									pembayaran_bank = pembayaran_bank.replace(',','');
+									pembayaran_bank = pembayaran_bank.replace(',','');
+									pembayaran_bank = pembayaran_bank.replace(',','');
+									pembayaran_bank = pembayaran_bank.replace(',','');
+									pembayaran_bank = pembayaran_bank.replace(',','');
+									
+									
+									var pembayaran_all = (pembayaran_cash*1) + (pembayaran_bank*1)
+									//var kembalian = (pembayaran_all*1) - ((grandTotal2*1) - (pengurang*1))
+									var kembalian = (pembayaran_all*1) - (grandTotal2*1)
+									$('#kembalian').html(format_str_to_currency(kembalian)); //ORI
+									
+									$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_admin_h_pembelian/terbilang/", data: {
+										nominal:grandTotal2
+									}, success:function(data)
+									{
+										if(data!=0)
+										{
+											$('#spterbilang').html(data);
+										} 
+										else
+										{
+											$('#spterbilang').html("");
+										}
+									}
+									});
+								}
+								
+								/*PANGGIL REKAM MEDIS*/
+									//var id_costumer = $('#id_costumer').val();
+									var no_costumer = $('#no_costumer').html();
+									rekam_medis(no_costumer);
+								/*PANGGIL REKAM MEDIS*/
+								
+								
+								/*PANGGIL PAKET YANG COCOK*/
+								/*
+									var id_kat_costumer = $('#id_kat_costumer').val();
+									$.ajax({type: "POST", url: "<?php echo base_url();?>gl-admin-pendaftaran-pasien-paket/", data: {id_kat_costumer:id_kat_costumer}, success:function(data)
+									{
+										if(data!=0)
+										{
+											$("#id_h_diskon").html(data);
+										} 
+										else
+										{
+										}
+									}
+									});
+								*/
+								/*PANGGIL PAKET YANG COCOK*/
+								
+							  }, 1000);
+						
+						/*MUNCULKAN DATA PEMBAYARAN SEKALI LAGI DISNII, INI KARENA ADANY PERHITUNGAN AKUMULASI DISKON DULU DAN PASTIKAN ADA DISKON*/
+					}
+					//UNTUK LOADING JIKA EDIT
+					
+					/*UNTUK MENDETEKSI KEYCODE TANPA ADA OBJEK*/
+					$(document).keydown(function(event)
+					{
+						//alert("TEST");
+						
+						if(event.which == 112)
+						{
+							//$("#overlay").hide();
+							//alert(event);
+							list_data_produk();
+							$('#myModal_produk').modal({ show: true})
+						}
+					});
+					/*UNTUK MENDETEKSI KEYCODE TANPA ADA OBJEK*/
+					
+					/*
+					$("#type_h_penjualan").change(function()
+                    {  
+						
+                        var type_h_penjualan = $("#type_h_penjualan").val();
+						alert(type_h_penjualan);
+						if((type_h_penjualan == 'KONSULTASI KECANTIKAN') || (type_h_penjualan == 'KONSULTASI UMUM') || (type_h_penjualan == 'OBAT DAN TINDAKAN LANGSUNG'))
+						{
+							document.getElementById("frame_dokter").style.display = "block";
+						}
+						else
+						{
+							$("#id_dokter").val("");
+							$("#no_karyawan").val("");
+							$("#nik_karyawan").val("");
+							$("#nama_karyawan").val("");
+							$("#pnd").val("");
+							$("#kelamin").val("");
+							
+							document.getElementById("frame_dokter").style.display = "none";
+							$("#IMG_dr").attr("src", "<?php echo base_url();?>assets/global/karyawan/loading.gif");
+							//$("#besar_diskon").css('background-color', 'white');
+							//$("#besar_diskon").attr("readonly", false);
+							//$("#besar_diskon").val("0");
+						}
+                    });
+					*/
+					
+				});
+				
+			</script>
+			
+	<div class="content-wrapper">
+		<!-- Content Header (Page header) -->
+		<section class="content-header">
+		
+		<h1>
+			<?php
+				echo $this->session->userdata('ses_gnl_nama_aplikasi');
+			?>
+			<?php 
+				//echo $msgbox_title;
+			?> 
+			<?php 
+				//echo $this->session->userdata("ses_nama_kantor"); 
+			?>
+		</h1>
+		
+		
+		
+		<ol class="breadcrumb">
+			<li><a href="<?php echo base_url()?>gl-admin"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+			<li><a href="#"><i class="fa fa-dashboard"></i> Transaksi</a></li>
+			<li class="active"><i class="fa fa-edit"></i> Pendaftaran Pasien</li>
+			
+		</ol>
+		</section>
+
+		<!-- Main content -->
+		<section class="content">
+		<!-- =========================================================== -->
+
+		<div class="row">
+			<div class="col-md-12">
+				  <!-- <div class="box box-warning collapsed-box box-solid"> -->
+				<!-- <div class="callout callout-info"> -->
+				<?php
+					if( ($this->session->userdata('ses_akses_lvl3_531') > 0) or ($this->session->userdata('ses_nama_jabatan') == 'Admin Aplikasi') )
+					{
+						echo '<input type="hidden" id="is_allow_edit_price" value="1" />';
+					}
+					else
+					{
+						echo '<input type="hidden" id="is_allow_edit_price" value="0" />';
+					}
+				?>
+				<div class="alert alert-info alert-dismissible">
+					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+					<h4><?php echo $msgbox_title;?></h4>
+					<p>
+						<?php //echo $this->M_gl_pengaturan->encrypt(md5("OFCJRT2020030700001")); ?>
+						Halaman pemeriksaan dokter. Dokter bisa melakukan pemeriksaan dan juga analisa keadaan pasien. Setiap resep yang dibuat oleh Dokter ataupun tindakan akan tercatat sebagai tindakan medis/rekam medis.
+					</P>
+					<!-- <p style="color:red;"><?php //echo $sum_pesan; ?></p> -->
+				</div>
+			  <!-- Perbatasan table dan form -->
+			</div><!-- /.col -->
+			<div class="col-md-12">
+				
+				<!-- ISI KONTEN -->
+					<div class="row">
+						<div class="col-md-3">
+						
+							<!-- PROSES PENDAFTARAN -->
+							<!-- <div class="box box-success ellapsed-box box-solid"> -->
+							<?php
+							if(!empty($data_h_penjualan)) 
+							{
+								echo '<div id="frame_daftar" class="box box-success ellapsed-box box-solid">';
+							}
+							else
+							{
+								echo '<div id="frame_daftar" class="box box-success collapsed-box box-solid">';
+							}
+							?>
+							
+								<div class="box-header with-border">
+									<h3 class="box-title">1. Informasi Pendaftaran <span id="nama_lengkap4"></span></h3>
+									<div class="box-tools pull-right">
+										<!-- <button class="btn btn-box-tool" data-widget="collapse"><i id="icon_form" class="fa fa-plus"></i></button> -->
+										<button class="btn btn-box-tool" data-widget="collapse"><i id="icon_form" class="fa fa-minus"></i></button>
+									</div><!-- /.box-tools -->
+								</div><!-- /.box-header -->
+								<div class="box-body">
+
+									<input type="hidden" id="kode_kantor" name="kode_kantor" value="<?php if(!empty($data_h_penjualan)) { echo $data_h_penjualan->kode_kantor; }?>" />
+									
+									<input type="hidden" id="stat_edit" name="stat_edit" value="<?php if(!empty($data_h_penjualan)) { echo $data_h_penjualan->id_h_penjualan; }?>" />
+									<input type="hidden" id="id_h_penjualan" name="id_h_penjualan" value="<?php if(!empty($data_h_penjualan)) { echo $data_h_penjualan->id_h_penjualan; }?>" />
+									<input type="hidden" id="id_dokter" name="id_dokter" value="<?php if(!empty($data_h_penjualan)) { echo $data_h_penjualan->id_dokter; }?>" />
+									<input type="hidden" id="type_h_penjualan" name="type_h_penjualan" value="<?php if(!empty($data_h_penjualan)) { echo $data_h_penjualan->type_h_penjualan; }?>" />
+									
+									<input type="hidden" id="masa_kerja" name="masa_kerja" value="<?php if(!empty($data_dokter)) { echo $data_dokter->MASA_KERJA; }?>" />
+									<input type="hidden" id="tgl_aktif" name="tgl_aktif" value="<?php if(!empty($data_dokter)) { echo $data_dokter->tgl_aktif; }?>" />
+									
+									<b>NO : </b><font style="font-weight:bold;color:red;"><?php echo $data_h_penjualan->no_antrian; ?></font> (<?php echo $data_h_penjualan->tgl_ins; ?>)
+									<br/> <b>FAKTUR : </b><font style="font-weight:bold;color:red;"><?php echo $data_h_penjualan->no_faktur; ?></font>
+									<br/> <b>PASIEN : </b><?php echo $data_h_penjualan->nama_costumer; ?>
+									<br/> <b>PENGINPUT : </b><?php echo $data_h_penjualan->nama_karyawan; ?>
+									<br/> <b>KUNJUNGAN : </b><?php echo $data_h_penjualan->type_h_penjualan; ?>
+									
+									
+									<br/>
+									<br/>
+									<div class="form-group">
+										<center><label for="media_transaksi">Media Transaksi</label></center>
+										<select name="media_transaksi" id="media_transaksi" class="required form-control select2" title="Media Transaksi" onchange="ubah_media_transaksi()">
+											<option value="<?php echo $data_h_penjualan->media_fix; ?>"><?php echo $data_h_penjualan->media_fix; ?></option>
+											<?php
+												if(!empty($media_transaksi))
+												{
+													$list_result = $media_transaksi->result();
+													foreach($list_result as $row)
+													{
+														echo'<option value="'.$row->nama_media.'">'.$row->nama_media.'</option>';
+													}
+												}
+											?>
+										</select>
+									</div>
+									
+									<div class="form-group">
+									  <label for="id_h_diskon">PAKET</label>
+									  <select style="border:1px red solid;" name="id_h_diskon" id="id_h_diskon" class="form-control select2" title="Paket Perawatan atau Produk" onchange="pilih_paket()">
+											
+											<option value="<?php if(!empty($data_h_penjualan)) { echo $data_h_penjualan->id_h_diskon; }?>">
+												<?php if(!empty($data_h_penjualan)) { echo $data_h_penjualan->nama_diskon; }?>
+											</option>
+											<?php
+												if(!empty($cek_diskon_yang_sesuai_dengan_kat_diskon))
+												{
+													$list_result = $cek_diskon_yang_sesuai_dengan_kat_diskon->result();
+													foreach($list_result as $row)
+													{
+														echo'<option value="'.$row->id_h_diskon.'">'.$row->nama_diskon.'</option>';
+													}
+												}
+											?>
+											<option value=""></option>
+											
+											
+									   </select>
+									   <input type="hidden" name="id_h_diskon_bfr" id="id_h_diskon_bfr" value="<?php if(!empty($data_h_penjualan)) { echo $data_h_penjualan->id_h_diskon; }?>" />
+									</div>
+									<?php
+										//diganti dengan combo untuk mengatasi jika pasien melakukan transaksi/pilih paket ketika bersama dokter
+										
+										//if($data_h_penjualan->id_h_diskon != "")
+										//{
+											//echo'<br/> <b>PAKET : </b><font style="color:red;">'.$data_h_penjualan->nama_diskon.'</font>';
+										//}
+										
+									?>
+									<hr/> 
+									<div style="background-color:#c2f6c6;padding:1%;">
+										<b>KELUHAN DAN PEMERIKSAAN AWAL : </b></br>
+										<?php echo $data_h_penjualan->ket_penjualan; ?> 
+									</div>
+									
+									<div style="background-color:#c2f6c6;padding:1%;">
+										<b>SARAN/DIAGNOSA DOKTER : </b></br>
+										<textarea style="width:100%" id="ket_penjualan2" name="ket_penjualan2" placeholder="Saran dari dokter, Jika ada " onchange="ubah_media_transaksi()"><?php echo $data_h_penjualan->ket_penjualan2; ?></textarea>
+									</div>
+												
+
+								</div><!-- /.box-body -->
+							</div><!-- /.box -->
+							<!-- PROSES PENDAFTARAN -->
+							
+						  <!-- Profile Image -->
+						  <div class="box box-primary">
+							<div class="box-body box-profile">
+								<?php
+									if(!empty($data_costumer)) 
+									{
+										if($data_costumer->avatar == "")
+										{
+											$src = base_url().'assets/global/karyawan/loading.gif';
+										}
+										else
+										{
+											//$src = base_url().''.$data_karyawan->avatar_url.''.$data_karyawan->avatar;
+											$src = base_url().''.$data_costumer->avatar_url.''.$data_costumer->avatar;
+										}
+									}
+									else
+									{
+										$src = base_url().'assets/global/karyawan/loading.gif';
+									}
+								
+								?>
+							
+								<input type="hidden" name="id_costumer" id="id_costumer" value="<?php if(!empty($data_costumer)) { echo $data_costumer->id_costumer; }?>"/>
+								<input type="hidden" name="id_kat_costumer" id="id_kat_costumer" value="<?php if(!empty($data_costumer)) { echo $data_costumer->id_kat_costumer; }?>" />
+								
+								<!--<input type="hidden" name="lama_terdaftar" id="lama_terdaftar" value="<?php if(!empty($data_costumer)) { echo $data_costumer->lama_terdaftar; }?>" />-->
+								
+								<input type="hidden" name="lama_terdaftar" id="lama_terdaftar" value="<?php if(!empty($data_costumer)) { echo $data_costumer->lama_terdaftar; }?>" />
+								
+								<input type="hidden" name="jum_jasa" id="jum_jasa" />
+								<input type="hidden" name="jum_produk" id="jum_produk" />
+								
+								<input type="hidden" name="id_karyawan" id="id_karyawan" value="<?php echo $this->session->userdata('ses_id_karyawan');?>" />
+							
+								<span id="img_edit">
+									<img class="profile-user-img img-responsive img-circle" src="<?php echo $src; ?>" alt="User profile picture">
+								</span>
+							  
+								<h3 class="profile-username text-center">
+									<span id="no_costumer"><?php if(!empty($data_costumer)) { echo $data_costumer->no_costumer; }?></span>
+									<input onkeydown="scan_pasien(this.value)" type="hidden" id="no_costumer" name="no_costumer"  maxlength="50" class="required form-control" size="35" alt="Isi atau scan no member" title="Isi atau scan no member" placeholder="*Isi atau scan no member)" style="background-color:green;color:white;" value="<?php if(!empty($data_costumer)) { echo $data_costumer->no_costumer; }?>" />
+								</h3>
+
+							  <p class="text-muted text-center"><span id="nama_lengkap1"><?php if(!empty($data_costumer)) { echo $data_costumer->nama_lengkap; }?></span></p>
+
+							  <ul class="list-group list-group-unbordered">
+								<li class="list-group-item">
+								  <b>MEMBER</b> <a class="pull-right"><span id="nama_kat_costumer"><?php if(!empty($data_costumer)) { echo $data_costumer->nama_kat_costumer; }else{echo"-";}?></span><span id="tgl_registrasi"><?php if(!empty($data_costumer)) { echo "(".$data_costumer->tgl_registrasi.")"; }else{echo"";}?></span></a>
+								</li>
+								<li class="list-group-item">
+								  <b>NIK</b> <a class="pull-right"><span id="nik"><?php if(!empty($data_costumer)) { echo $data_costumer->nik; }else{echo"-";}?></span></a>
+								</li>
+								<li class="list-group-item">
+								  <b>NAMA</b> <a class="pull-right"><span id="nama_lengkap2"><?php if(!empty($data_costumer)) { echo $data_costumer->nama_lengkap; }else{echo"-";}?></span></a>
+								</li>
+								<li class="list-group-item">
+								  <b>JENIS KELAMIN</b> <a class="pull-right"><span id="jenis_kelamin"><?php if(!empty($data_costumer)) { echo $data_costumer->jenis_kelamin; }else{echo"-";}?></span></a>
+								</li>
+								<li class="list-group-item">
+								  <b>PENDIDIKAN</b> <a class="pull-right"><span id="pendidikan"><?php if(!empty($data_costumer)) { echo $data_costumer->pendidikan; }else{echo"-";}?></span></a>
+								</li>
+								<li class="list-group-item">
+								  <b>PEKERJAAN</b> <a class="pull-right"><span id="pekerjaan"><?php if(!empty($data_costumer)) { echo $data_costumer->pekerjaan; }else{echo"-";}?></span></a>
+								</li>
+								<li class="list-group-item">
+								  <b>TELPON</b> <a class="pull-right"><span id="hp"><?php if(!empty($data_costumer)) { echo $data_costumer->hp; }else{echo"-";}?></span></a>
+								</li>
+								<li class="list-group-item">
+								  <b>ALAMAT</b> <p><span id="alamat_rumah_sekarang"><?php if(!empty($data_costumer)) { echo $data_costumer->alamat_rumah_sekarang; }else{echo"-";}?></span></p>
+								</li>
+								
+							  </ul>
+							  
+							  <!-- <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a> -->
+							</div>
+							<!-- /.box-body -->
+						  </div>
+						  <!-- /.box -->
+
+						  <!-- /.box -->
+						</div>
+						<!-- /.col -->
+						<div class="col-md-9">
+						
+							<!-- REKAM MEDIS -->
+							<?php
+								if((!empty($_GET['from'])) && ($_GET['from']!= "") && ($_GET['from']== "bayar")  )
+								{
+									//KARENA MAU BAYAR, JADI DIBUKA
+									echo'<div  class="box box-warning collapsed-box box-solid" style="display:none;">';
+								}
+								else
+								{
+									echo'<div  class="box box-warning collapsed-box box-solid">';
+								}
+							?>
+							
+								<div class="box-header with-border">
+									<h3 class="box-title">2. Rekam Medis <span id="nama_lengkap3"></span></h3>
+									<div class="box-tools pull-right">
+										<button class="btn btn-box-tool" data-widget="collapse"><i id="icon_form" class="fa fa-plus"></i></button>
+									</div><!-- /.box-tools -->
+								</div><!-- /.box-header -->
+								<!-- <div class="box-body"> -->
+								<div class="box-body table-responsive no-padding">
+
+									<ul class="timeline" id="container_rekam_medis">
+
+										<!-- TAMPUNG AJAX REKAM MEDIS -->
+
+									</ul>
+
+								</div><!-- /.box-body -->
+							</div><!-- /.box -->
+							<!-- REKAM MEDIS -->
+							
+							
+							<!-- TABLE TRANSAKSI -->
+								<?php
+									//if((!empty($_GET['from'])) && ($_GET['from']!= "") && ($_GET['from']== "bayar")  )
+									//{
+										//KARENA MAU BAYAR, JADI DIBUKA
+										echo'<div class="box box-success ellapsed-box box-solid">';
+									//}
+									//else
+									//{
+										//echo'<div class="box box-success collapsed-box box-solid">';
+									//}
+								?>
+								
+									<div class="box-header with-border">
+										<h3 class="box-title">3. Masukan Resep Obat atau Tindakan</h3>
+										<div class="box-tools pull-right">
+											<!-- <button class="btn btn-box-tool" data-widget="collapse"><i id="icon_form" class="fa fa-plus"></i></button> -->
+											<button class="btn btn-box-tool" data-widget="collapse"><i id="icon_form" class="fa fa-minus"></i></button>
+										</div><!-- /.box-tools -->
+									</div><!-- /.box-header -->
+									<div class="box-body">
+									
+											<div class="box-body table-responsive no-padding">
+											<!--
+											<form>
+												<input type="text" id="name" placeholder="Name">
+												<input type="text" id="email" placeholder="Email Address">
+												<input type="button" class="add-row" value="Add Row">
+											</form>
+											-->
+											
+											<!-- <label for="kode_supplier">KODE SUPPLIER</label> -->
+											<div class="input-group input-group-block" style="margin:0px;">
+												
+												<input onkeydown="list_data_produk_by_enter()" type="hidden" id="id_produk" name="id_produk" />
+												<input onkeydown="scan()" type="text" id="kode_produk" name="kode_produk"  maxlength="50" class="required form-control" size="35" alt="Kode Produk/Tindakan (NB: Isikan dengan kode produk dan tekan tombol enter  atau scan)" title="Kode Produk/Tindakan (NB: Isikan dengan kode produk dan tekan tombol enter atau scan)" placeholder="*Kode Produk/Tindakan (NB: Isikan dengan kode produk dan tekan tombol enter atau scan)"/>
+												<span class="input-group-btn">
+												
+												&nbsp&nbsp
+												<center>
+												<button class="btn btn-danger btn-sm btn-flat" type="button" title="Cari Produk" data-toggle="modal" data-target="#myModal_produk" onclick="list_data_produk('PRODUK')">PILIH PRODUK (F1)</button>
+												
+												<button class="btn btn-info btn-sm btn-flat" type="button" title="Cari jasa" data-toggle="modal" data-target="#myModal_produk" onclick="list_data_produk('JASA')">PILIH TINDAKAN/JASA (F2)</button>
+												
+												</center>
+												</span>
+												
+											</div><!-- /input-group<br />-->
+											<br />
+											
+											<div class="box-body table-responsive no-padding">
+											<table width="100%" id="table_transaksi" class="table table-hover" style="font-size:12px;">
+												<thead>
+													<tr style="background-color:green;text-align:center;">
+														<!-- <th>Select</th> -->
+														<th width="10%" style="text-align:center;width:10%;">KODE</th>
+														<th width="32%" style="text-align:center;width:32%;"> PRODUK/TINDAKAN</th>
+														<th width="4%" style="text-align:right;width:4%;">JUMLAH</th>
+														<th width="4%" style="text-align:center;width:4%;">SATUAN</th>
+														<th width="6%" style="text-align:right;width:6%;">HARGA</th>
+														<th width="4%" style="text-align:center;width:4%;">DISKON</th>
+														<th width="4%" style="text-align:center;width:4%;">OPTR</th>
+														<th width="8%" style="text-align:right;width:8%;">SUBTOTAL</th>
+														<th width="18%" style="text-align:center;width:18%;">PEMAKAIAN</th>
+														<th width="10%" style="text-align:center;width:10%;">KETERANGAN</th>
+													</tr>
+													
+												</thead>
+												
+												<?php
+													/*AKSES BUKAN DOKTER UNTUK MEMBUAT RESEP*/
+													if( ($this->session->userdata('ses_akses_lvl3_534') > 0) or ($this->session->userdata('ses_nama_jabatan') == 'Admin Aplikasi')  or $data_h_penjualan->id_dokter == $this->session->userdata('ses_id_karyawan'))
+													{
+														echo '<tbody id="content_transaksi">';
+													}
+													else
+													{
+														echo '<tbody id="content_transaksi" style="pointer-events: none;">';
+													}
+													/*AKSES BUKAN DOKTER UNTUK MEMBUAT RESEP*/
+												?>
+														
+													<!-- <tr> -->
+														<!-- <td><input type="checkbox" name="record"></td> -->
+														<!-- <td >Peter Parker</td> -->
+														<!-- <td>peterparker@mail.com</td> -->
+													<!-- </tr> -->
+													
+													
+												</tbody>
+												<?php
+													/*PASTIKAN MEMILIKI AKSES MEMBAYAR*/
+													if( ($this->session->userdata('ses_akses_lvl2_54') > 0) or ($this->session->userdata('ses_nama_jabatan') == 'Admin Aplikasi') )
+													{
+														
+														
+														echo '<tfoot id="footer_transaksi">';
+														
+														/*
+														echo'<tr style="height:1px; font-weight:bold; background-color:#DCDCDC;display:none;">
+															<!-- <th>Select</th> -->
+															<td colspan="7" style="text-align:right;">TOTAL</td>
+															<td style="text-align:right;display:none;"><span id="grandTotalForDokterSaja"></span></td>
+															<td></td>
+															<td></td>
+														</tr>';
+														*/
+														
+														echo'<input type="hidden" name="allow_bayar" id="allow_bayar" value="1" />';
+													}
+													else
+													{
+														
+														
+														//echo '<tfoot id="footer_transaksi" style="display:none;">';
+														
+														echo '<tfoot id="footer_transaksi" style="pointer-events: none;">';
+														
+														/*
+														echo'<tr style="height:1px; font-weight:bold; background-color:#DCDCDC;">
+															<!-- <th>Select</th> -->
+															<td colspan="7" style="text-align:right;">TOTAL</td>
+															<td style="text-align:right;"><span id="grandTotalForDokterSaja"></span></td>
+															<td></td>
+															<td></td>
+														</tr>';
+														*/
+														
+														echo'<input type="hidden" name="allow_bayar" id="allow_bayar" value="0" />';
+													}
+													
+													if((!empty($_GET['from'])) && ($_GET['from']!= "") && ($_GET['from']== "bayar")  )
+													{
+														$sts_penjualan = "1";
+													}
+													else
+													{
+														$sts_penjualan = '0';
+													}
+													
+													echo'<input type="hidden" name="is_dari_halaman_pembayaran" id="is_dari_halaman_pembayaran" value="'.$sts_penjualan.'" />';
+													
+													/*PASTIKAN MEMILIKI AKSES MEMBAYAR*/
+												?>
+													<tr style="height:1px; font-weight:bold; background-color:#DCDCDC;">
+														<!-- <th>Select</th> -->
+														<td colspan="7" style="text-align:right;">TOTAL</td>
+														<td style="text-align:right;"><span id="grandTotal"></span></td>
+														<td></td>
+														<td></td>
+													</tr>
+													<tr style="font-weight:bold; background-color:#DCDCDC;">
+														<!-- <th>Select</th> -->
+														<?php
+															if( ($this->session->userdata('ses_akses_lvl3_531') > 0) or ($this->session->userdata('ses_nama_jabatan') == 'Admin Aplikasi') )
+															{
+														?>
+															<td colspan="7" style="text-align:right;">POTONGAN/DISKON</td>
+															<td style="text-align:right;"><input style="text-align:right;" type="text" name="pengurang" id="pengurang" maxlength="15" size="8" onkeypress="return isNumberKey(event)" onkeyup="grandTotaltransaksi()" onfocusout="getRupiah(this.id)" onchange="ubah_h_pembelian()" class="required" value="<?php if(!empty($data_h_penjualan)) { echo number_format($data_h_penjualan->diskon,1,'.',','); } else { echo "0"; } ?>" /></td>
+														<?php
+															}
+															else
+															{
+														?>
+															<td colspan="7" style="text-align:right;">POTONGAN/DISKON</td>
+															<td style="text-align:right;"><input style="text-align:right;" type="text" name="pengurang" id="pengurang" maxlength="15" size="8" onkeypress="return isNumberKey(event)" onkeyup="grandTotaltransaksi()" onfocusout="getRupiah(this.id)" onchange="ubah_h_pembelian()" class="required" value="<?php if(!empty($data_h_penjualan)) { echo number_format($data_h_penjualan->diskon,1,'.',','); } else { echo "0"; } ?>" readonly /></td>
+														<?php
+															}
+														?>
+														<td></td>
+														<td>
+														<?php  //echo number_format($data_h_penjualan->pajak,1,'.',',');?>
+														</td>
+													</tr>
+													
+													<?php
+														//ses_gnl_pajak_transaksi
+														//if( ($this->session->userdata('ses_gnl_pajak_transaksi')) > 0)
+														//{
+													?>
+														<tr style="font-weight:bold; background-color:#DCDCDC;height:1px;">
+															<!-- <th>Select</th> -->
+															
+															<td colspan="7" style="text-align:right;">CHARGE/BIAYA</td>
+															<td style="text-align:right;"><input style="text-align:right;" type="text" name="pajak" id="pajak" maxlength="15" size="8" onkeypress="return isNumberKey(event)" onfocusout="getRupiah(this.id)" onchange="grandTotaltransaksi()" class="required" value="<?php if(!empty($data_h_penjualan)) { echo number_format($data_h_penjualan->pajak + $data_h_penjualan->biaya,1,'.',','); } else { echo "0"; } ?>" /></td>
+															
+															
+															
+															
+															<td colspan="2">
+																<select width="100%" name="optr_biaya" id="optr_biaya" class="required" onchange="grandTotaltransaksi()" >
+																	<?php
+																		if($data_h_penjualan->pajak > 100)
+																		{
+																			echo'
+																				<option value="C">C</option>
+																				<option value="%">%</option>
+																			';
+																		}
+																		else
+																		{
+																			if($data_h_penjualan->biaya > 0)
+																			{
+																				echo'
+																					<option value="C">C</option>
+																					<option value="%">%</option>
+																				';
+																			}
+																			else
+																			{
+																				echo'
+																					<option value="%">%</option>
+																					<option value="C">C</option>
+																				';
+																			}
+																		}
+																	?>
+																	
+																</select>
+																
+																<input style="text-align:right;" type="hidden" name="pajak_hide" id="pajak_hide" maxlength="15" size="8"  class="required" value="<?php  echo $this->session->userdata('ses_gnl_pajak_transaksi');  ?>" />
+															</td>
+															
+															<!-- <td> -->
+															<!-- <input style="text-align:right;" type="hidden" name="pajak_hide" id="pajak_hide" maxlength="15" size="8" onkeypress="return isNumberKey(event)" onfocusout="getRupiah(this.id)" onchange="ubah_h_pembelian()" class="required" value="<?php  echo $this->session->userdata('ses_gnl_pajak_transaksi');  ?>" /> -->
+															<!-- </td> -->
+															
+														</tr>
+													<?php
+														//}
+														//else
+														//{
+													?>
+														<!--
+															<input style="text-align:right;" type="hidden" name="pajak" id="pajak" maxlength="15" size="8" onkeypress="return isNumberKey(event)" onfocusout="getRupiah(this.id)" onchange="ubah_h_pembelian()" class="required" value="0" />
+															
+															<input style="text-align:right;" type="hidden" name="pajak_hide" id="pajak_hide" maxlength="15" size="8" onkeypress="return isNumberKey(event)" onfocusout="getRupiah(this.id)" onchange="ubah_h_pembelian()" class="required" value="0" />
+														-->
+													<?php
+														//}
+													?>
+													
+													
+													<tr style="font-weight:bold; background-color:#DCDCDC;">
+														<!-- <th>Select</th> -->
+														<td colspan="7" style="text-align:right;">GRAND TOTAL</td>
+														<td style="text-align:right;"><span id="grandTotal2"></span></td>
+														<td style="text-align:right;">
+															BAYAR VIA BANK
+														</td>
+														<td></td>
+													</tr>
+													
+													
+													<tr style="font-weight:bold; background-color:#DCDCDC;">
+													
+														<!-- <th>Select</th> -->
+														<td colspan="7" style="text-align:right;">PEMBAYARAN CASH</td>
+														<!-- <td style="text-align:right;"><span id="grandBayar"></span></td> -->
+														<td style="text-align:right;">
+														
+														
+														<input type="hidden" id="id_d_bayar_cash" name="id_d_bayar_cash" value="<?php if(!empty($data_pembayaran_cash)) { echo $data_pembayaran_cash->id_d_bayar; }?>" />
+														
+														
+														
+														
+															<input style="text-align:right;" type="text" name="bayar_cash" id="bayar_cash" maxlength="15" size="8"  onchange="verifikasi_d_penjualan()" onkeypress="return isNumberKey(event)" onfocusout="getRupiah(this.id)" onkeyup="grandTotaltransaksi()"  class="required" value="<?php if(!empty($data_pembayaran_cash)) { echo number_format($data_pembayaran_cash->nominal,1,'.',','); } else { echo 0; } ?>" />
+														
+														
+														</td>
+														<td style="text-align:right;">
+															<input style="text-align:right;" size="8" type="text" id="nominal_pembayaran_bank_hide" name="nominal_pembayaran_bank_hide" value="<?php if(!empty($data_pembayaran_bank)) { echo number_format($data_pembayaran_bank->nominal,1,'.',','); } else { echo 0; } ?>" readonly/>
+														</td>
+														<td style="text-align:left;">
+														
+														<span class="input-group-btn">
+															<button class="btn btn-info btn-sm btn-flat" style="float:right;" type="button" title="Cari Produk" data-toggle="modal" data-target="#myModal_bayar_bank" >BAYAR VIA BANK</button>
+														</span>
+														</td>
+													</tr>
+													
+													
+													
+													<tr style="font-weight:bold; background-color:#DCDCDC;">
+														<!-- <th>Select</th> -->
+														<td colspan="7" style="text-align:right;">KEMBALIAN</td>
+														<td style="text-align:right;"><span id="kembalian"></span></td>
+														<td></td>
+														<td></td>
+													</tr>
+													<tr style="font-weight:bold; background-color:#DCDCDC;">
+														<!-- <th>Select</th> -->
+														<td colspan="10" style="text-align:left;"><span id="spterbilang"></span></td>
+													</tr>
+												</tfoot>
+											</table>
+											</div>
+											<!-- <button type="button" class="delete-row">Delete Row</button> -->
+										</div>
+									</div>
+								</div>
+								
+							
+							<!-- TABLE TRANSAKSI -->
+							
+							<!-- FOTO/GAMBAR -->
+							
+							<?php
+								if((!empty($_GET['from'])) && ($_GET['from']!= "") && ($_GET['from']== "bayar")  )
+								{
+									//KARENA MAU BAYAR, JADI DIBUKA
+									echo'<div class="box box-success collapsed-box box-solid" style="display:none;">';
+								}
+								else
+								{
+									echo'<div class="box box-success collapsed-box box-solid">';
+								}
+							?>
+							
+							
+								<div class="box-header with-border">
+									<h3 class="box-title">4. Ambil Gambar pasien</h3>
+									<div class="box-tools pull-right">
+										<button class="btn btn-box-tool" data-widget="collapse"><i id="icon_form" class="fa fa-plus"></i></button>
+										<!-- <button class="btn btn-box-tool" data-widget="collapse"><i id="icon_form" class="fa fa-minus"></i></button> -->
+									</div><!-- /.box-tools -->
+								</div><!-- /.box-header -->
+								<div class="box-body" style="text-align:center;">
+									<div class="box box-solid">
+										<div class="box-header with-border">
+										<!-- <h3 class="box-title">Carousel</h3> -->
+										<a href="<?php echo base_url();?>gl-admin-images/penjualan/<?php echo $data_h_penjualan->id_h_penjualan;?>" class="btn btn-success btn-block btn-flat" type="button" title="Cari Produk">KLIK UNTUK MEMASUKAN GAMBAR</a>
+										</div>
+									<!-- /.box-header -->
+										<div class="box-body">
+											<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+											
+												<!-- <ol class="carousel-indicators"> -->
+													<!-- <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li> -->
+													<!-- <li data-target="#carousel-example-generic" data-slide-to="1" class=""></li> -->
+													<!-- <li data-target="#carousel-example-generic" data-slide-to="2" class=""></li> -->
+												<?php
+													/*UNTUK MNEMPILKAN INDIKATOR GAMBAR*/
+													/*
+														if(!empty($list_images))
+														{
+															$list_result = $list_images->result();
+															$no=0;
+															foreach($list_result as $row)
+															{
+																if($no == 0)
+																{
+																	echo'<li data-target="#carousel-example-generic" data-slide-to="'.$no.'" class="active"></li>';
+																}
+																else
+																{
+																	echo'<li data-target="#carousel-example-generic" data-slide-to="'.$no.'" class=""></li>';
+																}
+																
+																$no++;
+															}
+														}
+														*/
+													/*UNTUK MNEMPILKAN INDIKATOR GAMBAR*/
+												?>
+												<!-- </ol> -->
+												
+												
+												<div class="carousel-inner">
+													<?php
+														/*UNTUK MENAMPILKAN GAMBAR*/
+														if(!empty($list_images))
+														{
+															$list_result = $list_images->result();
+															$no=0;
+															foreach($list_result as $row)
+															{
+																if($no == 0)
+																{
+																	echo'<div class="item active">';
+																}
+																else
+																{
+																	echo'<div class="item">';
+																}
+																
+																
+																echo
+																'
+																	<img style="width:50%;margin-left:25%;" src="'.base_url().''.$row->img_url.''.$row->img_file.'" alt="'.$row->img_nama.'">
+
+																	<div style="padding:2%; background-color:purple;" class="carousel-caption">
+																		<font style="font-weight:bold;font-size:20px;">'.$row->img_nama.'</font>
+																		</br>
+																		'.$row->ket_img.'
+																	</div>
+																</div>';
+																
+																$no++;
+															}
+														}
+														/*UNTUK MNEMPILKAN GAMBAR*/
+													?>
+												
+												</div>
+												
+												
+												<!-- <div class="carousel-inner"> -->
+													<!-- <div class="item active"> -->
+														<!-- <img src="http://placehold.it/900x500/39CCCC/ffffff&text=I+Love+Bootstrap" alt="First slide"> -->
+
+														<!-- <div class="carousel-caption"> -->
+														<!-- First Slide -->
+														<!-- </div> -->
+													<!-- </div> -->
+													<!-- <div class="item"> -->
+														<!-- <img src="http://placehold.it/900x500/3c8dbc/ffffff&text=I+Love+Bootstrap" alt="Second slide"> -->
+
+														<!-- <div class="carousel-caption"> -->
+														<!-- Second Slide -->
+														<!-- </div> -->
+													<!-- </div> -->
+													<!-- <div class="item"> -->
+														<!-- <img src="http://placehold.it/900x500/f39c12/ffffff&text=I+Love+Bootstrap" alt="Third slide"> -->
+
+														<!-- <div class="carousel-caption"> -->
+														<!-- Third Slide -->
+														<!-- </div> -->
+													<!-- </div> -->
+													
+												<!-- </div> -->
+												
+												
+												<a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+												<span class="fa fa-angle-left"></span>
+												</a>
+												<a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+												<span class="fa fa-angle-right"></span>
+												</a>
+												</div>
+											</div>
+										<!-- /.box-body -->
+									</div>
+								</div>
+								</form>
+							</div>
+							<!-- FOTO/GAMBAR -->
+							
+							<!-- NAVIGASI -->
+							<div class="box box-success ellapsed-box box-solid">
+								<div class="box-header with-border">
+									<h3 class="box-title">5. Navigasi</h3>
+									<div class="box-tools pull-right">
+										<!-- <button class="btn btn-box-tool" data-widget="collapse"><i id="icon_form" class="fa fa-plus"></i></button> -->
+										<button class="btn btn-box-tool" data-widget="collapse"><i id="icon_form" class="fa fa-minus"></i></button>
+									</div><!-- /.box-tools -->
+								</div><!-- /.box-header -->
+								<div class="box-body" style="text-align:center;">
+									<!--<button class="btn btn-danger btn-flat" type="button" title="Cari Produk" onclick="window.location.replace('<?php echo base_url();?>gl-admin-purchase-order');">TUNDA TRANSAKSI</button>-->
+									<!-- <button class="btn btn-danger btn-flat" type="button" title="Cari Produk" onclick="tunda_transakasi()">TUNDA PENDAFTARAN</button> -->
+									
+									<button class="btn btn-danger btn-flat" type="button" title="Cari Produk" onclick="kosongkan()">KOSONGKAN</button>
+									
+									<button class="btn btn-default btn-flat" type="button" title="Cari Produk" onclick="tunda_transakasi()">TUNDA</button>
+									
+									<button class="btn btn-warning btn-flat" type="button" title="Cari Produk" onclick="batal_transakasi()">BATAL</button>
+									<!-- <button id="btn_upload" class="btn btn-danger btn-flat" type="submit" title="Cari Produk">SIMPAN</button> -->
+									
+									<button id="btn_upload" class="btn btn-success btn-flat" type="button" title="Cari Produk" onclick="selesai_transaksi()">SIMPAN</button>
+									
+									<!-- <button class="btn btn-danger btn-flat" type="button" title="Cari Produk" data-toggle="modal" data-target="#myModal_pendaftaran" onclick="list_pendaftaran()">LIST PEMERIKSAAN(F8)</button> -->
+								</div>
+								</form>
+							</div>
+							<!-- NAVIGASI -->
+						</div>
+						<!-- /.col -->
+						
+						
+						
+						
+					</div>
+				<!-- ISI KONTEN -->
+				
+			</div><!-- /.col -->
+			
+			
+			<!-- Show MOdal - TABLE 1 PRODUK -->
+				<div class="modal fade" id="myModal_produk" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<h4 class="modal-title" id="myModalLabel">Data Produk/Jasa</h4>
+						</div>
+						<div class="modal-body">
+							
+							
+							<!-- ISI BODY -->
+							<div class="box">
+								<div class="box-header">
+								<h3 class="box-title">Table List Produk/Jasa - PROSES</h3>
+									<div class="pull-right">
+										<!-- <form action="<?=base_url();?>admin/pendaftaran-klinik-cari" method="post" class="frm-cari"> -->
+										<!--<form action="#" method="get" class="frm-cari">-->
+											<table>
+												<tr>
+													<td>
+														<input  type="hidden" id="isProduk" name="isProduk"  maxlength="35" class="text form-control" size="35" alt="tlp" title="Cari data" placeholder="...Cari" />
+														
+														<input onkeydown="hub_pencarian_by_enter()" type="text" id="cari_json_produk" name="cari_json_produk"  maxlength="35" class="text form-control" size="35" alt="tlp" title="Cari data" placeholder="...Cari" value="<?php if (!empty($_GET['berdasarkan'])){echo $_GET['cari_json_produk'];} ?>"/>
+														
+														<input type="hidden" id="id_kat_produk_fix" name="id_kat_produk_fix"/>
+														
+														<input type="hidden" id="id_d_penjualan_kategori" name="id_d_penjualan_kategori"/>
+														
+														<input type="hidden" id="isDariPencarianKategori" name="isDariPencarianKategori"/>
+														
+														<input type="hidden" id="idProduk" name="idProduk"/>
+														<input type="hidden" id="idHDIskon" name="idHDIskon"/>
+														<input type="hidden" id="idDPenjualanFix" name="idDPenjualanFix"/>
+														
+													</td>
+													<!--
+													<td><a href="javascript:void(0)" id="btn_cari_json" class="btn btn-success btn-sm" onclick="list_data_karyawan_by_enter('.$row->id_klinik.')" title = "Cari Dokter" >Cari</a></td>
+													-->
+													<td><a href="javascript:void(0)" id="btn_cari_json_produk" class="btn btn-success btn-sm" onclick="hub_pencarian()" title = "Cari Dokter" >Cari</a></td>
+												</tr>
+											</table>
+										<!-- </form> -->
+									</div>
+								</div><!-- /.box-header -->
+								<div  id="tb_cari_produk" class="box-body">
+									<!-- ISI DENGAN DATA KARYAWAN -->
+								</div><!-- /.box-body -->
+							</div><!-- /.box -->
+							<!-- ISI BODY -->
+							
+							
+						</div>
+						<!-- <div class="modal-footer"> -->
+							<!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
+							<!-- <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="add_produk_masal()">Tambahkan Masal</button> -->
+						<!-- </div> -->
+						</div>
+					</div>
+				</div>
+
+			<!-- Show MOdal - TABLE 1 PRODUK-->
+			
+			
+			<!-- Show MOdal - TABLE 2 PEMBAYARAN BANK -->
+				<div class="modal fade" id="myModal_bayar_bank" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<h4 class="modal-title" id="myModalLabel">Pembayaran Via Bank</h4>
+						</div>
+						<div class="modal-body">
+							
+							
+							<!-- ISI BODY -->
+							<div class="box">
+								<div  id="tb_cari_pembayaran_cash" class="box-body">
+									<!-- ISI FORM PEMBAYARAN BANK -->
+									<!-- ISI FORM -->
+									<form role="form" action="<?php echo base_url();?>gl-admin-produks-diskon-promo-simpan/<?php echo $this->uri->segment(2,0);?>" method="post" class="frm-input">
+									<div class="box-body">
+									
+										
+										<input type="hidden" id="id_d_bayar_bank" name="id_d_bayar_bank" value="<?php if(!empty($data_pembayaran_bank)) { echo ($data_pembayaran_bank->id_d_bayar); }?>" />
+										
+										<div class="form-group">
+										  <label for="id_bank">Pilih bank Perusahaan <font style="color:red;font-weight:bold;">(MILIK PERUSAHAAN)</font> </label>
+										  <select name="id_bank" id="id_bank" class="required form-control select2" title="Pilih bank Perusahaan">
+												<option value="<?php if(!empty($data_pembayaran_bank)) { echo ($data_pembayaran_bank->id_bank); }?>"><?php if(!empty($data_pembayaran_bank)) { echo ($data_pembayaran_bank->id_d_bayar);} else { echo "== Pilih Satuan Jual ==";} ?></option>
+												
+												<?php
+													if(!empty($list_bank))
+													{
+														$list_result = $list_bank->result();
+														foreach($list_result as $row_bank)
+														{
+															echo'<option value="'.$row_bank->id_bank.'">'.$row_bank->nama_bank.'('.$row_bank->norek.') | '.$row_bank->atas_nama.'</option>';
+														}
+													}
+												?>
+												
+										   </select>
+										</div>
+										
+										<div class="box box-success ellapsed-box box-solid">
+											<div class="box-header with-border">
+												<h3 class="box-title">INFORMASI BANK PASIEN</h3>
+												<div class="box-tools pull-right">
+													<!-- <button class="btn btn-box-tool" data-widget="collapse"><i id="icon_form" class="fa fa-plus"></i></button> -->
+													<button class="btn btn-box-tool" data-widget="collapse"><i id="icon_form" class="fa fa-minus"></i></button>
+												</div><!-- /.box-tools -->
+											</div><!-- /.box-header -->
+											<!-- <div class="box-body" style="text-align:center;"> -->
+											<div class="box-body">
+												
+												<div class="form-group">
+													<label for="cara">Jenis/Type Pembayaran</label>
+													<select name="cara" id="cara" class="required form-control select2" title="Jenis/Type Pembayaran">
+														<option value="<?php if(!empty($data_pembayaran_bank)) { echo $data_pembayaran_bank->cara; }?>"><?php if(!empty($data_pembayaran_bank)) { echo $data_pembayaran_bank->cara; } else { echo "== Pilih Satuan Cara Pembayaran ==";} ?></option>
+														
+														<option value="TRANSFER">TRANSFER</option>
+														<option value="GIRO">GIRO</option>
+														<option value="CEK">CEK</option>
+														<option value="EDC">EDC</option>
+														<option value="CREDIT">CREDIT</option>
+														<option value="COMPLIMENT">COMPLIMENT</option>
+														<!-- <option value="HOSTUSE">HOSTUSE</option> -->
+														
+												   </select>
+												</div>
+												
+												<div class="form-group">
+													<label for="nama_bank">NAMA BANK</label>
+													<input type="text" id="nama_bank" name="nama_bank"  maxlength="25" class="required form-control" size="35" alt="Nama Bank" title="Nama Bank" placeholder="*Nama Bank Pasien" onkeyup="this.value = this.value.toUpperCase()" value="<?php if(!empty($data_pembayaran_bank)) { echo ($data_pembayaran_bank->nama_bank); }?>"/>
+												</div>
+												
+												<div class="form-group">
+													<label for="norek">NO REKENING</label>
+													<input type="text" id="norek" name="norek"  maxlength="25" class="required form-control" size="35" alt="NO REKENING" title="NO REKENING" placeholder="*NO REKENING" onkeyup="this.value = this.value.toUpperCase()" value="<?php if(!empty($data_pembayaran_bank)) { echo ($data_pembayaran_bank->norek); }?>"/>
+												</div>
+												
+												<div class="form-group">
+													<label for="atas_nama">ATAS NAMA</label>
+													<input type="text" id="atas_nama" name="atas_nama"  maxlength="35" class="form-control" size="35" alt="Atas Nama" title="Atas Nama" placeholder="*Atas Nama" onkeyup="this.value = this.value.toUpperCase()" value="<?php if(!empty($data_pembayaran_bank)) { echo ($data_pembayaran_bank->nama_bank); }?>"/>
+												</div>
+												
+												<div class="form-group">
+													<label for="nominal_bank">Besar Pembayaran (Rp)</label>
+													<input type="text" id="nominal_bank" name="nominal_bank"  maxlength="25" onchange="verifikasi_d_penjualan()"  onkeypress="return isNumberKey(event)" onfocusout="getRupiah(this.id)" onkeyup="grandTotaltransaksi()" class="required form-control" size="35" alt="Besar Pembayaran (Rp)" title="Besar Pembayaran (Rp)" placeholder="*Besar Pembayaran (Rp)" value="<?php if(!empty($data_pembayaran_bank)) { echo number_format($data_pembayaran_bank->nominal,1,'.',','); } else { echo 0; } ?>"/>
+													
+												</div>
+												
+												<div class="form-group">
+													<label>Tanggal Pembayaran</label>
+													<div class="input-group date">
+													  <div class="input-group-addon">
+														<i class="fa fa-calendar"></i>
+													  </div>
+													  <input name="tgl_bayar" id="tgl_bayar" type="text" class="required form-control pull-right settingDate" alt="Tanggal Pembayaran" title="Tanggal Pembayaran" value="<?php if(!empty($data_pembayaran_bank)) { echo $data_pembayaran_bank->tgl_bayar; } else { echo date("Y-m-d"); } ?>" data-date-format="yyyy-mm-dd" />
+													</div>
+												</div>
+												
+												<div class="form-group">
+													<label>Tanggal Diterima (Pencairan)</label>
+													<div class="input-group date">
+													  <div class="input-group-addon">
+														<i class="fa fa-calendar"></i>
+													  </div>
+													  <input name="tgl_pencairan" id="tgl_pencairan" type="text" class="required form-control pull-right settingDate" alt="Tanggal Pembayaran" title="Tanggal Pembayaran" value="<?php if(!empty($data_pembayaran_bank)) { echo ($data_pembayaran_bank->tgl_pencairan); } else { echo date("Y-m-d");} ?>" data-date-format="yyyy-mm-dd">
+													</div>
+												</div>
+												
+												<div class="form-group">
+												  <label for="ket_bank">Keterangan Pembayaran Bank</label>
+												  <textarea name="ket_bank" id="ket_bank" class="required form-control" title="Isikan lengkap Keterangan Pembayaran" placeholder="*Isikan lengkap Keterangan Pembayaran"><?php if(!empty($data_pembayaran_bank)) { echo ($data_pembayaran_bank->ket); } ?></textarea>
+												</div>
+												
+											</div>
+										</div>
+										
+									</div><!-- /.box-body -->
+					
+									<!-- <div class="box-footer"> -->
+										<!-- <button type="reset" id="btnbatal" class="btn btn-default">Batal</button> -->
+										<!-- <button type="submit" id="btnsimpan" class="confirm-btn btn btn-primary" title="Simpan Data <?php echo $msgbox_title;?> ?">Simpan</button> -->
+									<!-- </div> -->
+									</form>
+								<!-- ISI FORM -->
+								</div><!-- /.box-body -->
+							</div><!-- /.box -->
+							<!-- ISI BODY -->
+							
+							
+						</div>
+						<!-- <div class="modal-footer"> -->
+							<!-- <button type="button" class="btn btn-danger btn-block btn-flat" data-dismiss="modal">BATAL</button> -->
+							<!-- <button type="button" class="btn btn-primary btn-block btn-flat" data-dismiss="modal" onclick="add_produk_masal()">SIMPAN</button> -->
+						<!-- </div> -->
+						</div>
+					</div>
+				</div>
+
+			<!-- Show MOdal - TABLE 2 PEMBAYARAN BANK -->
+			
+			<!-- Show MOdal - TABLE 3 FOTO PASIEN -->
+				<div class="modal fade" id="myModal_foto_pasien" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<h4 class="modal-title" id="myModalLabel">FOTO PERUBAHAN PASIEN</h4>
+						</div>
+						<div class="modal-body">
+							
+							
+							<!-- ISI BODY -->
+								<div id="gambar_rekam_medis">								
+									<!-- UNTUK MNEMPILKAN GAMBAR -->
+								</div>
+							<!-- ISI BODY -->
+							
+							
+						</div>
+						<!-- <div class="modal-footer"> -->
+							<!-- <button type="button" class="btn btn-danger btn-block btn-flat" data-dismiss="modal">BATAL</button> -->
+							<!-- <button type="button" class="btn btn-primary btn-block btn-flat" data-dismiss="modal" onclick="add_produk_masal()">SIMPAN</button> -->
+						<!-- </div> -->
+						</div>
+					</div>
+				</div>
+
+			<!-- Show MOdal - TABLE 3 FOTO PASIEN -->
+			
+		</div><!-- /.row -->
+		<!-- =========================================================== -->
+		</section><!-- /.content -->
+	</div><!-- /.content-wrapper -->
+			
+			
+		
+<script type='text/javascript'>
+	function kosongkan()
+	{
+		var r = confirm("Apakah anda yakin mengkosongkan produk/jasa pada transaksi ini ?");
+		if (r == true) 
+		{
+			var id_h_penjualan = $("#id_h_penjualan").val();
+			
+			$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_admin_pedaftaran_proses_dokter/kosongkan_d_penjualan/", data: 
+			{
+				id_h_penjualan:id_h_penjualan
+			}, success:function(data)
+			{
+				if(data!=0)
+				{
+					//$("#gambar_rekam_medis").html(data);
+					if(data == "BERHASIL")
+					{
+						tampilkan_list_d_penjualan();
+					}
+					else
+					{
+					}
+					//window.location.replace("<?php echo base_url();?>gl-admin-pemeriksaan-dokter");
+				} 
+				else
+				{
+					
+				}
+			}
+			});
+			//tampilkan_list_d_penjualan();
+		}
+	}
+
+	function verifikasi_d_penjualan()
+	{
+		tampilkan_list_d_penjualan();
+	}
+
+	
+		
+	function hub_pencarian_by_enter()
+	{
+		//CEK KEY CODE : NB ENTRT : 13
+			if (event.type == "keydown") {
+				//some browsers support evt.charCode, some only evt.keyCode
+			   if (event.charCode) {
+				  var charCode = event.charCode;
+			   }
+			   else {
+				  var charCode = event.keyCode;
+			   }
+			}
+		//CEK KEY CODE : NB ENTRT : 13
+		if(charCode == 13)
+		{
+			var isPencarianKategori = $("#isDariPencarianKategori").val();
+			//alert(isPencarianKategori);
+			if(isPencarianKategori == 1)
+			{
+				list_data_produk_kategori_by_enter();
+			}
+			else
+			{
+				list_data_produk_by_enter();
+			}
+		}
+		
+	}
+	
+	function hub_pencarian()
+	{
+		
+		var isPencarianKategori = $("#isDariPencarianKategori").val();
+		//alert(isPencarianKategori);
+		if(isPencarianKategori == 1)
+		{
+			list_produk_by_kategori();
+		}
+		else
+		{
+			//list_data_produk_by_enter();
+			list_data_produk_by_tmb_cari();
+		}
+	}
+	
+	function tunda_transakasi()
+	{
+		//alert("BATAL TRANSAKSI");
+		var r = confirm("Apakah anda yakin akan menunda transaksi ini ?");
+		if (r == true) 
+		{
+			window.location.replace("<?php echo base_url();?>gl-admin-pemeriksaan-dokter");
+		}
+	}
+	
+	function batal_transakasi()
+	{
+		//alert("BATAL TRANSAKSI");
+		var r = confirm("Apakah anda yakin akan menunda transaksi ini ?");
+		if (r == true) 
+		{
+			var id_h_penjualan = $("#id_h_penjualan").val();
+			
+			$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_admin_pedaftaran_proses_dokter/batal_transaksi/", data: 
+			{
+				id_h_penjualan:id_h_penjualan
+			}, success:function(data)
+			{
+				if(data!=0)
+				{
+					//$("#gambar_rekam_medis").html(data);
+					window.location.replace("<?php echo base_url();?>gl-admin-pemeriksaan-dokter");
+				} 
+				else
+				{
+					//$("#gambar_rekam_medis").html("Tidak Ada Data Yang Ditampilkan");
+					window.location.replace("<?php echo base_url();?>gl-admin-pemeriksaan-dokter");
+				}
+			}
+			});
+			
+			
+		}
+	}
+	
+	function ubah_media_transaksi()
+	{
+		var id_h_penjualan = $("#id_h_penjualan").val();
+		var media_transaksi = $("#media_transaksi").val();
+		var diagnosa = $("#ket_penjualan2").val();
+		
+		
+		//var id_h_penjualan = evt.id; //$("#id_costumer").val();
+		$.ajax({type: "POST", url: "<?php echo base_url();?>gl-admin-pemeriksaan-dokter-proses-pilih-media-transaksi/", data: 
+		{
+			id_h_penjualan:id_h_penjualan,
+			media_transaksi:media_transaksi,
+			diagnosa:diagnosa
+		}, success:function(data)
+		{
+			if(data!=0)
+			{
+				//$("#gambar_rekam_medis").html(data);
+				//tampilkan_list_d_penjualan();
+				//$("#id_h_diskon_bfr").val(id_h_diskon);
+			} 
+			else
+			{
+				//$("#gambar_rekam_medis").html("Tidak Ada Data Yang Ditampilkan");
+				//tampilkan_list_d_penjualan();
+				//$("#id_h_diskon_bfr").val(id_h_diskon);
+			}
+		}
+		});
+	}
+
+	function pilih_paket()
+	{
+		//alert("PAKET TERPILIH");
+		var id_h_penjualan = $("#id_h_penjualan").val();
+		var id_h_diskon = $("#id_h_diskon").val();
+		var id_h_diskon_bfr = $("#id_h_diskon_bfr").val();
+		
+		//var id_h_penjualan = evt.id; //$("#id_costumer").val();
+		$.ajax({type: "POST", url: "<?php echo base_url();?>gl-admin-pemeriksaan-dokter-proses-pilih-paket/", data: 
+		{
+			id_h_penjualan:id_h_penjualan,
+			id_h_diskon:id_h_diskon,
+			id_h_diskon_bfr:id_h_diskon_bfr
+		}, success:function(data)
+		{
+			if(data!=0)
+			{
+				//$("#gambar_rekam_medis").html(data);
+				tampilkan_list_d_penjualan();
+				$("#id_h_diskon_bfr").val(id_h_diskon);
+			} 
+			else
+			{
+				//$("#gambar_rekam_medis").html("Tidak Ada Data Yang Ditampilkan");
+				tampilkan_list_d_penjualan();
+				$("#id_h_diskon_bfr").val(id_h_diskon);
+			}
+		}
+		});
+	}
+
+	function tampilkan_gambar(evt)
+	{
+		//var id_h_penjualan = $('#id_h_penjualan').val();
+		//alert("GOOD");
+		//alert(evt.id);
+		
+		
+		var id_h_penjualan = evt.id; //$("#id_costumer").val();
+		$.ajax({type: "POST", url: "<?php echo base_url();?>gl-admin-pendaftaran-pasien-rekam-medis-foto/", data: 
+		{
+			id_h_penjualan:id_h_penjualan
+		}, success:function(data)
+		{
+			if(data!=0)
+			{
+				$("#gambar_rekam_medis").html(data);
+			} 
+			else
+			{
+				$("#gambar_rekam_medis").html("Tidak Ada Data Yang Ditampilkan");
+			}
+		}
+		});
+		
+	}
+
+	function rekam_medis(no_costumer)
+	{
+		//var id_costumer = $("#id_costumer").val();
+		//var no_costumer = $("#no_costumer").val();
+		$.ajax({type: "POST", url: "<?php echo base_url();?>gl-admin-pendaftaran-pasien-rekam-medis/", data: 
+		{
+			no_costumer:no_costumer
+		}, success:function(data)
+		{
+			if(data!=0)
+			{
+				$("#container_rekam_medis").html(data);
+			} 
+			else
+			{
+				$("#container_rekam_medis").html("Tidak Ada Data Yang Ditampilkan");
+			}
+		}
+		});
+	}
+	
+	function selesai_transaksi_test()
+	{
+		alert("good");
+	}
+	
+	function selesai_transaksi()
+	{
+		var r = confirm("Apakah Anda Yakin Akan Menyelesaikan Transaksi ?");
+		if (r == true) 
+		{
+			//alert("Transaksi Selesai");
+			
+			
+			
+			var is_allow_edit_price = $("#is_allow_edit_price").val();
+			var id_h_penjualan = $("#id_h_penjualan").val();
+			var id_dokter = $("#id_dokter").val();
+			var isDokter = "Dokter";
+			var id_karyawan = $("#id_karyawan").val();
+			var poli = $("#type_h_penjualan").val();
+			
+			
+			var var_lama_kerja = $("#masa_kerja").val();
+			var var_isPasienBaru = $("#lama_terdaftar").val();
+			var var_isMembuatResep = "YA";
+			var var_min_jasa = $("#jum_jasa").val();
+			var var_min_produk = $("#jum_produk").val();
+			var var_nominal_tr_per_pasien = $("#grandTotal2").html();
+			var_nominal_tr_per_pasien = var_nominal_tr_per_pasien.replace(',','');
+			var_nominal_tr_per_pasien = var_nominal_tr_per_pasien.replace(',','');
+			var_nominal_tr_per_pasien = var_nominal_tr_per_pasien.replace(',','');
+			var_nominal_tr_per_pasien = var_nominal_tr_per_pasien.replace(',','');
+			var_nominal_tr_per_pasien = var_nominal_tr_per_pasien.replace(',','');
+			
+			//var var_pajak = $("#pajak").val();
+			var var_pajak = $("#pajak_hide").val();
+			var_pajak = var_pajak.replace(',','');
+			var_pajak = var_pajak.replace(',','');
+			var_pajak = var_pajak.replace(',','');
+			var_pajak = var_pajak.replace(',','');
+			
+			var optr_pajak = $("#optr_biaya").val();
+			
+			var pengurang_diskon = $("#pengurang").val();
+			pengurang_diskon = pengurang_diskon.replace(',','');
+			pengurang_diskon = pengurang_diskon.replace(',','');
+			pengurang_diskon = pengurang_diskon.replace(',','');
+			pengurang_diskon = pengurang_diskon.replace(',','');
+			
+			var ket_penjualan2 = $("#ket_penjualan2").val();
+			var id_costumer = $("#id_costumer").val();
+			/*PEMBAYARAN CASH*/
+				var id_d_bayar_cash = $("#id_d_bayar_cash").val();
+				var bayar_cash = $("#bayar_cash").val();
+				bayar_cash = bayar_cash.replace(',','');
+				bayar_cash = bayar_cash.replace(',','');
+				bayar_cash = bayar_cash.replace(',','');
+				bayar_cash = bayar_cash.replace(',','');
+			/*PEMBAYARAN CASH*/
+			
+			/*PEMBAYARAN BANK*/
+				var id_d_bayar_bank = $("#id_d_bayar_bank").val();
+				var id_bank = $("#id_bank").val();
+				var cara = $("#cara").val();
+				var nama_bank = $("#nama_bank").val();
+				var norek = $("#norek").val();
+				var atas_nama = $("#atas_nama").val();
+				
+				var nominal_bank = $("#nominal_bank").val();
+				nominal_bank = nominal_bank.replace(',','');
+				nominal_bank = nominal_bank.replace(',','');
+				nominal_bank = nominal_bank.replace(',','');
+				nominal_bank = nominal_bank.replace(',','');
+				
+				var tgl_bayar = $("#tgl_bayar").val();
+				var tgl_pencairan = $("#tgl_pencairan").val();
+				var ket_bank = $("#ket_bank").val();
+			/*PEMBAYARAN BANK*/
+			
+			/*BERI NOTIFIKASI JIKA BAYAR KURANG*/
+				var grand_total = $("#grandTotal2").html();
+				grand_total = grand_total.replace(',','');
+				grand_total = grand_total.replace(',','');
+				grand_total = grand_total.replace(',','');
+				grand_total = grand_total.replace(',','');
+				
+			//KEMBALIAN
+				var kembalian_new = $('#kembalian').html(); //ORI
+				kembalian_new = kembalian_new.replace(',','');
+				kembalian_new = kembalian_new.replace(',','');
+				kembalian_new = kembalian_new.replace(',','');
+				kembalian_new = kembalian_new.replace(',','');
+				
+				
+				//UBAH PEMBAYARAN CASH
+				if((kembalian_new * 1) > 0)
+				{
+					bayar_cash = (bayar_cash*1) - (kembalian_new*1);
+				}
+				
+			
+				var is_allow_bayar = $('#allow_bayar').val();
+				
+				//UNTUK MENCEGAH BAYAR KURANG
+				if( ((grand_total*1) > ((bayar_cash*1) + (nominal_bank*1)) ) && is_allow_bayar == '1')
+				{
+					var kurang = ((grand_total*1) - ((bayar_cash*1) + (nominal_bank*1)) );
+					//alert(format_str_to_currency(grand_total));
+					//alert(format_str_to_currency(bayar_cash));
+					//alert(format_str_to_currency(nominal_bank));
+					
+					/*
+					if(is_allow_bayar == 1)
+					{
+						alert("PEMBAYARAN KURANG SEBESAR Rp."+ format_str_to_currency(kurang) );
+					}
+					*/
+					//TIDAK DIPERBOLEHKAN BAYAR KURANG
+					var tanya_bayar = confirm("Jumlah pembayaran kurang Rp."+ format_str_to_currency(kurang) +", apakah anda ingin tetap melanjutkan ?");
+					if (tanya_bayar == true) 
+					{
+						
+						var is_allow_bayar = $('#allow_bayar').val();
+						var from_halaman_pembayaran = $('#is_dari_halaman_pembayaran').val();
+						//HITUNG FEE DAN PEMBAYARAN (CASH DAN BANK)
+							
+							$.ajax({type: "POST", url: "<?php echo base_url();?>gl-admin-pemeriksaan-dokter-proses-selesai-transaksi/", data: {
+							
+							is_allow_edit_price:is_allow_edit_price,
+							id_h_penjualan:id_h_penjualan,
+							id_dokter:id_dokter,
+							isDokter:isDokter,
+							id_karyawan:id_karyawan,
+							poli:poli,
+							var_lama_kerja:var_lama_kerja,
+							var_isPasienBaru:var_isPasienBaru,
+							var_isMembuatResep:var_isMembuatResep,
+							var_min_jasa:var_min_jasa,
+							var_min_produk:var_min_produk,
+							var_nominal_tr_per_pasien:var_nominal_tr_per_pasien,
+							
+							var_pajak:var_pajak,
+							pengurang_diskon:pengurang_diskon,
+							
+							id_costumer:id_costumer,
+							
+							id_d_bayar_cash:id_d_bayar_cash,
+							bayar_cash:bayar_cash,
+							
+							
+							id_d_bayar_bank:id_d_bayar_bank,
+							id_bank:id_bank,
+							cara:cara,
+							nama_bank:nama_bank,
+							norek:norek,
+							atas_nama:atas_nama,
+							nominal_bank:nominal_bank,
+							tgl_bayar:tgl_bayar,
+							tgl_pencairan:tgl_pencairan,
+							ket_bank:ket_bank,
+							
+							is_allow_bayar:is_allow_bayar,
+							from_halaman_pembayaran:from_halaman_pembayaran,
+							ket_penjualan2:ket_penjualan2,
+							optr_pajak:optr_pajak
+
+						}, success:function(data)
+						{
+							if(data!=0)
+							{
+								//SUKSES
+								var kode_kantor_hidden = $('#kode_kantor').val();
+								if(kode_kantor_hidden == "SLM")
+								{
+									window.location.replace("<?php echo base_url();?>gl-admin-pembayaran");
+								}
+								else
+								{
+									if( ((bayar_cash*1)+(nominal_bank*1)) > 0)
+									{
+										var href = "<?php echo base_url();?>gl-admin-pendaftaran-print-faktur/"+id_h_penjualan;
+										window.open(href, 'popup', 'height=500,width=300,toolbar=no');
+										//return false;
+										window.location.replace("<?php echo base_url();?>gl-admin-perawatan-lanjut");
+									}
+									else
+									{
+										if(is_allow_bayar == 1)
+										{
+											if(from_halaman_pembayaran == 1)
+											{
+												var href = "<?php echo base_url();?>gl-admin-pendaftaran-print-faktur/"+id_h_penjualan;
+												window.open(href, 'popup', 'height=500,width=300,toolbar=no');
+												//return false;
+												window.location.replace("<?php echo base_url();?>gl-admin-pembayaran");
+												//window.location.replace("<?php echo base_url();?>gl-admin-perawatan-lanjut");
+											}
+											else
+											{
+												//alert("TRANSAKSI SELESAI !");
+												var href = "<?php echo base_url();?>gl-admin-pendaftaran-print-faktur/"+id_h_penjualan;
+												window.open(href, 'popup', 'height=500,width=300,toolbar=no');
+												//return false;
+												window.location.replace("<?php echo base_url();?>gl-admin-pemeriksaan-dokter");
+											}
+										}
+										else
+										{
+											alert("TRANSAKSI SELESAI !");
+											window.location.replace("<?php echo base_url();?>gl-admin-pemeriksaan-dokter");
+										}
+									}
+								}
+							
+							} 
+							else
+							{
+								//GAGAL
+							}
+							
+						}
+						});
+						
+						//HITUNG FEE DAN PEMBAYARAN (CASH DAN BANK)
+					}
+					
+				//UNTUK MENCEGAH BAYAR KURANG
+				}
+				else
+				{
+				//UNTUK MENCEGAH BAYAR KURANG
+					var from_halaman_pembayaran = $('#is_dari_halaman_pembayaran').val();
+					//HITUNG FEE DAN PEMBAYARAN (CASH DAN BANK)
+						
+						$.ajax({type: "POST", url: "<?php echo base_url();?>gl-admin-pemeriksaan-dokter-proses-selesai-transaksi/", data: {
+						
+						is_allow_edit_price:is_allow_edit_price,
+						id_h_penjualan:id_h_penjualan,
+						id_dokter:id_dokter,
+						isDokter:isDokter,
+						id_karyawan:id_karyawan,
+						poli:poli,
+						var_lama_kerja:var_lama_kerja,
+						var_isPasienBaru:var_isPasienBaru,
+						var_isMembuatResep:var_isMembuatResep,
+						var_min_jasa:var_min_jasa,
+						var_min_produk:var_min_produk,
+						var_nominal_tr_per_pasien:var_nominal_tr_per_pasien,
+						
+						var_pajak:var_pajak,
+						pengurang_diskon:pengurang_diskon,
+						
+						id_costumer:id_costumer,
+						
+						id_d_bayar_cash:id_d_bayar_cash,
+						bayar_cash:bayar_cash,
+						
+						
+						id_d_bayar_bank:id_d_bayar_bank,
+						id_bank:id_bank,
+						cara:cara,
+						nama_bank:nama_bank,
+						norek:norek,
+						atas_nama:atas_nama,
+						nominal_bank:nominal_bank,
+						tgl_bayar:tgl_bayar,
+						tgl_pencairan:tgl_pencairan,
+						ket_bank:ket_bank,
+						
+						is_allow_bayar:is_allow_bayar,
+						from_halaman_pembayaran:from_halaman_pembayaran,
+						ket_penjualan2:ket_penjualan2
+
+					}, success:function(data)
+					{
+						if(data!=0)
+						{
+						
+							//SUKSES
+							
+							if( ((bayar_cash*1)+(nominal_bank*1)) > 0)
+							{
+								var href = "<?php echo base_url();?>gl-admin-pendaftaran-print-faktur/"+id_h_penjualan;
+								window.open(href, 'popup', 'height=500,width=300,toolbar=no');
+								//return false;
+								window.location.replace("<?php echo base_url();?>gl-admin-perawatan-lanjut");
+							}
+							else
+							{
+								if(is_allow_bayar == 1)
+								{
+									if(from_halaman_pembayaran == 1)
+									{
+										var href = "<?php echo base_url();?>gl-admin-pendaftaran-print-faktur/"+id_h_penjualan;
+										window.open(href, 'popup', 'height=500,width=300,toolbar=no');
+										//return false;
+										window.location.replace("<?php echo base_url();?>gl-admin-pembayaran");
+										//window.location.replace("<?php echo base_url();?>gl-admin-perawatan-lanjut");
+									}
+									else
+									{
+										//alert("TRANSAKSI SELESAI !");
+										var href = "<?php echo base_url();?>gl-admin-pendaftaran-print-faktur/"+id_h_penjualan;
+										window.open(href, 'popup', 'height=500,width=300,toolbar=no');
+										//return false;
+										window.location.replace("<?php echo base_url();?>gl-admin-pemeriksaan-dokter");
+									}
+								}
+								else
+								{
+									alert("TRANSAKSI SELESAI !");
+									window.location.replace("<?php echo base_url();?>gl-admin-pemeriksaan-dokter");
+								}
+							}
+						
+						} 
+						else
+						{
+							//GAGAL
+						}
+						
+					}
+					});
+					
+					//HITUNG FEE DAN PEMBAYARAN (CASH DAN BANK)
+				//UNTUK MENCEGAH BAYAR KURANG
+				}
+				//UNTUK MENCEGAH BAYAR KURANG
+			/*BERI NOTIFIKASI JIKA BAYAR KURANG*/
+			
+			
+			//alert("Transaksi selesai !");
+			
+			
+			//window.location.replace("<?php echo base_url();?>gl-admin-pemeriksaan-dokter");
+			
+			
+			
+			
+			
+		}
+		
+	}
+	
+	
+	function subtotal(id)
+	{
+		var arrStrId = id;
+		var arrIdSplit = arrStrId.split("-");
+		
+		var id_produk = arrIdSplit[1];
+		var id_h_diskon = arrIdSplit[2];
+		
+		var jumlah = $('#jumlah-'+id_produk+'-'+id_h_diskon).val();
+		jumlah = jumlah.replace(',','');
+		jumlah = jumlah.replace(',','');
+		jumlah = jumlah.replace(',','');
+		
+		var optr_diskon = $('#optr_diskon-'+id_produk+'-'+id_h_diskon).val();
+		var diskon = $('#diskon-'+id_produk+'-'+id_h_diskon).val();
+		diskon = diskon.replace(',','');
+		diskon = diskon.replace(',','');
+		diskon = diskon.replace(',','');
+		diskon = diskon.replace(',','');
+		
+		
+		
+		var harga = $('#harga-'+id_produk+'-'+id_h_diskon).val();
+		harga = harga.replace(',','');
+		harga = harga.replace(',','');
+		harga = harga.replace(',','');
+		
+		if(optr_diskon == "%")
+		{
+			var besar_diskon_ori = (((harga*1)/100) * (diskon*1));
+		}
+		else
+		{
+			var besar_diskon_ori = (diskon*1);
+		}
+		
+		var subtotal = (jumlah*1) * ((harga*1) - (besar_diskon_ori*1));
+		$('#ed_subtotal-'+id_produk+'-'+id_h_diskon).val(format_str_to_currency(subtotal));
+		
+		grandTotaltransaksi();
+	}
+	
+	function grandTotaltransaksi()
+	{
+		var granTotal = 0;
+		var subtotal = "";
+		var subtotal_fix = 0;
+		var jum_jasa = 0;
+		var jum_produk = 0;
+		
+		
+		//alert("TEST");
+		$("#table_transaksi tbody").find('input[name="ed_subtotal"]').each(function()
+		{
+			//if($(this).is(":checked")){
+				//$(this).parents("tr").remove();
+				//alert($(this).val());
+				//alert("HOME");
+				
+				subtotal = $(this).val();
+				subtotal_fix = subtotal.replace(',','');
+				subtotal_fix = subtotal_fix.replace(',','');
+				subtotal_fix = subtotal_fix.replace(',','');
+				subtotal_fix = subtotal_fix.replace(',','');
+
+				//alert(subtotal+' - '+subtotal_fix);
+				
+				
+				granTotal = parseInt(granTotal) + (parseInt(subtotal_fix)*1);
+				
+				/*MENDAPATAKN ID*/
+				var arrStrId = $(this).attr('id');
+				/*MENDAPATAKN ID*/
+				
+				var arrIdSplit = arrStrId.split("-");
+				
+				//alert(arrStrId);
+				
+				
+				var id_produk = arrIdSplit[1];
+				var id_h_diskon = arrIdSplit[2];
+				var isProduk = $("#isProduk-"+id_produk+"-"+id_h_diskon).val();
+				if(isProduk == "PRODUK")
+				{
+					jum_produk = jum_produk+1;
+					//alert('PRODUK'+jum_jasa);
+				}
+				else
+				{
+					jum_jasa = jum_jasa+1;
+					//alert('PRODUK'+ jum_produk);
+				}
+				
+				
+			//}
+		});
+		//$('#grandTotal').val(granTotal);
+		//alert(jum_jasa);
+		
+		$('#jum_produk').val(jum_produk);
+		$('#jum_jasa').val(jum_jasa);
+		$("#grandTotal").html(format_str_to_currency(granTotal));
+		//$("#grandTotalForDokterSaja").html(format_str_to_currency(granTotal));
+		
+		//diskon_akumulasi();
+		
+		var pengurang = $('#pengurang').val();
+		pengurang = pengurang.replace(',','');
+		pengurang = pengurang.replace(',','');
+		pengurang = pengurang.replace(',','');
+		pengurang = pengurang.replace(',','');
+		
+		//PEMASUKAN PAJAK SEBELUMNYA
+		/*
+		var besar_pajak_hide = $('#pajak_hide').val(); //ORI
+		besar_pajak_hide = besar_pajak_hide.replace(',','');
+		besar_pajak_hide = besar_pajak_hide.replace(',','');
+		besar_pajak_hide = besar_pajak_hide.replace(',','');
+		besar_pajak_hide = besar_pajak_hide.replace(',','');
+		
+		var pajak = ((granTotal*1)/100) * (besar_pajak_hide*1)
+		$('#pajak').val(format_str_to_currency(pajak)); //ORI
+		*/
+		//PEMASUKAN PAJAK SEBELUMNYA
+		
+		//PAJAK YANG BARU
+			var optr_biaya = $('#optr_biaya').val(); //
+			if(optr_biaya == "%")
+			{
+				var pajak = $('#pajak').val(); //ORI
+				pajak = pajak.replace(',','');
+				pajak = pajak.replace(',','');
+				pajak = pajak.replace(',','');
+				pajak = pajak.replace(',','');
+				pajak = pajak.replace(',','');
+				pajak = ((granTotal*1)/100) * (pajak*1)
+				$('#pajak_hide').val(pajak); //ORI
+			}
+			else
+			{
+				var pajak = $('#pajak').val(); //ORI
+				pajak = pajak.replace(',','');
+				pajak = pajak.replace(',','');
+				pajak = pajak.replace(',','');
+				pajak = pajak.replace(',','');
+				pajak = pajak.replace(',','');
+				$('#pajak_hide').val(pajak); //ORI
+			}
+			
+		//PAJAK YANG BARU
+		
+		//alert((granTotal));
+		//alert((besar_pajak_hide));
+		//alert((pajak));
+		//alert(format_str_to_currency(pengurang));
+		//alert($('#pengurang').val());
+		
+		var grandTotal2 = ((granTotal*1) + ((pajak*1)) - (pengurang*1));
+		$('#grandTotal2').html(format_str_to_currency(grandTotal2)); //ORI
+		
+		var pembayaran_cash = $('#bayar_cash').val();
+		pembayaran_cash = pembayaran_cash.replace(',','');
+		pembayaran_cash = pembayaran_cash.replace(',','');
+		pembayaran_cash = pembayaran_cash.replace(',','');
+		pembayaran_cash = pembayaran_cash.replace(',','');
+		pembayaran_cash = pembayaran_cash.replace(',','');
+		
+		
+		// $('#nominal_pembayaran_bank_hide').val(); //GAK DIPAKAI LANGSUNG AJA GAK USAH DI HIDE
+		
+		var pembayaran_bank = $('#nominal_bank').val();
+					$('#nominal_pembayaran_bank_hide').val(format_str_to_currency(pembayaran_bank));
+		pembayaran_bank = pembayaran_bank.replace(',','');
+		pembayaran_bank = pembayaran_bank.replace(',','');
+		pembayaran_bank = pembayaran_bank.replace(',','');
+		pembayaran_bank = pembayaran_bank.replace(',','');
+		pembayaran_bank = pembayaran_bank.replace(',','');
+		
+		var pembayaran_all = (pembayaran_cash*1) + (pembayaran_bank*1)
+		var kembalian = (pembayaran_all*1) - (grandTotal2*1)
+		
+		//alert(pembayaran_all);
+		//alert(grandTotal2);
+		//alert(kembalian);
+		
+		$('#kembalian').html(format_str_to_currency(kembalian)); //ORI
+		
+		$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_admin_h_pembelian/terbilang/", data: {
+			nominal:grandTotal2
+		}, success:function(data)
+		{
+			if(data!=0)
+			{
+				$('#spterbilang').html(data);
+			} 
+			else
+			{
+				$('#spterbilang').html("");
+			}
+		}
+		});
+		
+	}
+	
+	function scan()
+	{
+		//CEK KEY CODE : NB ENTRT : 13
+			if (event.type == "keydown") {
+				//some browsers support evt.charCode, some only evt.keyCode
+			   if (event.charCode) {
+				  var charCode = event.charCode;
+			   }
+			   else {
+				  var charCode = event.keyCode;
+			   }
+			}
+		//CEK KEY CODE : NB ENTRT : 13
+		if(charCode == 13)
+		{
+			//$('input[name=id]').val($('#id_produk_3_'+id).val());
+			var is_allow_edit_price = $("#is_allow_edit_price").val();
+			var kode_produk = $("#kode_produk").val();
+			var id_costumer = $("#id_costumer").val();
+			var id_kat_costumer = $("#id_kat_costumer").val();
+			var id_h_penjualan = $("#id_h_penjualan").val();
+			var media_transaksi = $("#media_transaksi").val();
+			
+			//GET DATA PRODUK
+			var diskon = 0;
+			var optr_diskon = "%";
+				$.ajax({type: "POST", url: "<?php echo base_url();?>gl-admin-pemeriksaan-dokter-proses-scan-produk/", data: {
+				
+				id_h_penjualan:id_h_penjualan,
+				kode_produk:kode_produk,
+				id_kat_costumer:id_kat_costumer,
+				media_transaksi:media_transaksi
+
+			}, success:function(data)
+			{
+				if(data!=0)
+				{
+					if(data == "TIDAK ADA DATA YANG DITAMPILKAN")
+					{
+						alert("PERMINTAAN TIDAK BISA DIPENUHI !");
+					}
+					else
+					{
+						//alert(data);
+						var arrStrProduk = data;
+						var arrStrProduk_split = arrStrProduk.split("|");
+						
+						//var id_produk = arrStrProduk_split[1];
+						//var id_h_diskon = arrStrProduk_split[2];
+						var id = 0;
+						var idTr = arrStrProduk_split[0];
+						var id_produk = arrStrProduk_split[1];
+						var kode_produk = arrStrProduk_split[2];
+						var nama_produk = arrStrProduk_split[3];
+						var jumlah = 1;
+						var id_satuan = arrStrProduk_split[4];
+						var satuan_jual = arrStrProduk_split[5];
+						var status_konversi = arrStrProduk_split[6];
+						var konversi = arrStrProduk_split[7];
+						var harga = arrStrProduk_split[8];
+						var harga_jual_format_rupiah = format_str_to_currency(harga);
+						
+						var nama_diskon = arrStrProduk_split[9];
+						var id_h_diskon = arrStrProduk_split[10];
+						var id_d_diskon = arrStrProduk_split[11];
+						var harga_tambah_diskon  = arrStrProduk_split[12];
+						var diskon_is_produk  = arrStrProduk_split[13];
+						var isProduk  = arrStrProduk_split[14];
+						
+						//alert(harga_tambah_diskon)
+						
+						//alert("BFR");
+						add_row_to_table_transaksi(is_allow_edit_price,idTr,id_produk,kode_produk,nama_produk,jumlah,satuan_jual,harga_jual_format_rupiah,harga_jual_format_rupiah,harga,nama_diskon,id_h_diskon,id_d_diskon,harga_tambah_diskon,isProduk,id);
+						
+						//alert("AFERT");
+						if(diskon_is_produk == "Produk")
+						{
+							tampilkan_list_d_penjualan(); //GRANTOTAL DAN DISKON AKUMULASI TIDAK DIPANGGIL KARENA UDAH INCLUDE DENGAN FUNGSI INI
+							$("#kode_produk").val("");
+						}
+						else
+						{
+							
+							$("#kode_produk").val("");
+							diskon_akumulasi();
+							grandTotaltransaksi();
+						}
+					}
+				} 
+				else
+				{
+					alert("DATA TIDAK DITEMUKAN");
+					$("#kode_produk").val();
+					
+				}
+			}
+			});
+			//GET DATA PRODUK
+			
+			
+		}
+	}
+	
+	function tampilkan_list_satuan(id)
+	{
+		//alert(id);
+		var arrStrId = id;
+		var arrIdSplit = arrStrId.split("-");
+		
+		var id_produk = arrIdSplit[1];
+		var id_h_diskon = arrIdSplit[2];
+		
+		var kode_satuan = $('#satuan_jual-'+id_produk+'-'+id_h_diskon).val();
+		$('#satuan_jual_old-'+id_produk+'-'+id_h_diskon).val(kode_satuan);
+		
+		//alert(id);
+		//var id_produk = $('#id_produk_3_'+id).val();
+		//alert(kode_satuan);
+		
+		var banyak_item = $('#'+id+' > option').length;
+		
+		//alert(banyak_item);
+		if(banyak_item == 1)
+		{
+		
+		
+			$.ajax({type: "POST", url: "<?=base_url();?>index.php/gl-admin-purchase-order-combo-list-satuan/", data: "id_produk="+id_produk, success:function(data)
+			{
+				$("#"+id).html(data);
+				//alert("GOOD");
+			} 
+			});
+		}
+		
+		
+	}
+
+	///*UNTUK LIST SATUAN MENGAMBIL DARI JENDELA PEMBELIAN KARENA SATUAN PASTI SAMA*/
+	function harga_satuan(id)
+	{
+		//alert("TEST");
+		
+		
+		var arrStrId = id;
+		var arrIdSplit = arrStrId.split("-");
+		
+		var id_produk = arrIdSplit[1];
+		var id_h_diskon = arrIdSplit[2];
+		var id_kat_costumer = $('#id_kat_costumer').val();
+		var kode_satuan = $('#'+id).val();
+		var jumlah = $('#jumlah-'+id_produk+'-'+id_h_diskon).val();
+		
+		//alert(kode_satuan);
+		//alert(id);
+		
+		
+		$.ajax({type: "POST", url: "<?php echo base_url();?>gl-admin-pemeriksaan-dokter-proses-harga-ubah-combo/", data: {
+			id_produk:id_produk,
+			kode_satuan:kode_satuan,
+			id_kat_costumer:id_kat_costumer
+		}, success:function(data)
+		{
+			if(data!=0)
+			{
+				var data_split = data.split("|");
+				var data_format_cur = format_str_to_currency(data_split[0]);
+				$('#harga-'+id_produk+'-'+id_h_diskon).val(data_format_cur);
+				$('#harga_tambah_diskon-'+id_produk+'-'+id_h_diskon).val(data_format_cur);
+				$('#status_konversi-'+id_produk+'-'+id_h_diskon).val(data_split[1]);
+				$('#konversi-'+id_produk+'-'+id_h_diskon).val(data_split[2]);
+				$('#harga_ori-'+id_produk+'-'+id_h_diskon).val(data_split[3]);
+				
+				edit_d_penjualan(id);
+				//edit_d_pembelian(id);
+				
+				//$('#subtotal-'+id_produk).val(( jumlah * (data_split[0]*1)));
+				
+				//var ubahGrandTotal = format_str_to_currency(( jumlah * (data_split[0]*1)));
+				//$('#spsubtotal-'+id_produk).html(ubahGrandTotal);
+				
+				//grandTotal()
+			} 
+			else
+			{
+			}
+		}
+		});
+		
+		
+		
+	}
+	///*UNTUK LIST SATUAN MENGAMBIL DARI JENDELA PEMBELIAN KARENA SATUAN PASTI SAMA*/
+	
+	function list_data_produk_kategori(evt)
+	{
+		$("#isDariPencarianKategori").val("1");
+	
+		var strId = evt.id;
+		var arrKode = strId.split("-");
+		var val = evt.value;
+		
+		//arrKode[0] = "id_kat_produk"
+		var idProduk = arrKode[1];
+		var idHDIskon = arrKode[2];
+		var no  = arrKode[4];
+		var idDPenjualanFix = $("#id_d_penjualan_untuk_kategori-"+no).val();
+		
+		
+		$("#idProduk").val(idProduk);
+		$("#idHDIskon").val(idHDIskon);
+		$("#idDPenjualanFix").val( idDPenjualanFix );
+		//alert("ID PRODUK : "+idProduk+" | ID DISKON : "+idHDIskon);
+		
+		var id_kat_produk = $("#id_kat_produk_untuk_kategori-"+no).val();
+		//alert(id_kat_produk);
+		//var id_d_penjualan = $("#id_d_penjualan-"+idProduk+"-"+idHDIskon).val();
+		
+		$("#id_kat_produk_fix").val(  id_kat_produk );
+		$("#id_d_penjualan_kategori").val( idDPenjualanFix );
+		
+		
+		var limit = 50;
+		var offset = 0;
+		
+		//alert(isProduk+" INI SEBELUMNYA : "+$("#isProduk").val());
+		if(isProduk != $("#isProduk").val())
+		{
+			var cari = "";
+			$("#cari_json_produk").val("");
+			//$("#isProduk").val(isProduk);
+		}
+		else
+		{
+			var cari = $("#cari_json_produk").val();
+			//$("#isProduk").val(isProduk);
+		}
+		
+		
+		//alert(isProduk);
+		
+		//alert(id_h_penjualan);
+		
+		$("#tb_cari_produk").html("<img src='<?php echo base_url();?>assets/global/loading.gif'>Cek Data ...");
+		
+		$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_admin_pedaftaran_proses_dokter/list_produk_with_kategori", data: {cari:cari,limit:limit,offset:offset,id_kat_produk:id_kat_produk}, success:function(data)
+		{
+			if(data!=0)
+			{
+				$("#tb_cari_produk").html(data);
+			} 
+			else
+			{
+				$("#tb_cari_produk").html("Tidak Ada Data Yang Ditampilkan");
+			}
+		}
+		});
+		
+	}
+	
+	function list_produk_by_kategori()
+	{
+		var id_kat_produk = $("#id_kat_produk_fix").val();
+		var limit = 50;
+		var offset = 0;
+		
+		//alert(isProduk+" INI SEBELUMNYA : "+$("#isProduk").val());
+		
+		/*
+		if(isProduk != $("#isProduk").val())
+		{
+			var cari = "";
+			$("#cari_json_produk").val("");
+			//$("#isProduk").val(isProduk);
+		}
+		else
+		{
+		*/
+			var cari = $("#cari_json_produk").val();
+			//$("#isProduk").val(isProduk);
+		//}
+		
+		
+		
+		//alert(isProduk);
+		
+		//alert(id_h_penjualan);
+		
+		$("#tb_cari_produk").html("<img src='<?php echo base_url();?>assets/global/loading.gif'>Cek Data ...");
+		
+		$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_admin_pedaftaran_proses_dokter/list_produk_with_kategori", data: {cari:cari,limit:limit,offset:offset,id_kat_produk:id_kat_produk}, success:function(data)
+		{
+			if(data!=0)
+			{
+				$("#tb_cari_produk").html(data);
+			} 
+			else
+			{
+				$("#tb_cari_produk").html("Tidak Ada Data Yang Ditampilkan");
+			}
+		}
+		});
+	}
+	
+	function list_data_produk_kategori_by_enter()
+	{
+		//CEK KEY CODE : NB ENTRT : 13
+			if (event.type == "keydown") {
+				//some browsers support evt.charCode, some only evt.keyCode
+			   if (event.charCode) {
+				  var charCode = event.charCode;
+			   }
+			   else {
+				  var charCode = event.keyCode;
+			   }
+			}
+		//CEK KEY CODE : NB ENTRT : 13
+		if(charCode == 13)
+		{
+			
+			var id_kat_produk = $("#id_kat_produk_fix").val();
+			
+			
+			var limit = 50;
+			var offset = 0;
+			
+			//alert(isProduk+" INI SEBELUMNYA : "+$("#isProduk").val());
+			
+			/*
+			if(isProduk != $("#isProduk").val())
+			{
+				var cari = "";
+				$("#cari_json_produk").val("");
+				//$("#isProduk").val(isProduk);
+			}
+			else
+			{
+			*/
+				var cari = $("#cari_json_produk").val();
+				//$("#isProduk").val(isProduk);
+			//}
+			
+			
+			
+			//alert(isProduk);
+			
+			//alert(id_h_penjualan);
+			
+			$("#tb_cari_produk").html("<img src='<?php echo base_url();?>assets/global/loading.gif'>Cek Data ...");
+			
+			$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_admin_pedaftaran_proses_dokter/list_produk_with_kategori", data: {cari:cari,limit:limit,offset:offset,id_kat_produk:id_kat_produk}, success:function(data)
+			{
+				if(data!=0)
+				{
+					$("#tb_cari_produk").html(data);
+				} 
+				else
+				{
+					$("#tb_cari_produk").html("Tidak Ada Data Yang Ditampilkan");
+				}
+			}
+			});
+		}
+		
+	}
+	
+	function insert_produk_by_kategori(id)
+	{
+		/*
+		alert("laert");
+		
+		$satuan_jual;
+			$harga_ori;
+			*/
+			
+		var id_d_penjualan = $("#id_d_penjualan_kategori").val();
+		var id_produk = $('#id_produk_5_'+id).val();
+		var satuan_jual = $('#kode_satuan_5_'+id).val();
+		var harga_ori = $('#harga_jual_5_'+id).val();
+		
+		$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_admin_pedaftaran_proses_dokter/ubah_d_penjualan_produk_karena_kategori", data: {id_d_penjualan:id_d_penjualan,id_produk:id_produk,satuan_jual:satuan_jual,harga_ori:harga_ori}, success:function(data)
+		{
+			if(data!=0)
+			{
+				//$("#tb_cari_produk").html(data);
+				tampilkan_list_d_penjualan();
+			} 
+			else
+			{
+				//$("#tb_cari_produk").html("Tidak Ada Data Yang Ditampilkan");
+				tampilkan_list_d_penjualan();
+			}
+		}
+		});
+		
+		
+	}
+	
+	function list_data_produk(isProduk)
+	{
+		$("#isDariPencarianKategori").val("0");
+		
+		$("#idProduk").val("");
+		$("#idHDIskon").val("");
+		
+		var id_h_penjualan = $("#id_h_penjualan").val();
+		var id_kat_costumer = $("#id_kat_costumer").val();
+		var media_transaksi = $("#media_transaksi").val();
+		
+		var limit = 15;
+		var offset = 0;
+		
+		//alert(isProduk+" INI SEBELUMNYA : "+$("#isProduk").val());
+		if(isProduk != $("#isProduk").val())
+		{
+			var cari = "";
+			$("#cari_json_produk").val("");
+			$("#isProduk").val(isProduk);
+		}
+		else
+		{
+			var cari = $("#cari_json_produk").val();
+			$("#isProduk").val(isProduk);
+		}
+		
+		
+		//alert(isProduk);
+		
+		//alert(id_h_penjualan);
+		
+		$("#tb_cari_produk").html("<img src='<?php echo base_url();?>assets/global/loading.gif'>Cek Data ...");
+		
+		$.ajax({type: "POST", url: "<?php echo base_url();?>gl-admin-pemeriksaan-dokter-proses-list-produk/", data: {id_h_penjualan:id_h_penjualan,id_kat_costumer:id_kat_costumer,cari:cari,limit:limit,offset:offset,isProduk:isProduk,media_transaksi:media_transaksi}, success:function(data)
+		{
+			if(data!=0)
+			{
+				$("#tb_cari_produk").html(data);
+			} 
+			else
+			{
+				$("#tb_cari_produk").html("Tidak Ada Data Yang Ditampilkan");
+			}
+		}
+		});
+		
+	}
+	
+	function list_data_produk_by_tmb_cari()
+	{
+		$("#isDariPencarianKategori").val("0");
+		$("#idProduk").val("");
+		$("#idHDIskon").val("");
+		
+		var id_h_penjualan = $("#id_h_penjualan").val();
+		var id_kat_costumer = $("#id_kat_costumer").val();
+		var media_transaksi = $("#media_transaksi").val();
+		var cari = $("#cari_json_produk").val();
+		var limit = 30;
+		var offset = 0;
+		var isProduk = $("#isProduk").val();
+		
+		$("#tb_cari_produk").html("<img src='<?php echo base_url();?>assets/global/loading.gif'>Cek Data ...");
+		
+		$.ajax({type: "POST", url: "<?php echo base_url();?>gl-admin-pemeriksaan-dokter-proses-list-produk/", data: {id_h_penjualan:id_h_penjualan,id_kat_costumer:id_kat_costumer,cari:cari,limit:limit,offset:offset,isProduk:isProduk,media_transaksi:media_transaksi}, success:function(data)
+		{
+			if(data!=0)
+			{
+				$("#tb_cari_produk").html(data);
+			} 
+			else
+			{
+				$("#tb_cari_produk").html("Tidak Ada Data Yang Ditampilkan");
+			}
+		}
+		});
+		
+	}
+	
+	function list_data_produk_by_enter()
+	{
+		//CEK KEY CODE : NB ENTRT : 13
+			if (event.type == "keydown") {
+				//some browsers support evt.charCode, some only evt.keyCode
+			   if (event.charCode) {
+				  var charCode = event.charCode;
+			   }
+			   else {
+				  var charCode = event.keyCode;
+			   }
+			}
+		//CEK KEY CODE : NB ENTRT : 13
+		if(charCode == 13)
+		{
+			$("#isDariPencarianKategori").val("0");
+			
+			$("#idProduk").val("");
+			$("#idHDIskon").val("");
+			
+			var id_h_penjualan = $("#id_h_penjualan").val();
+			var id_kat_costumer = $("#id_kat_costumer").val();
+			var media_transaksi = $("#media_transaksi").val();
+			var cari = $("#cari_json_produk").val();
+			var limit = 30;
+			var offset = 0;
+			var isProduk = $("#isProduk").val();
+			
+			$("#tb_cari_produk").html("<img src='<?php echo base_url();?>assets/global/loading.gif'>Cek Data ...");
+			
+			$.ajax({type: "POST", url: "<?php echo base_url();?>gl-admin-pemeriksaan-dokter-proses-list-produk/", data: {id_h_penjualan:id_h_penjualan,id_kat_costumer:id_kat_costumer,cari:cari,limit:limit,offset:offset,isProduk:isProduk,media_transaksi:media_transaksi}, success:function(data)
+			{
+				if(data!=0)
+				{
+					$("#tb_cari_produk").html(data);
+				} 
+				else
+				{
+					$("#tb_cari_produk").html("Tidak Ada Data Yang Ditampilkan");
+				}
+			}
+			});
+		}
+	}
+	
+	function insert_produk(id)
+	{
+		//$('input[name=id]').val($('#id_produk_3_'+id).val());
+		var is_allow_edit_price = $("#is_allow_edit_price").val();
+		var id_costumer = $("#id_costumer").val();
+		var id_kat_costumer = $("#id_kat_costumer").val();
+		var id_h_penjualan = $("#id_h_penjualan").val();
+		var idTr = $('#get_tr_3_'+id).val();
+		var id_produk = $('#id_produk_3_'+id).val();
+		var kode_produk = $('#kode_produk_3_'+id).val();
+		var nama_produk = $('#nama_produk_3_'+id).val();
+		var jumlah = 1;
+		var id_satuan = $('#id_satuan_3_'+id).val();
+		var satuan_jual = $('#kode_satuan_3_'+id).val();
+		var status_konversi = $('#status_3_'+id).val();
+		var konversi = $('#besar_konversi_3_'+id).val();
+		var harga = $('#harga_jual_3_'+id).val();
+		var harga_jual_format_rupiah = format_str_to_currency(harga);
+		var isProduk = $('#isProduk_3_'+id).val();
+		
+		
+		var jumlah_konversi = ((jumlah*1) * (konversi*1));
+		var harga_konversi = ((harga_konversi*1) / (konversi*1));
+		var nama_diskon = "";
+		
+		/*koding untuk membedakan yang sudah dipilih, Jadi tombolnya hilang pada table produk ketika sudah di pilih*/
+		/*Dinonaktifkan dulu dari add_row_to_table_transaksi*/
+			$('#btn_pilih_'+id).remove(); 
+			$('#tr_list_produk-'+id).css('background-color','#FAEBD7'); 
+		/*koding untuk membedakan yang sudah dipilih, Jadi tombolnya hilang pada table produk ketika sudah di pilih*/
+		
+		
+		//MASUKAN KE GRABD TOTAL, BIAR AKUMULASI DIKSON JALAN
+		var besar_pembelian_nominal = $("#grandTotal").html(); 
+		besar_pembelian_nominal = besar_pembelian_nominal.replace(',','');
+		besar_pembelian_nominal = besar_pembelian_nominal.replace(',','');
+		besar_pembelian_nominal = besar_pembelian_nominal.replace(',','');
+		besar_pembelian_nominal = besar_pembelian_nominal.replace(',','');
+		$("#grandTotal").html( format_str_to_currency((harga*1) + (besar_pembelian_nominal*1)) ); 
+		//MASUKAN KE GRABD TOTAL, BIAR AKUMULASI DIKSON JALAN
+		
+		//SIMPAN HEADER
+		
+			
+			//SIMPAN DETAIL
+			var diskon = 0;
+			var optr_diskon = "%";
+				$.ajax({type: "POST", url: "<?php echo base_url();?>gl-admin-pemeriksaan-dokter-proses-simpan-d-penjualan-awal/", data: {
+				
+				id_kat_costumer:id_kat_costumer,
+				id_h_penjualan:id_h_penjualan,
+				id_d_penerimaan:"",
+				id_produk:id_produk,
+				jumlah:jumlah,
+				status_konversi:status_konversi,
+				konversi:konversi,
+				satuan_jual:satuan_jual,
+				jumlah_konversi:jumlah_konversi,
+				diskon:diskon,
+				harga:harga,
+				harga_konversi:harga_konversi,
+				harga_ori:harga,
+				harga_dasar_ori:harga,
+				stock:0,
+				ket_d_penjualan:"",
+				isProduk:isProduk
+
+			}, success:function(data)
+			{
+				if(data!=0)
+				{
+					
+					var strArray = data;
+					var strArray_Fix = strArray.split("|");
+					
+					if(strArray_Fix.length > 3)
+					{
+						nama_diskon = strArray_Fix[0];
+						harga = strArray_Fix[1];
+						harga_jual_format_rupiah = format_str_to_currency(harga);
+						id_h_diskon = strArray_Fix[3];
+						if(id_h_diskon == "")
+						{
+							id_h_diskon = "KOSONG";
+						}
+						else
+						{
+							id_h_diskon = id_h_diskon;
+						}
+						
+						id_d_diskon = strArray_Fix[4];
+						var harga_tambah_diskon = strArray_Fix[5];
+						var diskon_is_produk  = strArray_Fix[7];
+						
+						//alert(data);
+						add_row_to_table_transaksi(is_allow_edit_price,idTr,id_produk,kode_produk,nama_produk,jumlah,satuan_jual,harga_jual_format_rupiah,harga_jual_format_rupiah,harga_konversi,nama_diskon,id_h_diskon,id_d_diskon,harga_tambah_diskon,isProduk,id);
+						
+						//alert(diskon_is_produk);
+						//grandTotaltransaksi();
+						if(diskon_is_produk == "Produk")
+						{
+							tampilkan_list_d_penjualan(); //GRANTOTAL DAN DISKON AKUMULASI TIDAK DIPANGGIL KARENA UDAH INCLUDE DENGAN FUNGSI INI
+							//$("#kode_produk").val("");
+							
+							diskon_akumulasi();
+							//grandTotaltransaksi();
+						}
+						else
+						{
+							
+							diskon_akumulasi();
+							//grandTotaltransaksi();
+							//$("#kode_produk").val("");
+						}
+						
+						/*INFO ADD PRODUK*/
+							//$('#info_add_produk').html("Berhasil Menambahkan Produk "+nama_produk);
+						/*INFO ADD PRODUK*/
+					}
+					else
+					{
+						alert("Terjadi kesalahan dalam penambahan "+nama_produk+ " Silahkan coba kembali !");
+					}
+				}
+				else
+				{
+					alert("Terjadi kesalahan dalam penambahan "+nama_produk+ " Silahkan coba kembali !");
+					/*
+					var harga_tambah_diskon = harga;
+					nama_diskon = "";
+					add_row_to_table_transaksi(is_allow_edit_price,idTr,id_produk,kode_produk,nama_produk,jumlah,satuan_jual,harga_jual_format_rupiah,harga_jual_format_rupiah,harga_konversi,nama_diskon,id_h_diskon,id_d_diskon,harga_tambah_diskon,isProduk,id);
+					
+					grandTotaltransaksi();
+					
+					//INFO ADD PRODUK
+						//$('#info_add_produk').html("Berhasil Menambahkan Produk "+nama_produk);
+					//INFO ADD PRODUK
+					*/
+				}
+				
+			}
+			,error: function(xhr, status, error)
+			{
+				var errorMessage = xhr.status + ': ' + xhr.statusText
+				alert('Error - ' + errorMessage);
+				tampilkan_list_d_penjualan();
+			}
+			});
+			//SIMPAN DETAIL
+		
+			
+		//SIMPAN HEADER
+		
+	}
+	
+	function diskon_akumulasi()
+	{
+		//HITUNG DISKON AKUMULASI
+			var id_h_penjualan = $("#id_h_penjualan").val();
+			var id_kat_costumer = $('#id_kat_costumer').val(); //ORI
+			var besar_pembelian_satuan = $("#jum_produk").val(); //KITA HITUNG PRODUK AJA YA
+			var besar_pembelian_nominal = $("#grandTotal").html(); 
+			besar_pembelian_nominal = besar_pembelian_nominal.replace(',','');
+			besar_pembelian_nominal = besar_pembelian_nominal.replace(',','');
+			besar_pembelian_nominal = besar_pembelian_nominal.replace(',','');
+			besar_pembelian_nominal = besar_pembelian_nominal.replace(',','');
+			
+			$.ajax({type: "POST", url: "<?php echo base_url();?>gl-admin-pemeriksaan-dokter-proses-diskon-akumulasi/", data: {
+				
+				id_h_penjualan:id_h_penjualan,
+				id_kat_costumer:id_kat_costumer,
+				besar_pembelian_satuan:besar_pembelian_satuan,
+				besar_pembelian_nominal:besar_pembelian_nominal
+				
+
+			}, success:function(data)
+			{
+				if(data!=0)
+				{
+					if(data == 'DISKON PRODUK')
+					{
+						$("#pengurang").val(0);//SUKSES
+						tampilkan_list_d_penjualan();
+					}
+					else
+					{
+						$("#pengurang").val(format_str_to_currency(data));//SUKSES
+						//grandTotaltransaksi();
+					}
+					
+				} 
+				else
+				{
+					$("#pengurang").val(0);//SUKSES
+					//grandTotaltransaksi();
+				}
+			}
+			});
+		//HITUNG DISKON AKUMULASI
+		
+	}
+	
+	function add_row_to_table_transaksi(is_allow_edit_price,idTr,id_produk,kode_produk,nama_produk,jumlah,satuan_jual,harga_jual_format_rupiah,harga_jual_format_rupiah_subtotal,harga_ori,nama_diskon,id_h_diskon,id_d_diskon,harga_tambah_diskon,isProduk,id)
+	{
+	
+		/*koding untuk membedakan yang sudah dipilih, Jadi tombolnya hilang pada table produk ketika sudah di pilih*/
+		/*Dinonaktifkan dulu dipindah ke insert_produk*/
+			//$('#btn_pilih_'+id).remove(); 
+			//$('#tr_list_produk-'+id).css('background-color','#FAEBD7'); 
+		/*koding untuk membedakan yang sudah dipilih, Jadi tombolnya hilang pada table produk ketika sudah di pilih*/
+		
+		if(is_allow_edit_price == "1")
+		{
+			
+			//var markup = '<tr id="tr_list_transaksi-'+id_produk+'-'+id_h_diskon+'" ><td><input type="hidden" id="id_produk-"'+id_produk+'-'+id_h_diskon+' name="id_produk-"'+id_produk+'-'+id_h_diskon+'" value="'+id_produk+'" /> '+kode_produk+'</td><td>'+nama_produk+'</td><td><input type="text" name="jumlah-'+id_produk+'-'+id_h_diskon+'" id="jumlah-'+id_produk+'-'+id_h_diskon+'" style="text-align:right;" maxlength="4" size="4" onkeypress="return isNumberKey(event)" onchange="edit_d_penjualan(this.id)" onfocusout="getRupiah(this.id)" class="required select2" value="'+ jumlah +'" /></td><td style="text-align:center;"><select name="satuan_jual-'+id_produk+'-'+id_h_diskon+'" id="satuan_jual-'+id_produk+'-'+id_h_diskon+'" class="required" onfocus="tampilkan_list_satuan(this.id)" onchange="harga_satuan(this.id)"><option value="'+satuan_jual+'">'+satuan_jual+'</option></select></td><td style="text-align:right;"><input type="text" name="harga-'+id_produk+'-'+id_h_diskon+'" id="harga-'+id_produk+'-'+id_h_diskon+'" style="text-align:right;" maxlength="15" size="7" onkeypress="return isNumberKey(event)" onchange="edit_d_penjualan(this.id)" onfocusout="getRupiah(this.id)" class="required select2" value="'+ harga_jual_format_rupiah +'" /></td><td style="text-align:right;"><input type="text" name="diskon-'+id_produk+'-'+id_h_diskon+'" id="diskon-'+id_produk+'-'+id_h_diskon+'" style="text-align:right;" maxlength="15" size="7" onkeypress="return isNumberKey(event)" onchange="edit_d_penjualan(this.id)" class="required select2" value="0" /></td><td style="text-align:center;"><select name="optr_diskon-'+id_produk+'-'+id_h_diskon+'" id="optr_diskon-'+id_produk+'-'+id_h_diskon+'" class="required" onchange="harga_satuan(this.id)"><option value="%">%</option><option value="C">C</option></select></td><td style="text-align:right;"><input style="text-align:right;background-color:#d7d7d6;" type="text" name="ed_subtotal" id="ed_subtotal-'+id_produk+'-'+id_h_diskon+'"  maxlength="15" size="7" onkeypress="return isNumberKey(event)" onfocusout="getRupiah(this.id)" class="required select2" value="'+ harga_jual_format_rupiah +'" disabled="true" /></td><td><input type="text" name="aturan_minum-'+id_produk+'-'+id_h_diskon+'" id="aturan_minum-'+id_produk+'-'+id_h_diskon+'" style="text-align:right;" maxlength="35" size="18" class="required select2" onchange="edit_d_penjualan(this.id)" /></td><td><font style="color:red;"><span id="ket_d_penjualan-'+id_produk+'-'+id_h_diskon+'">'+nama_diskon+'</span></font></td>  <input type="hidden" id="status_konversi-'+id_produk+'-'+id_h_diskon+'" name="status_konversi-'+id_produk+'-'+id_h_diskon+'" value="*" /> <input type="hidden" id="konversi-'+id_produk+'-'+id_h_diskon+'" name="konversi-'+id_produk+'-'+id_h_diskon+'" value="1" /> <input type="hidden" id="harga_ori-'+id_produk+'-'+id_h_diskon+'" name="harga_ori-'+id_produk+'-'+id_h_diskon+'" value="'+harga_ori+'" /> <input type="hidden" id="id_h_diskon-'+id_produk+'-'+id_h_diskon+'" name="id_h_diskon-'+id_produk+'-'+id_h_diskon+'" value="'+id_h_diskon+'" /> <input type="hidden" id="id_d_diskon-'+id_produk+'-'+id_h_diskon+'" name="id_d_diskon-'+id_produk+'-'+id_h_diskon+'" value="'+id_d_diskon+'" /> <input type="hidden" id="satuan_jual_old-'+id_produk+'-'+id_h_diskon+'" value="'+satuan_jual+'" /> <input type="hidden" id="harga_tambah_diskon-'+id_produk+'-'+id_h_diskon+'" value="'+harga_tambah_diskon+'" /> <input type="hidden" id="isProduk-'+id_produk+'-'+id_h_diskon+'" value="'+isProduk+'" />  </tr>';
+			
+			var markup = '<tr id="'+id_produk+''+id_h_diskon+'" ><td><input type="hidden" id="id_produk-"'+id_produk+'-'+id_h_diskon+' name="id_produk-"'+id_produk+'-'+id_h_diskon+'" value="'+id_produk+'" /> '+kode_produk+'</td><td>'+nama_produk+'</td><td><input type="text" name="jumlah-'+id_produk+'-'+id_h_diskon+'" id="jumlah-'+id_produk+'-'+id_h_diskon+'" style="text-align:right;" maxlength="4" size="4" onkeypress="return isNumberKey(event)" onchange="edit_d_penjualan(this.id)" onfocusout="getRupiah(this.id)" class="required select2" value="'+ jumlah +'" /></td><td style="text-align:center;"><select name="satuan_jual-'+id_produk+'-'+id_h_diskon+'" id="satuan_jual-'+id_produk+'-'+id_h_diskon+'" class="required" onfocus="tampilkan_list_satuan(this.id)" onchange="harga_satuan(this.id)"><option value="'+satuan_jual+'">'+satuan_jual+'</option></select></td><td style="text-align:right;"><input type="text" name="harga-'+id_produk+'-'+id_h_diskon+'" id="harga-'+id_produk+'-'+id_h_diskon+'" style="text-align:right;" maxlength="15" size="7" onkeypress="return isNumberKey(event)" onchange="edit_d_penjualan(this.id)" onfocusout="getRupiah(this.id)" class="required select2" value="'+ harga_jual_format_rupiah +'" /></td><td style="text-align:right;"><input type="text" name="diskon-'+id_produk+'-'+id_h_diskon+'" id="diskon-'+id_produk+'-'+id_h_diskon+'" style="text-align:right;" maxlength="15" size="7" onkeypress="return isNumberKey(event)" onchange="edit_d_penjualan(this.id)" class="required select2" value="0" /></td><td style="text-align:center;"><select name="optr_diskon-'+id_produk+'-'+id_h_diskon+'" id="optr_diskon-'+id_produk+'-'+id_h_diskon+'" class="required" onchange="harga_satuan(this.id)"><option value="%">%</option><option value="C">C</option></select></td><td style="text-align:right;"><input style="text-align:right;background-color:#d7d7d6;" type="text" name="ed_subtotal" id="ed_subtotal-'+id_produk+'-'+id_h_diskon+'"  maxlength="15" size="7" onkeypress="return isNumberKey(event)" onfocusout="getRupiah(this.id)" class="required select2" value="'+ harga_jual_format_rupiah +'" disabled="true" /></td><td><input type="text" name="aturan_minum-'+id_produk+'-'+id_h_diskon+'" id="aturan_minum-'+id_produk+'-'+id_h_diskon+'" style="text-align:right;" maxlength="35" size="18" class="required select2" onchange="edit_d_penjualan(this.id)" /></td><td><font style="color:red;"><span id="ket_d_penjualan-'+id_produk+'-'+id_h_diskon+'">'+nama_diskon+'</span></font></td>  <input type="hidden" id="status_konversi-'+id_produk+'-'+id_h_diskon+'" name="status_konversi-'+id_produk+'-'+id_h_diskon+'" value="*" /> <input type="hidden" id="konversi-'+id_produk+'-'+id_h_diskon+'" name="konversi-'+id_produk+'-'+id_h_diskon+'" value="1" /> <input type="hidden" id="harga_ori-'+id_produk+'-'+id_h_diskon+'" name="harga_ori-'+id_produk+'-'+id_h_diskon+'" value="'+harga_ori+'" /> <input type="hidden" id="id_h_diskon-'+id_produk+'-'+id_h_diskon+'" name="id_h_diskon-'+id_produk+'-'+id_h_diskon+'" value="'+id_h_diskon+'" /> <input type="hidden" id="id_d_diskon-'+id_produk+'-'+id_h_diskon+'" name="id_d_diskon-'+id_produk+'-'+id_h_diskon+'" value="'+id_d_diskon+'" /> <input type="hidden" id="satuan_jual_old-'+id_produk+'-'+id_h_diskon+'" value="'+satuan_jual+'" /> <input type="hidden" id="harga_tambah_diskon-'+id_produk+'-'+id_h_diskon+'" value="'+harga_tambah_diskon+'" /> <input type="hidden" id="isProduk-'+id_produk+'-'+id_h_diskon+'" value="'+isProduk+'" />  </tr>';
+		}
+		else
+		{
+			//var markup = '<tr id="tr_list_transaksi-'+id_produk+'-'+id_h_diskon+'" ><td><input type="hidden" id="id_produk-"'+id_produk+'-'+id_h_diskon+' name="id_produk-"'+id_produk+'-'+id_h_diskon+'" value="'+id_produk+'" /> '+kode_produk+'</td><td>'+nama_produk+'</td><td><input type="text" name="jumlah-'+id_produk+'-'+id_h_diskon+'" id="jumlah-'+id_produk+'-'+id_h_diskon+'" style="text-align:right;" maxlength="4" size="4" onkeypress="return isNumberKey(event)" onchange="edit_d_penjualan(this.id)" onfocusout="getRupiah(this.id)" class="required select2" value="'+ jumlah +'" /></td><td style="text-align:center;"><select name="satuan_jual-'+id_produk+'-'+id_h_diskon+'" id="satuan_jual-'+id_produk+'-'+id_h_diskon+'" class="required" onfocus="tampilkan_list_satuan(this.id)" onchange="harga_satuan(this.id)"><option value="'+satuan_jual+'">'+satuan_jual+'</option></select></td><td style="text-align:right;"><input type="text" name="harga-'+id_produk+'-'+id_h_diskon+'" id="harga-'+id_produk+'-'+id_h_diskon+'" style="text-align:right;" maxlength="15" size="7" onkeypress="return isNumberKey(event)" onchange="edit_d_penjualan(this.id)" onfocusout="getRupiah(this.id)" class="required select2" value="'+ harga_jual_format_rupiah +'" disabled="true" /></td><td style="text-align:right;"><input type="text" name="diskon-'+id_produk+'-'+id_h_diskon+'" id="diskon-'+id_produk+'-'+id_h_diskon+'" style="text-align:right;" maxlength="15" size="7" onkeypress="return isNumberKey(event)" onchange="edit_d_penjualan(this.id)" class="required select2" value="0" disabled="true" /></td><td style="text-align:center;"><select name="optr_diskon-'+id_produk+'-'+id_h_diskon+'" id="optr_diskon-'+id_produk+'-'+id_h_diskon+'" class="required" onchange="harga_satuan(this.id)"><option value="%">%</option><option value="C">C</option></select></td><td style="text-align:right;"><input style="text-align:right;background-color:#d7d7d6;" type="text" name="ed_subtotal-'+id_produk+'-'+id_h_diskon+'" id="ed_subtotal-'+id_produk+'-'+id_h_diskon+'"  maxlength="15" size="7" onkeypress="return isNumberKey(event)" onfocusout="getRupiah(this.id)" class="required select2" value="'+ harga_jual_format_rupiah +'" disabled="true" /></td><td><input type="text" name="aturan_minum-'+id_produk+'-'+id_h_diskon+'" id="aturan_minum-'+id_produk+'-'+id_h_diskon+'" style="text-align:right;" maxlength="35" size="18" class="required select2" onchange="edit_d_penjualan(this.id)" /></td><td><font style="color:red;>"<span id="ket_d_penjualan-'+id_produk+'-'+id_h_diskon+'">'+nama_diskon+'</span></font></td>  <input type="hidden" id="status_konversi-'+id_produk+'-'+id_h_diskon+'" name="status_konversi-'+id_produk+'-'+id_h_diskon+'" value="*" /> <input type="hidden" id="konversi-'+id_produk+'-'+id_h_diskon+'" name="konversi-'+id_produk+'-'+id_h_diskon+'" value="1" /> <input type="hidden" id="harga_ori-'+id_produk+'-'+id_h_diskon+'" name="harga_ori-'+id_produk+'-'+id_h_diskon+'" value="'+harga_ori+'" /> <input type="hidden" id="id_h_diskon-'+id_produk+'-'+id_h_diskon+'" name="id_h_diskon-'+id_produk+'-'+id_h_diskon+'" value="'+id_h_diskon+'" /> <input type="text" id="id_d_diskon-'+id_produk+'-'+id_h_diskon+'" name="id_d_diskon-'+id_produk+'-'+id_h_diskon+'" value="'+id_d_diskon+'" /> <input type="hidden" id="satuan_jual_old-'+id_produk+'-'+id_h_diskon+'" value="'+satuan_jual+'" /> <input type="hidden" id="harga_tambah_diskon-'+id_produk+'-'+id_h_diskon+'" value="'+harga_tambah_diskon+'" /> <input type="hidden" id="isProduk-'+id_produk+'-'+id_h_diskon+'" value="'+isProduk+'" /> </tr>';
+			
+			var markup = '<tr id="'+id_produk+''+id_h_diskon+'" ><td><input type="hidden" id="id_produk-"'+id_produk+'-'+id_h_diskon+' name="id_produk-"'+id_produk+'-'+id_h_diskon+'" value="'+id_produk+'" /> '+kode_produk+'</td><td>'+nama_produk+'</td><td><input type="text" name="jumlah-'+id_produk+'-'+id_h_diskon+'" id="jumlah-'+id_produk+'-'+id_h_diskon+'" style="text-align:right;" maxlength="4" size="4" onkeypress="return isNumberKey(event)" onchange="edit_d_penjualan(this.id)" onfocusout="getRupiah(this.id)" class="required select2" value="'+ jumlah +'" /></td><td style="text-align:center;"><select name="satuan_jual-'+id_produk+'-'+id_h_diskon+'" id="satuan_jual-'+id_produk+'-'+id_h_diskon+'" class="required" onfocus="tampilkan_list_satuan(this.id)" onchange="harga_satuan(this.id)"><option value="'+satuan_jual+'">'+satuan_jual+'</option></select></td><td style="text-align:right;"><input type="text" name="harga-'+id_produk+'-'+id_h_diskon+'" id="harga-'+id_produk+'-'+id_h_diskon+'" style="text-align:right;" maxlength="15" size="7" onkeypress="return isNumberKey(event)" onchange="edit_d_penjualan(this.id)" onfocusout="getRupiah(this.id)" class="required select2" value="'+ harga_jual_format_rupiah +'" readonly /></td><td style="text-align:right;"><input type="text" name="diskon-'+id_produk+'-'+id_h_diskon+'" id="diskon-'+id_produk+'-'+id_h_diskon+'" style="text-align:right;" maxlength="15" size="7" onkeypress="return isNumberKey(event)" onchange="edit_d_penjualan(this.id)" class="required select2" value="0" disabled="true" /></td><td style="text-align:center;"><select name="optr_diskon-'+id_produk+'-'+id_h_diskon+'" id="optr_diskon-'+id_produk+'-'+id_h_diskon+'" class="required" onchange="harga_satuan(this.id)"><option value="%">%</option><option value="C">C</option></select></td><td style="text-align:right;"><input style="text-align:right;background-color:#d7d7d6;" type="text" name="ed_subtotal-'+id_produk+'-'+id_h_diskon+'" id="ed_subtotal-'+id_produk+'-'+id_h_diskon+'"  maxlength="15" size="7" onkeypress="return isNumberKey(event)" onfocusout="getRupiah(this.id)" class="required select2" value="'+ harga_jual_format_rupiah +'" disabled="true" /></td><td><input type="text" name="aturan_minum-'+id_produk+'-'+id_h_diskon+'" id="aturan_minum-'+id_produk+'-'+id_h_diskon+'" style="text-align:right;" maxlength="35" size="18" class="required select2" onchange="edit_d_penjualan(this.id)" /></td><td><font style="color:red;>"<span id="ket_d_penjualan-'+id_produk+'-'+id_h_diskon+'">'+nama_diskon+'</span></font></td>  <input type="hidden" id="status_konversi-'+id_produk+'-'+id_h_diskon+'" name="status_konversi-'+id_produk+'-'+id_h_diskon+'" value="*" /> <input type="hidden" id="konversi-'+id_produk+'-'+id_h_diskon+'" name="konversi-'+id_produk+'-'+id_h_diskon+'" value="1" /> <input type="hidden" id="harga_ori-'+id_produk+'-'+id_h_diskon+'" name="harga_ori-'+id_produk+'-'+id_h_diskon+'" value="'+harga_ori+'" /> <input type="hidden" id="id_h_diskon-'+id_produk+'-'+id_h_diskon+'" name="id_h_diskon-'+id_produk+'-'+id_h_diskon+'" value="'+id_h_diskon+'" /> <input type="text" id="id_d_diskon-'+id_produk+'-'+id_h_diskon+'" name="id_d_diskon-'+id_produk+'-'+id_h_diskon+'" value="'+id_d_diskon+'" /> <input type="hidden" id="satuan_jual_old-'+id_produk+'-'+id_h_diskon+'" value="'+satuan_jual+'" /> <input type="hidden" id="harga_tambah_diskon-'+id_produk+'-'+id_h_diskon+'" value="'+harga_tambah_diskon+'" /> <input type="hidden" id="isProduk-'+id_produk+'-'+id_h_diskon+'" value="'+isProduk+'" /> </tr>';
+		}
+		
+		
+		$("#table_transaksi tbody").prepend(markup);
+		
+		//alert("BAGUS");
+		
+		/*koding untuk menghilang kan di list produk*/
+			//$('#'+idTr).remove(); 
+		/*koding untuk menghilang kan di list produk*/
+		
+		
+	}
+	
+	function tampilkan_list_d_penjualan()
+	{
+		var id_h_penjualan = $('#id_h_penjualan').val();
+		
+		$.ajax({type: "POST", url: "<?php echo base_url();?>gl-admin-pemeriksaan-dokter-proses-list-d-penjualan/", data:{id_h_penjualan:id_h_penjualan
+		}, success:function(data)
+		{
+			if(data!=0)
+			{
+				$('#content_transaksi').html(data);
+				
+				//diskon_akumulasi();
+				grandTotaltransaksi();
+				//grandTotal();
+				//pembayaran();
+			} 
+			else
+			{
+				/*WALAU KOSONG HARUS DITAMPILKAN*/
+				$('#content_transaksi').html(data);
+				//
+				diskon_akumulasi();
+				grandTotaltransaksi();
+				/*WALAU KOSONG HARUS DITAMPILKAN*/
+				
+				//grandTotal();
+				//grandTotal();
+				//pembayaran();
+			}
+		}
+		,error: function(xhr, status, error)
+		{
+			var errorMessage = xhr.status + ': ' + xhr.statusText
+			alert('Error - ' + errorMessage);
+			tampilkan_list_d_penjualan();
+		}
+		});
+	}
+
+	function edit_d_penjualan(id)
+	{
+		var arrStrId = id;
+		var arrIdSplit = arrStrId.split("-");
+		
+		var id_produk = arrIdSplit[1];
+		var id_h_diskon = arrIdSplit[2];
+		var id_h_penjualan = $('#id_h_penjualan').val(); //ORI
+		
+		var diskon = $('#diskon-'+id_produk+'-'+id_h_diskon).val();
+		var optr_diskon = $('#optr_diskon-'+id_produk+'-'+id_h_diskon).val();
+			
+		//var id_produk = $('#id_produk-'+id_produk).val();
+		
+		/*
+		if(document.getElementById('#ket_d_penjualan-'+id_produk+'-'+id_h_diskon).innerHTML == "")
+		{
+			var satuan_jual = $('#satuan_jual-'+id_produk+'-').val();
+			var ket_d_penjualan = "";
+		}
+		else
+		{
+		*/
+			var satuan_jual = $('#satuan_jual-'+id_produk+'-'+id_h_diskon).val();
+			var satuan_jual_old = $('#satuan_jual_old-'+id_produk+'-'+id_h_diskon).val();
+			
+			//document.getElementById('grandTotal2').innerHTML;
+			//var ket_d_penjualan = $('#ket_d_penjualan-'+id_produk+'-'+id_h_diskon).html();
+			//var ket_d_penjualan = "";
+			var ket_d_penjualan = document.getElementById('ket_d_penjualan-'+id_produk+'-'+id_h_diskon).innerHTML;
+		//}
+		
+		
+		var id_kat_costumer = $('#id_kat_costumer').val(); //ORI
+		var jumlah = $('#jumlah-'+id_produk+'-'+id_h_diskon).val();
+		var harga = $('#harga-'+id_produk+'-'+id_h_diskon).val();
+		var konversi = $('#konversi-'+id_produk+'-'+id_h_diskon).val();
+		var status_konversi = $('#status_konversi-'+id_produk+'-'+id_h_diskon).val();
+		var harga_ori = $('#harga_ori-'+id_produk+'-'+id_h_diskon).val();
+		var aturan_minum = $('#aturan_minum-'+id_produk+'-'+id_h_diskon).val();
+		var harga_tambah_diskon = $('#harga_tambah_diskon-'+id_produk+'-'+id_h_diskon).val();
+		
+		//alert(status_konversi);
+		//alert(id_produk);
+		//alert(id_h_diskon);
+		//alert(document.getElementById('ket_d_penjualan-'+id_produk+'-'+id_h_diskon).innerHTML);
+		
+		$.ajax({type: "POST", url: "<?php echo base_url();?>gl-admin-pemeriksaan-dokter-proses-ubah-d-penjualan/", data: {
+			id_h_penjualan:id_h_penjualan,
+			id_produk:id_produk,
+			id_h_diskon:id_h_diskon,
+			satuan_jual:satuan_jual,
+			satuan_jual_old:satuan_jual_old,
+			ket_d_penjualan:ket_d_penjualan,
+			id_kat_costumer:id_kat_costumer,
+			jumlah:jumlah,
+			diskon:diskon,
+			optr_diskon:optr_diskon,
+			harga:harga,
+			konversi:konversi,
+			status_konversi:status_konversi,
+			harga_ori:harga_ori,
+			aturan_minum:aturan_minum,
+			harga_tambah_diskon:harga_tambah_diskon
+
+		}, success:function(data)
+		{
+			if(data!=0)
+			{
+				$('#satuan_jual_old-'+id_produk+'-'+id_h_diskon).val(satuan_jual);
+				if(jumlah <= 0)
+				{
+					//alert('#tr_list_transaksi-'+id_produk+'-'+id_h_diskon);
+					//$('#tr_list_transaksi-'+id_produk+'-'+id_h_diskon).remove(); 
+					$('#'+id_produk+''+id_h_diskon).remove(); 
+					//subtotal(id);
+					//alert("remove");
+					
+					diskon_akumulasi();
+					grandTotaltransaksi();
+					//diskon_akumulasi();
+				}
+				else
+				{
+				
+					var hasilJson = data;
+					var arrhasilJson = hasilJson.split("|");
+					
+					var harga_arrhasilJson = arrhasilJson[0];
+					//alert(harga_arrhasilJson);
+					harga_arrhasilJson = format_str_to_currency(harga_arrhasilJson);
+					var harga_ori_arrhasilJson = arrhasilJson[1];
+					
+			
+					$('#harga-'+id_produk+'-'+id_h_diskon).val(harga_arrhasilJson);
+					$('#harga_ori-'+id_produk+'-'+id_h_diskon).val(harga_ori_arrhasilJson);
+					$('#ket_d_penjualan-'+id_produk+'-'+id_h_diskon).html(arrhasilJson[2]);
+					
+					var diskon_is_produk =  arrhasilJson[4];
+					if( (diskon_is_produk == "%") || (diskon_is_produk == "C") )
+					{
+						$('#optr_diskon-'+id_produk+'-'+id_h_diskon).val(diskon_is_produk);
+						$('#diskon-'+id_produk+'-'+id_h_diskon).val(arrhasilJson[5]);
+						
+					}
+					
+					
+					
+					
+					
+					if(diskon_is_produk == "Produk")
+					{
+						tampilkan_list_d_penjualan(); //GRANTOTAL DAN DISKON AKUMULASI TIDAK DIPANGGIL KARENA UDAH INCLUDE DENGAN FUNGSI INI
+						//$("#kode_produk").val("");
+					}
+					else
+					{
+						subtotal(id);
+						diskon_akumulasi();
+					}
+					
+					//$('#satuan_jual_old-'+id_produk+'-'+id_h_diskon).val(satuan_jual);
+					//subtotal(id);
+				}
+				
+				
+			} 
+			else
+			{
+				$('#satuan_jual_old-'+id_produk+'-'+id_h_diskon).val(satuan_jual);
+				if(jumlah <= 0)
+				{
+					//$('#tr_list_transaksi-'+id_produk+'-'+id_h_diskon).remove(); 
+					$('#'+id_produk+''+id_h_diskon).remove();
+					//alert("remove");
+					
+					diskon_akumulasi();
+					grandTotaltransaksi();
+					//diskon_akumulasi();
+				}
+				else
+				{
+					var hasilJson = data;
+					var arrhasilJson = hasilJson.split("|");
+					
+					var harga_arrhasilJson = arrhasilJson[0];
+					//alert(harga_arrhasilJson);
+					harga_arrhasilJson = format_str_to_currency(harga_arrhasilJson);
+					var harga_ori_arrhasilJson = arrhasilJson[1];
+			
+					
+					$('#harga-'+id_produk+'-'+id_h_diskon).val(harga_arrhasilJson);
+					$('#harga_ori-'+id_produk+'-'+id_h_diskon).val(harga_ori_arrhasilJson);
+					$('#ket_d_penjualan-'+id_produk+'-'+id_h_diskon).html(arrhasilJson[2]);
+					//$('#satuan_jual_old-'+id_produk+'-'+id_h_diskon).val(satuan_jual);
+					
+					
+					subtotal(id);
+					//grandTotal();
+				}
+			}
+		}
+		,error: function(xhr, status, error)
+		{
+			var errorMessage = xhr.status + ': ' + xhr.statusText
+			alert('Error - ' + errorMessage);
+			tampilkan_list_d_penjualan();
+		}
+		});
+		
+	}
+	
+	$('#btnbatal').click(function(){
+		$('input[name=stat_edit]').val("");
+		
+		
+		/*Tutup Dulu Form*/
+			$('#icon_form').attr('class', 'fa fa-plus');
+			$('#box-form').attr('class', 'box box-warning collapsed-box box-solid');
+		/*Tutup Dulu Form*/
+	});
+	
+
+	
+	function isNumberKey(evt)
+	{
+		var charCode = (evt.which) ? evt.which : event.keyCode
+		
+		//alert (charCode);
+		if((charCode != 44) && (charCode != 46))
+		{
+			if (charCode > 31 && (charCode < 48 || charCode > 57))
+			
+			return false;
+			return true;
+		}
+		
+	}
+	
+	function RestrictSpace() 
+	{
+		if (event.keyCode == 32) 
+		{
+			return false;
+		}
+	}
+	
+	
+	function getRupiah(id_objek)
+	//function getRupiah()
+	{
+		/*
+		var angka = $('#charge').val();
+		//return angka.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+		$('#charge').val(angka.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.'));
+		*/
+		var angka = $('#'+id_objek).val();
+		 //return angka.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+		 $('#'+id_objek).val(angka.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'));
+	}
+	
+	function format_str_to_currency(str)
+	{
+		return str.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+	}
+</script>
+      
+      
+	<!-- Bootstrap 3.3.4 -->
+	<!-- <script src="<?php echo base_url();?>assets/adminlte/bootstrap/js/bootstrap.min.js"></script> -->
+	
+	<!-- Bootstrap 3.3.4 -->
+	<script src="<?=base_url();?>assets/adminlte/bootstrap/js/bootstrap.min.js"></script>
+	<!-- Slimscroll -->
+	<script src="<?=base_url();?>assets/adminlte/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+	<!-- FastClick -->
+	<script src="<?=base_url();?>assets/adminlte/plugins/fastclick/fastclick.min.js"></script>
+	<!-- AdminLTE App -->
+	<script src="<?=base_url();?>assets/adminlte/dist/js/app.min.js"></script>
+	<!-- Page script -->
+    <!-- InputMask -->
+    <script src="<?=base_url();?>/assets/adminlte/plugins/input-mask/jquery.inputmask.js"></script>
+    <script src="<?=base_url();?>/assets/adminlte/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+    <script src="<?=base_url();?>/assets/adminlte/plugins/input-mask/jquery.inputmask.extensions.js"></script>
+	
+	<!-- bootstrap datepicker -->
+	<script src="<?=base_url();?>/assets/adminlte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+	
+	<!-- CK Editor -->
+	<script src="<?php echo base_url();?>assets/adminlte/bower_components/ckeditor/ckeditor.js"></script>
+	<!-- Bootstrap WYSIHTML5 -->
+	<script src="<?php echo base_url();?>assets/adminlte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
+	<script>
+	  $(function () 
+		{
+		// Replace the <textarea id="keterangan_sop"> with a CKEditor
+		// instance, using default configuration.
+		//CKEDITOR.replace('keterangan_sop')
+		
+			
+			/*
+			CKEDITOR.replace( 'ket_penjualan', 
+			{
+				height: 100,
+				filebrowserUploadUrl: "upload.php"
+			});
+			//bootstrap WYSIHTML5 - text editor
+			$('.textarea').wysihtml5()
+			*/
+			
+			
+			
+			//Date picker
+			$('.settingDate').datepicker({
+				autoclose: true
+			});
+			
+			//Datemask yyyy-mm-dd
+			$(".datemask_mysql").inputmask("yyyy-mm-dd", {"placeholder": "yyyy-mm-dd"});
+			$(".time_mysql").inputmask("hh:mm:ss", {"placeholder": "hh:mm:ss"});
+			//Timepicker
+			$(".timepicker").timepicker({
+			  showInputs: false
+			});
+		})
+	</script>
+	
+

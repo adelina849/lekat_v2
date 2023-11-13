@@ -1,0 +1,569 @@
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.4 -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/dist/css/AdminLTE.min.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/dist/css/skins/_all-skins.min.css">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/plugins/select2/select2.min.css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+	
+	<!-- DataTables -->
+	<link rel="stylesheet" href="<?=base_url();?>assets/adminlte/plugins/datatables/dataTables.bootstrap.min.css">
+        
+		
+    		<style type="text/css">
+    		.labelfrm {
+    			display:block;
+    			font-size:small;
+    			margin-top:5px;
+    		}
+    		.error {
+    			font-size:small;
+    			color:red;
+    		}
+    		</style>
+    		
+    		<script type="text/javascript" src="<?=base_url();?>assets/admin/js/jquery.validate.min.js"></script>
+    		
+    		<script type="text/javascript">
+    		$(document).ready(function() {
+    			$('.frm-input').validate();
+                
+                $('.confirm-btn').click(function(){
+    			var answer = confirm(jQuery(this).attr('title'));
+                return answer;
+                });
+    		});
+            </script>
+            
+            <script type="text/javascript">
+                var htmlobjek;
+                $(document).ready(function()
+                {	
+					$('#hasil-laporan').attr('class', 'active treeview');
+					$('#hasil-laporan-akum').attr('class', 'active treeview');
+					
+					
+                });
+            </script>
+			
+			<!-- Load Tiny MCE -->
+				<!--<script src="<?=base_url();?>assets/js/jquery-1.11.1.min.js"></script>-->
+				<script type="text/javascript" src="<?=base_url();?>assets/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
+				<script>
+					//var base_url = "<?=base_url();?>index.php/";
+					var base_url = "<?=base_url();?>";
+				</script>
+				<?php $this->load->view('tinymce') ?>
+			<!-- Load Tiny MCE -->
+            
+     <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+          <h1>
+            Laporan <?php echo $data_laporan->LAP_NAMA; ?>
+          </h1>
+		  
+		  <p>
+			<?php echo $data_laporan->LAP_KET; ?>
+		  </p>
+          <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+			<li><a href="#"><i class="fa fa-dashboard"></i> Laporan</a></li>
+            <li class="active"><?php echo $data_laporan->LAP_NAMA; ?></li>
+            
+          </ol>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+          <!-- =========================================================== -->
+
+          <div class="row">
+            <div class="col-md-12">
+              
+              <!-- Perbatasan table dan form -->
+					<?php
+					$jum_periode = $_POST['jum_periode'];
+					$jum_kecamatan = $_POST['jum_kecamatan'];
+					
+					
+					//echo'PERIODE';
+					//echo'</br>';
+					for($no = 1;$no<=$jum_periode;$no++)
+					{
+						if(!empty($_POST['per_'.$no]))
+						{
+							echo '<h4>Akumulasi Laporan '.$data_laporan->LAP_NAMA.' '. $_POST['perNama_'.$no].'</h4></br>';
+							$PER_KODE = $_POST['per_'.$no];
+							
+							for($no2 = 1;$no2<=$jum_kecamatan;$no2++)
+							{
+								if(!empty($_POST['kec_'.$no2]))
+								{
+				echo'<div class="row">
+					<div class="col-md-12">
+					  <!-- <div class="box box-warning collapsed-box box-solid"> -->
+					  <div  id="box-form" class="box box-warning ellapsed-box box-solid">
+						<div class="box-header with-border">
+						  <h3 class="box-title">Kecamatan : '.$_POST['kecNama_'.$no2].'</h3>
+						  <div class="box-tools pull-right">
+							<button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+						  </div><!-- /.box-tools -->
+						</div><!-- /.box-header -->
+						<div class="box-body">';
+									//echo '<h5>Kecamatan : '.$_POST['kecNama_'.$no2].'</h5>';
+									$KEC_ID = $_POST['kec_'.$no2];
+									
+									$list_buat_laporan = $this->M_buat_laporan->get_laporan_yang_sudah_buat_by_periode($data_laporan->LAP_ID,$KEC_ID,$PER_KODE);
+									
+									if(!empty($list_buat_laporan))
+									{
+										$list_result = $list_buat_laporan->result();
+										foreach($list_result as $row)
+										{
+											echo '<center><h5>'.$row->BLAP_JUDUL.'</h5></center><br/>';
+											
+											//TAMPILKAN ISI LAPORAN
+												if(!empty($data_item_laporan))
+												{
+													echo'<table id="example1" class="table table-bordered table-striped">';
+													//echo'<table id="example2" class="table table-bordered table-striped">';
+														
+														if($data_laporan->LAP_ID == "KL2017121700001") //Data Jumlah Fasilitas Kesehatn/DJFK
+														{
+															
+						echo'<thead style="background-color:green;"> <th rowspan="2" class="frmt1">NO</th> <th rowspan="2" class="frmt1">DESA</th> <th rowspan="2" class="frmt1">RUMAH SAKIT</th> <th colspan="3" style="text-align:center;border:solid 1px white;">PUSKESMAS</th> <th rowspan="2" class="frmt1">PUSTU</th> <th rowspan="2" class="frmt1">BALAI PENGOBATAN</th> <th rowspan="2" class="frmt1">RUMAH BERSALIN</th> <th rowspan="2" class="frmt1">PRAKTEK DOKTER</th> <th rowspan="2" class="frmt1">PRAKTEK DOKTER GIGI</th> <th rowspan="2" class="frmt1">PRAKTEK BIDAN</th> </thead>';
+						echo'<thead style="background-color:green;"><th></th> <th></th> <th></th> <th style="text-align:center;">RAWAT INAP/DTP</th> <th style="text-align:center;">TANPA PERAWATAN</th> <th style="text-align:center;">PONED</th> <th></th> <th></th> <th></th> <th></th> <th></th> <th></th>  </thead>';
+															
+														}
+														else if($data_laporan->LAP_ID == "KL2017110400002") //GUANTRANTIB
+														{
+						echo'<thead style="background-color:green;">
+								<th rowspan="2" class="frmt1">NO</th> <th rowspan="2">NAMA DESA</th>
+								<th colspan="4" class="frmt1" style="text-align:center;border:solid 1px white;">PENYAKIT MASYARAKAT</th>
+								<th colspan="3" class="frmt1" style="text-align:center;border:solid 1px white;">GUANTRIBUM</th>
+								<th colspan="5" class="frmt1" style="text-align:center;border:solid 1px white;">BENCANA ALAM</th>
+								<th colspan="3" class="frmt1" style="text-align:center;border:solid 1px white;">LAIN-LAIN</th>
+								<th rowspan="2" class="frmt1">KETERANGAN</th>
+							</thead>';
+						echo'<thead style="background-color:green;">
+								<th></th><th></th>
+								<th>JUDI</th><th>PROSTITUSI</th><th>NAP2A</th><th>MIRAS</th>
+								<th>PENCURIAN</th><th>PENIMBUNAN</th><th>HURU HARA</th>
+								<th>LONGSOR</th><th>BANJIR</th><th>ANGIN TOPAN</th><th>GEMPA BUMI</th><th>KEBAKARAN</th>
+								<th>LAKA LALU LINTAS</th><th>PENEMUAN MAYAT</th><th>HANYUT</th>
+								<th></th>
+							</thead>';
+														}
+														else if($data_laporan->LAP_ID == "KL2017101800001") //LAPORAN JUMLAH PENDUDUK
+														{
+						echo'<thead style="background-color:green;">
+								<th rowspan="2" class="frmt1">NO</th> <th rowspan="2" class="frmt1">NAMA DESA</th> <th rowspan="2" class="frmt1">JUMLAH KK</th>
+								<th colspan="3" style="text-align:center;border:solid 1px white;">PENDUDUK AWAL BULAN</th>
+								<th colspan="3" style="text-align:center;border:solid 1px white;">LAHIR</th> 
+								<th colspan="3" style="text-align:center;border:solid 1px white;">MATI</th> 
+								<th colspan="3" style="text-align:center;border:solid 1px white;">PINDAH</th> 
+								<th colspan="3" style="text-align:center;border:solid 1px white;">DATANG</th>
+								<th colspan="3" style="text-align:center;border:solid 1px white;">PENDUDUK AKHIR BULAN</th>
+							</thead>';
+						echo'<thead style="background-color:green;">
+								<th></th><th></th><th></th>
+								<th>L</th><th>P</th><th>JML</th>
+								<th>L</th><th>P</th><th>JML</th>
+								<th>L</th><th>P</th><th>JML</th>
+								<th>L</th><th>P</th><th>JML</th>
+								<th>L</th><th>P</th><th>JML</th>
+								<th>L</th><th>P</th><th>JML</th>
+							</thead>';
+														}
+														else if($data_laporan->LAP_ID == "KL2017110400001") //LAPORAN NTCR
+														{
+						echo'<thead style="background-color:green;">
+								<th rowspan="2" class="frmt1">NO</th> <th rowspan="2" class="frmt1">DESA</th>
+								<th colspan="2" class="frmt1" style="text-align:center;border:solid 1px white;">NIKAH</th>
+								<th rowspan="2" class="frmt1">TALAK</th>
+								<th rowspan="2" class="frmt1">CERAI</th>
+								<th rowspan="2" class="frmt1">RUJUK</th>
+								<th rowspan="2" class="frmt1">KETERANGAN</th>
+							</thead>';
+						echo'<thead style="background-color:green;">
+								<th></th> <th></th>
+								<th>Dikantor</th> <th>Diluar Kantor</th>
+								<th></th><th></th><th></th><th></th>
+							</thead>';
+														}
+														else if($data_laporan->LAP_ID == "KL2017121800001") //LAPORAN KARTU INVENTARIS BARANG - A (KIB - A)
+														{
+						echo'<thead style="background-color:green;border:solid 1px white;">
+								<th rowspan="3" class="frmt1">No Urut</th> <th rowspan="3" class="frmt1">Jenis Barang/Nama Barang</th>
+								<th colspan="3" class="frmt1" style="text-align:center;border:solid 1px white;">Nomor</th>
+								<th rowspan="3" class="frmt1">Luas(M2)</th>
+								<th rowspan="3" class="frmt1">Tahun Pengadaan</th>
+								<th rowspan="3" class="frmt1">Letak/Alamat</th>
+								<th colspan="3" class="frmt1" style="text-align:center;border:solid 1px white;">Status Tanah</th>
+								<th rowspan="3" class="frmt1">Letak/Pengguna</th>
+								<th rowspan="3" class="frmt1">Letak/Asal-usul</th>
+								<th rowspan="3" class="frmt1">Letak/Harga(Rp)</th>
+								<th rowspan="3" class="frmt1">Letak/Keterangan</th>
+							</thead>';
+						echo'<thead style="background-color:green;border:solid 1px white;">
+								<th></th> <th></th>
+								<th rowspan="2" class="frmt1">Kode Rekening</th> <th rowspan="2" class="frmt1">Kode Barang</th> <th rowspan="2" class="frmt1">Register</th>
+								<th></th><th></th><th></th>
+								<th rowspan="2" class="frmt1">Hak</th> 
+								<th colspan="2" class="frmt1" style="text-align:center;border:solid 1px white;">Sertifikat</th> 
+								<th></th><th></th><th></th><th></th>
+							</thead>';
+						echo'<thead style="background-color:green;border:solid 1px white;">
+								<th></th> <th></th> <th></th> <th></th> <th></th> <th></th> <th></th> <th></th> <th></th> <th>Tanggal</th> <th>Nomor</th>
+								<th></th><th></th><th></th><th></th>
+							</thead>';
+														}
+														else if($data_laporan->LAP_ID == "KL2017121800002") //LAPORAN KARTU INVENTARIS BARANG - B (KIB - B)
+														{
+						echo'<thead style="background-color:green;border:solid 1px white;">
+								<th rowspan="2" class="frmt1">No Urut</th> <th rowspan="2" class="frmt1">Jenis Barang/Nama Barang</th>
+								<th rowspan="2" class="frmt1">Kode Rekening</th>
+								<th rowspan="2" class="frmt1">Kode Barang</th>
+								<th rowspan="2" class="frmt1">Nomor Register</th>
+								<th rowspan="2" class="frmt1">Merek Type</th>
+								<th rowspan="2" class="frmt1">Ukuran CC</th>
+								<th rowspan="2" class="frmt1">Bahan</th>
+								<th rowspan="2" class="frmt1">Tahun Pembelian</th>
+								<th colspan="5" class="frmt1" style="text-align:center;border:solid 1px white;">Nomor</th>
+								<th rowspan="2" class="frmt1">Asal-usul Acara Perolehan</th>
+								<th rowspan="2" class="frmt1">Harga(Rp)</th>
+							</thead>';
+						echo'<thead style="background-color:green;border:solid 1px white;">
+								<th></th> <th></th> <th></th> <th></th> <th></th> <th></th> <th></th> <th></th> <th></th>
+								<th>Pabrik</th> <th>Rangka</th> <th>Mesin</th> <th>Polisi</th> <th>BPKB</th>
+								<th></th><th></th>
+							</thead>';
+														}
+														else
+														{
+															//TAMPILKAN HEADER DEFAULT
+															$list_result = $data_item_laporan->result();
+															$no2 = 0;
+															echo '<thead>';
+															echo'<th>NO</th>';
+															foreach($list_result as $row2)
+															{
+																echo'<th>'.$row2->ILAP_NAMA.'</th>';
+															}
+																echo'<th>AKSI</th>';
+															echo'</thead>';
+														}
+														
+														
+														//PANGGIL PROCEDURE ISI LAPORAN
+														$list_d_buat_laporan = $this->M_d_buat_laporan->list_d_buat_laporan_proc($KEC_ID,$data_laporan->LAP_ID,$row->BLAP_ID);
+														if(!empty($list_d_buat_laporan))
+														{
+															
+															$list_result2 = $list_d_buat_laporan->result_array();
+															//$array = array();
+															$no_index = 1;
+															foreach($list_result2 as $row3 => $val)
+															//foreach($list_result as $row)
+															{
+																echo'<tr>';
+																echo'<td>'.$no_index.'</td>';
+																for($no22 = 1;$no22 <= $jum_col;$no22++)
+																{
+																	$temp = array_values($val);
+																	////$array[] = $temp[0];
+																	echo'<td>'.$temp[$no22].'</td>';
+																	
+																	
+																}
+																	
+																echo'</tr>';
+															
+																$no_index++;
+															}
+														}
+														//PANGGIL PROCEDURE ISI LAPORAN
+													echo'</table>';
+												}
+											//TAMPILKAN ISI LAPORAN
+											
+										}
+									}
+									else
+									{
+										echo'<h5>Belum Ada Laporan</h5>';
+									}
+									echo'
+										</div>
+										</div>
+										</div>
+										</div>
+									';
+								}
+							}
+						}
+					}
+					// // echo'</br>KECAMATAN';
+					// // echo'</br>';
+					// for($no = 1;$no<=$jum_kecamatan;$no++)
+					// {
+						// //echo $no.'</br>';
+					// }
+					?>
+					
+					
+					
+					
+					
+					<!-- <div class="box"> -->
+						<!-- <div class="box-header"> -->
+						  <!-- <h3 class="box-title">Data Table With Full Features</h3> -->
+						<!-- </div> -->
+						
+						<!-- <div class="box-body"> -->
+						  <!-- <table id="example1" class="table table-bordered table-striped"> -->
+							<!-- <thead> -->
+							<!-- <tr> -->
+							  <!-- <th>Rendering engine</th> -->
+							  <!-- <th>Browser</th> -->
+							  <!-- <th>Platform(s)</th> -->
+							  <!-- <th>Engine version</th> -->
+							  <!-- <th>CSS grade</th> -->
+							<!-- </tr> -->
+							<!-- </thead> -->
+							<!-- <tbody> -->
+							<!-- <tr> -->
+							  <!-- <td>Trident</td> -->
+							  <!-- <td>Internet -->
+								<!-- Explorer 4.0 -->
+							  <!-- </td> -->
+							  <!-- <td>Win 95+</td> -->
+							  <!-- <td> 4</td> -->
+							  <!-- <td>X</td> -->
+							<!-- </tr> -->
+							<!-- </tfoot> -->
+						  <!-- </table> -->
+						<!-- </div> -->
+						
+					  <!-- </div> -->
+					
+					
+					
+					
+					
+			</div><!-- /.col -->
+		</div><!-- /.row -->
+          <!-- =========================================================== -->
+        </section><!-- /.content -->
+      </div><!-- /.content-wrapper -->
+            
+    		
+		
+<script type='text/javascript'>
+	function view(id)
+	{
+        $("#img2").html("<img style='border:1px solid #C8C8C8; padding:5px; float:left; margin-right:20px;' src='"+$('#avatar_url_'+id).val()+"' width='100px' height='100px'>");
+		$('#no_karyawan2').html($('#no_karyawan_'+id).val());
+        $('#nik2').html($('#nik_'+id).val());
+        $('#nama2').html($('#nama_'+id).val());
+        $('#jabatan2').html($('#nama_jabatan_'+id).val());
+        $('#pnd2').html($('#pnd_'+id).val());
+        $('#tlp2').html($('#tlp_'+id).val());
+		$('#status_kantor2').html($('#status_kantor_'+id).val());
+        $('#email2').html($('#email_'+id).val());
+        $('#alamat2').html($('#alamat_'+id).val());
+		$('#keterangan2').html($('#keterangan_'+id).val());
+        
+		//alert (k_kat);
+	}
+	
+	function edit(id)
+	{
+		alert("Mode Perubahan Data, Silahkan Cek Formulir Isian !");
+		$("#img_edit").html("<img style='border:1px solid #C8C8C8; padding:5px; float:left; margin-right:20px;' src='"+$('#avatar_url_'+id).val()+"' width='100px' height='100px'>");
+		$('input[name=stat_edit]').val($('#no_'+id).val());
+		$('input[name=no_karyawan]').val($('#no_karyawan_'+id).val());
+        $('input[name=nik]').val($('#nik_'+id).val());
+		$('input[name=cek_nik]').val($('#nik_'+id).val());
+		$('input[name=nama]').val($('#nama_'+id).val());
+		$('input[name=pnd]').val($('#pnd_'+id).val());
+		$('input[name=tlp]').val($('#tlp_'+id).val());
+		$('input[name=email]').val($('#email_'+id).val());
+		document.getElementById("alamat").value = $('#alamat_'+id).val();
+		document.getElementById("keterangan").value = $('#keterangan_'+id).val();
+		
+		document.getElementById("status_kantor").options.item(0).text = $('#status_kantor_'+id).val();
+		document.getElementById("status_kantor").options.item(0).value = $('#status_kantor_'+id).val();
+		
+		document.getElementById("KEC_ID").options.item(0).text = $('#KEC_NAMA_'+id).val();
+		document.getElementById("KEC_ID").options.item(0).value = $('#KEC_ID_'+id).val();
+		
+		document.getElementById("jabatan").options.item(0).text = $('#nama_jabatan_'+id).val();
+		document.getElementById("jabatan").options.item(0).value = $('#id_jabatan_'+id).val();
+		
+		$('#box-form').attr('class', 'box box-warning ellapsed-box box-solid');
+	}
+	
+	function isNumberKey(evt)
+	{
+    	var charCode = (evt.which) ? evt.which : event.keyCode
+    	if (charCode > 31 && (charCode < 48 || charCode > 57))
+    	
+    	return false;
+    	return true;
+	}
+	
+	function insert(id)
+	{
+		$('input[name=id_kat_uang_masuk]').val($('#id_kat_uang_masuk2_'+id).val());
+		$('input[name=nama_kat_uang_masuk]').val($('#nama_kat_uang_masuk2_'+id).val());
+		$('input[name=ket_kat_uang_masuk]').val($('#ket_kat_uang_masuk2_'+id).val());
+	}
+	
+	function FormatCurrency(objNum)
+	{
+	   var num = objNum.value
+	   var ent, dec;
+	   if (num != '' && num != objNum.oldvalue)
+	   {
+		 num = HapusTitik(num);
+		 if (isNaN(num))
+		 {
+		   objNum.value = (objNum.oldvalue)?objNum.oldvalue:'';
+		 } else {
+		   var ev = (navigator.appName.indexOf('Netscape') != -1)?Event:event;
+		   if (ev.keyCode == 190 || !isNaN(num.split('.')[1]))
+		   {
+			 alert(num.split('.')[1]);
+			 objNum.value = TambahTitik(num.split('.')[0])+'.'+num.split('.')[1];
+		   }
+		   else
+		   {
+			 objNum.value = TambahTitik(num.split('.')[0]);
+		   }
+		   objNum.oldvalue = objNum.value;
+		 }
+	   }
+	}
+	function HapusTitik(num)
+	{
+	   return (num.replace(/\./g, ''));
+	}
+
+	function TambahTitik(num)
+	{
+	   numArr=new String(num).split('').reverse();
+	   for (i=3;i<numArr.length;i+=3)
+	   {
+		 numArr[i]+='.';
+	   }
+	   return numArr.reverse().join('');
+	} 
+			
+	function formatCurrency(num) {
+	   num = num.toString().replace(/\$|\./g,'');
+	   if(isNaN(num))
+	   num = "0";
+	   sign = (num == (num = Math.abs(num)));
+	   num = Math.floor(num*100+0.50000000001);
+	   cents = num0;
+	   num = Math.floor(num/100).toString();
+	   for (var i = 0; i < Math.floor((num.length-(1+i))/3); i++)
+	   num = num.substring(0,num.length-(4*i+3))+'.'+
+	   num.substring(num.length-(4*i+3));
+	   return (((sign)?'':'-') + num);
+	}
+</script>
+      
+    <!-- Bootstrap 3.3.4 -->
+	<script src="<?=base_url();?>assets/adminlte/bootstrap/js/bootstrap.min.js"></script>
+	<!-- Slimscroll -->
+	<script src="<?=base_url();?>assets/adminlte/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+	<!-- FastClick -->
+	<script src="<?=base_url();?>assets/adminlte/plugins/fastclick/fastclick.min.js"></script>
+	<!-- AdminLTE App -->
+	<script src="<?=base_url();?>assets/adminlte/dist/js/app.min.js"></script>
+	<!-- Page script -->
+    <!-- InputMask -->
+    <script src="<?=base_url();?>/assets/adminlte/plugins/input-mask/jquery.inputmask.js"></script>
+    <script src="<?=base_url();?>/assets/adminlte/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+    <script src="<?=base_url();?>/assets/adminlte/plugins/input-mask/jquery.inputmask.extensions.js"></script>
+	
+	<!-- DataTables -->
+	<script src="<?=base_url();?>/assets/adminlte/plugins/datatables/jquery.dataTables.min.js"></script>
+	<script src="<?=base_url();?>/assets/adminlte/plugins/datatables/dataTables.bootstrap.min.js"></script>
+    
+	
+	<script>
+	  $(function () {
+		$('#example1').DataTable()
+		$('#example2').DataTable({
+		  'paging'      : true,
+		  'lengthChange': false,
+		  'searching'   : true,
+		  'ordering'    : true,
+		  'info'        : true,
+		  'autoWidth'   : false
+		})
+	  })
+	</script>
+	
+    <script>
+      $(function () {
+        //Initialize Select2 Elements
+        //$(".select2").select2();
+
+        //Datemask yyyy-mm-dd
+        $(".datemask_mysql").inputmask("yyyy-mm-dd", {"placeholder": "yyyy-mm-dd"});
+        //Datemask dd/mm/yyyy
+        //$("#datemask").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});
+        //Datemask2 mm/dd/yyyy
+        //$("#datemask2").inputmask("mm/dd/yyyy", {"placeholder": "mm/dd/yyyy"});
+        //TimeMask hh:mm:ss
+        $(".time_mysql").inputmask("hh:mm:ss", {"placeholder": "hh:mm:ss"});
+        //Money Euro
+        //$("[data-mask]").inputmask();
+
+        //iCheck for checkbox and radio inputs
+        $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+          checkboxClass: 'icheckbox_minimal-blue',
+          radioClass: 'iradio_minimal-blue'
+        });
+        //Red color scheme for iCheck
+        $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
+          checkboxClass: 'icheckbox_minimal-red',
+          radioClass: 'iradio_minimal-red'
+        });
+        //Flat red color scheme for iCheck
+        $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+          checkboxClass: 'icheckbox_flat-green',
+          radioClass: 'iradio_flat-green'
+        });
+
+        //Colorpicker
+        $(".my-colorpicker1").colorpicker();
+        //color picker with addon
+        $(".my-colorpicker2").colorpicker();
+
+        //Timepicker
+        $(".timepicker").timepicker({
+          showInputs: false
+        });
+      });
+    </script>
+    

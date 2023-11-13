@@ -1,0 +1,146 @@
+<html>
+	<head>
+		<?php
+			echo '<title>'.$this->session->userdata('ses_gnl_nama_aplikasi').'</title>';
+		?>
+		
+		<!-- @page { size: auto;  margin: 0mm; } -->
+		<style>
+			@page { size: auto; margin-top:0mm;margin-bottom:0mm; }	
+		</style>
+	</head>
+	<body onload="window.print();">
+	<!-- <body> -->
+		<center style="margin:0;">
+			<!-- <img class="profile-user-img img-responsive" style="border:0px;width:50%;" src= "<?php echo base_url().'/'.$this->session->userdata('ses_gnl_logo_aplikasi_besar');?>" alt="User profile picture"> -->
+			<!-- <br/> -->
+			<?php //echo $this->session->userdata('ses_alamat_kantor') .'<br/>';?>
+			<?php //echo $this->session->userdata('ses_alamat_kantor') .'<br/><font style="font-size:60px;font-weight:bold;">'.$data_h_penjualan->no_antrian.'</font>';?>
+			<?php //echo '<h1 style="font-size:60px;">'.$data_h_penjualan->no_antrian.'</h1>';?>
+			<?php //echo $this->session->userdata('ses_alamat_kantor');?>
+		</center>
+			
+		
+			
+			<div class="box-body table-responsive no-padding" style="">
+				<table width="100%" id="table_transaksi" class="table table-hover" style="border-collapse: collapse;">
+					<!-- <thead> -->
+						
+						<tr>
+							<td colspan="4">
+							<img class="profile-user-img img-responsive" style="border:0px;width:15%;" src= "<?php echo base_url().'/'.$this->session->userdata('ses_gnl_logo_aplikasi_besar');?>" alt="User profile picture">
+							</td>
+						</tr>
+						
+						<tr>
+							<td colspan="4" style="text-align:center;"><b><u>Bukti Mutasi Kas</u></b></td>
+						</tr>
+						
+						<tr>
+							<td colspan="1"></td>
+							<td colspan="1"> Tanggal Transaksi</td>
+							<td colspan="1"> : <?php echo $mutasi_kas->tgl_transaksi;?></td>
+							<!-- <td colspan="1">NO : <?php echo $mutasi_kas->no_bukti;?></td> -->
+							<td colspan="1"></td>
+						</tr>
+						<tr>
+							<td colspan="1"></td>
+							<td colspan="1"> Dari</td>
+							<td colspan="2"> : <?php echo $mutasi_kas->NAMA_AKUN_OUT.' ('.$mutasi_kas->KODE_AKUN_OUT.')';?></td>
+							<!-- <td colspan="1">NO : <?php echo $mutasi_kas->no_bukti;?></td> -->
+							<!-- <td colspan="1"></td> -->
+						</tr>
+						<tr>
+							<td colspan="1"></td>
+							<td colspan="1"> Ke</td>
+							<td colspan="2"> : <?php echo $mutasi_kas->NAMA_AKUN_IN.' ('.$mutasi_kas->KODE_AKUN_IN.')';?></td>
+							<!-- <td colspan="1">NO : <?php echo $mutasi_kas->no_bukti;?></td> -->
+							<!-- <td colspan="1"></td> -->
+						</tr>
+						<tr>
+							<td colspan="1"></td>
+							<td colspan="1"> Jumlah</td>
+							<td colspan="1"> : Rp.<?php echo number_format($mutasi_kas->nominal,0,'.',',');?></td>
+						</tr>
+						
+						<tr>
+							<td colspan="1"></td>
+							<td colspan="1"> Keterangan</td>
+							<td colspan="1"> : <?php echo $mutasi_kas->ket_mutasi;?></td>
+							<!-- <td colspan="1">NO : <?php echo $mutasi_kas->no_bukti;?></td> -->
+							<td colspan="1"></td>
+						</tr>
+						
+						
+					<!-- </thead> -->
+			<?php
+			
+				
+						
+						
+						
+						
+						echo'
+							<tr style="font-weight:bold;">
+								<td colspan="1"></td>
+								<td colspan="2" style="text-align:left;">Sebesar : '.ucfirst(Terbilang($mutasi_kas->nominal)).'</td>
+								<td style="text-align:right;"><br/><br/><br/></td>
+							</tr>
+						';
+						
+						
+						echo'
+							<tr style="font-weight:bold;">
+								<td colspan="1"></td>
+								<td colspan="1" style="text-align:center;">Diserahkan</td>
+								<td colspan="1" style="text-align:center;">Disetujui</td>
+								<td colspan="1" style="text-align:center;">Diterima</td>
+								
+							</tr>
+						';
+						
+						echo'
+							<tr style="font-weight:bold;">
+								<td colspan="1"></td>
+								<td colspan="1" style="text-align:center;"><br/><br/><br/></td>
+								<td colspan="1" style="text-align:center;"></td>
+								<td colspan="1" style="text-align:center;"></td>
+								
+							</tr>
+						';
+						
+						echo'
+							<tr style="font-weight:bold;">
+								<td colspan="1"></td>
+								<td colspan="1" style="text-align:center;">_______________</td>
+								<td colspan="1" style="text-align:center;">_______________</td>
+								<td colspan="1" style="text-align:center;">_______________</td>
+								
+							</tr>
+						';
+						
+						
+						
+				
+			
+			?>
+				</table>
+			</div>
+			
+		
+		
+		
+		<center>
+			<?php
+				//echo '<br/>'.$data_h_penjualan->type_h_penjualan;
+			?>
+			<!-- <table style="width:100%; text-align:center;"> -->
+				<!-- <tr><td> -->
+					<!-- <font style="text-align:right;">TERIMA KASIH TELAH BERKUNJUNG, KAMI TUNGGU KEDATANGAN ANDA SELANJUTNYA</font> -->
+				<!-- </td></tr> -->
+			<!-- </table> -->
+			
+			
+		</center>
+	</body>
+</html>

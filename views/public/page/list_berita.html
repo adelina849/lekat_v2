@@ -1,0 +1,123 @@
+				<!-- LAYER SLIDER -->
+				<link href="<?php echo base_url();?>assets/public/assets/plugins/slider.layerslider/css/layerslider.css" rel="stylesheet" type="text/css" />
+				
+				<!-- LAYER SLIDER -->
+				<script type="text/javascript" src="<?php echo base_url();?>assets/public/assets/plugins/slider.layerslider/js/layerslider_pack.js"></script>
+				<script type="text/javascript" src="<?php echo base_url();?>assets/public/assets/js/view/demo.layerslider_slider.js"></script>
+						
+						<!-- <div class="col-sm-9"> -->
+
+							<!-- 
+								controlls-over		= navigation buttons over the image 
+								buttons-autohide 	= navigation buttons visible on mouse hover only
+								
+								data-plugin-options:
+									"singleItem": true
+									"autoPlay": true (or ms. eg: 4000)
+									"navigation": true
+									"pagination": true
+									"transitionStyle":"fadeUp" (fade,backSlide,goDown,fadeUp)
+							-->
+							<div class="owl-carousel buttons-autohide controlls-over" data-plugin-options='{"singleItem": true, "autoPlay": true, "navigation": true, "pagination": true, "transitionStyle":"fade"}'>
+							
+								<?php
+									$list_slider_berita = $this->M_public->list_berita(" WHERE C.IMG_LINK IS NOT NULL "," A.BRT_DTINS DESC",0,5);
+									if(!empty($list_slider_berita)) 
+									{  
+										$list_result = $list_slider_berita->result();
+										foreach($list_result as $row)
+										{
+								?>
+							
+											<a href="#">
+												<img class="img-fluid" src="<?php echo $row->IMG_LINK;?>" alt="<?php echo $row->BRT_NAMA;?>">
+											</a>
+								<?php
+										}
+									}
+								?>
+							</div>
+							
+							
+							<!-- breaking news -->
+							<div class="alert alert-mini alert-primary mb-30" style="background-color:#196619;"><!-- DANGER -->
+								<strong style="color:yellow;">BREAKING NEWS:</strong>
+								<div class="owl-carousel controlls-over m-0" data-plugin-options='{"autoPlay":3000, "stopOnHover":true, "items": 1, "singleItem": true, "navigation": false, "pagination": false, "transitionStyle":"fadeUp"}'>
+								
+									<?php
+										$list_slider_berita = $this->M_public->list_berita(""," A.BRT_DTINS DESC",0,5);
+										if(!empty($list_slider_berita)) 
+										{  
+											$list_result = $list_slider_berita->result();
+											foreach($list_result as $row)
+											{
+									?>
+								
+												<div class="text-left fs-14">
+													<a href="#" style="color:yellow;"><?php echo substr(strip_tags($row->BRT_ISI),0,150).'...';?></a>
+												</div>
+									<?php
+											}
+										}
+									?>
+								
+									
+								</div>
+							</div><!-- /breaking news -->
+
+
+							<div class="heading-title heading-border">
+								<h3><span>List Berita</span></h3>
+								<p class="font-lato fs-14">Menampilkan berita - berita terkait kegiatan dan aktifitas BAZNAS Kab.Sukabumi.</p>
+							</div>
+
+
+							<!-- THREE COLUMNS -->
+							<div class="row">
+
+								<?php
+									if(!empty($list_berita)) 
+									{  
+										$list_result = $list_berita->result();
+										foreach($list_result as $row)
+										{
+								?>
+											<div class="col-md-4">
+												<!-- article item -->
+												<div class="item-box">
+													<figure>
+														<a class="item-hover" href="<?php echo base_url();?>detail-berita/<?php echo substr($row->BRT_DTINS,0,4);?>/<?php echo $row->BRT_LINKTITLE;?>">
+															<span class="overlay color2"></span>
+															<span class="inner">
+																<span class="block fa fa-plus fsize20"></span>
+																<strong>READ</strong> ARTICLE
+															</span>
+														</a>
+														<img alt="<?php echo $row->BRT_NAMA;?>" class="img-fluid" src="<?php echo $row->IMG_LINK;?>" width="263" height="147" />
+													</figure>
+													<div class="item-box-desc">
+														<h4><?php echo $row->BRT_NAMA;?></h4>
+														<small><?php echo $row->BRT_DTINS;?></small>
+														<p><?php echo substr(strip_tags($row->BRT_ISI),0,150).'...';?></p>
+													</div>
+												</div>
+												<!-- /article item -->
+
+											</div>
+								<?php
+										}
+									}
+								?>
+								
+
+								<!-- /article item -->
+							</div>
+							<!-- /THREE COLUMNS -->
+							<center>
+								<?php
+									echo $halaman;
+								?>
+							</center>
+
+
+						<!-- </div> -->

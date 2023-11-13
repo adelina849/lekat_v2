@@ -1,0 +1,40 @@
+<html>
+	<head>
+		<?php
+			echo '<title>'.$this->session->userdata('ses_gnl_nama_aplikasi').'</title>';
+		?>
+		
+		<!-- @page { size: auto;  margin: 0mm; } -->
+		<style>
+			@page { size: auto; margin-top:0mm;margin-bottom:0mm; }	
+		</style>
+	</head>
+	<body onload="window.print();">
+		<center style="margin:0;">
+			<img class="profile-user-img img-responsive" style="border:0px;width:50%;" src= "<?php echo base_url().'/'.$this->session->userdata('ses_gnl_logo_aplikasi_besar');?>" alt="User profile picture">
+			<br/>
+			<?php echo $this->session->userdata('ses_alamat_kantor') .'<br/><font style="font-size:60px;font-weight:bold;">'.$data_h_penjualan->no_antrian.'</font>';?>
+			<?php //echo '<h1 style="font-size:60px;">'.$data_h_penjualan->no_antrian.'</h1>';?>
+			<?php //echo $this->session->userdata('ses_alamat_kantor');?>
+		</center>
+		<?php
+			echo '<b>Waktu : </b>'.($data_h_penjualan->tgl_ins);
+			//echo '<br/><b>Dokter : </b>'.$data_dokter->nama_karyawan;
+			
+			if(!empty($data_costumer))
+			{
+				echo '<br/><b>Pasien : </b>'.$data_costumer->nama_lengkap;
+			}
+			if(!empty($data_dokter))
+			{
+				echo '<br/><b>Dokter : </b>'.$data_dokter->nama_karyawan;
+			}
+		?>
+		<center>
+			<?php
+				//echo '<br/>'.$data_h_penjualan->type_h_penjualan;
+			?>
+			<img class="profile-user-img img-responsive" style="border:0px;width:25%;" src= "<?php echo base_url().'/assets/global/images/qrcode/'.$data_h_penjualan->no_faktur.'.png';?>" alt="User profile picture">
+		</center>
+	</body>
+</html>

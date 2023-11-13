@@ -1,0 +1,544 @@
+			<!-- Go to www.addthis.com/dashboard to customize your tools --> 
+			<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a9379b24addc28a">
+			</script>
+			<section>
+				<div class="container">
+
+					<div class="row">
+					
+						<div class="col-md-5 col-sm-5">
+
+							<div class="thumbnail">
+								<!--
+									IMAGE ZOOM 
+									
+									data-mode="mouseover|grab|click|toggle"
+								-->
+								
+								<?php
+									$row_images_donasi = $this->M_public->list_images(" WHERE A.IMG_GRUP = 'amal' AND A.ID = '".$data_amal->AML_ID."'",0,1);
+									if(!empty($row_images_donasi)) 
+									{
+										$row_images_donasi = $row_images_donasi->row();
+								?>
+										<figure id="zoom-primary" class="zoom" data-mode="mouseover">
+											<!-- 
+												zoom buttton
+												
+												positions available:
+													.bottom-right
+													.bottom-left
+													.top-right
+													.top-left
+											-->
+											<a class="lightbox bottom-right" href="<?php echo $row_images_donasi->IMG_LINK;?>" data-plugin-options='{"type":"image"}'>
+												<i class="fa fa-search"></i>
+											</a>
+
+											<!-- 
+												image
+
+												Extra: add .image-bw class to force black and white!
+											-->
+											<!-- <img class="img-fluid" src="<?php echo $row_images_donasi->IMG_LINK;?>" width="1200" height="1500" alt="" /> -->
+											
+											<img class="img-fluid" src="<?php echo $row_images_donasi->IMG_LINK;?>" alt="" />
+										</figure>
+								<?php
+									}
+								
+								?>
+
+							</div>
+
+							<!-- 
+								Thumbnails (required height:100px) 
+								
+								data-for = figure image id match
+							-->
+							
+							<?php
+								$list_images_donasi = $this->M_public->list_images(" WHERE A.IMG_GRUP = 'amal' AND A.ID = '".$data_amal->AML_ID."'",0,10);
+								if(!empty($list_images_donasi)) 
+								{
+									if($list_images_donasi->num_rows() > 1)
+									{
+									?>
+										<div data-for="zoom-primary" class="zoom-more owl-carousel owl-padding-3 featured" data-plugin-options='{"singleItem": false, "autoPlay": false, "navigation": true, "pagination": false}'>
+										
+										<?php
+											$list_result = $list_images_donasi->result();
+													foreach($list_result as $row)
+													{
+											?>
+														<a class="thumbnail active" href="<?php echo $row->IMG_LINK;?>">
+															<img src="<?php echo $row->IMG_LINK;?>" height="100" width="75" alt="" />
+														</a>
+														
+											<?php
+													}
+										?>
+										
+										</div>
+										
+									<?php
+									}
+									
+								}
+									
+							?>
+										
+							
+
+						</div>
+
+						<div class="col-md-7 col-sm-7">
+
+							<header class="mb-60">
+								<h2><?php echo $data_amal->AML_NAMA;?></h2>
+								<ul class="blog-post-info list-inline">
+									<li>
+										<a href="#">
+											<i class="fa fa-clock-o"></i> 
+											<span class="font-lato"><?php echo $data_amal->AML_DTINS;?></span>
+										</a>
+									</li>
+									<li>
+										<a href="#">
+											<i class="fa fa-comment-o"></i> 
+											<span class="font-lato">0 Comments</span>
+										</a>
+									</li>
+									<li>
+										<i class="fa fa-folder-open-o"></i> 
+
+										<a class="category" href="#">
+											<span class="font-lato"><?php echo $data_amal->KAML_NAMA;?></span>
+										</a>
+									</li>
+									<li>
+										<a href="#">
+											<i class="fa fa-user"></i> 
+											<span class="font-lato">Administrator</span>
+										</a>
+									</li>
+								</ul>
+							</header>
+
+							<div class="toggle toggle-transparent toggle-bordered-full">
+
+								<div class="toggle">
+									<label>FORMULIR DONASI</label>
+									<div class="toggle-content">
+										
+										<?php
+										
+										if(($this->session->userdata('ses_MUZ_ID') != null) or ($this->session->userdata('ses_MUZ_ID') != null))
+										{
+										
+										?>
+										
+											<!-- Fancy Elements -->
+											<div class="card card-default">
+												<div class="card-heading card-heading-transparent">
+													<h2 class="card-title bold">Terima kasih atas bantuan anda </h2>
+												</div>
+
+												<div class="card-block">
+													<form action="<?php echo base_url();?>detail-donasi-simpan" method="post" onsubmit="return validasi_input(this)">
+													
+													<input type="hidden" name="LINK_URL" value="<?php echo (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";?>" />
+													
+													<input type="hidden" name="MUZ_ID" placeholder="" value="<?php echo $this->session->userdata('ses_MUZ_ID');?>" class="form-control" readonly>
+													
+													<input type="hidden" name="AML_ID" placeholder="" value="<?php echo $data_amal->AML_ID;?>" class="form-control" readonly>
+
+														<div class="fancy-group">
+															<!-- <label class="form-control-label">Nama Lengkap</label> -->
+															<span class="fancy-hint fs-11 text-muted">
+																<strong>Nama Lengkap</strong>
+																<!-- <span class="float-right"> -->
+																	<!-- <span id="textarea-words-info">0/200</span> Words -->
+																<!-- </span> -->
+															</span>
+															<input type="text" name="MUZ_NAMA" placeholder="" value="<?php echo $this->session->userdata('ses_MUZ_NAMA');?>" class="form-control" readonly>
+														</div>
+														
+														<div class="fancy-group">
+															<!-- <label class="form-control-label">Email</label> -->
+															<span class="fancy-hint fs-11 text-muted">
+																<strong>Email</strong>
+																<!-- <span class="float-right"> -->
+																	<!-- <span id="textarea-words-info">0/200</span> Words -->
+																<!-- </span> -->
+															</span>
+															<input type="text" name="MUZ_EMAIL" placeholder="" value="<?php echo $this->session->userdata('ses_MUZ_EMAIL');?>" class="form-control" readonly>
+														</div>
+
+														<br />
+
+														<div class="fancy-form fancy-form-select"><!-- select -->
+															<select name="BNK_ID" class="form-control">
+																<option value="">--- Pilih Bank ---</option>
+																<!-- <option value="1">Option 1</option> -->
+																<!-- <option value="2">option 2</option> -->
+																<!-- <option value="3">option 3</option> -->
+																
+																<?php
+																	if (!empty($list_bank))
+																	{
+																		$list_result = $list_bank->result();
+																		foreach($list_result as $row)
+																		{
+																			echo '<option value="'.$row->BNK_ID.'">'.$row->BNK_NAMA.' | '.$row->BNK_NOREK.' </option>';
+																		}
+																	 }
+																 ?>
+																
+															</select>
+
+															<i class="fancy-arrow"></i>
+														</div><!-- /select -->
+														
+														
+														<div class="fancy-group">
+															<!-- <label class="form-control-label">Nama Lengkap</label> -->
+															<span class="fancy-hint fs-11 text-muted">
+																<strong>Nama Bank (Anda)</strong>
+																<!-- <span class="float-right"> -->
+																	<!-- <span id="textarea-words-info">0/200</span> Words -->
+																<!-- </span> -->
+															</span>
+															<input type="text" name="INMUZ_BANK" placeholder="" value="" class="form-control">
+														</div>
+														
+														<div class="fancy-group">
+															<!-- <label class="form-control-label">Nama Lengkap</label> -->
+															<span class="fancy-hint fs-11 text-muted">
+																<strong>Atas Nama (Anda)</strong>
+																<!-- <span class="float-right"> -->
+																	<!-- <span id="textarea-words-info">0/200</span> Words -->
+																<!-- </span> -->
+															</span>
+															<input type="text" name="INMUZ_ATASNAMA" placeholder="" value="" class="form-control">
+														</div>
+														
+														<div class="fancy-group">
+															<!-- <label class="form-control-label">Nama Lengkap</label> -->
+															<span class="fancy-hint fs-11 text-muted">
+																<strong>No Rekening (Anda)</strong>
+																<!-- <span class="float-right"> -->
+																	<!-- <span id="textarea-words-info">0/200</span> Words -->
+																<!-- </span> -->
+															</span>
+															<input type="text" name="INMUZ_NOREK" placeholder="" value="" class="form-control">
+														</div>
+														
+														<div class="fancy-group">
+															<!-- <label class="form-control-label">Nama Lengkap</label> -->
+															<span class="fancy-hint fs-11 text-muted">
+																<strong>Tanggal Donasi</strong>
+																<!-- <span class="float-right"> -->
+																	<!-- <span id="textarea-words-info">0/200</span> Words -->
+																<!-- </span> -->
+															</span>
+															<input type="text" name="INMUZ_DTTRAN" placeholder="YYYY-MM-DD" value="<?php echo date("Y-m-d"); ?>" class="form-control" onkeypress="return isNumberKey(event)">
+														</div>
+														
+														<div class="fancy-group">
+															<!-- <label class="form-control-label">Nama Lengkap</label> -->
+															<span class="fancy-hint fs-11 text-muted">
+																<strong>Nominal Donasi</strong>
+																<!-- <span class="float-right"> -->
+																	<!-- <span id="textarea-words-info">0/200</span> Words -->
+																<!-- </span> -->
+															</span>
+															<input type="text" name="INMUZ_NOMINAL" placeholder="hanya diisi dengan angka" value="" class="form-control" onkeypress="return isNumberKey(event)">
+														</div>
+														
+														<div class="fancy-form"><!-- textarea -->
+															<textarea name="INMUZ_KET" rows="5" class="form-control word-count" data-maxlength="200" data-info="textarea-words-info" placeholder="Pesan yang ingin disampaikan..."></textarea>
+
+															<i class="fa fa-comments"><!-- icon --></i>
+
+															<span class="fancy-hint fs-11 text-muted">
+																<strong>Hint:</strong> 200 words allowed!
+																<!-- <span class="float-right"> -->
+																	<!-- <span id="textarea-words-info">0/200</span> Words -->
+																<!-- </span> -->
+															</span>
+
+														</div><!-- /textarea -->
+														
+														<br/>
+														<br/>
+														<div class="margiv-top10" style="float:right;">
+															<!-- <a href="#" class="btn btn-primary"><i class="fa fa-check"></i> Save Changes </a> -->
+															<!-- <a href="#" class="btn btn-default">Cancel </a> -->
+															<input type="submit" class="btn btn-primary" value="SIMPAN"/>
+														</div>
+														
+													</form>
+												</div>
+
+											</div>
+											<!-- /Fancy Elements -->
+									
+										
+											
+										<?php
+										}
+										else
+										{
+										?>
+											<ul class="float-right nav nav-pills nav-second-main">
+												<li>
+													<a class="no-text-underline" data-toggle="modal" data-target="#modalLogin"> 
+														<!-- <i class="fa fa-user hidden-xs-down"></i>  -->
+														<i class="glyphicon glyphicon-log-in"></i> 
+														MASUK
+													</a>
+												</li>
+												
+												<li>
+													<a class="no-text-underline" data-toggle="modal" data-target="#myModal">
+														<!-- <i class="fa fa-user hidden-xs-down"></i>  -->
+														<i class="glyphicon glyphicon-user"></i> 
+														DAFTAR
+													</a>
+												</li>
+											</ul>
+										<?php
+										}
+										?>
+										
+									</div>
+								</div>
+								
+								<div class="toggle active">
+									<label><?php echo strtoupper($data_amal->AML_NAMA);?></label>
+									<div class="toggle-content">
+										<p><?php echo $data_amal->AML_KET;?></p>
+									</div>
+								</div>
+
+								<div class="toggle">
+									<label>PENCAPAIN</label>
+									<div class="toggle-content">
+										<!-- <p>Maecenas metus nulla, commodo a sodales sed, dignissim pretium nunc.</p> -->
+										<?php
+											echo'<td>
+												<b>Kode Donasi : </b>'.$data_amal->AML_KODE.' 
+												<br/> <b>Nama Donasi : </b>'.$data_amal->AML_NAMA.' 
+												<br/> <b>PIC BAZNAS : </b>'.$data_amal->AML_PIC.' ( Tlp/WA : '.$data_amal->AML_PICTLP.')
+												<br/> <b>PIC Lokasi : </b>'.$data_amal->AML_PICLOK.' ( Tlp/WA : '.$data_amal->AML_PICLOKTLP.')
+												<br/> <b>Tgl Mulai : </b>'.($data_amal->AML_START).'
+												<br/> <b>Donasi Yang Dibutuhkan : </b> Rp.'.(number_format($data_amal->AML_NOMINAL,0,",",".")).' | <i>'.($terbilang).' Rupiah</i>
+												
+												<br/> <b>BANK Transfer : </b>BNI (0699714099) | BRI (018101008068533)
+												
+												<hr/>
+												
+												<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.8958450402242!2d'.$data_amal->AML_LONGI.'!3d'.$data_amal->AML_LATI.'!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNsKwNTQnMTEuMCJTIDEwNsKwNDknMjguMiJF!5e0!3m2!1sid!2sid!4v1517957409975" width="100%" height="150" frameborder="0" style="border:0" allowfullscreen></iframe>
+												
+												<hr/>
+												
+												<br/> <b>Keywords : </b> '.$data_amal->AML_KEYWORDS.'
+												<br/> <b>Description : </b> '.$data_amal->AML_DESC.'
+												
+												
+											</td>';
+										?>
+									</div>
+								</div>
+
+								<div class="toggle">
+									<label>DETAIL PENCAPAIAN</label>
+									<div class="toggle-content">
+										<?php										
+											if(!empty($list_tr_masuk_muzaqi))
+											{
+												$list_result = $list_tr_masuk_muzaqi->result();
+												$no = 1;
+												foreach($list_result as $row)
+												{
+													if(($this->session->userdata('ses_MUZ_ID') == $row->MUZ_ID) && ($row->INMUZ_VERIFIED == 0))
+													{
+														echo'
+															<br/> 
+															
+															
+															<br/> <b>Tanggal : </b>'.$row->INMUZ_DTTRAN.' 
+															<br/> <b>Jenis Pemasukan : </b>'.($row->INMUZ_KAT).'
+															<br/> <b>Bank : </b>'.($row->INMUZ_BANK).'
+															<br/> <b>Atas Nama : </b>'.($row->INMUZ_ATASNAMA).'
+															<br/> <b>No Rekening : </b>'.($row->INMUZ_NOREK).'
+															<br/> <b>Nominal : </b>Rp.'.number_format($row->INMUZ_NOMINAL,0,",",".").'
+															<br/> <b>Status Verifikasi : </b>'.($row->STATUS_VERIFIKASI).'
+															
+															<div style="width:100%;">
+															
+															<a class="confirm-btn btn btn-danger btn-sm" href="'.base_url().'detail-donasi-hapus/'.$row->AML_ID.'/'.$row->INMUZ_ID.'" title = "Hapus Data '.$row->MUZ_NAMA.'" alt = "Hapus Data '.$row->MUZ_NAMA.'">Hapus</a>
+															
+															</div>
+															
+															<hr/>
+														';
+													}
+													else
+													{
+														echo'
+															<br/> 
+															
+															
+															<br/> <b>Tanggal : </b>'.$row->INMUZ_DTTRAN.' 
+															<br/> <b>Jenis Pemasukan : </b>'.($row->INMUZ_KAT).'
+															<br/> <b>Bank : </b>'.($row->INMUZ_BANK).'
+															<br/> <b>Atas Nama : </b>'.($row->INMUZ_ATASNAMA).'
+															<br/> <b>No Rekening : </b>'.($row->INMUZ_NOREK).'
+															<br/> <b>Status Verifikasi : </b>'.($row->STATUS_VERIFIKASI).'
+															<hr/>
+														';
+													}
+													$no++;
+												}
+											}
+										?>
+									</div>
+								</div>
+								
+
+							</div>
+							
+							
+
+						</div>
+						<br/><br/><br/>
+						<div class="col-md-12 col-sm-12">
+							<!-- <div class="divider"></div> -->
+							
+								
+							<?php $uri = $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI']; ?>
+							<!-- LIKE -->
+								<div id="fb-root"></div>
+								<script>(function(d, s, id) {
+								  var js, fjs = d.getElementsByTagName(s)[0];
+								  if (d.getElementById(id)) return;
+								  js = d.createElement(s); js.id = id;
+								  js.src = 'https://connect.facebook.net/id_ID/sdk.js#xfbml=1&version=v2.12&appId=1547596675454558&autoLogAppEvents=1';
+								  fjs.parentNode.insertBefore(js, fjs);
+								}(document, 'script', 'facebook-jssdk'));</script>
+								
+								
+								
+								<!-- <div class="fb-like" data-href="https://developers.facebook.com/docs/plugins/" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div> -->
+								
+								<div class="fb-like" data-href="<?php echo $uri; ?>" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+							<!-- LIKE -->
+							
+							<!-- COMMENTS -->
+								<div id="fb-root"></div>
+								<script>(function(d, s, id) {
+								  var js, fjs = d.getElementsByTagName(s)[0];
+								  if (d.getElementById(id)) return;
+								  js = d.createElement(s); js.id = id;
+								  js.src = 'https://connect.facebook.net/id_ID/sdk.js#xfbml=1&version=v2.12&appId=1547596675454558&autoLogAppEvents=1';
+								  fjs.parentNode.insertBefore(js, fjs);
+								}(document, 'script', 'facebook-jssdk'));</script>
+
+								
+								<!-- <div class="fb-comments" data-href="https://developers.facebook.com/docs/plugins/comments#configurator" data-width="100%" data-numposts="30"></div> -->
+								
+								
+								<div class="fb-comments" data-href="<?php echo $uri; ?>" data-width="100%" data-numposts="30">
+								</div>
+							<!-- /COMMENTS -->
+						</div>
+
+					</div>
+					
+					
+
+
+				</div>
+			</section>
+			
+			
+			<script type='text/javascript'>
+	
+				function isNumberKey(evt)
+				{
+					var charCode = (evt.which) ? evt.which : event.keyCode
+					/*if   (charCode > 31 && (charCode < 48 || charCode > 57))
+					return false;
+					return true;*/
+					
+					if (charCode > 31 && ( (charCode != 45 && charCode < 48) || charCode > 57  ))
+						return false;
+						return true;
+					//alert(charCode);
+					
+				}
+				
+				function validasi_input(form)
+				{
+					/*
+					var mincar = 1;
+					if (form.PASS_MUZ_PASSORI.value.length < mincar)
+					{
+						alert("Maaf, password lama harus diisi!");
+						form.PASS_MUZ_PASSORI.focus();
+						return (false);
+					}
+					*/
+					
+					var mincar = 1;
+					
+					if (form.BNK_ID.value.length < mincar)
+					{
+						alert("Maaf, Tolong Pilih BANK tujuan (milik BAZNAS Kab.Sukabumi) yang akan anda gunakan sebagai transaksi");
+						form.BNK_ID.focus();
+						return (false);
+					}
+					
+					if (form.INMUZ_BANK.value.length < mincar)
+					{
+						alert("Maaf, Tolong isi nama BANK yang anda gunakan untuk donasi!");
+						form.INMUZ_BANK.focus();
+						return (false);
+					}
+					
+					if (form.INMUZ_ATASNAMA.value.length < mincar)
+					{
+						alert("Maaf, Tolong isi nama/pemilik rekening yang anda gunakan untuk donasi!");
+						form.INMUZ_ATASNAMA.focus();
+						return (false);
+					}
+					
+					if (form.INMUZ_NOREK.value.length < mincar)
+					{
+						alert("Maaf, Tolong isi no rekening yang anda gunakan untuk donasi!");
+						form.INMUZ_NOREK.focus();
+						return (false);
+					}
+					
+					if (form.INMUZ_DTTRAN.value.length < mincar)
+					{
+						alert("Maaf, Tolong isi waktu/tanggal yang anda gunakan untuk donasi!");
+						form.INMUZ_DTTRAN.focus();
+						return (false);
+					}
+					
+					if (form.INMUZ_NOMINAL.value.length < mincar)
+					{
+						alert("Maaf, Tolong isi nominal donasi yang anda berikan !");
+						form.INMUZ_NOMINAL.focus();
+						return (false);
+					}
+					
+					
+					
+					return (true);
+				}
+				
+			</script>

@@ -1,0 +1,449 @@
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.4 -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/dist/css/AdminLTE.min.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/dist/css/skins/_all-skins.min.css">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/plugins/select2/select2.min.css">
+	<link rel="stylesheet" href="<?=base_url();?>assets/adminlte/bower_components/bootstrap-daterangepicker/daterangepicker.css">
+	<link rel="stylesheet" href="<?=base_url();?>assets/adminlte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+	<link rel="stylesheet" href="<?=base_url();?>assets/adminlte/bower_components/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css">
+	<link rel="stylesheet" href="<?=base_url();?>assets/adminlte/plugins/timepicker/bootstrap-timepicker.min.css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+        
+		
+    		<style type="text/css">
+    		.labelfrm {
+    			display:block;
+    			font-size:small;
+    			margin-top:5px;
+    		}
+    		.error {
+    			font-size:small;
+    			color:red;
+    		}
+    		</style>
+    		
+    		<script type="text/javascript" src="<?=base_url();?>assets/admin/js/jquery.validate.min.js"></script>
+    		
+    		<script type="text/javascript">
+    		$(document).ready(function() {
+    			$('.frm-input').validate();
+                
+                $('.confirm-btn').click(function(){
+    			var answer = confirm(jQuery(this).attr('title'));
+                return answer;
+                });
+    		});
+            </script>
+            
+            <script type="text/javascript">
+                var htmlobjek;
+                $(document).ready(function()
+                {	
+					$('#inputdata').attr('class', 'active treeview');
+					$('#input-bank').attr('class', 'active treeview');
+					
+                    $("#BNK_NAMA").change(function()
+                    //$("#simpan").click(function()
+                    {  
+                
+                        var BNK_NAMA = $("#BNK_NAMA").val();
+                        $("#pesan").html("<img src='<?=base_url();?>assets/global/loading.gif'>Cek Nama Bank ...");
+                
+                        if(BNK_NAMA=='')
+                        {
+                          $("#pesan").html('<img src="<?=base_url();?>assets/global/salah.png"> Nama Bank tidak boleh kosong');
+                          $("#BNK_NAMA").css('border', '3px #C33 solid');
+                        }
+						else
+						$.ajax({type: "POST", url: "<?=base_url();?>index.php/C_admin_bank/cek_bank/", data: "BNK_NAMA="+BNK_NAMA, success:function(data)
+                        { 
+                        	if(data==0 || ($("#BNK_NAMA").val() == $("#cek_BNK_NAMA").val()))
+                            //if(data==0)
+                        	  {
+                        	  	$("#pesan").html('<img src="<?=base_url();?>assets/global/true.png">');
+                                $("#BNK_NAMA").css('border', '3px #090 solid');
+								$("#BNK_KODE").attr("disabled", false);
+                                $("#BNK_KET").attr("disabled", false);
+                                $("#btnsimpan").attr("disabled", false);
+                            }
+                              else
+                              {
+                              	$("#pesan").html('<img src="<?=base_url();?>assets/global/salah.png"> Nama Kategori Tampilan telah digunakan');
+                				//$("#pesan").html(data); 
+                              	$("#BNK_NAMA").css('border', '3px #C33 solid');
+                                $("#BNK_KODE").attr("disabled", true);
+                                $("#BNK_KET").attr("disabled", true);
+                                $("#btnsimpan").attr("disabled", true);
+                              }
+                              
+                        } 
+                        });
+                     });
+                });
+            </script>
+            
+     <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+          <h1>
+            Bank
+          </h1>
+          <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+			<li><a href="#"><i class="fa fa-dashboard"></i> berita</a></li>
+            <li class="active">Bank</li>
+            
+          </ol>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+          <!-- =========================================================== -->
+
+          <div class="row">
+            <div class="col-md-12">
+              <!-- <div class="box box-warning collapsed-box box-solid"> -->
+			  <div  id="box-form" class="box box-warning collapsed-box box-solid">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Formulir Input Bank</h3>
+                  <div class="box-tools pull-right">
+                    <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+                  </div><!-- /.box-tools -->
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                  
+                  
+                  <!-- ISI FORM -->
+						<form role="form" action="<?=base_url();?>admin-bank-simpan" method="post" class="frm-input">
+						<input type="hidden" name="stat_edit" id="stat_edit"/>
+						
+						<div class="box-body">
+							
+							<div class="form-group">
+							<label for="BNK_NAMA">Nama Bank</label>
+							<input type="hidden" id="cek_BNK_NAMA" name="cek_BNK_NAMA" />
+							<input type="text" id="BNK_NAMA" name="BNK_NAMA"  maxlength="35" class="required form-control" size="35" alt="Nama Bank" title="Nama Bank" placeholder="*Nama Bank"/>
+							<span id="pesan"></span>
+							</div>
+							
+							<div class="form-group">
+							<label for="BNK_ATASNAMA">Atas Nama</label>
+							<input type="text" id="BNK_ATASNAMA" name="BNK_ATASNAMA"  maxlength="50" class="required form-control" size="35" alt="Atas Nama" title="Atas Nama" placeholder="*Atas Nama"/>
+							</div>
+							
+							<div class="form-group">
+							<label for="BNK_UNIT">Unit/Cabang Bank Mendaftar</label>
+							<input type="text" id="BNK_UNIT" name="BNK_UNIT"  maxlength="50" class="required form-control" size="35" alt="Unit/Cabang Bank Mendaftar" title="Unit/Cabang Bank Mendaftar" placeholder="*Unit/Cabang Bank Mendaftar"/>
+							</div>
+							
+							<div class="form-group">
+                              <label for="BNK_NOREK">No Rekening</label>
+                              <input type="text" id="BNK_NOREK" name="BNK_NOREK"  maxlength="35" onkeypress="return isNumberKey(event)" class="required form-control" size="35" alt="No Rekening" title="No Rekening" placeholder="*No Rekening"/>
+                            </div>
+							
+							<div class="form-group">
+								<label>Tanggal Pedaftaran</label>
+								<div class="input-group date">
+								  <div class="input-group-addon">
+									<i class="fa fa-calendar"></i>
+								  </div>
+								  <input name="BNK_DTBUAT" id="BNK_DTBUAT" type="text" class="required form-control pull-right settingDate" alt="Tanggal Pedaftaran" title="Tanggal Pedaftaran" value="<?php echo date("Y-m-d"); ?>" data-date-format="yyyy-mm-dd">
+								</div>
+								<!-- /.input group -->
+							</div>
+							
+							<div class="form-group">
+							<label for="BNK_KET">Keterangan</label>
+							<textarea name="BNK_KET" id="BNK_KET" class="required form-control" title="Keterangan" placeholder="*Keterangan"></textarea>
+							</div>
+							
+						</div><!-- /.box-body -->
+		
+						<div class="box-footer">
+							<button type="reset" id="resetBox" onclick="resetBoxEvent()" class="btn btn-default">Batal</button>
+							<button type="submit" id="btnsimpan" class="confirm-btn btn btn-primary" title="Apakah Yakin Akan menyimpan data ini ? ">Submit</button>
+						</div>
+						</form>
+					<!-- ISI FORM -->
+                  
+                  
+                </div><!-- /.box-body -->
+              </div><!-- /.box -->
+              
+              
+              <!-- Perbatasan table dan form -->
+					
+					<div class="box">
+						<div class="box-header">
+						<h3 class="box-title">Table Bank</h3>
+							<div class="pull-right">
+								<!-- <form action="<?=base_url();?>admin/pendaftaran-klinik-cari" method="post" class="frm-cari"> -->
+								<form action="<?=base_url();?>admin-Bank" method="get" class="frm-cari">
+									<table>
+										<tr>
+											<!-- <td>Berdasarkan</td><td>:</td> -->
+											<!-- <td>
+												<select name="berdasarkan" title="Cari Berdasarkan" class="form-control">
+													<option value=""><?php if (!empty($_GET['berdasarkan'])){echo $_GET['berdasarkan'];} ?></option>
+													<option value="spesialisasi">Spesialisasi</option>
+													<option value="pendidikan">Pendidikan</option>
+												</select>
+											</td> -->
+											<td>
+												<!-- <input type="text" name="cari"  maxlength="35" class="text form-control" size="35" alt="tlp" title="Cari data" placeholder="...Cari" value="<?php if (!empty($_GET['berdasarkan'])){echo $_GET['cari'];} ?>"/> -->
+												<input type="text" name="cari"  maxlength="35" class="text form-control" size="35" alt="tlp" title="Cari data" placeholder="...Cari" value="<?php if (!empty($_GET['cari'])){echo $_GET['cari'];} ?>"/>
+											</td>
+										</tr>
+									</table>
+								</form>
+							</div>
+						</div><!-- /.box-header -->
+						<div class="box-body">
+						
+						
+						<?php
+								if(!empty($list_kategori_berita))
+								{
+									echo'<table width="100%" id="example2" class="table table-bordered table-hover">';
+										echo '<thead>
+	<tr>';
+													echo '<th width="5%">No</th>';
+													echo '<th width="25%">Nama Kategori</th>';
+													echo '<th width="50%">Keterangan</th>';
+													echo '<th width="20%">Aksi</th>';
+										echo '</tr>
+	</thead>';
+										$list_result = $list_kategori_berita->result();
+										$no =$this->uri->segment(2,0)+1;
+										echo '<tbody>';
+										foreach($list_result as $row)
+										{
+											echo'<tr>';
+											
+												echo'<td>'.$no.'</td>';
+												echo'<td>
+														<b>Nama Bank : </b>'.$row->BNK_NAMA.'
+														<br/><b>No Rekening : </b>'.$row->BNK_NOREK.'
+														<br/><b>Atas Nama : </b>'.$row->BNK_ATASNAMA.'
+														<br/><b>Unit/Cabang : </b>'.$row->BNK_UNIT.'
+														<br/><b>Tgl Daftar : </b>'.$row->BNK_DTBUAT.'
+													</td>';
+												echo'<td>'.$row->BNK_KET.'</td>';
+												
+												echo'<input type="hidden" id="BNK_ID_'.$no.'" name="BNK_ID_'.$no.'" value="'.$row->BNK_ID.'" />';
+												echo'<input type="hidden" id="BNK_NAMA_'.$no.'" name="BNK_NAMA_'.$no.'" value="'.$row->BNK_NAMA.'" />';
+												echo'<input type="hidden" id="BNK_ATASNAMA_'.$no.'" name="BNK_ATASNAMA_'.$no.'" value="'.$row->BNK_ATASNAMA.'" />';
+												echo'<input type="hidden" id="BNK_NOREK_'.$no.'" name="BNK_NOREK_'.$no.'" value="'.$row->BNK_NOREK.'" />';
+												echo'<input type="hidden" id="BNK_UNIT_'.$no.'" name="BNK_UNIT_'.$no.'" value="'.$row->BNK_UNIT.'" />';
+												echo'<input type="hidden" id="BNK_DTBUAT_'.$no.'" name="BNK_DTBUAT_'.$no.'" value="'.$row->BNK_DTBUAT.'" />';
+												echo'<input type="hidden" id="BNK_KET_'.$no.'" name="BNK_KET_'.$no.'" value="'.$row->BNK_KET.'" />';
+												
+												echo'<td>
+												
+	<a href="javascript:void(0)" class="btn btn-warning btn-sm" onclick="edit('.$no.')" title = "Ubah Data '.$row->BNK_NAMA.'" alt = "Ubah Data '.$row->BNK_NAMA.'">Edit</a>
+	
+	<a class="confirm-btn btn btn-danger btn-sm" href="'.base_url().'admin-bank-hapus/'.$row->BNK_ID.'" title = "Hapus Data '.$row->BNK_NAMA.'" alt = "Hapus Data '.$row->BNK_NAMA.'">Hapus</a>
+												
+												</td>';
+												
+											echo'</tr>';
+											$no++;
+										}
+										
+										echo '</tbody>';
+									echo'</table>';
+								}
+								else
+								{
+									echo'<center>';
+									echo'Tidak Ada Data Yang Ditampilkan !';
+									echo'</center>';
+								}
+							?>
+						<center>
+                        <div class="halaman"><?php echo $halaman;?></div>
+                        </center>
+						</div><!-- /.box-body -->
+					</div><!-- /.box -->
+					
+			</div><!-- /.col -->
+		</div><!-- /.row -->
+          <!-- =========================================================== -->
+        </section><!-- /.content -->
+      </div><!-- /.content-wrapper -->
+            
+    		
+		
+<script type='text/javascript'>
+	function resetBoxEvent()
+	{
+		$("#stat_edit").val("");
+		//alert($("#stat_edit").val());
+		//alert("good");
+	}
+
+	function edit(id)
+	{
+		alert("Mode Perubahan Data, Silahkan Cek Formulir Isian !");
+		
+		$('input[name=stat_edit]').val($('#BNK_ID_'+id).val());
+		$('input[name=BNK_NAMA]').val($('#BNK_NAMA_'+id).val());
+        $('input[name=cek_BNK_NAMA]').val($('#BNK_NAMA_'+id).val());
+		$('input[name=BNK_ATASNAMA]').val($('#BNK_ATASNAMA_'+id).val());
+		$('input[name=BNK_NOREK]').val($('#BNK_NOREK_'+id).val());
+		$('input[name=BNK_UNIT]').val($('#BNK_UNIT_'+id).val());
+		$('input[name=BNK_DTBUAT]').val($('#BNK_DTBUAT_'+id).val());
+		document.getElementById("BNK_KET").value = $('#BNK_KET_'+id).val();
+        //$('input[name=ket]').val($('#ket_'+id).val());
+		
+		
+		$('#box-form').attr('class', 'box box-warning ellapsed-box box-solid');
+	}
+	
+	function isNumberKey(evt)
+	{
+    	var charCode = (evt.which) ? evt.which : event.keyCode
+    	if (charCode > 31 && (charCode < 48 || charCode > 57))
+    	
+    	return false;
+    	return true;
+	}
+	
+	
+	function FormatCurrency(objNum)
+	{
+	   var num = objNum.value
+	   var ent, dec;
+	   if (num != '' && num != objNum.oldvalue)
+	   {
+		 num = HapusTitik(num);
+		 if (isNaN(num))
+		 {
+		   objNum.value = (objNum.oldvalue)?objNum.oldvalue:'';
+		 } else {
+		   var ev = (navigator.appName.indexOf('Netscape') != -1)?Event:event;
+		   if (ev.keyCode == 190 || !isNaN(num.split('.')[1]))
+		   {
+			 alert(num.split('.')[1]);
+			 objNum.value = TambahTitik(num.split('.')[0])+'.'+num.split('.')[1];
+		   }
+		   else
+		   {
+			 objNum.value = TambahTitik(num.split('.')[0]);
+		   }
+		   objNum.oldvalue = objNum.value;
+		 }
+	   }
+	}
+	function HapusTitik(num)
+	{
+	   return (num.replace(/\./g, ''));
+	}
+
+	function TambahTitik(num)
+	{
+	   numArr=new String(num).split('').reverse();
+	   for (i=3;i<numArr.length;i+=3)
+	   {
+		 numArr[i]+='.';
+	   }
+	   return numArr.reverse().join('');
+	} 
+			
+	function formatCurrency(num) {
+	   num = num.toString().replace(/\$|\./g,'');
+	   if(isNaN(num))
+	   num = "0";
+	   sign = (num == (num = Math.abs(num)));
+	   num = Math.floor(num*100+0.50000000001);
+	   cents = num0;
+	   num = Math.floor(num/100).toString();
+	   for (var i = 0; i < Math.floor((num.length-(1+i))/3); i++)
+	   num = num.substring(0,num.length-(4*i+3))+'.'+
+	   num.substring(num.length-(4*i+3));
+	   return (((sign)?'':'-') + num);
+	}
+</script>
+      
+    <!-- Bootstrap 3.3.4 -->
+	<script src="<?=base_url();?>assets/adminlte/bootstrap/js/bootstrap.min.js"></script>
+	<!-- Slimscroll -->
+	<script src="<?=base_url();?>assets/adminlte/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+	<!-- FastClick -->
+	<script src="<?=base_url();?>assets/adminlte/plugins/fastclick/fastclick.min.js"></script>
+	<!-- AdminLTE App -->
+	<script src="<?=base_url();?>assets/adminlte/dist/js/app.min.js"></script>
+	<!-- Page script -->
+    <!-- InputMask -->
+    <script src="<?=base_url();?>/assets/adminlte/plugins/input-mask/jquery.inputmask.js"></script>
+    <script src="<?=base_url();?>/assets/adminlte/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+    <script src="<?=base_url();?>/assets/adminlte/plugins/input-mask/jquery.inputmask.extensions.js"></script>
+	
+	<!-- bootstrap datepicker -->
+	<script src="<?=base_url();?>/assets/adminlte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+    
+    <script>
+      $(function () {
+		//Date picker
+		$('.settingDate').datepicker({
+			autoclose: true
+		});
+		
+		
+        //Initialize Select2 Elements
+        //$(".select2").select2();
+
+        //Datemask yyyy-mm-dd
+        $(".datemask_mysql").inputmask("yyyy-mm-dd", {"placeholder": "yyyy-mm-dd"});
+        //Datemask dd/mm/yyyy
+        //$("#datemask").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});
+        //Datemask2 mm/dd/yyyy
+        //$("#datemask2").inputmask("mm/dd/yyyy", {"placeholder": "mm/dd/yyyy"});
+        //TimeMask hh:mm:ss
+        $(".time_mysql").inputmask("hh:mm:ss", {"placeholder": "hh:mm:ss"});
+        //Money Euro
+        //$("[data-mask]").inputmask();
+
+        //iCheck for checkbox and radio inputs
+        $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+          checkboxClass: 'icheckbox_minimal-blue',
+          radioClass: 'iradio_minimal-blue'
+        });
+        //Red color scheme for iCheck
+        $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
+          checkboxClass: 'icheckbox_minimal-red',
+          radioClass: 'iradio_minimal-red'
+        });
+        //Flat red color scheme for iCheck
+        $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+          checkboxClass: 'icheckbox_flat-green',
+          radioClass: 'iradio_flat-green'
+        });
+
+        //Colorpicker
+        $(".my-colorpicker1").colorpicker();
+        //color picker with addon
+        $(".my-colorpicker2").colorpicker();
+
+        //Timepicker
+        $(".timepicker").timepicker({
+          showInputs: false
+        });
+      });
+    </script>
+    

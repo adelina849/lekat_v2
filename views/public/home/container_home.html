@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="content-type" content="text/html" />
+    	<meta name="IMS Technology <?php echo date("Y"); ?>" content="Public | Front End" />
+		<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+		<meta content="baznas,kab, kabupaten , sukabumi, baznas kabupaten, baznas kabupaten sukabumi, sistem, zakat, infaq, shadaqah,sedekah" name="keywords">
+		<meta content="SISTEM TERINTEGRASI BAZNAS KABUPATEN SUKABUMI adalah sistem terintegrasi yang dimiliki oleh BAZNAS Kab. Sukabumi. Dengan sistem yang di buat secara terintegrasi maka diharapkan mampu memberikan pelayanan yang lebih baik bagi umat." name="description"/>
+    
+		<?php
+			if(!empty($title))
+			{
+				echo'<title>'.$title.'</title>';
+			}
+			else
+			{
+				echo'<title>SISTEM TERINTEGRASI BAZNAS KABUPATEN SUKABUMI</title>';
+			}
+		?>
+		<link rel="shortcut icon" href="<?php echo base_url();?>assets/global/images/icon.png">
+
+		<!-- mobile settings -->
+		<meta name="viewport" content="width=device-width, maximum-scale=1, initial-scale=1, user-scalable=0" />
+		<!--[if IE]><meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'><![endif]-->
+
+		<!-- WEB FONTS : use %7C instead of | (pipe) -->
+		<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600%7CRaleway:300,400,500,600,700%7CLato:300,400,400italic,600,700" rel="stylesheet" type="text/css" />
+
+		<!-- CORE CSS -->
+		<link href="<?php echo base_url();?>assets/public/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+
+		<!-- THEME CSS -->
+		<link href="<?php echo base_url();?>assets/public/assets/css/essentials.css" rel="stylesheet" type="text/css" />
+		<link href="<?php echo base_url();?>assets/public/assets/css/layout.css" rel="stylesheet" type="text/css" />
+
+		<!-- PAGE LEVEL SCRIPTS -->
+		<link href="<?php echo base_url();?>assets/public/assets/css/header-1.css" rel="stylesheet" type="text/css" />
+		<link href="<?php echo base_url();?>assets/public/assets/css/color_scheme/green.css" rel="stylesheet" type="text/css" id="color_scheme" />
+
+		<!-- REVOLUTION SLIDER -->
+		<link href="<?php echo base_url();?>assets/public/assets/plugins/slider.revolution/css/extralayers.css" rel="stylesheet" type="text/css" />
+		<link href="<?php echo base_url();?>assets/public/assets/plugins/slider.revolution/css/settings.css" rel="stylesheet" type="text/css" />
+		
+		
+	<!-- JAVASCRIPT FILES -->
+	<script type="text/javascript">var plugin_path = '<?php echo base_url();?>assets/public/assets/plugins/';</script>
+	<script type="text/javascript" src="<?php echo base_url();?>assets/public/assets/plugins/jquery/jquery-3.2.1.min.js"></script>
+	
+	
+	
+	</head>
+
+	<!--
+		AVAILABLE BODY CLASSES:
+		
+		smoothscroll 			= create a browser smooth scroll
+		enable-animation		= enable WOW animations
+
+		bg-grey					= grey background
+		grain-grey				= grey grain background
+		grain-blue				= blue grain background
+		grain-green				= green grain background
+		grain-blue				= blue grain background
+		grain-orange			= orange grain background
+		grain-yellow			= yellow grain background
+		
+		boxed 					= boxed layout
+		pattern1 ... patern11	= pattern background
+		menu-vertical-hide		= hidden, open on click
+		
+		BACKGROUND IMAGE [together with .boxed class]
+		data-background="assets/images/_smarty/boxed_background/1.jpg"
+	-->
+		<!-- ONLINE CHAT -->
+		<!--Start of Tawk.to Script-->
+			<script type="text/javascript">
+			var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+			(function(){
+			var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+			s1.async=true;
+			s1.src='https://embed.tawk.to/5b0cca5510b99c7b36d466f0/default';
+			s1.charset='UTF-8';
+			s1.setAttribute('crossorigin','*');
+			s0.parentNode.insertBefore(s1,s0);
+			})();
+			</script>
+		<!--End of Tawk.to Script-->
+		<!-- ONLINE CHAT -->
+	<body class="smoothscroll enable-animation">
+
+		<!-- SLIDE TOP -->
+		<!-- <div id="slidetop"> -->
+
+			<!-- <div class="container"> -->
+				
+				<!-- <div class="row"> -->
+
+					<!-- <div class="col-md-4"> -->
+						<!-- <h6><i class="icon-heart"></i> WHY SMARTY?</h6> -->
+						<!-- <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas metus nulla, commodo a sodales sed, dignissim pretium nunc. Nam et lacus neque. Ut enim massa, sodales tempor convallis et, iaculis ac massa. </p> -->
+					<!-- </div> -->
+
+					<!-- <div class="col-md-4"> -->
+						<!-- <h6><i class="fa-facheck"></i> RECENTLY VISITED</h6> -->
+						<!-- <ul class="list-unstyled"> -->
+							<!-- <li><a href="#"><i class="fa fa-angle-right"></i> Consectetur adipiscing elit amet</a></li> -->
+							<!-- <li><a href="#"><i class="fa fa-angle-right"></i> This is a very long text, very very very very very very very very very very very very </a></li> -->
+							<!-- <li><a href="#"><i class="fa fa-angle-right"></i> Lorem ipsum dolor sit amet</a></li> -->
+							<!-- <li><a href="#"><i class="fa fa-angle-right"></i> Dolor sit amet,consectetur adipiscing elit amet</a></li> -->
+							<!-- <li><a href="#"><i class="fa fa-angle-right"></i> Consectetur adipiscing elit amet,consectetur adipiscing elit</a></li> -->
+						<!-- </ul> -->
+					<!-- </div> -->
+
+					<!-- <div class="col-md-4"> -->
+						<!-- <h6><i class="icon-envelope"></i> CONTACT INFO</h6> -->
+						<!-- <ul class="list-unstyled"> -->
+							<!-- <li><b>Address:</b> PO Box 21132, Here Weare St, <br /> Melbourne, Vivas 2355 Australia</li> -->
+							<!-- <li><b>Phone:</b> 1-800-565-2390</li> -->
+							<!-- <li><b>Email:</b> <a href="mailto:support@yourname.com">support@yourname.com</a></li> -->
+						<!-- </ul> -->
+					<!-- </div> -->
+
+				<!-- </div> -->
+
+			<!-- </div> -->
+
+			<!-- <a class="slidetop-toggle" href="#"> -->
+			<!-- </a> -->
+
+		<!-- </div> -->
+		<!-- /SLIDE TOP -->
+
+
+		<!-- wrapper -->
+		<div id="wrapper">
+
+			<!-- 
+				AVAILABLE HEADER CLASSES
+
+				Default nav height: 96px
+				.header-md 		= 70px nav height
+				.header-sm 		= 60px nav height
+
+				.b-0 		= remove bottom border (only with transparent use)
+				.transparent	= transparent header
+				.translucent	= translucent header
+				.sticky			= sticky header
+				.static			= static header
+				.dark			= dark header
+				.bottom			= header on bottom
+				
+				shadow-before-1 = shadow 1 header top
+				shadow-after-1 	= shadow 1 header bottom
+				shadow-before-2 = shadow 2 header top
+				shadow-after-2 	= shadow 2 header bottom
+				shadow-before-3 = shadow 3 header top
+				shadow-after-3 	= shadow 3 header bottom
+
+				.clearfix		= required for mobile menu, do not remove!
+
+				Example Usage:  class="clearfix sticky header-sm transparent b-0"
+			-->
+			<div id="header" class="navbar-toggleable-md sticky header-sm color bottom clearfix" style="background-color:#196619;">
+
+				<!-- TOP NAV -->
+				<header id="topNav">
+					<div class="container">
+
+						<!-- Mobile Menu Button -->
+						<button class="btn btn-mobile" data-toggle="collapse" data-target=".nav-main-collapse">
+							<i class="fa fa-bars"></i>
+						</button>
+
+						<!-- BUTTONS -->
+						<ul class="float-right nav nav-pills nav-second-main">
+
+							<!-- SEARCH -->
+							<li class="search">
+								<a href="javascript:;">
+									<i class="fa fa-search"></i>
+								</a>
+								<div class="search-box">
+									<form action="page-search-result-1.html" method="get">
+										<div class="input-group">
+											<input type="text" name="src" placeholder="Search" class="form-control" />
+											<span class="input-group-btn">
+												<button class="btn btn-primary" type="submit">Search</button>
+											</span>
+										</div>
+									</form>
+								</div> 
+							</li>
+							<!-- /SEARCH -->
+
+						</ul>
+						<!-- /BUTTONS -->
+
+						<!-- Logo -->
+						<a class="logo float-left" href="index.html">
+							<img src="<?php echo base_url();?>assets/global/images/logo_hijau_kuning_bg.png" alt="Logo Baznas Kab.Sukabumi" />
+						</a>
+
+						<!-- 
+							Top Nav 
+							
+							AVAILABLE CLASSES:
+							submenu-dark = dark sub menu
+						-->
+						<div class="navbar-collapse collapse float-right nav-main-collapse submenu-color">
+							<nav class="nav-main">
+
+								<!--
+									NOTE
+									
+									For a regular link, remove "dropdown" class from LI tag and "dropdown-toggle" class from the href.
+									Direct Link Example: 
+
+									<li>
+										<a href="#">HOME</a>
+									</li>
+								-->
+								<ul id="topMain" class="nav nav-pills nav-main" >
+									
+									<?php
+										$list_main_menu = $this->M_public->list_main_menu(" WHERE A.MENU_ISMAINMENU = 1 ");
+										if(!empty($list_main_menu)) 
+										{  
+											$list_result = $list_main_menu->result();
+											foreach($list_result as $row)
+											{
+												//CEK APAKAH ADA SUB MENU
+													$list_sub_menu = $this->M_public->list_main_menu(" WHERE A.MENU_ISMAINMENU = 0 AND A.MENU_MAINID = '".$row->MENU_KODE."' ");
+													if(!empty($list_sub_menu)) 
+													{
+														echo'<li class="dropdown"><!-- HOME -->
+																<a class="dropdown-toggle" href="#" style="color:yellow;">
+																	'.$row->MENU_NAMA.'
+																</a>
+																	<ul class="dropdown-menu" style="background-color:#196619;">';
+														$list_result = $list_sub_menu->result();
+														foreach($list_result as $row2)
+														{
+															if($row2->MENU_ISPUNYAHAL == 1)
+															{
+																echo'
+																<li>
+																	<a href="'.base_url().''.$row2->LINK.'" style="color:yellow;">
+																		'.$row2->MENU_NAMA.'
+																	</a>
+																</li>';
+															}
+															else
+															{
+																echo'
+																<li>
+																	<a href="'.base_url().'pages/'.$row2->LINK.'" style="color:yellow;">
+																		'.$row2->MENU_NAMA.'
+																	</a>
+																</li>';
+															}
+														}
+														echo'		</ul>
+																</li>';
+													}
+													else
+													{
+														if($row->MENU_ISPUNYAHAL == 1)
+														{
+															echo'
+																<li><!-- HOME -->
+																	<a href="'.base_url().''.$row->LINK.'" style="color:yellow;">
+																		'.$row->MENU_NAMA.'
+																	</a>
+																</li>
+															';
+														}
+														else
+														{
+															echo'
+																<li><!-- HOME -->
+																	<a href="'.base_url().'pages/'.$row->LINK.'" style="color:yellow;">
+																		'.$row->MENU_NAMA.'
+																	</a>
+																</li>
+															';
+														}
+														
+													}
+												
+												//CEK APAKAH ADA SUB MENU
+											}
+										}
+									?>
+									
+									
+									
+									
+
+
+
+									<!-- 
+										MENU ANIMATIONS
+											.nav-animate-fadeIn
+											.nav-animate-fadeInUp
+											.nav-animate-bounceIn
+											.nav-animate-bounceInUp
+											.nav-animate-flipInX
+											.nav-animate-flipInY
+											.nav-animate-zoomIn
+											.nav-animate-slideInUp
+
+											.nav-hover-animate 		= animate text on hover
+
+											.hover-animate-bounceIn = bounceIn effect on mouse over of main menu
+									-->
+									
+								</ul>
+
+							</nav>
+						</div>
+
+					</div>
+				</header>
+				<!-- /Top Nav -->
+				
+
+			</div>
+
+
+
+			<!-- REVOLUTION SLIDER -->
+			<section id="slider" class="fullwidthbanner-container roundedcorners">
+				<!--
+					Navigation Styles:
+					
+						data-navigationStyle="" theme default navigation
+						
+						data-navigationStyle="preview1"
+						data-navigationStyle="preview2"
+						data-navigationStyle="preview3"
+						data-navigationStyle="preview4"
+						
+					Bottom Shadows
+						data-shadow="1"
+						data-shadow="2"
+						data-shadow="3"
+						
+					Slider Height (do not use on fullscreen mode)
+						data-height="300"
+						data-height="350"
+						data-height="400"
+						data-height="450"
+						data-height="500"
+						data-height="550"
+						data-height="600"
+						data-height="650"
+						data-height="700"
+						data-height="750"
+						data-height="800"
+				-->
+				<div class="fullscreenbanner" data-navigationStyle="preview4">
+					<ul class="hide">
+					
+						<?php
+							$list_slider = $this->M_public->list_images(" WHERE B.KIMG_NAMA = 'Slider'",0,10);
+							if(!empty($list_slider)) 
+							{  
+								$list_result = $list_slider->result();
+								foreach($list_result as $row)
+								{
+						?>
+									<li data-transition="random" data-slotamount="1" data-masterspeed="1000" data-saveperformance="off" data-title="<?php echo $row->IMG_NAMA;?>" data-thumb="<?php echo $row->IMG_LINK;?>">
+
+										<!-- <img src="<?php echo $row->IMG_LINK;?>" data-lazyload="<?php echo $row->IMG_LINK;?>" alt="" data-bgfit="cover" data-bgposition="center bottom" data-bgrepeat="no-repeat" /> -->
+										
+										<img src="<?php echo $row->IMG_LINK;?>" data-lazyload="<?php echo $row->IMG_LINK;?>" alt="<?php echo $row->IMG_NAMA;?>" data-bgfit="contain" data-bgposition="center center" data-bgrepeat="no-repeat" />
+
+										<div class="overlay dark-4">
+											<!-- dark overlay [1 to 9 opacity] -->
+										</div>
+
+										<!-- <div class="tp-caption very_large_text lfb ltt tp-resizeme" -->
+											<!-- data-x="right" data-hoffset="-100" -->
+											<!-- data-y="center" data-voffset="-100" -->
+											<!-- data-speed="600" -->
+											<!-- data-start="800" -->
+											<!-- data-easing="Power4.easeOut" -->
+											<!-- data-splitin="none" -->
+											<!-- data-splitout="none" -->
+											<!-- data-elementdelay="0.01" -->
+											<!-- data-endelementdelay="0.1" -->
+											<!-- data-endspeed="500" -->
+											<!-- data-endeasing="Power4.easeIn"> -->
+											<!-- <?php echo $row->IMG_NAMA;?> -->
+										<!-- </div> -->
+
+										<!-- <div class="tp-caption medium_light_white lfb ltt tp-resizeme" -->
+											<!-- data-x="right" data-hoffset="-100" -->
+											<!-- data-y="center" data-voffset="10" -->
+											<!-- data-speed="600" -->
+											<!-- data-start="900" -->
+											<!-- data-easing="Power4.easeOut" -->
+											<!-- data-splitin="none" -->
+											<!-- data-splitout="none" -->
+											<!-- data-elementdelay="0.01" -->
+											<!-- data-endelementdelay="0.1" -->
+											<!-- data-endspeed="500" -->
+											<!-- data-endeasing="Power4.easeIn"> -->
+											<!-- <?php echo $row->IMG_KET;?> -->
+										<!-- </div> -->
+
+									</li>
+						<?php
+								}
+							}
+						?>
+
+						<!-- SLIDE  -->
+						<!-- <li data-transition="random" data-slotamount="1" data-masterspeed="1000" data-saveperformance="off" data-title="Slide title 1" data-thumb="demo_files/images/150x99/27-min.jpg"> -->
+
+							<!-- <img src="assets/images/_smarty/1x1.png" data-lazyload="demo_files/images/1200x800/27-min.jpg" alt="" data-bgfit="cover" data-bgposition="center bottom" data-bgrepeat="no-repeat" /> -->
+
+							<!-- <div class="overlay dark-4">
+							</div> -->
+
+							<!-- <div class="tp-caption customin ltl tp-resizeme text_white" -->
+								<!-- data-x="center" -->
+								<!-- data-y="180" -->
+								<!-- data-customin="x:0;y:150;z:0;rotationZ:0;scaleX:1;scaleY:1;skewX:0;skewY:0;opacity:0;transformPerspective:200;transformOrigin:50% 0%;" -->
+								<!-- data-speed="800" -->
+								<!-- data-start="1000" -->
+								<!-- data-easing="easeOutQuad" -->
+								<!-- data-splitin="none" -->
+								<!-- data-splitout="none" -->
+								<!-- data-elementdelay="0.01" -->
+								<!-- data-endelementdelay="0.1" -->
+								<!-- data-endspeed="1000" -->
+								<!-- data-endeasing="Power4.easeIn" style="z-index: 10;"> -->
+								<!-- <span class="fw-300">DEVELOPMENT / MARKETING / DESIGN / PHOTO</span> -->
+							<!-- </div> -->
+
+							<!-- <div class="tp-caption customin ltl tp-resizeme large_bold_white" -->
+								<!-- data-x="center" -->
+								<!-- data-y="230" -->
+								<!-- data-customin="x:0;y:150;z:0;rotationZ:0;scaleX:1;scaleY:1;skewX:0;skewY:0;opacity:0;transformPerspective:200;transformOrigin:50% 0%;" -->
+								<!-- data-speed="800" -->
+								<!-- data-start="1200" -->
+								<!-- data-easing="easeOutQuad" -->
+								<!-- data-splitin="none" -->
+								<!-- data-splitout="none" -->
+								<!-- data-elementdelay="0.01" -->
+								<!-- data-endelementdelay="0.1" -->
+								<!-- data-endspeed="1000" -->
+								<!-- data-endeasing="Power4.easeIn" style="z-index: 10;"> -->
+								<!-- WELCOME TO SMARTY -->
+							<!-- </div> -->
+
+							<!-- <div class="tp-caption customin ltl tp-resizeme small_light_white" -->
+								<!-- data-x="center" -->
+								<!-- data-y="350" -->
+								<!-- data-customin="x:0;y:150;z:0;rotationZ:0;scaleX:1;scaleY:1;skewX:0;skewY:0;opacity:0;transformPerspective:200;transformOrigin:50% 0%;" -->
+								<!-- data-speed="800" -->
+								<!-- data-start="1400" -->
+								<!-- data-easing="easeOutQuad" -->
+								<!-- data-splitin="none" -->
+								<!-- data-splitout="none" -->
+								<!-- data-elementdelay="0.01" -->
+								<!-- data-endelementdelay="0.1" -->
+								<!-- data-endspeed="1000" -->
+								<!-- data-endeasing="Power4.easeIn" style="z-index: 10; width: 750px; max-width: 750px; white-space: normal; text-align:center;"> -->
+								<!-- Fabulas definitiones ei pri per recteque hendrerit scriptorem in errem scribentur mel fastidii propriae philosophia cu mea. -->
+							<!-- </div> -->
+
+							<!-- <div class="tp-caption customin ltl tp-resizeme" -->
+								<!-- data-x="center" -->
+								<!-- data-y="438" -->
+								<!-- data-customin="x:0;y:150;z:0;rotationZ:0;scaleX:1;scaleY:1;skewX:0;skewY:0;opacity:0;transformPerspective:200;transformOrigin:50% 0%;" -->
+								<!-- data-speed="800" -->
+								<!-- data-start="1550" -->
+								<!-- data-easing="easeOutQuad" -->
+								<!-- data-splitin="none" -->
+								<!-- data-splitout="none" -->
+								<!-- data-elementdelay="0.01" -->
+								<!-- data-endelementdelay="0.1" -->
+								<!-- data-endspeed="1000" -->
+								<!-- data-endeasing="Power4.easeIn" style="z-index: 10;"> -->
+								<!-- <a href="#purchase" class="btn btn-default btn-lg"> -->
+									<!-- <span>Purchase Smarty Now</span>  -->
+								<!-- </a> -->
+							<!-- </div> -->
+
+						<!-- </li> -->
+
+						<!-- SLIDE -->
+						<!-- <li data-transition="fade" data-slotamount="1" data-masterspeed="1000" data-saveperformance="off" data-title="Slide title 2" data-thumb="demo_files/images/video/neuron_thumb.jpg"> -->
+
+							<!-- <img src="assets/images/_smarty/1x1.png" data-lazyload="demo_files/images/video/neuron.jpg" alt="video" data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat"> -->
+
+							<!-- <div class="tp-caption tp-fade fadeout fullscreenvideo" -->
+								<!-- data-x="0" -->
+								<!-- data-y="0" -->
+								<!-- data-speed="1000" -->
+								<!-- data-start="1100" -->
+								<!-- data-easing="Power4.easeOut" -->
+								<!-- data-elementdelay="0.01" -->
+								<!-- data-endelementdelay="0.1" -->
+								<!-- data-endspeed="1500" -->
+								<!-- data-endeasing="Power4.easeIn" -->
+								<!-- data-autoplay="true" -->
+								<!-- data-autoplayonlyfirsttime="false" -->
+								<!-- data-nextslideatend="true" -->
+								<!-- data-volume="mute"  -->
+								<!-- data-forceCover="1"  -->
+								<!-- data-aspectratio="16:9"  -->
+								<!-- data-forcerewind="on" style="z-index: 2;"> -->
+
+								<!-- <div class="overlay dark-4">
+								</div> -->
+
+								<!-- <video class="fullvideo" preload="none" poster="demo_files/images/video/neuron.jpg"> -->
+									<!-- <source src="demo_files/images/video/neuron.webm" type="video/webm" /> -->
+									<!-- <source src="demo_files/images/video/neuron.mp4" type="video/mp4" /> -->
+								<!-- </video> -->
+
+							<!-- </div> -->
+
+							<!-- <div class="tp-caption customin ltl tp-resizeme text_white" -->
+								<!-- data-x="center" -->
+								<!-- data-y="180" -->
+								<!-- data-customin="x:0;y:150;z:0;rotationZ:0;scaleX:1;scaleY:1;skewX:0;skewY:0;opacity:0;transformPerspective:200;transformOrigin:50% 0%;" -->
+								<!-- data-speed="800" -->
+								<!-- data-start="1000" -->
+								<!-- data-easing="easeOutQuad" -->
+								<!-- data-splitin="none" -->
+								<!-- data-splitout="none" -->
+								<!-- data-elementdelay="0.01" -->
+								<!-- data-endelementdelay="0.1" -->
+								<!-- data-endspeed="1000" -->
+								<!-- data-endeasing="Power4.easeIn" style="z-index: 3;"> -->
+								<!-- <span class="fw-300">YOUR FAVORITE MULTIPURPOSE TEMPLATE</span> -->
+							<!-- </div> -->
+
+							<!-- <div class="tp-caption customin ltl tp-resizeme large_bold_white" -->
+								<!-- data-x="center" -->
+								<!-- data-y="230" -->
+								<!-- data-customin="x:0;y:150;z:0;rotationZ:0;scaleX:1;scaleY:1;skewX:0;skewY:0;opacity:0;transformPerspective:200;transformOrigin:50% 0%;" -->
+								<!-- data-speed="800" -->
+								<!-- data-start="1200" -->
+								<!-- data-easing="easeOutQuad" -->
+								<!-- data-splitin="none" -->
+								<!-- data-splitout="none" -->
+								<!-- data-elementdelay="0.01" -->
+								<!-- data-endelementdelay="0.1" -->
+								<!-- data-endspeed="1000" -->
+								<!-- data-endeasing="Power4.easeIn" style="z-index: 3;"> -->
+								<!-- WELCOME TO SMARTY -->
+							<!-- </div> -->
+
+							<!-- <div class="tp-caption customin ltl tp-resizeme small_light_white" -->
+								<!-- data-x="center" -->
+								<!-- data-y="350" -->
+								<!-- data-customin="x:0;y:150;z:0;rotationZ:0;scaleX:1;scaleY:1;skewX:0;skewY:0;opacity:0;transformPerspective:200;transformOrigin:50% 0%;" -->
+								<!-- data-speed="800" -->
+								<!-- data-start="1400" -->
+								<!-- data-easing="easeOutQuad" -->
+								<!-- data-splitin="none" -->
+								<!-- data-splitout="none" -->
+								<!-- data-elementdelay="0.01" -->
+								<!-- data-endelementdelay="0.1" -->
+								<!-- data-endspeed="1000" -->
+								<!-- data-endeasing="Power4.easeIn" style="z-index: 3; width: 750px; max-width: 750px; white-space: normal; text-align:center;"> -->
+								<!-- Fabulas definitiones ei pri per recteque hendrerit scriptorem in errem scribentur mel fastidii propriae philosophia cu mea. -->
+							<!-- </div> -->
+
+							<!-- <div class="tp-caption customin ltl tp-resizeme" -->
+								<!-- data-x="center" -->
+								<!-- data-y="438" -->
+								<!-- data-customin="x:0;y:150;z:0;rotationZ:0;scaleX:1;scaleY:1;skewX:0;skewY:0;opacity:0;transformPerspective:200;transformOrigin:50% 0%;" -->
+								<!-- data-speed="800" -->
+								<!-- data-start="1550" -->
+								<!-- data-easing="easeOutQuad" -->
+								<!-- data-splitin="none" -->
+								<!-- data-splitout="none" -->
+								<!-- data-elementdelay="0.01" -->
+								<!-- data-endelementdelay="0.1" -->
+								<!-- data-endspeed="1000" -->
+								<!-- data-endeasing="Power4.easeIn" style="z-index: 3;"> -->
+								<!-- <a href="#purchase" class="btn btn-default btn-lg"> -->
+									<!-- <span>Purchase Smarty Now</span>  -->
+								<!-- </a> -->
+							<!-- </div> -->
+
+						<!-- </li> -->
+
+						<!-- SLIDE  -->
+						<!-- <li data-transition="random" data-slotamount="1" data-masterspeed="1000" data-saveperformance="off" data-title="Slide title 3" data-thumb="demo_files/images/150x99/11-min.jpg"> -->
+
+							<!-- <img src="assets/images/_smarty/1x1.png" data-lazyload="demo_files/images/1200x800/11-min.jpg" alt="" data-bgfit="cover" data-bgposition="center bottom" data-bgrepeat="no-repeat" /> -->
+
+							<!-- <div class="overlay dark-4">
+							</div> -->
+
+							<!-- <div class="tp-caption very_large_text lfb ltt tp-resizeme" -->
+								<!-- data-x="right" data-hoffset="-100" -->
+								<!-- data-y="center" data-voffset="-100" -->
+								<!-- data-speed="600" -->
+								<!-- data-start="800" -->
+								<!-- data-easing="Power4.easeOut" -->
+								<!-- data-splitin="none" -->
+								<!-- data-splitout="none" -->
+								<!-- data-elementdelay="0.01" -->
+								<!-- data-endelementdelay="0.1" -->
+								<!-- data-endspeed="500" -->
+								<!-- data-endeasing="Power4.easeIn"> -->
+								<!-- RUN WILD -->
+							<!-- </div> -->
+
+							<!-- <div class="tp-caption medium_light_white lfb ltt tp-resizeme" -->
+								<!-- data-x="right" data-hoffset="-100" -->
+								<!-- data-y="center" data-voffset="10" -->
+								<!-- data-speed="600" -->
+								<!-- data-start="900" -->
+								<!-- data-easing="Power4.easeOut" -->
+								<!-- data-splitin="none" -->
+								<!-- data-splitout="none" -->
+								<!-- data-elementdelay="0.01" -->
+								<!-- data-endelementdelay="0.1" -->
+								<!-- data-endspeed="500" -->
+								<!-- data-endeasing="Power4.easeIn"> -->
+								<!-- Happiness is an accident of nature,<br/> -->
+								<!-- a beautiful and flawless aberration.<br/> -->
+								<!-- <span style="font-size:24px;font-weight:400;">&ndash; Pat Conroy</span> -->
+							<!-- </div> -->
+
+						<!-- </li> -->
+
+					</ul>
+				</div>
+			</section>
+			<!-- /REVOLUTION SLIDER -->
+
+
+
+			
+
+
+			<!-- FOOTER -->
+			<footer id="footer" style="background-color:#196619;color:yellow;">
+				<div class="copyright" style="background-color:#196619;color:yellow;">
+					<div class="container" style="background-color:#196619;color:yellow;">
+						<ul class="float-right m-0 list-inline mobile-block" style="color:yellow;">
+							<li><a href="#" style="color:yellow;">Terms &amp; Conditions</a></li>
+							<li>&bull;</li>
+							<li><a href="#" style="color:yellow;">Privacy</a></li>
+						</ul>
+						&copy; All Rights Reserved, BAZNAS Kab. Sukabumi <?php echo date("Y"); ?>
+						
+						<br/>
+						<span><a href="http://backlinkgratisberkualitasindonesia.blogspot.com/" oncontextmenu='return false' title="Backlink Gratis Berkualitas No.1 Indonesia" target="_blank"><img alt="Backlink Gratis Berkualitas No.1 Indonesia" border="0" src="http://1.bp.blogspot.com/-jkZ9SKTh3Sc/UUoDkATZlYI/AAAAAAAAAK0/RwE0RK1vM1A/s1600/SEO+BOOSTER.png"/></a></span>
+
+						<span><stats style="margin-left:-10px;">
+						<a href="http://whos.amung.us/stats/x34vbqv924y4/" title="Total user sedang online" target="_blank"><img oncontextmenu="return false" src="http://whos.amung.us/swidget/x34vbqv924y4/"/></a></stats></span>
+						
+						
+						<!-- ping by http://www.ping-fast.com/ -->
+						<a href="http://www.ping-fast.com/ping-my-blog9786" target="_blank"><img src="http://www.ping-fast.com/iping.php?aut=EC153B028BB768920487F89D5739455201155A64B924A54A750E6D8DD2AD0BC1854A7AD421A02FC8C1" alt="ping fast  my blog, website, or RSS feed for Free" border="0" /></a> <noscript><a href="http://www.ping-fast.com/"  alt="ping fast  my blog, website, or RSS feed for Free">ping fast  my blog, website, or RSS feed for Free</a> <a href="https://www.her-libido.com/articles/popular-ways-to-increase-sex-drive/">www.her-libido.com</a>  </noscript>
+						<!-- ping fast by http://www.ping-fast.com/-->
+						
+					</div>
+				</div>
+			</footer>
+			<!-- /FOOTER -->
+			
+			<!-- 
+				HOME SHOP - MODAL ON LOAD 
+				
+				data-autoload="true" 			- load modal on page load
+				data-autoload-delay="2000"		- load after 2000 ms (1000ms = 1s)
+			-->
+			<div id="shopLoadModal" class="modal fade" data-autoload="true" data-autoload-delay="2000">
+				<!-- <div class="modal-dialog modal-full"> -->
+				<div class="modal-dialog">
+					
+					<div class="modal-content" style="background-image:url('assets/images/_smarty/misc/shop/shop_modal.jpg');">
+					
+					
+
+						<!-- header modal -->
+						<!-- <div class="modal-header b-0"> -->
+							<!-- <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button> -->
+						<!-- </div> -->
+
+						<!-- body modal -->
+						<div class="modal-body">
+								<hr/>
+								<center><h4>DONASI SESAMA BAZNAS Kab.Sukabumi</h4></center>
+								<hr/>
+							<div class="block-content">
+								
+								
+								
+								<!-- CONTENT DONASI -->
+								<?php
+									//if($cari == "")
+									//{
+								?>
+								
+									
+										
+											
+											<?php
+												if(!empty($list_amal_terbatas)) 
+												{  
+													$no = 1;
+													$list_result = $list_amal_terbatas->result();
+													foreach($list_result as $row)
+													{
+											?>
+													<!-- <div class="blog-post-item col-md-4 col-sm-4"> -->
+													<!-- <div class="blog-post-item col-md-12 col-sm-12"> -->
+
+														<!-- OWL SLIDER -->
+														<?php
+															$list_slider = $this->M_public->list_images(" WHERE A.IMG_GRUP = 'amal' AND A.ID = '".$row->AML_ID."'",0,10);
+															if(!empty($list_slider)) 
+															{  
+																if($list_slider->num_rows() > 1)
+																{
+														?>
+																	<div class="owl-carousel buttons-autohide controlls-over" data-plugin-options='{"items": 1, "autoPlay": <?php echo (rand(1000,3000));?>, "autoHeight": false, "navigation": true, "pagination": true, "transitionStyle":"fadeUp", "progressBar":"false"}'>
+														<?php
+																}
+																else
+																{
+														?>
+																	<div class="owl-carousel buttons-autohide controlls-over" data-plugin-options='{"items": 1, "autoPlay": 3000, "autoHeight": false, "navigation": true, "pagination": true, "transitionStyle":"none", "progressBar":"false"}'>
+														<?php
+																}
+															}
+														?>
+															
+															<?php
+																//$list_slider = $this->M_public->list_images(" WHERE A.IMG_GRUP = 'amal' AND A.ID = '".$row->AML_ID."'",0,10);
+																if(!empty($list_slider)) 
+																{  
+																	$list_result_images = $list_slider->result();
+																	foreach($list_result_images as $row_images)
+																	{
+															?>
+																		
+																		<div>
+																			<img class="img-fluid" src="<?php echo $row_images->IMG_LINK;?>" alt="<?php echo $row_images->IMG_NAMA;?>">
+																		</div>
+															<?php
+																	}
+																}
+															?>
+															
+														</div>
+														<!-- /OWL SLIDER -->
+
+														<center>
+														<h4><a href="<?php echo base_url();?>detail-donasi/<?php echo $row->AML_LINKTAHUN?>/<?php echo $row->AML_LINKBULAN?>/<?php echo $row->AML_LINKTITLE?>"><?php echo $row->AML_NAMA;?></a></h4>
+														</center>
+														
+														
+														<!-- <ul class="blog-post-info list-inline"> -->
+															<!-- <li> -->
+																<!-- <a href="#"> -->
+																	<!-- <i class="fa fa-clock-o"></i>  -->
+																	<!-- <span class="font-lato">June 29, 2017</span> -->
+																<!-- </a> -->
+															<!-- </li> -->
+															<!-- <li> -->
+																<!-- <a href="#"> -->
+																	<!-- <i class="fa fa-comment-o"></i>  -->
+																	<!-- <span class="font-lato">28</span> -->
+																<!-- </a> -->
+															<!-- </li> -->
+														<!-- </ul> -->
+
+														<p><?php echo substr(strip_tags($row->AML_KET),0,150).'...';?></p>
+
+														<!-- <a href="<?php echo base_url();?>detail-donasi/<?php echo $row->AML_LINKTAHUN?>/<?php echo $row->AML_LINKBULAN?>/<?php echo $row->AML_LINKTITLE?>" class="btn btn-reveal btn-default"> -->
+															<!-- <i class="fa fa-plus"></i> -->
+															<!-- <span>Read More</span> -->
+														<!-- </a> -->
+
+													<!-- </div> -->
+														<hr/>
+											<?php
+														$no++;
+													}
+												}
+											?>
+											
+											
+										
+									
+									<?php
+									//}
+									?>
+								<!-- CONTENT DONASI -->
+								
+								<center>
+								<a href="<?php echo base_url();?>donasi-sesama" class="btn btn-reveal btn-default">
+									<i class="fa fa-plus"></i>
+									<span>LIHAT LEBIH BANYAK</span>
+								</a>
+								</center>
+							</div>
+
+						</div>
+
+					</div>
+				</div>
+			</div>
+			<!-- /HOME SHOP - MODAL ON LOAD -->
+
+		</div>
+		<!-- /wrapper -->
+
+
+		<!-- SCROLL TO TOP -->
+		<a href="#" id="toTop"></a>
+
+
+		<!-- PRELOADER -->
+		<div id="preloader">
+			<div class="inner">
+				<span class="loader"></span>
+			</div>
+		</div><!-- /PRELOADER -->
+		
+		
+		
+		<!-- JAVASCRIPT FILES -->
+		<!-- <script type="text/javascript">var plugin_path = '<?php echo base_url();?>assets/public/assets/plugins/';</script> -->
+		<!-- <script type="text/javascript" src="<?php echo base_url();?>assets/public/assets/plugins/jquery/jquery-3.2.1.min.js"></script> -->
+
+		<script type="text/javascript" src="<?php echo base_url();?>assets/public/assets/js/scripts.js"></script>
+		
+		<!-- STYLESWITCHER - REMOVE -->
+		<script async type="text/javascript" src="<?php echo base_url();?>assets/public/demo_files/styleswitcher/styleswitcher.js"></script>
+
+		<!-- REVOLUTION SLIDER -->
+		<script type="text/javascript" src="<?php echo base_url();?>assets/public/assets/plugins/slider.revolution/js/jquery.themepunch.tools.min.js"></script>
+		<script type="text/javascript" src="<?php echo base_url();?>assets/public/assets/plugins/slider.revolution/js/jquery.themepunch.revolution.min.js"></script>
+		<script type="text/javascript" src="<?php echo base_url();?>assets/public/assets/js/view/demo.revolution_slider.js"></script>
+	</body>
+</html>

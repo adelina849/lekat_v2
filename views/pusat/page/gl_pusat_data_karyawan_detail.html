@@ -1,0 +1,769 @@
+	<!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.4 -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/dist/css/AdminLTE.min.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/dist/css/skins/_all-skins.min.css">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="<?=base_url();?>assets/adminlte/plugins/select2/select2.min.css">
+	<link rel="stylesheet" href="<?=base_url();?>assets/adminlte/bower_components/bootstrap-daterangepicker/daterangepicker.css">
+	<link rel="stylesheet" href="<?=base_url();?>assets/adminlte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+	<link rel="stylesheet" href="<?=base_url();?>assets/adminlte/bower_components/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css">
+	<link rel="stylesheet" href="<?=base_url();?>assets/adminlte/plugins/timepicker/bootstrap-timepicker.min.css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+		
+		
+			<style type="text/css">
+			.labelfrm {
+				display:block;
+				font-size:small;
+				margin-top:5px;
+			}
+			.error {
+				font-size:small;
+				color:red;
+			}
+			</style>
+			
+			<script type="text/javascript" src="<?=base_url();?>assets/admin/js/jquery.validate.min.js"></script>
+			
+			<script type="text/javascript">
+			$(document).ready(function() {
+				
+				$('.frm-input').validate
+                (
+                    {
+        				rules: 
+                        {
+        					pass2: 
+                            {
+        						equalTo: "#pass"
+        					}
+        				},
+        				messages: 
+                        {
+        					pass2: {
+        						equalTo: "Password tidak sama"
+        					}
+        				}
+        			}
+                );
+				
+				
+				
+				$('.confirm-btn').click(function()
+				{
+					var answer = confirm(jQuery(this).attr('title'));
+					return answer;
+				});
+				
+			});
+			</script>
+			
+			<script type="text/javascript">
+				var htmlobjek;
+				$(document).ready(function()
+				{	
+					$('#2_basis_data').attr('class', 'active treeview');
+					$('#21_basis_data_karyawan').attr('class', 'active treeview');
+					$('#216_basis_data_karyawan_karyawan').attr('class', 'active treeview');
+					
+					$('body').attr('class', 'hold-transition skin-purple sidebar-collapse sidebar-mini');
+					
+					$("#nik_kel").change(function()
+                    {  
+                
+                        var nik_kel = $("#nik_kel").val();
+                        $("#pesan-keluarga").html("<img src='<?php echo base_url();?>assets/global/loading.gif'>Cek <?php echo $msgbox_title;?> ...");
+                
+                        if(nik_kel=='')
+                        {
+                          $("#pesan-keluarga").html('<img src="<?php echo base_url();?>assets/global/salah.png"> Kolom Tidak Boleh Kosong');
+                          $("#nik_kel").css('border', '3px #C33 solid');
+                        }
+						else
+						$.ajax({type: "POST", url: "<?php echo base_url();?>gl-admin-data-karyawan-detail-keluarga-cek/", data: "nik_kel="+nik_kel, success:function(data)
+                        { 
+                        	if(data==0 || ($("#nik_kel").val() == $("#cek_nik_kel").val()))
+                            //if(data==0)
+                        	  {
+                        	  	$("#pesan-keluarga").html('<img src="<?php echo base_url();?>assets/global/true.png">');
+                                $("#nik_kel").css('border', '3px #090 solid');
+                                $("#btnsimpan-keluarga").attr("disabled", false);
+                            }
+                              else
+                              {
+                              	$("#pesan-keluarga").html('<img src="<?php echo base_url();?>assets/global/salah.png"> No/Kode <?php echo $msgbox_title;?> Telah Digunakan, Tombol Save Terkunci');
+                				//$("#pesan-keluarga").html(data); 
+                              	$("#nik_kel").css('border', '3px #C33 solid');
+                                $("#btnsimpan-keluarga").attr("disabled", true);
+                              }
+                              
+                        } 
+                        });
+                     });
+					
+				});
+			</script>
+			
+	<div class="content-wrapper">
+		<!-- Content Header (Page header) -->
+		<section class="content-header">
+		
+		<h1>
+			<?php
+				echo $this->session->userdata('ses_gnl_nama_aplikasi');
+			?>
+			<?php 
+				//echo $msgbox_title;
+			?> 
+			<?php 
+				//echo $this->session->userdata("ses_nama_kantor"); 
+			?>
+		</h1>
+		
+		
+		
+		<ol class="breadcrumb">
+			<li><a href="<?php echo base_url()?>gl-admin"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+			<li><a href="#"><i class="fa fa-dashboard"></i> Data Dasar</a></li>
+			<li><a href="#"><i class="fa fa-folder"></i> Data Karyawan</a></li>
+			<li class="active"><i class="fa fa-edit"></i> Detail Karyawan</li>
+			
+		</ol>
+		</section>
+
+		<!-- Main content -->
+		<section class="content">
+		<!-- =========================================================== -->
+
+		<div class="row">
+			<div class="col-md-12">
+				
+				<!-- ISI KONTEN -->
+					<div class="row">
+						<div class="col-md-3">
+
+						  <!-- Profile Image -->
+						  <div class="box box-primary">
+							<div class="box-body box-profile">
+								<?php
+								
+									if($data_karyawan->avatar == "")
+									{
+										$src = base_url().'assets/global/karyawan/loading.gif';
+									}
+									else
+									{
+										$src = base_url().''.$data_karyawan->avatar_url.''.$data_karyawan->avatar;
+									}
+								
+								?>
+							
+								<input type="hidden" name="id_karyawan" id="id_karyawan" value="<?php echo $data_karyawan->id_karyawan; ?>" />
+								<input type="hidden" name="kode_kantor" id="kode_kantor" value="<?php echo $kode_kantor; ?>" />
+								
+							
+							  <img class="profile-user-img img-responsive img-circle" src="<?php echo $src; ?>" alt="User profile picture">
+							  
+							  <h3 class="profile-username text-center"><?php echo $data_karyawan->nama_karyawan; ?> (<?php echo $data_karyawan->no_karyawan; ?>)</h3>
+
+							  <p class="text-muted text-center"><?php echo $data_karyawan->nama_jabatan; ?></p>
+
+							  <ul class="list-group list-group-unbordered">
+								<li class="list-group-item">
+								  <b>NIK</b> <a class="pull-right"><?php echo $data_karyawan->nik_karyawan; ?></a>
+								</li>
+								<li class="list-group-item">
+								  <b>Telpon</b> <a class="pull-right"><?php echo $data_karyawan->tlp; ?></a>
+								</li>
+								<li class="list-group-item">
+								  <b>Email</b> <a class="pull-right"><?php echo $data_karyawan->email; ?></a>
+								</li>
+								<li class="list-group-item">
+								  <b>Kelamin</b> <a class="pull-right"><?php echo $data_karyawan->kelamin; ?></a>
+								</li>
+								<li class="list-group-item">
+								  <b>Status</b> <a class="pull-right"><?php echo $data_karyawan->sts_nikah; ?></a>
+								</li>
+								<!-- <li class="list-group-item"> -->
+								  <!-- <b>Friends</b> <a class="pull-right">13,287</a> -->
+								<!-- </li> -->
+							  </ul>
+
+							  <!-- <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a> -->
+							</div>
+							<!-- /.box-body -->
+						  </div>
+						  <!-- /.box -->
+
+						  <!-- About Me Box -->
+						  <div class="box box-primary">
+							<div class="box-header with-border">
+							  <h3 class="box-title">Tentang Saya</h3>
+							</div>
+							<!-- /.box-header -->
+							<div class="box-body">
+							  <strong><i class="fa fa-book margin-r-5"></i> Pendidikan</strong>
+
+							  <p class="text-muted">
+								<?php echo $data_karyawan->pnd; ?>
+							  </p>
+
+							  <hr>
+
+							  <strong><i class="fa fa-map-marker margin-r-5"></i> Alamat</strong>
+
+							  <p class="text-muted"><?php echo $data_karyawan->alamat; ?></p>
+
+							  <hr>
+
+							  <!-- <strong><i class="fa fa-pencil margin-r-5"></i> Skills</strong> -->
+
+							  <!-- <p> -->
+								<!-- <span class="label label-danger">UI Design</span> -->
+								<!-- <span class="label label-success">Coding</span> -->
+								<!-- <span class="label label-info">Javascript</span> -->
+								<!-- <span class="label label-warning">PHP</span> -->
+								<!-- <span class="label label-primary">Node.js</span> -->
+							  <!-- </p> -->
+
+							  <!-- <hr> -->
+
+							  <strong><i class="fa fa-file-text-o margin-r-5"></i> Keterangan</strong>
+
+							  <p><?php echo $data_karyawan->ket_karyawan; ?></p>
+							  
+							  <hr>
+							  
+							
+							 
+							</div>
+							<!-- /.box-body -->
+						  </div>
+						  <!-- /.box -->
+						</div>
+						<!-- /.col -->
+						<div class="col-md-9">
+						  <div class="nav-tabs-custom">
+							<ul class="nav nav-tabs">
+							
+								<?php
+									if((!empty($_GET['tab'])) && ($_GET['tab']!= "")  )
+									{
+										if(($_GET['tab']== "keluarga"))
+										{
+											echo'<li class="active"><a href="#activity" data-toggle="tab">Keluarga (+)</a></li>';
+										}
+										else
+										{
+											echo'<li><a href="#activity" data-toggle="tab">Keluarga (+)</a></li>';
+										}
+										
+										if(($_GET['tab']== "pendidikan"))
+										{	
+											echo'<li class="active"><a href="#timeline" data-toggle="tab">Pendidikan (+)</a></li>';
+											?>
+											<script type="text/javascript">
+												var htmlobjek;
+												$(document).ready(function()
+												{
+													$('#activity').attr('class', 'tab-pane');
+													$('#timeline').attr('class', 'active tab-pane');
+												});
+											</script>
+											<?php
+										}
+										else
+										{
+											echo'<li><a href="#timeline" data-toggle="tab">Pendidikan (+)</a></li>';
+										}
+										
+										if(($_GET['tab']== "pelatihan"))
+										{
+											echo '<li class="active"><a href="#pelatihan" data-toggle="tab">Pelatihan (+)</a></li>';
+											?>
+											<script type="text/javascript">
+												var htmlobjek;
+												$(document).ready(function()
+												{
+													$('#activity').attr('class', 'tab-pane');
+													$('#pelatihan').attr('class', 'active tab-pane');
+												});
+											</script>
+											<?php
+										}
+										else
+										{
+											echo '<li><a href="#pelatihan" data-toggle="tab">Pelatihan (+)</a></li>';
+										}
+										
+										if(($_GET['tab']== "karir"))
+										{
+											echo '<li class="active"><a href="#karir" data-toggle="tab">Karir</a></li>';
+											?>
+											<script type="text/javascript">
+												var htmlobjek;
+												$(document).ready(function()
+												{
+													$('#activity').attr('class', 'tab-pane');
+													$('#karir').attr('class', 'active tab-pane');
+												});
+											</script>
+											<?php
+										}
+										else
+										{
+											echo '<li><a href="#karir" data-toggle="tab">Karir</a></li>';
+										}
+										
+										if(($_GET['tab']== "punish"))
+										{
+											echo '<li class="active"><a href="#punish" data-toggle="tab">Punishment</a></li>';
+											?>
+											<script type="text/javascript">
+												var htmlobjek;
+												$(document).ready(function()
+												{
+													$('#activity').attr('class', 'tab-pane');
+													$('#punish').attr('class', 'active tab-pane');
+												});
+											</script>
+											<?php
+										}
+										else
+										{
+											echo '<li><a href="#punish" data-toggle="tab">Punishment</a></li>';
+										}
+									}
+									else
+									{
+										echo'
+											<li class="active"><a href="#activity" data-toggle="tab">Keluarga (+)</a></li>
+											<li><a href="#timeline" data-toggle="tab">Pendidikan (+)</a></li>
+											<li><a href="#pelatihan" data-toggle="tab">Pelatihan</a></li>
+											<li><a href="#karir" data-toggle="tab">Karir</a></li>
+											<li><a href="#punish" data-toggle="tab">Punishment</a></li>
+										';
+									}
+									
+								?>
+							
+							 
+							</ul>
+							<div class="tab-content">
+							
+							  <!-- TAB ACTIVITY -->
+							  <div class="active tab-pane" id="activity">
+								<div  id="tb_keluarga" class="box-body">
+										<!-- ISI DENGAN DATA KARYAWAN -->
+								</div><!-- /.box-body -->
+								
+								
+							  </div>
+							  <!-- TAB ACTIVITY -->
+							  <!-- /.tab-pane -->
+							  
+							  
+							  <!-- TAB TIMELINE -->
+							  <div class="tab-pane" id="timeline">
+								<div  id="tb_timeline" class="box-body">
+										<!-- ISI DENGAN DATA KARYAWAN -->
+								</div><!-- /.box-body -->
+							  </div>
+							  
+							  
+							  
+							  <!-- TAB PELATIHAN -->
+							  <div class="tab-pane" id="pelatihan">
+								<!-- The timeline -->
+								<div  id="tb_pelatihan" class="box-body">
+										<!-- ISI DENGAN DATA KARYAWAN -->
+								</div><!-- /.box-body -->
+							  </div>
+							  <!-- TAB PELATIHAN -->
+							  <!-- /.tab-pane -->
+							  
+							  <!-- TAB KARIR -->
+							  <div class="tab-pane" id="karir">
+								<div  id="tb_karir" class="box-body">
+										<!-- ISI DENGAN DATA KARYAWAN -->
+								</div><!-- /.box-body -->
+							  </div>
+							  <!-- TAB KARIR -->
+							  <!-- /.tab-pane -->
+							  
+							  
+							  <!-- TAB PUNISHMENT -->
+							  <div class="tab-pane" id="punish">
+								<div  id="tb_punish" class="box-body">
+										<!-- ISI DENGAN DATA KARYAWAN -->
+								</div><!-- /.box-body -->
+							  </div>
+							  <!-- TAB PUNISHMENT -->
+							  <!-- /.tab-pane -->
+							  
+							  
+							</div>
+							<!-- /.tab-content -->
+						  </div>
+						  <!-- /.nav-tabs-custom -->
+						</div>
+						<!-- /.col -->
+						
+						<!-- BATAS PROFILE -->
+						
+						
+						
+						
+						
+						
+						
+						
+						
+					</div>
+				<!-- ISI KONTEN -->
+				
+			</div><!-- /.col -->
+		</div><!-- /.row -->
+		<!-- =========================================================== -->
+		</section><!-- /.content -->
+	</div><!-- /.content-wrapper -->
+			
+			
+		
+<script type='text/javascript'>
+	
+		/*
+		$('#btnsimpan-keluarga').click(function() 
+		{
+			if (confirm('Apa anda yakin akan menyimpan data keluarga ini ?')) 
+			{
+				//alert("data tersimpan");
+			}
+		});
+		*/
+	  
+		/*
+		$( document ).ready(function() 
+		{
+			alert( "ready!" );
+		});
+		*/
+		
+		/*
+		function list_keluarga()
+		{
+		*/
+		$( document ).ready(function() 
+		{
+			var id_karyawan = $("#id_karyawan").val();
+			var kode_kantor = $("#kode_kantor").val();
+			var berdasarkan = "id_karyawan";
+				
+			/*LOAD DATA KELUARGA*/
+				$("#tb_keluarga").html("<img src='<?php echo base_url();?>assets/global/loading.gif'>Cek Data ...");
+				
+				$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_pst_karyawan/list_keluarga/", data: {id_karyawan:id_karyawan,berdasarkan:berdasarkan,kode_kantor:kode_kantor}, success:function(data)
+				{
+					if(data!=0)
+					{
+						$("#tb_keluarga").html(data);
+					} 
+					else
+					{
+						$("#tb_keluarga").html("Tidak Ada Data Yang Ditampilkan");
+					}
+				}
+				});
+			/*LOAD DATA KELUARGA*/
+			
+			/*LOAD DATA SEKOLAH/PENDIDIKAN*/
+				$("#tb_timeline").html("<img src='<?php echo base_url();?>assets/global/loading.gif'>Cek Data ...");
+				
+				$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_pst_karyawan/list_sekolah", data: {id_karyawan:id_karyawan,berdasarkan:berdasarkan,kode_kantor:kode_kantor}, success:function(data)
+				{
+					if(data!=0)
+					{
+						$("#tb_timeline").html(data);
+					} 
+					else
+					{
+						$("#tb_timeline").html("Tidak Ada Data Yang Ditampilkan");
+					}
+				}
+				});
+			/*LOAD DATA SEKOLAH/PENDIDIKAN*/
+			
+			/*LOAD DATA TRAINING*/
+				$("#tb_pelatihan").html("<img src='<?php echo base_url();?>assets/global/loading.gif'>Cek Data ...");
+				
+				$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_pst_karyawan/list_training/", data: {id_karyawan:id_karyawan,berdasarkan:berdasarkan,kode_kantor:kode_kantor}, success:function(data)
+				{
+					if(data!=0)
+					{
+						$("#tb_pelatihan").html(data);
+					} 
+					else
+					{
+						$("#tb_pelatihan").html("Tidak Ada Data Yang Ditampilkan");
+					}
+				}
+				});
+			/*LOAD DATA TRAINING*/
+			
+			/*LOAD DATA RIWAYAT JABATAN*/
+				$("#tb_karir").html("<img src='<?php echo base_url();?>assets/global/loading.gif'>Cek Data ...");
+				
+				$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_pst_karyawan/list_riwayat_jabatan/", data: {id_karyawan:id_karyawan,berdasarkan:berdasarkan,kode_kantor:kode_kantor}, success:function(data)
+				{
+					if(data!=0)
+					{
+						$("#tb_karir").html(data);
+					} 
+					else
+					{
+						$("#tb_karir").html("Tidak Ada Data Yang Ditampilkan");
+					}
+				}
+				});
+			/*LOAD DATA RIWAYAT JABATAN*/
+			
+			/*LOAD DATA RIWAYAT PUNISHMENT*/
+				$("#tb_punish").html("<img src='<?php echo base_url();?>assets/global/loading.gif'>Cek Data ...");
+				
+				$.ajax({type: "POST", url: "<?php echo base_url();?>C_gl_pst_karyawan/list_riwayat_punishment/", data: {id_karyawan:id_karyawan,berdasarkan:berdasarkan,kode_kantor:kode_kantor}, success:function(data)
+				{
+					if(data!=0)
+					{
+						$("#tb_punish").html(data);
+					} 
+					else
+					{
+						$("#tb_punish").html("Tidak Ada Data Yang Ditampilkan");
+					}
+				}
+				});
+			/*LOAD DATA RIWAYAT PUNISHMENT*/
+			
+			
+			
+			
+			
+		});
+		//}
+		
+		
+		
+		
+		$('#btnbatal-keluarga').click(function()
+		{
+			$('input[name=id_kel]').val("");
+			/*Tutup Dulu Form*/
+				$('#icon_form').attr('class', 'fa fa-plus');
+				$('#box-form-keluarga').attr('class', 'box box-warning collapsed-box box-solid');
+			/*Tutup Dulu Form*/
+		});
+		
+		$('#btnbatal-sekolah').click(function()
+		{
+			$('input[name=id_sekolah]').val("");
+			/*Tutup Dulu Form*/
+				$('#icon_form').attr('class', 'fa fa-plus');
+				$('#box-form-sekolah').attr('class', 'box box-warning collapsed-box box-solid');
+			/*Tutup Dulu Form*/
+		});
+	
+	
+	function simpan_proses_lamaran()
+	{
+		var id_karyawan = $("#id_karyawan_2").val();
+		var isAktif = $("#isAktif").val();
+		var no = $("#no_2").val();
+		var nilai_ujian = $("#nilai_ujian").val();
+		var ket_hasil_ujian = $("#ket_hasil_ujian").val();
+		
+		//alert(no);
+		
+		$.ajax({type: "POST", url: "<?php echo base_url();?>gl-admin-recruitment-proses/", data: {id_karyawan:id_karyawan,isAktif:isAktif,nilai_ujian:nilai_ujian,ket_hasil_ujian:ket_hasil_ujian}, success:function(data)
+		{ 
+			if(data==0)
+			//if(data==0)
+			{
+				alert("Data Gagal Disimpan");
+				//#FFB6C1
+				$('#tr_'+no).css("background","#FFB6C1");
+			}	
+			else
+			{
+				alert("Data Berhasil Disimpan");
+				//#90EE90
+				if(isAktif == "DITERIMA")
+				{
+					$('#tr_'+no).css("background","#90EE90");
+				}
+				else if(isAktif == "DITOLAK")
+				{
+					$('#tr_'+no).css("background","#FFB6C1");
+				}
+				else
+				{
+					$('#tr_'+no).css("background","#FFFFFF");
+				}
+				
+				$('input[name=nilai_ujian_'+no+']').val(nilai_ujian);
+				document.getElementById('ket_hasil_ujian_'+no+'').value = ket_hasil_ujian;
+				document.getElementById('isAktif_'+no+'').options.item(0).text = isAktif;
+				document.getElementById('isAktif_'+no+'').options.item(0).value = isAktif;
+			} 
+		} 
+		});
+		
+		//alert("HALLO");
+	}
+	
+	
+	function isNumberKey(evt)
+	{
+    	var charCode = (evt.which) ? evt.which : event.keyCode
+    	if (charCode > 31 && (charCode < 48 || charCode > 57))
+    	
+    	return false;
+    	return true;
+	}
+	
+	
+	function FormatCurrency(objNum)
+	{
+	   var num = objNum.value
+	   var ent, dec;
+	   if (num != '' && num != objNum.oldvalue)
+	   {
+		 num = HapusTitik(num);
+		 if (isNaN(num))
+		 {
+		   objNum.value = (objNum.oldvalue)?objNum.oldvalue:'';
+		 } else {
+		   var ev = (navigator.appName.indexOf('Netscape') != -1)?Event:event;
+		   if (ev.keyCode == 190 || !isNaN(num.split('.')[1]))
+		   {
+			 alert(num.split('.')[1]);
+			 objNum.value = TambahTitik(num.split('.')[0])+'.'+num.split('.')[1];
+		   }
+		   else
+		   {
+			 objNum.value = TambahTitik(num.split('.')[0]);
+		   }
+		   objNum.oldvalue = objNum.value;
+		 }
+	   }
+	}
+	function HapusTitik(num)
+	{
+	   return (num.replace(/\./g, ''));
+	}
+
+	function TambahTitik(num)
+	{
+	   numArr=new String(num).split('').reverse();
+	   for (i=3;i<numArr.length;i+=3)
+	   {
+		 numArr[i]+='.';
+	   }
+	   return numArr.reverse().join('');
+	} 
+			
+	function formatCurrency(num) {
+	   num = num.toString().replace(/\$|\./g,'');
+	   if(isNaN(num))
+	   num = "0";
+	   sign = (num == (num = Math.abs(num)));
+	   num = Math.floor(num*100+0.50000000001);
+	   cents = num0;
+	   num = Math.floor(num/100).toString();
+	   for (var i = 0; i < Math.floor((num.length-(1+i))/3); i++)
+	   num = num.substring(0,num.length-(4*i+3))+'.'+
+	   num.substring(num.length-(4*i+3));
+	   return (((sign)?'':'-') + num);
+	}
+</script>
+      
+    <!-- Bootstrap 3.3.4 -->
+	<script src="<?=base_url();?>assets/adminlte/bootstrap/js/bootstrap.min.js"></script>
+	<!-- Slimscroll -->
+	<script src="<?=base_url();?>assets/adminlte/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+	<!-- FastClick -->
+	<script src="<?=base_url();?>assets/adminlte/plugins/fastclick/fastclick.min.js"></script>
+	<!-- AdminLTE App -->
+	<script src="<?=base_url();?>assets/adminlte/dist/js/app.min.js"></script>
+	<!-- Page script -->
+    <!-- InputMask -->
+    <script src="<?=base_url();?>/assets/adminlte/plugins/input-mask/jquery.inputmask.js"></script>
+    <script src="<?=base_url();?>/assets/adminlte/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+    <script src="<?=base_url();?>/assets/adminlte/plugins/input-mask/jquery.inputmask.extensions.js"></script>
+	
+	<!-- bootstrap datepicker -->
+	<script src="<?=base_url();?>/assets/adminlte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+    
+    <script>
+      $(function () {
+		//Date picker
+		$('.settingDate').datepicker({
+			autoclose: true
+		});
+		
+		
+        //Initialize Select2 Elements
+        //$(".select2").select2();
+
+        //Datemask yyyy-mm-dd
+        $(".datemask_mysql").inputmask("yyyy-mm-dd", {"placeholder": "yyyy-mm-dd"});
+        //Datemask dd/mm/yyyy
+        //$("#datemask").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});
+        //Datemask2 mm/dd/yyyy
+        //$("#datemask2").inputmask("mm/dd/yyyy", {"placeholder": "mm/dd/yyyy"});
+        //TimeMask hh:mm:ss
+        $(".time_mysql").inputmask("hh:mm:ss", {"placeholder": "hh:mm:ss"});
+        //Money Euro
+        //$("[data-mask]").inputmask();
+
+        //iCheck for checkbox and radio inputs
+        $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+          checkboxClass: 'icheckbox_minimal-blue',
+          radioClass: 'iradio_minimal-blue'
+        });
+        //Red color scheme for iCheck
+        $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
+          checkboxClass: 'icheckbox_minimal-red',
+          radioClass: 'iradio_minimal-red'
+        });
+        //Flat red color scheme for iCheck
+        $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+          checkboxClass: 'icheckbox_flat-green',
+          radioClass: 'iradio_flat-green'
+        });
+
+        //Colorpicker
+        $(".my-colorpicker1").colorpicker();
+        //color picker with addon
+        $(".my-colorpicker2").colorpicker();
+
+        //Timepicker
+        $(".timepicker").timepicker({
+          showInputs: false
+        });
+      });
+    </script>
+	

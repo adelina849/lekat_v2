@@ -1,0 +1,68 @@
+ <!-- <title>LaporanPemasukanPeriode<?php echo $_GET['tahun'];?><?php echo $_GET['bulan'];?></title> -->
+ <title>DataProdukStock</title>
+ 
+ <?php
+ $title = "DataProdukStock";
+ header("Content-type: application/vnd-ms-excel");
+ header("Content-Disposition: attachment; filename=$title.xls");
+ header("Pragma: no-cache");
+ header("Expires: 0");
+ 
+ ?>
+
+<?php
+	//TABLE
+	if(!empty($list_produk))
+		{
+			echo'<table width="100%" id="example2" class="table table-bordered table-hover">';
+				echo '<thead>
+<tr>';
+							echo '<th width="15%">KODE PRODUK</th>';
+							echo '<th width="30%">NAMA PRODUK</th>';
+							echo '<th width="25%">NAMA UMUM</th>';
+							echo '<th width="10%">SATUAN (TERKECIL)</th>';
+							echo '<th width="15%">STOCK</th>';
+				echo '</tr>
+</thead>';
+				$list_result = $list_produk->result();
+				$no = $this->uri->segment(2,0)+1;
+				
+				
+				echo '<tbody>';
+				foreach($list_result as $row)
+				{
+					echo'<tr>';
+						echo"<td>".(string)$row->kode_produk."</td>";
+						echo'<td>'.$row->nama_produk.'</td>';
+						echo'<td>'.$row->nama_umum.'</td>';
+						echo'<td>'.$row->kode_satuan.'</td>';
+						//echo'<td style="text-align:right;">Rp.'.number_format($row->NOMINAL,0,",",".").'</td>';
+						//echo'<td>'.word_limiter(strip_tags($row->ART_ISI),20,'...').'</td>';
+						echo'<td></td>';
+					echo'</tr>';
+					$no++;
+				}
+				
+				/*
+				echo'<tr>';
+					echo'<td colspan="7" style="text-align:right;font-weight:bold;">SUB TOTAL</td>';
+					echo'<td style="text-align:right;">Rp.'.number_format($sub_total,0,",",".").'</td>';
+				echo'</tr>';
+				
+				echo'<tr>';
+					echo'<td colspan="7" style="text-align:right;font-weight:bold;">GRAND TOTAL</td>';
+					echo'<td style="text-align:right;">Rp.'.number_format($grand_total,0,",",".").'</td>';
+				echo'</tr>';
+				*/
+				
+				echo '</tbody>';
+			echo'</table>';
+		}
+		else
+		{
+			echo'<center>';
+			echo'Tidak Ada Data Yang Ditampilkan !';
+			echo'</center>';
+		}
+	//TABLE
+?>

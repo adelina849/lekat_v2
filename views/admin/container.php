@@ -10,9 +10,14 @@
 			}
 			else
 			{
-				echo'<title>SIPEKA (Sistem Pelaporan PKK) adalah aplikasi terintegrasi yang dirancang oleh pemerintah Kab. Cianjur untuk mempermudah PKK untuk melakukan pelaporan yang dilakukan oleh kecamatan - kecamatan di kab. Cianjur.</title>';
+				echo'<title>LEKAT (Laporan Elektronik Kecamatan Secara Terpadu)</title>';
 			}
 		?>
+		
+		<meta name="keywords" content="lekat, Sistem, Pelaporan, pemerintahan,Cianjur, kecamatan, bupati cianjur, setda cianjur" />
+		<meta name="description" content="LEKAT (Laporan Elektronik Kecamatan Secara Terpadu)" />
+		<meta name="Author" content="Mulyana Yusuf,ST" />
+		<link rel="shortcut icon" href="<?php echo base_url();?>assets/public/public/images/logo.png">
     	
         
         <!-- view source dll.-->

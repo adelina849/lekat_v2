@@ -121,7 +121,7 @@
 					<!-- PERIODE LAPORAN -->
 					
 					<!-- CEK AKSES Kategori LAPORAN -->
-							<!--<li id="input-konfig-kategori"><a href="<?=base_url()?>kategori-laporan"><i class="fa fa-circle-o"></i> Kategori Laporan</a></li>-->
+							<li id="input-konfig-kategori"><a href="<?=base_url()?>kategori-laporan"><i class="fa fa-circle-o"></i> Kategori Laporan</a></li>
 					<!-- CEK AKSES Kategori LAPORAN -->
 					
 					<!-- CEK AKSES JENIS LAPORAN -->

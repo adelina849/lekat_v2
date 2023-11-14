@@ -10,7 +10,7 @@
 			}
 			else
 			{
-				echo'<title>SIPEKA (Sistem Pelaporan PKK) adalah aplikasi terintegrasi yang dirancang oleh pemerintah Kab. Cianjur untuk mempermudah PKK untuk melakukan pelaporan yang dilakukan oleh kecamatan - kecamatan di kab. Cianjur.</title>';
+				echo'<title>LEKAT (Laporan Elektronik Kecamatan Secara Terpadu)</title>';
 			}
 		?>
     	
@@ -40,7 +40,8 @@
     </head>
     
     <!-- <body class="skin-blue sidebar-mini" onLoad="JavaScript:loadSearchHighlight();"> -->
-	<body class="skin-yellow sidebar-mini" onLoad="JavaScript:loadSearchHighlight();">
+	<!-- <body class="skin-yellow sidebar-mini" onLoad="JavaScript:loadSearchHighlight();"> -->
+	<body class="skin-red sidebar-mini" onLoad="JavaScript:loadSearchHighlight();">
         <div class="wrapper"> <!-- Buka | Untuk Wrapper/Container -->
             
             <!--<div> <!-- Buka | Untuk Header -->

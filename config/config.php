@@ -31,7 +31,8 @@ date_default_timezone_set("Asia/Jakarta");
 //$config['base_url'] = 'http://192.168.1.15/glafidsya/';
 //$config['base_url'] = 'http://system.glafidsyamedika.com/';
 //$config['base_url'] = 'http://localhost/lekat/';
-$config['base_url'] = 'http://localhost/sipeka/';
+//$config['base_url'] = 'http://localhost/sipeka/';
+$config['base_url'] = 'http://localhost/lekat_v2/';
 
 /*
 |--------------------------------------------------------------------------

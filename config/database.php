@@ -86,10 +86,10 @@ $db['default'] = array(
 	'username' => 'root',
 	'password' => '',
 	//'database' => 'db_system',
-	//'database' => 'db_lekat',
+	'database' => 'db_lekat',
 	//'database' => 'u6078081_system',
 	//'database' => 'db_paten',
-	'database' => 'db_sipeka',
+	//'database' => 'db_sipeka',
 	
 	
 	

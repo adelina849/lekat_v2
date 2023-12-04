@@ -136,7 +136,8 @@ class C_gl_admin_images extends CI_Controller {
 						/*AMBIL EXT*/
 
 						/*PROSES UPLOAD*/
-							$lokasi_gambar_disimpan = 'assets/global/laporan/';
+							//$lokasi_gambar_disimpan = 'assets/global/laporan/';
+							$lokasi_gambar_disimpan = 'assets/global/images/';
 							//$avatar = $this->session->userdata('ses_kode_kantor').''.$_POST['stat_edit'];
 							$avatar = $id_images.'.'.$ext;
 							
@@ -190,7 +191,8 @@ class C_gl_admin_images extends CI_Controller {
 						/*AMBIL EXT*/
 
 						/*PROSES UPLOAD*/
-							$lokasi_gambar_disimpan = 'assets/global/laporan/';
+							//$lokasi_gambar_disimpan = 'assets/global/laporan/';
+							$lokasi_gambar_disimpan = 'assets/global/images/';
 							//$avatar = str_replace(" ","",$_FILES['foto']['name']);
 							//$avatar = $avatar.'.'.$ext;
 							$avatar = $id_images.'.'.$ext;
@@ -221,37 +223,52 @@ class C_gl_admin_images extends CI_Controller {
 
 	public function hapus()
 	{
-		$IMG_GRUP = $this->uri->segment(2,0);
-		$ID = $this->uri->segment(3,0);
-		$IMG_ID = $this->uri->segment(4,0);
-		$cari = "WHERE kode_kantor = '".$this->session->userdata('ses_kode_kantor')."' 
-									AND group_by = '".$this->uri->segment(2,0)."'
-									AND id = '".$this->uri->segment(3,0)."'
-									AND id_images = '".$IMG_ID."'";
-									
-		$hasil_cek = $this->M_gl_images->get_images_cari($cari);
-		if(!empty($hasil_cek))
+		if(($this->session->userdata('ses_user_admin') == null) or ($this->session->userdata('ses_pass_admin') == null))
 		{
-			//$hasil_cek = $hasil_cek->row();
-			$this->M_akun->do_upload_global(base_url().'/'.$hasil_cek->img_url,"",$hasil_cek->img_file);
-			$this->M_gl_images->hapus('id_images',$IMG_ID);
-			
-			/* CATAT AKTIFITAS EDIT*/
-			if($this->session->userdata('catat_log') == 'Y')
-			{
-				$this->M_gl_log->simpan_log
-				(
-					$this->session->userdata('ses_id_karyawan'),
-					'UPDATE',
-					'Melakukan pengahpusan data gambar '.$hasil_cek->group_by.' dengan nama '.$hasil_cek->img_nama.' | '.$hasil_cek->ket_img,
-					$this->M_akun->getUserIpAddr(),
-					gethostname(),
-					$this->session->userdata('ses_kode_kantor')
-				);
-			}
-			/* CATAT AKTIFITAS EDIT*/
+			header('Location: '.base_url().'admin-login');
 		}
-		header('Location: '.base_url().'gl-admin-images/'.$IMG_GRUP.'/'.$ID);
+		else
+		{
+			$cek_ses_login = $this->M_akun->get_cek_login($this->session->userdata('ses_user_admin'),md5(base64_decode($this->session->userdata('ses_pass_admin'))));
+			
+			if(!empty($cek_ses_login))
+			{
+				
+				$IMG_GRUP = $this->uri->segment(2,0);
+				$ID = $this->uri->segment(3,0);
+				$IMG_ID = $this->uri->segment(4,0);
+				$cari = "WHERE kode_kantor = '".$this->session->userdata('ses_kode_kantor')."' 
+											AND group_by = '".$this->uri->segment(2,0)."'
+											AND id = '".$this->uri->segment(3,0)."'
+											AND id_images = '".$IMG_ID."'";
+											
+				$hasil_cek = $this->M_gl_images->get_images_cari($cari);
+				if(!empty($hasil_cek))
+				{
+					//$hasil_cek = $hasil_cek->row();
+					//$this->M_akun->do_upload_global(base_url().'/'.$hasil_cek->img_url,"",$hasil_cek->img_file);
+					
+					$this->M_akun->do_upload_global_dinamic_input_name('',$hasil_cek->img_url,"",$hasil_cek->img_file);
+					$this->M_gl_images->hapus('id_images',$IMG_ID);
+					
+					/* CATAT AKTIFITAS EDIT*/
+					if($this->session->userdata('catat_log') == 'Y')
+					{
+						$this->M_gl_log->simpan_log
+						(
+							$this->session->userdata('ses_id_karyawan'),
+							'UPDATE',
+							'Melakukan pengahpusan data gambar '.$hasil_cek->group_by.' dengan nama '.$hasil_cek->img_nama.' | '.$hasil_cek->ket_img,
+							$this->M_akun->getUserIpAddr(),
+							gethostname(),
+							$this->session->userdata('ses_kode_kantor')
+						);
+					}
+					/* CATAT AKTIFITAS EDIT*/
+				}
+				header('Location: '.base_url().'gl-admin-images/'.$IMG_GRUP.'/'.$ID);
+			}
+		}
 	}
 }
 

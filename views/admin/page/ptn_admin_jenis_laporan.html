@@ -149,27 +149,30 @@
 							</div>
 							
 							
+							<!--
 							<div class="form-group">
 							<label for="KLAP_NAMA">Kategori Laporan</label>
 							<input type="hidden" id="KLAP_ID" name="KLAP_ID" value="<?php echo $data_klaporan->KLAP_ID; ?>" />
 							<input type="text" id="KLAP_NAMA" name="KLAP_NAMA"  maxlength="35" class="required form-control" size="150" alt="Kategori Laporan" title="Kategori Laporan" placeholder="*Kategori Laporan" value="<?php echo $data_klaporan->KLAP_NAMA; ?>" readonly />
 							</div>
-							<!--<div class="form-group">
+							-->
+							
+							<div class="form-group">
                               <label for="KLAP_ID">Kategori Laporan</label>
                               <select name="KLAP_ID" id="KLAP_ID" class="required form-control select2" title="Kategori Laporan">
-                                <option value="">--Pilih Kategori Laporan--</option>
+                                <option value="<?php echo $data_klaporan->KLAP_ID; ?>"><?php echo $data_klaporan->KLAP_NAMA; ?></option>
                                 <?php
-                                	/*if (!empty($list_klaporan))
+                                	if (!empty($list_klaporan))
                                     {
                                     	$list_result = $list_klaporan->result();
                                     	foreach($list_result as $row)
                                         {
                                             echo '<option value="'.$row->KLAP_ID.'">'.$row->KLAP_NAMA.'</option>';
                                         }
-                                    }*/
+                                    }
                                  ?>
                                 </select>
-                            </div>-->
+                            </div>
 							
 							<div class="form-group">
 								<label for="LAP_PJ">PIC/Penanggung Jawab laporan (NB: Bisa Dikosongkan)</label>
@@ -217,9 +220,10 @@
 							<textarea name="LAP_KET" id="LAP_KET" class="required form-control" title="Keterangan" placeholder="*Keterangan"></textarea>
 							</div>
 							
-							<div class="form-group">
+							<div class="form-group" style="display:none;">
                               <label for="LAP_ISPERDESA">Apakah laporan dibuat perdesa ?</label>
 								<select name="LAP_ISPERDESA" id="LAP_ISPERDESA" class="required form-control select2" title="Apakah laporan dibuat perdesa ?">
+									<option value="TIDAK">TIDAK</option>
 									<option value="">--Pilih--</option>
 									<option value="YA">YA</option>
 									<option value="TIDAK">TIDAK</option>
@@ -370,7 +374,7 @@
 		$('input[name=LAP_KODE]').val($('#LAP_KODE_'+id).val());
         $('input[name=cek_LAP_KODE]').val($('#LAP_KODE_'+id).val());
 		$('input[name=LAP_NAMA]').val($('#LAP_NAMA_'+id).val());
-		$('input[name=LAP_DASAR_HUKUM]').val($('#LAP_NAMA_'+id).val());
+		$('input[name=LAP_DASAR_HUKUM]').val($('#LAP_DASAR_HUKUM_'+id).val());
 		$('input[name=LAP_JUMROW]').val($('#LAP_JUMROW_'+id).val());
 		document.getElementById("LAP_KET").value = $('#LAP_KET_'+id).val();
 		

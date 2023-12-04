@@ -106,7 +106,7 @@
 								 From tb_item_laporan
 								 -- WHERE DATE_FORMAT(tgl_insert,'%m-%Y') = DATE_FORMAT(NOW(),'%m-%Y')
 								 -- WHERE DATE(ILAP_DTINS) = DATE(NOW()) AND 
-								 WHERE LAP_ID = '".$LAP_ID."'
+								 -- WHERE LAP_ID = '".$LAP_ID."'
 								 -- AND KEC_KKANTOR = 'KABCJR'
 							 ) AS A
 						 ) AS AA

@@ -77,19 +77,18 @@ $db['default'] = array(
 	'dsn'	=> '',
 	
 	
-	// 'hostname' => 'localhost',
-	// 'username' => 'u6078081_user_system',
-	// 'password' => '@Admin2020',
-	// 'database' => 'u6078081_system',
+	/*
+	'hostname' => 'localhost',
+	'username' => 'adm_lekat_admin',
+	'password' => 'S[SKY4G52&GiP&VN',
+	'database' => 'adm_lekat_db',
+	*/
 	
 	'hostname' => 'localhost',
 	'username' => 'root',
 	'password' => '',
-	//'database' => 'db_system',
-	'database' => 'db_lekat',
-	//'database' => 'u6078081_system',
-	//'database' => 'db_paten',
-	//'database' => 'db_sipeka',
+	'database' => 'db_lekat_v2',
+	
 	
 	
 	

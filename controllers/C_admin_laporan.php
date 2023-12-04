@@ -102,68 +102,114 @@ class C_admin_laporan extends CI_Controller {
 	
 	public function simpan()
 	{
-		//echo $_POST['LAP_ISPERDESA'];
-		if (!empty($_POST['stat_edit']))
+		if(($this->session->userdata('ses_user_admin') == null) or ($this->session->userdata('ses_pass_admin') == null))
 		{
-			$this->M_laporan->edit(
-					$_POST['stat_edit']
-					,$_POST['KLAP_ID']
-					,$_POST['LAP_KODE']
-					,$_POST['LAP_NAMA']
-					,$_POST['LAP_PERIODE']
-					,$_POST['LAP_DASAR_HUKUM']
-					,$_POST['LAP_JUMROW']
-					,$_POST['LAP_PJ']
-					,$_POST['LAP_KET']
-					,$_POST['LAP_ISPERDESA']
-					,$this->session->userdata('ses_id_karyawan')
-					);
-			header('Location: '.base_url().'jenis-laporan/'.$_POST['KLAP_ID']);
+			header('Location: '.base_url().'admin-login');
 		}
 		else
 		{
-			$this->M_laporan->simpan(
-					$_POST['KLAP_ID']
-					,$_POST['LAP_KODE']
-					,$_POST['LAP_NAMA']
-					,$_POST['LAP_PERIODE']
-					,$_POST['LAP_DASAR_HUKUM']
-					,$_POST['LAP_JUMROW']
-					,$_POST['LAP_PJ']
-					,$_POST['LAP_KET']
-					,$_POST['LAP_ISPERDESA']
-					,$this->session->userdata('ses_id_karyawan')
-					,$this->session->userdata('ses_kode_kantor')
-					,"KEC"
-					);
-			header('Location: '.base_url().'jenis-laporan/'.$_POST['KLAP_ID']);
+			$cek_ses_login = $this->M_akun->get_cek_login($this->session->userdata('ses_user_admin'),md5(base64_decode($this->session->userdata('ses_pass_admin'))));
+			
+			if(!empty($cek_ses_login))
+			{
+				//echo $_POST['LAP_ISPERDESA'];
+				if (!empty($_POST['stat_edit']))
+				{
+					$this->M_laporan->edit(
+							$_POST['stat_edit']
+							,$_POST['KLAP_ID']
+							,$_POST['LAP_KODE']
+							,$_POST['LAP_NAMA']
+							,$_POST['LAP_PERIODE']
+							,$_POST['LAP_DASAR_HUKUM']
+							,$_POST['LAP_JUMROW']
+							,$_POST['LAP_PJ']
+							,$_POST['LAP_KET']
+							,$_POST['LAP_ISPERDESA']
+							,$this->session->userdata('ses_id_karyawan')
+							);
+					header('Location: '.base_url().'jenis-laporan/'.$_POST['KLAP_ID']);
+				}
+				else
+				{
+					$this->M_laporan->simpan(
+							$_POST['KLAP_ID']
+							,$_POST['LAP_KODE']
+							,$_POST['LAP_NAMA']
+							,$_POST['LAP_PERIODE']
+							,$_POST['LAP_DASAR_HUKUM']
+							,$_POST['LAP_JUMROW']
+							,$_POST['LAP_PJ']
+							,$_POST['LAP_KET']
+							,$_POST['LAP_ISPERDESA']
+							,$this->session->userdata('ses_id_karyawan')
+							,$this->session->userdata('ses_kode_kantor')
+							,"KEC"
+							);
+					header('Location: '.base_url().'jenis-laporan/'.$_POST['KLAP_ID']);
+				}
+			}
+			else
+			{
+				header('Location: '.base_url().'admin-login');
+			}
 		}
 	}
 	
 	public function hapus()
 	{
-		$id = $this->uri->segment(3,0);
-		$KLAP_ID = $this->uri->segment(2,0);
-		
-		//CEK APAKAH URI SEGEMET BENER ID KATEGORI LAPORANNYA
-		$data_klaporan = $this->M_klaporan->get_klaporan('KLAP_ID',$this->uri->segment(2,0));
-		if(!empty($data_klaporan))
+		if(($this->session->userdata('ses_user_admin') == null) or ($this->session->userdata('ses_pass_admin') == null))
 		{
-			$this->M_laporan->hapus($id);
-			header('Location: '.base_url().'jenis-laporan/'.$KLAP_ID);
+			header('Location: '.base_url().'admin-login');
 		}
 		else
 		{
-			header('Location: '.base_url().'board-laporan');
+			$cek_ses_login = $this->M_akun->get_cek_login($this->session->userdata('ses_user_admin'),md5(base64_decode($this->session->userdata('ses_pass_admin'))));
+			
+			if(!empty($cek_ses_login))
+			{
+				$id = $this->uri->segment(3,0);
+				$KLAP_ID = $this->uri->segment(2,0);
+				
+				//CEK APAKAH URI SEGEMET BENER ID KATEGORI LAPORANNYA
+				$data_klaporan = $this->M_klaporan->get_klaporan('KLAP_ID',$this->uri->segment(2,0));
+				if(!empty($data_klaporan))
+				{
+					$this->M_laporan->hapus($id);
+					header('Location: '.base_url().'jenis-laporan/'.$KLAP_ID);
+				}
+				else
+				{
+					header('Location: '.base_url().'board-laporan');
+				}
+			}
+			else
+			{
+				header('Location: '.base_url().'admin-login');
+			}
 		}
-		
-		
 	}
 	
 	function cek_laporan()
 	{
-		$hasil_cek = $this->M_laporan->get_laporan('A.LAP_KODE',$_POST['LAP_KODE']);
-		echo $hasil_cek;
+		if(($this->session->userdata('ses_user_admin') == null) or ($this->session->userdata('ses_pass_admin') == null))
+		{
+			header('Location: '.base_url().'admin-login');
+		}
+		else
+		{
+			$cek_ses_login = $this->M_akun->get_cek_login($this->session->userdata('ses_user_admin'),md5(base64_decode($this->session->userdata('ses_pass_admin'))));
+			
+			if(!empty($cek_ses_login))
+			{
+				$hasil_cek = $this->M_laporan->get_laporan('A.LAP_KODE',$_POST['LAP_KODE']);
+				echo $hasil_cek;
+			}
+			else
+			{
+				header('Location: '.base_url().'admin-login');
+			}
+		}
 	}
 }
 

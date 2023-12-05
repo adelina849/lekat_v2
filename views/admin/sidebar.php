@@ -75,7 +75,7 @@
 								<!-- CEK AKSES JABATAN -->
 								
 								<!-- CEK AKSES KARYAWAN -->
-									<li id="input-data-karyawan-karyawan"><a href="<?=base_url()?>admin-karyawan"><i class="fa fa-edit"></i> Karyawan </a></li>
+									<li id="input-data-karyawan-karyawan"><a href="<?=base_url()?>admin-karyawan"><i class="fa fa-users"></i> Karyawan </a></li>
 								<!-- CEK AKSES KARYAWAN -->
 							  </ul>
 							</li>

@@ -27,3 +27,12 @@
 	SELECT jawaban1, UPPER(jawaban1) AS user2,CONCAT(UPPER(jawaban1),'2023') AS user3, MD5(UPPER(jawaban1)) AS pass2, MD5( CONCAT(UPPER(jawaban1),'2023') ) AS pass3 FROM `tb_akun` WHERE user <> 'admin';
 
 	UPDATE tb_akun SET user = CONCAT(UPPER(jawaban1),'2023'), pass = MD5( CONCAT(UPPER(jawaban1),'2023') ) WHERE user <> 'admin';
+	
+-- 2023-12-05
+	ALTER TABLE `tb_karyawan` ADD `nom_id_desa` VARCHAR(25) NOT NULL DEFAULT '' COMMENT 'Isikan dengan id_desa' AFTER `status_kantor`, ADD `nom_nama_desa` VARCHAR(35) NOT NULL DEFAULT '' COMMENT 'Isikan dengan nama desa' AFTER `nom_id_desa`;
+	
+	ALTER TABLE `tb_karyawan` ADD `jenis_kelamin` VARCHAR(10) NOT NULL AFTER `nom_nama_desa`, ADD `tempat_lahir` VARCHAR(25) NOT NULL AFTER `jenis_kelamin`, ADD `tgl_lahir` DATE NULL DEFAULT NULL AFTER `tempat_lahir`, ADD `nip` VARCHAR(35) NOT NULL AFTER `tgl_lahir`, ADD `pangkat_gol` VARCHAR(35) NOT NULL AFTER `nip`, ADD `tmt_gol_ruang` VARCHAR(25) NOT NULL AFTER `pangkat_gol`, ADD `jabatan` VARCHAR(35) NOT NULL AFTER `tmt_gol_ruang`, ADD `unit_kerja` VARCHAR(35) NOT NULL AFTER `jabatan`, ADD `status_kepeg` VARCHAR(35) NOT NULL AFTER `unit_kerja`, ADD `keterangan` TEXT NOT NULL AFTER `status_kepeg`;
+	
+	ALTER TABLE `tb_karyawan` CHANGE `tgl_lahir` `tgl_lahir` DATE NULL DEFAULT NULL;
+	
+	ALTER TABLE `tb_karyawan` ADD `kelompok_jabatan` VARCHAR(20) NOT NULL AFTER `keterangan`, ADD `idx_jabatan` INT NOT NULL AFTER `kelompok_jabatan`;

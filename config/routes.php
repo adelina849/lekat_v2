@@ -89,6 +89,15 @@ $route['translate_uri_dashes'] = FALSE;
 
 	$route['admin-karyawan-hapus'] = "C_admin_karyawan/hapus";
 	$route['admin-karyawan-hapus/(:any)'] = 'C_admin_karyawan/hapus';
+	
+	$route['admin-karyawan-kecamatan'] = "C_admin_karyawan/view_nom_perangkat_kecamatan";
+	$route['admin-karyawan-kecamatan/(:any)'] = 'C_admin_karyawan/view_nom_perangkat_kecamatan';
+	
+	$route['admin-karyawan-kecamatan-simpan'] = "C_admin_karyawan/simpan_nom_perangkat_kecamatan";
+	$route['admin-karyawan-kecamatan-simpan/(:any)'] = 'C_admin_karyawan/simpan_nom_perangkat_kecamatan';
+
+	$route['admin-karyawan-kecamatan-hapus'] = "C_admin_karyawan/hapus_nom_perangkat_kecamatan";
+	$route['admin-karyawan-kecamatan-hapus/(:any)'] = 'C_admin_karyawan/hapus_nom_perangkat_kecamatan';
 //KARYAWAN
 
 //AKUN

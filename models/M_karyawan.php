@@ -62,7 +62,7 @@
 		
 		function count_karyawan_limit($cari)
 		{
-			$query = $this->db->query("SELECT COUNT(id_karyawan) AS JUMLAH FROM tb_karyawan ".$cari);
+			$query = $this->db->query("SELECT COUNT(id_karyawan) AS JUMLAH FROM tb_karyawan AS A ".$cari);
 			if($query->num_rows() > 0)
 			{
 				return $query->row();

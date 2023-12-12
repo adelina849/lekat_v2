@@ -142,8 +142,7 @@
                   </div><!-- /.box-tools -->
                 </div><!-- /.box-header -->
                 <div class="box-body">
-                  
-                  
+					
                   <!-- ISI FORM -->
 						<form role="form" action="<?=base_url();?>buat-laporan-simpan" method="post" class="frm-input">
 						<input type="hidden" name="stat_edit" id="stat_edit"/>
@@ -352,11 +351,12 @@
 										foreach($list_result as $row)
 										{
 											echo'<tr class="row-aktif" >
-												<td>'.$no.'</td>';
+												<td>'.$no.' '.$row->img_file.'</td>';
 												//if((file_exists("assets/global/laporan/".$row->img_file)))
 												if($row->img_file == '')
 												{
-													$src = base_url().'assets/global/images/no_images.jpg';
+													//$src = base_url().'assets/global/images/no_images.jpg';
+													$src = 'https://cdn.vectorstock.com/i/preview-1x/82/99/no-image-available-like-missing-picture-vector-43938299.jpg';
 													echo '<td><img id="IMG_'.$no.'"  width="100px" height="100px" style="border:1px solid #C8C8C8; padding:5px; float:left; margin-right:20px;" src="'.$src.'" /></td>';
 												}
 												else

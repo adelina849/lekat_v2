@@ -141,7 +141,9 @@ class C_gl_admin_images extends CI_Controller {
 							//$avatar = $this->session->userdata('ses_kode_kantor').''.$_POST['stat_edit'];
 							$avatar = $id_images.'.'.$ext;
 							
-							$this->M_akun->do_upload_global_dinamic_input_name("foto",$lokasi_gambar_disimpan,$avatar,"");
+							//$this->M_akun->do_upload_global_dinamic_input_name("foto",$lokasi_gambar_disimpan,$avatar,"");
+							$this->do_upload_global_dinamic_input_name("foto",$lokasi_gambar_disimpan,$avatar,"",$_POST['url_link']);
+							
 						/*PROSES UPLOAD*/
 						
 						$this->M_gl_images->edit_with_images
@@ -198,7 +200,8 @@ class C_gl_admin_images extends CI_Controller {
 							$avatar = $id_images.'.'.$ext;
 							
 							//$this->M_akun->do_upload_global($lokasi_gambar_disimpan,$avatar,"");
-							$this->M_akun->do_upload_global_dinamic_input_name("foto",$lokasi_gambar_disimpan,$avatar,"");
+							//$this->M_akun->do_upload_global_dinamic_input_name("foto",$lokasi_gambar_disimpan,$avatar,"");
+							$this->do_upload_global_dinamic_input_name("foto",$lokasi_gambar_disimpan,$avatar,"",$_POST['url_link']);
 						/*PROSES UPLOAD*/
 					}
 					
@@ -267,6 +270,83 @@ class C_gl_admin_images extends CI_Controller {
 					/* CATAT AKTIFITAS EDIT*/
 				}
 				header('Location: '.base_url().'gl-admin-images/'.$IMG_GRUP.'/'.$ID);
+			}
+		}
+	}
+	
+	function do_upload_global_dinamic_input_name($nama_input,$lokasi,$nama_file,$cek_bfr,$url_link)
+	{
+		$this->load->library('upload');
+		
+		if($cek_bfr != '')
+		{
+			//@unlink('./assets/global/karyawan/'.$cek_bfr);
+			//NB : unlink jangan pakai base_url()
+			@chmod($lokasi.''.$cek_bfr, 0777);
+			@unlink($lokasi.''.$cek_bfr);
+		}
+		
+		if (!empty($_FILES[$nama_input]['name']))
+		{
+			//$config['upload_path'] = 'assets/global/karyawan/';
+			$config['upload_path'] = $lokasi;
+			$config['allowed_types'] = 'gif|jpg|jpeg|png|mp4';
+			//$config['allowed_types'] = 'gif|jpg|jpeg|png';
+			$config['max_size']	= '2024';
+			$config['create_thumb'] = TRUE;
+			$config['maintain_ratio'] = TRUE;
+			$config['maintain_ratio'] = TRUE;
+			$config['quality']= '50%';
+			//$config['max_widtd']  = '300';
+			//$config['max_height']  = '300';
+			$config['file_name']	= $nama_file;
+			$config['overwrite']	= true;
+			
+
+			$this->upload->initialize($config);
+			
+			/*
+			//Upload file 1
+			if ($this->upload->do_upload($nama_input))
+			{
+				$hasil = $this->upload->data();
+			}
+			*/
+			
+			//if (!$this->upload->do_upload('file')) 
+			if (!$this->upload->do_upload($nama_input)) 
+			{
+				$error = array('error' => $this->upload->display_errors());
+				//$this->session->set_flashdata('msg','Ada kesalah dalam upload'); 
+				
+				//$this->session->set_flashdata('msg', '<div class="alert alert-danger"><b>PROSES IMPORT GAGAL ! </b> '.$this->upload->display_errors().' ('.$pesan_pasien.')</div>');
+				$this->session->set_flashdata('msg', '<div class="alert alert-danger"><b>PROSES IMPORT GAGAL ! </b> '.$this->upload->display_errors().' </div>');
+				
+				//echo $this->session->flashdata('msg');
+				//redirect('gl-admin-images'); 
+				redirect($url_link); 
+			}
+			else
+			{
+				$hasil = $this->upload->data();
+				
+				/*
+				$arr_nama_file = explode(".", $nama_file);
+				$ext = $arr_nama_file[1];
+				if($ext == 'png')
+				{
+					$this->hs_png2webp($lokasi.''.$nama_file, $lokasi.''.$arr_nama_file[0].'.webp');
+				}
+				elseif($ext == 'jpg')
+				{
+					$this->hs_jpg2webp($lokasi.''.$nama_file, $lokasi.''.$arr_nama_file[0].'.webp');
+				}
+				elseif($ext == 'jpeg')
+				{
+					$this->hs_jpg2webp($lokasi.''.$nama_file, $lokasi.''.$arr_nama_file[0].'.webp');
+				}
+				*/
+				
 			}
 		}
 	}

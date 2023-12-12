@@ -77,7 +77,10 @@
           <div class="row">
             <div class="col-md-12">
               <!-- <div class="box box-warning collapsed-box box-solid"> -->
-			  <div  id="box-form" class="box box-warning collapsed-box box-solid">
+			  <!-- <div  id="box-form" class="box box-warning collapsed-box box-solid"> -->
+			  
+			  <div  id="box-form" class="box box-warning ellapsed-box box-solid">
+			  
                 <div class="box-header with-border">
                   <h3 class="box-title">Formulir Input Gambar</h3>
                   <div class="box-tools pull-right">
@@ -85,6 +88,15 @@
                   </div><!-- /.box-tools -->
                 </div><!-- /.box-header -->
                 <div class="box-body">
+				
+					<p>
+						NB : Untuk Memasukan gambar harap perhatikan catatan berikut :
+							<ul>
+								<li>1. Format Gambar yang diperbolehkan <font style="color:red;">gif | jpg | jpeg | png</font></li>
+								<!-- <li>2. Format Video yang diperbolehkan <font style="color:red;">mp4</font></li> -->
+								<li>2. Maksimal ukuran File untuk di upload adalah <font style="color:red;">2 MB</font></li>
+							</ul>
+					</p>
                   
                   
                   <!-- ISI FORM -->
@@ -94,8 +106,17 @@
 						  <input type="hidden" name="group_by" id="group_by" value="<?php echo $this->uri->segment(2,0);?>"/>
 						  <input type="hidden" name="id" id="id" value="<?php echo $this->uri->segment(3,0);?>"/>
 						  
+						  <?php
+						  $actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+						  ?>
+						  <input type="hidden" name="url_link" id="url_link" value="<?php echo $actual_link;?>"/>
 						  
                           <div class="box-body">
+							
+							<div class="form-group">
+								<?php echo $this->session->flashdata('msg') ?>
+                            </div>
+						  
                             <div class="form-group">
                               <label for="foto">Gambar</label>
                               <span id="img_edit"></span>

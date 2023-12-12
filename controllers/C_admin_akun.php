@@ -23,7 +23,12 @@ class C_admin_akun extends CI_Controller {
 			{
 				if((!empty($_GET['cari'])) && ($_GET['cari']!= "")  )
 				{
-				$cari = "WHERE nama_karyawan LIKE '%".str_replace("'","",$_GET['cari'])."%'";
+				$cari = "WHERE 
+							(
+								COALESCE(A.user,'') LIKE '%".str_replace("'","",$_GET['cari'])."%'
+								OR COALESCE(B.nama_karyawan,'') LIKE '%".str_replace("'","",$_GET['cari'])."%'
+								OR COALESCE(D.KEC_NAMA,'') LIKE '%".str_replace("'","",$_GET['cari'])."%'
+							)";
 				}
 				else
 				{
@@ -124,7 +129,11 @@ class C_admin_akun extends CI_Controller {
 	{
 		if((!empty($_POST['cari'])) && ($_POST['cari']!= "")  )
 		{
-			$cari = ' AND nama_karyawan LIKE "%'.$_POST['cari'].'%"';
+			$cari = " AND 
+							(
+								A.nama_karyawan LIKE '%".$_POST['cari']."%'
+								OR COALESCE(D.KEC_NAMA,'') LIKE '%".str_replace("'","",$_POST['cari'])."%'
+							)";
 		}
 		else
 		{
@@ -138,10 +147,11 @@ class C_admin_akun extends CI_Controller {
 			echo '<thead>
 	<tr>';
 			echo '<th width="5%">No</th>';
-			echo '<th width="15%">Avatar</th>';
+			//echo '<th width="15%">Avatar</th>';
 			echo '<th width="20%">NIK</th>';
 			echo '<th width="35%">Nama</th>';
 			echo '<th width="20%">Jabatan</th>';
+			echo '<th width="15%">Kecamatan</th>';
 			echo '<th width="5%">Aksi</th>';
 			echo '</tr>
 	</thead>';
@@ -152,6 +162,8 @@ class C_admin_akun extends CI_Controller {
 			{
 				echo'<tr>';
 				echo'<td><input type="hidden" id="no_'.$row->id_karyawan.'" value="'.$row->id_karyawan.'" />'.$no.'</td>';
+				
+				/*
 				if ($row->avatar == "")
 				{
 					$src = base_url().'assets/global/karyawan/loading.gif';
@@ -166,10 +178,18 @@ class C_admin_akun extends CI_Controller {
 					
 					echo'<input type="hidden" id="avatar_url_'.$row->id_karyawan.'" value="'.$src.'" />';
 				}
+				*/
+				
 				echo'<td><input type="hidden" id="nik_'.$row->id_karyawan.'" value="'.$row->nik_karyawan.'" />'.$row->nik_karyawan.'</td>';
 				echo'<td><input type="hidden" id="nama_'.$row->id_karyawan.'" value="'.$row->nama_karyawan.'" />'.$row->nama_karyawan.'</td>';
 				
-				echo'<td><input type="hidden" id="nama_jabatan_'.$row->id_karyawan.'" value="'.$row->nama_jabatan.'" />'.$row->nama_jabatan.'</td>';
+				echo'<td>
+						<input type="hidden" id="nama_jabatan_'.$row->id_karyawan.'" value="'.$row->nama_jabatan.'" />
+						'.$row->nama_jabatan.'
+					</td>';
+				echo'<td>
+						'.$row->KEC_NAMA.'
+					</td>';
 				echo'<input type="hidden" id="id_jabatan_'.$row->id_karyawan.'" value="'.$row->id_jabatan.'" />';
 				
 				echo'<td>

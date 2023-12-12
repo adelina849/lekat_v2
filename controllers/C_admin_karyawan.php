@@ -23,7 +23,11 @@ class C_admin_karyawan extends CI_Controller {
 			{
 				if((!empty($_GET['cari'])) && ($_GET['cari']!= "")  )
 				{
-					$cari = "WHERE nama_karyawan LIKE '%".str_replace("'","",$_GET['cari'])."%'";
+					$cari = "WHERE 
+								(
+									A.nama_karyawan LIKE '%".str_replace("'","",$_GET['cari'])."%'
+									OR COALESCE(C.KEC_NAMA,'') LIKE '%".str_replace("'","",$_GET['cari'])."%'
+								)";
 				}
 				else
 				{

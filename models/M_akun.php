@@ -159,10 +159,13 @@
 										,B.avatar_url
 										-- ,C.nama_jabatan
 										,CASE WHEN B.status_kantor = 'KAB' THEN 'ADMIN KABUPATEN' ELSE 'ADMIN KECAMATAN' END AS nama_jabatan
-									
+										
+										,COALESCE(D.KEC_NAMA,'') AS KEC_NAMA
+										
 										FROM tb_akun AS A
 										LEFT JOIN tb_karyawan AS B ON A.id_karyawan = B.id_karyawan
 										LEFT JOIN tb_jabatan AS C ON B.id_jabatan = C.id_jabatan AND A.kode_kantor = C.kode_kantor
+										LEFT JOIN tb_kec AS D ON B.KEC_ID = D.KEC_ID
 										".$cari." ORDER BY B.nama_karyawan ASC LIMIT ".$offset.",".$limit);
 			if($query->num_rows() > 0)
 			{
@@ -176,10 +179,12 @@
 		
 		function count_akun_limit($cari)
 		{
-			$query = $this->db->query("SELECT COUNT(id_akun) AS JUMLAH FROM tb_akun AS A
+			$query = $this->db->query("SELECT COUNT(A.id_akun) AS JUMLAH FROM tb_akun AS A
 										LEFT JOIN tb_karyawan AS B ON A.id_karyawan = B.id_karyawan AND A.kode_kantor = B.kode_kantor
 										LEFT JOIN tb_jabatan AS C ON B.id_jabatan = C.id_jabatan 
 										AND A.kode_kantor = C.kode_kantor
+										LEFT JOIN tb_kec AS D ON B.KEC_ID = D.KEC_ID
+										
 										".$cari);
 			if($query->num_rows() > 0)
 			{

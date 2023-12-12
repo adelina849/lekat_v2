@@ -127,7 +127,12 @@
               <!-- <div class="box box-warning collapsed-box box-solid"> -->
 			  <div  id="box-form" class="box box-warning collapsed-box box-solid">
                 <div class="box-header with-border">
-                  <h3 class="box-title">Formulir Input Karyawan</h3>
+                  <h3 class="box-title">
+					Formulir Input Karyawan
+					<?php
+						echo $this->session->userdata('ses_KEC_ID');
+					?>
+				  </h3>
                   <div class="box-tools pull-right">
                     <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
                   </div><!-- /.box-tools -->

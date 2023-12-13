@@ -86,7 +86,7 @@
 			<!-- CEK AKSES KECAMATAN -->
 			
 			
-			<li id="input-data-karyawan-karyawan"><a href="<?=base_url()?>admin-karyawan-kecamatan"><i class="fa fa-users"></i> Karyawan </a></li>
+			<li id="input-data-karyawan-karyawan"><a href="<?=base_url()?>admin-karyawan-kecamatan?source=nom_peg_kec"><i class="fa fa-users"></i> NOM Pegawai Kecamatan </a></li>
 			
 			<!-- CEK AKSES KECAMATAN -->
 				<!-- <li id="input-data-duk"><a href="<?=base_url()?>data-kecamatan"><i class="fa fa-edit"></i> Data Urutan Kepangkatan </a></li> -->

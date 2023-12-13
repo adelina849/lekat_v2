@@ -143,9 +143,12 @@
                   <!-- ISI FORM -->
                         <form role="form" action="<?=base_url();?>admin-karyawan-kecamatan-simpan" method="post" class="frm-input" enctype="multipart/form-data">
 						  <input type="hidden" name="stat_edit" id="stat_edit"/>
+						  <input type="hidden" name="kelompok_jabatan_simpan" id="kelompok_jabatan_simpan" value="<?php if (!empty($_GET['source'])){echo $_GET['source'];} ?>"/>
+						  
+						  
                           <div class="box-body">
                             
-							<div class="form-group">
+							<div class="form-group" style="display:none;">
                               <label for="foto">Avatar</label>
                               <span id="img_edit"></span>
                               <input type="file" id="foto" name="foto">
@@ -153,10 +156,13 @@
                             </div>
                             
 							<br/>
+							<!-- <input type="text" name="no_karyawan" id="no_karyawan" value="<?php echo $no_karyawan; ?>" /> -->
+							
 							<div class="form-group">
                               <label for="no_karyawan">NO ID Karyawan</label>
-                              <input type="text" id="no_karyawan" name="no_karyawan"  maxlength="35" class="form-control" size="35" alt="NO Karyawan" value="<?php echo $no_karyawan; ?>" title="NO Karyawan" placeholder="*NO Karyawan Otomatis" disabled/>
+                              <input type="text" id="no_karyawan" name="no_karyawan"  maxlength="35" class="form-control" size="35" alt="NO Karyawan" value="<?php echo $no_karyawan; ?>" title="NO Karyawan" placeholder="*NO Karyawan Otomatis" readonly/>
                             </div>
+							
 							
                             <div class="form-group">
                               <label for="nik">NIK</label>
@@ -164,11 +170,42 @@
                               <input type="text" id="nik" name="nik"  maxlength="35" class="required form-control" size="35" alt="NIK" title="NIK" placeholder="*NIK"/><span id="pesan"></span>
                             </div>
                             
-                            <div class="form-group">
+							<div class="form-group">
+							  <label for="nip">NIP</label>
+                              <input type="text" id="nip" name="nip"  maxlength="35" class="required form-control" size="35" alt="NIP" title="NIP" placeholder="*NIP"/>
+                            </div>
+							
+							<div class="form-group">
+							  <label for="pangkat_gol">Pangkat/Golongan</label>
+                              <input type="text" id="pangkat_gol" name="pangkat_gol"  maxlength="35" class="required form-control" size="35" alt="Pangkat/Golongan" title="Pangkat/Golongan" placeholder="*Pangkat/Golongan"/>
+                            </div>
+							
+							<div class="form-group">
+							  <label for="tmt_gol_ruang">TMT Gol/Ruangan</label>
+                              <input type="text" id="tmt_gol_ruang" name="tmt_gol_ruang"  maxlength="35" class="required form-control" size="35" alt="tmt_gol_ruang" title="tmt_gol_ruang" placeholder="*tmt_gol_ruang"/>
+                            </div>
+							
+							<div class="form-group">
                               <label for="nama">Nama Karyawan</label>
                               <input type="text" id="nama" name="nama"  maxlength="35" class="required form-control" size="35" alt="nama" title="Nama Karyawan" placeholder="*Nama"/>
                             </div>
-                            
+							
+							<div class="form-group">
+							  <label for="jabatan">Jabatan</label>
+                              <input type="text" id="jabatan" name="jabatan"  maxlength="35" class="required form-control" size="35" alt="Jabatan" title="Jabatan" placeholder="*Jabatan"/>
+                            </div>
+							
+							<div class="form-group">
+							  <label for="unit_kerja">Unit Kerja</label>
+                              <input type="text" id="unit_kerja" name="unit_kerja"  maxlength="35" class="required form-control" size="35" alt="UNIT KERJA" title="UNIT KERJA" placeholder="*UNIT KERJA"/>
+                            </div>
+							
+							
+							<div class="form-group">
+							  <label for="status_kepeg">Status Kepegawaian</label>
+                              <input type="text" id="status_kepeg" name="status_kepeg"  maxlength="35" class="form-control" size="35" alt="Status Kepegawaian" title="Status Kepegawaian" placeholder="*Status Kepegawaian"/>
+                            </div>
+							
 							
 							<div class="form-group" style="display:none;">
                               <label for="jabatan">Jabatan</label>
@@ -219,6 +256,32 @@
 							
 							
 							<div class="form-group">
+                              <label for="jenis_kelamin">Jenis Kelamin</label>
+                              <select name="jenis_kelamin" id="jenis_kelamin" class="required form-control select2" title="Status Kantor">
+                                <option value="">.:PILIH JENIS KELAMIN:.</option>
+                                <option value="PRIA">PRIA</option>
+								<option value="WANITA">WANITA</option>
+                              </select>
+                            </div>
+							
+							<div class="form-group">
+							  <label for="tempat_lahir">Tempat Lahir</label>
+                              <input type="text" id="tempat_lahir" name="tempat_lahir"  maxlength="35" class="required form-control" size="35" alt="Tempat Lahir" title="Tempat Lahir" placeholder="*Tempat Lahir"/>
+                            </div>
+							
+							<div class="form-group">
+								<label>Tanggal Lahir</label>
+								<div class="input-group">
+									<div class="input-group-addon">
+										<i class="fa fa-calendar"></i>
+									</div>
+									<!--<input type="text" name="tgl_mulai" class="required form-control timepicker" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>-->
+									<input type="text" id="tempat_lahir" name="tempat_lahir" class="datemask_mysql required form-control" data-inputmask="'alias': 'yyyy-mm-dd'" data-mask>
+								</div><!-- /.input group -->
+							</div><!-- /.form group -->
+							
+							
+							<div class="form-group">
 							  <label for="pnd">Pendidikan</label>
                               <input type="text" id="pnd" name="pnd"  maxlength="35" class="required form-control" size="35" alt="pnd" title="Pendidikan" placeholder="*Pendidikan"/>
                             </div>
@@ -266,7 +329,7 @@
 						<h3 class="box-title">Table Karyawan</h3>
 							<div class="pull-right">
 								<!-- <form action="<?=base_url();?>admin/pendaftaran-klinik-cari" method="post" class="frm-cari"> -->
-								<form action="<?=base_url();?>admin-karyawan" method="get" class="frm-cari">
+								<form action="<?=base_url();?>admin-karyawan-kecamatan" method="get" class="frm-cari">
 									<table>
 										<tr>
 											<!-- <td>Berdasarkan</td><td>:</td> -->
@@ -279,7 +342,34 @@
 											</td> -->
 											<td>
 												<!-- <input type="text" name="cari"  maxlength="35" class="text form-control" size="35" alt="tlp" title="Cari data" placeholder="...Cari" value="<?php if (!empty($_GET['berdasarkan'])){echo $_GET['cari'];} ?>"/> -->
-												<input type="text" name="cari"  maxlength="35" class="text form-control" size="35" alt="tlp" title="Cari data" placeholder="...Cari" value="<?php if (!empty($_GET['cari'])){echo $_GET['cari'];} ?>"/>
+												
+												<input type="hidden" name="kelompok_jabatan" id="kelompok_jabatan" value="<?php if (!empty($_GET['source'])){echo $_GET['source'];} ?>"/>
+												
+												<div class="form-group">
+													<label for="nama_satuan"></label>
+													<input type="text" name="cari"  maxlength="35" class="text form-control" size="35" alt="tlp" title="Cari data" placeholder="...Cari" value="<?php if (!empty($_GET['cari'])){echo $_GET['cari'];} ?>"/>
+												</div>
+											</td>
+											
+											<td>
+												<div class="form-group">
+													<label for="nama_satuan"></label>
+													
+													<!-- <button type="button" id="btnsimpan" onclick="cari_col_active()" class="btn btn-success btn-block btn-flat" title="Pencarian Data <?php echo $msgbox_title;?> ?">CARI</button> -->
+													
+													<button type="submit" id="btnsimpan" class="btn btn-success btn-block btn-flat" title="Pencarian Data ?">CARI</button>
+												</div>
+											</td>
+											<td>
+												<div class="form-group">
+													<label for="nama_satuan"></label>
+													
+													<!-- <button type="button" id="btnsimpan" onclick="cari_col_active()" class="btn btn-success btn-block btn-flat" title="Pencarian Data <?php echo $msgbox_title;?> ?">CARI</button> -->
+													
+													<a class="btn btn-warning btn-block btn-flat" target="_blank" href="<?php echo base_url();?>gl-admin-laporan-transaksi-excel?dari=<?php if (!empty($_GET['dari'])){echo $_GET['dari'];} ?>&sampai=<?php if (!empty($_GET['sampai'])){echo $_GET['sampai'];} ?>&cari=<?php if (!empty($_GET['cari'])){echo $_GET['cari'];} ?>" title = "Print Excel Stock" alt = "Print Excel Stock">EXCEL</a>
+													
+													
+												</div>
 											</td>
 										</tr>
 									</table>
@@ -295,13 +385,14 @@
 									echo'<table width="100%" id="example2" class="table table-bordered table-hover">';
 										echo '<thead>
 	<tr>';
-													echo '<th width="5%">No</th>';
-													echo '<th width="10%">Avatar</th>';
-													echo '<th width="15%">No ID Karyawan</th>';
+													echo '<th width="5%" style="text-align:center;background-color:#A9A9A9;border-bottom:1px solid black;">NO</th>';
+													echo '<th width="10%" style="text-align:center;background-color:#A9A9A9;border-bottom:1px solid black;">FOTO/ID</th>';
+													//echo '<th width="15%">No ID Karyawan</th>';
 													//echo '<th width="15%">NIK</th>';
-													echo '<th width="20%">Nama Karyawan</th>';
-													echo '<th width="15%">Alamat</th>';
-													echo '<th width="20%">Aksi</th>';
+													echo '<th width="25%" style="text-align:center;background-color:#A9A9A9;border-bottom:1px solid black;">BIODATA</th>';
+													echo '<th width="35%" style="text-align:center;background-color:#A9A9A9;border-bottom:1px solid black;">ALAMAT</th>';
+													echo '<th width="5%" style="text-align:center;background-color:#A9A9A9;border-bottom:1px solid black;">INDEX</th>';
+													echo '<th width="5%" style="text-align:center;background-color:#A9A9A9;border-bottom:1px solid black;">AKSI</th>';
 										echo '</tr>
 	</thead>';
 										$list_result = $list_karyawan->result();
@@ -310,32 +401,78 @@
 										foreach($list_result as $row)
 										{
 											echo'<tr>';
-												echo'<td><input type="hidden" id="no_'.$row->id_karyawan.'" value="'.$row->id_karyawan.'" />'.$no.'</td>';
-												if ($row->avatar == "")
+												echo'<td style="border-bottom:1px solid black;"><input type="hidden" id="no_'.$row->id_karyawan.'" value="'.$row->id_karyawan.'" />'.$no.'</td>';
+												if ($row->img_file == "")
 												{
-													$src = base_url().'assets/global/karyawan/loading.gif';
-													echo '<td><img id="img_'.$row->id_karyawan.'"  width="100px" height="100px" style="border:1px solid #C8C8C8; padding:5px; float:left; margin-right:20px;" src="'.$src.'" /></td>';
+													//$src = base_url().'assets/global/karyawan/loading.gif';
+													
+													$src = 'https://cdn.vectorstock.com/i/preview-1x/82/99/no-image-available-like-missing-picture-vector-43938299.jpg';
+													echo '<td style="text-align:center;border-bottom:1px solid black;">
+																<a href="'.$src.'" target="_blank">
+																<img id="img_'.$row->id_karyawan.'"  width="100%" height="120px" style="border:1px solid #C8C8C8; padding:5px; float:left; margin-right:20px;" src="'.$src.'" />
+																</a>
+																<br/>
+																<a href="'.base_url().'gl-admin-images/karyawan_kec/'.$row->id_karyawan.'">ATUR GAMBAR</a>
+																<br/>
+																'.$row->no_karyawan.'
+															</td>';
 													
 													echo'<input type="hidden" id="avatar_url_'.$row->id_karyawan.'" value="'.$src.'" />';
 												}
 												else
 												{
-													$src = base_url().'assets/global/karyawan/'.$row->avatar;
-													echo '<td><img id="img_'.$row->id_karyawan.'"  width="100px" height="100px" style="border:1px solid #C8C8C8; padding:5px; float:left; margin-right:20px;" src="'.$src.'" /></td>';
+													//$src = base_url().'assets/global/karyawan/'.$row->avatar;
+													$src = base_url().$row->img_url.''.$row->img_file;
+													echo '<td style="text-align:center;border-bottom:1px solid black;">
+																<a href="'.$src.'" target="_blank">
+																	<img id="img_'.$row->id_karyawan.'"  width="100%" height="120px" style="border:1px solid #C8C8C8; padding:5px; float:left; margin-right:20px;" src="'.$src.'" />
+																</a>
+																<br/>
+																<a href="'.base_url().'gl-admin-images/karyawan_kec/'.$row->id_karyawan.'">ATUR GAMBAR</a>
+																<br/>
+																'.$row->no_karyawan.'
+															</td>';
 													
 													echo'<input type="hidden" id="avatar_url_'.$row->id_karyawan.'" value="'.$src.'" />';
 												}
 												
-												echo'<td><input type="hidden" id="no_karyawan_'.$row->id_karyawan.'" value="'.$row->no_karyawan.'" />'.$row->no_karyawan.'</td>';
+												echo'
+														<input type="hidden" id="no_karyawan_'.$row->id_karyawan.'" value="'.$row->no_karyawan.'" />
+													';
 												//echo'<td><input type="hidden" id="nik_'.$row->id_karyawan.'" value="'.$row->nik_karyawan.'" />'.$row->nik_karyawan.'</td>';
 												echo'<input type="hidden" id="nik_'.$row->id_karyawan.'" value="'.$row->nik_karyawan.'" />';
-												echo'<td><input type="hidden" id="nama_'.$row->id_karyawan.'" value="'.$row->nama_karyawan.'" />'.$row->nama_karyawan.'</td>';
+												echo'<td style="border-bottom:1px solid black;">
+															<input type="hidden" id="nama_'.$row->id_karyawan.'" value="'.$row->nama_karyawan.'" />
+															
+															<b>NIK : </b>'.$row->nik_karyawan.'
+															<br/><b>NIP : </b>'.$row->nip.'
+															<br/><b>NAMA : </b>'.$row->nama_karyawan.'
+															<br/><b>KELAMIN : </b>'.$row->jenis_kelamin.'
+															<br/><b>PANGKAT/GOL : </b>'.$row->pangkat_gol.'
+															<br/><b>TMT GOL/RUANG : </b>'.$row->tmt_gol_ruang.'
+															<br/><b>JABATAN : </b>'.$row->jabatan.'
+															<br/><b>UNIT KERJA : </b>'.$row->unit_kerja.'
+													</td>';
 												
-												echo'<td>
+												echo'<td style="border-bottom:1px solid black;">
 													<input type="hidden" id="nama_jabatan_'.$row->id_karyawan.'" value="'.$row->nama_jabatan.'" />
 													
-													'.$row->alamat.'
+													<b>TEMPAT/TGL LAHIR : </b>'.$row->tempat_lahir.','.$row->tgl_lahir.'
+													<br/><b>KECAMATAN :</b> '.$row->KEC_NAMA.'
+													<br/><b>ALAMAT :</b> '.$row->alamat.'
+													
+													
 												</td>';
+												echo '<td style="text-align:center;border-bottom:1px solid black;">
+														<!--
+														<input type="text" id="idx_jabatan_'.$no.'" name="idx_jabatan_'.$no.'" value="'.$row->idx_jabatan.'" onchange="update_hirarki('.$no.')" size="2" maxlength="2" onkeypress="return isNumberKey(event)" />
+														-->
+														
+														<input type="text" id="idx_jabatan_'.$row->id_karyawan.'" name="idx_jabatan_'.$row->id_karyawan.'" value="'.$row->idx_jabatan.'" onchange="update_hirarki('.$row->id_karyawan.')" size="2" maxlength="2" onkeypress="return isNumberKey(event)" />
+													</td>';
+												
+												
+												echo'<input type="hidden" id="id_karyawan_'.$row->id_karyawan.'" value="'.$row->id_karyawan.'" />';
 												echo'<input type="hidden" id="id_jabatan_'.$row->id_karyawan.'" value="'.$row->id_jabatan.'" />';
 												
 												echo'<input type="hidden" id="pnd_'.$row->id_karyawan.'" value="'.$row->pnd.'" />';
@@ -348,17 +485,40 @@
 												echo'<input type="hidden" id="KEC_ID_'.$row->id_karyawan.'" value="'.$row->KEC_ID.'" />';
 												echo'<input type="hidden" id="KEC_NAMA_'.$row->id_karyawan.'" value="'.$row->KEC_NAMA.'" />';
 												
-												echo'<td>
 												
-	<button type="button" onclick="view('.$row->id_karyawan.')" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">
+												echo'<input type="hidden" id="jenis_kelamin_'.$row->id_karyawan.'" value="'.$row->jenis_kelamin.'" />';
+												echo'<input type="hidden" id="tempat_lahir_'.$row->id_karyawan.'" value="'.$row->tempat_lahir.'" />';
+												echo'<input type="hidden" id="tgl_lahir_'.$row->id_karyawan.'" value="'.$row->tgl_lahir.'" />';
+												echo'<input type="hidden" id="nip_'.$row->id_karyawan.'" value="'.$row->nip.'" />';
+												echo'<input type="hidden" id="pangkat_gol_'.$row->id_karyawan.'" value="'.$row->pangkat_gol.'" />';
+												echo'<input type="hidden" id="tmt_gol_ruang_'.$row->id_karyawan.'" value="'.$row->tmt_gol_ruang.'" />';
+												echo'<input type="hidden" id="jabatan_'.$row->id_karyawan.'" value="'.$row->jabatan.'" />';
+												echo'<input type="hidden" id="unit_kerja_'.$row->id_karyawan.'" value="'.$row->unit_kerja.'" />';
+												echo'<input type="hidden" id="status_kepeg_'.$row->id_karyawan.'" value="'.$row->status_kepeg.'" />';
+												echo'<input type="hidden" id="kelompok_jabatan_'.$row->id_karyawan.'" value="'.$row->kelompok_jabatan.'" />';
+
+												
+												
+												
+												echo'<td style="border-bottom:1px solid black;">
+												
+	<button type="button" onclick="view('.$row->id_karyawan.')" class="btn btn-primary btn-sm btn-flat btn-block" data-toggle="modal" data-target="#myModal">
 		view
 	</button>
 	
-	<a href="javascript:void(0)" class="btn btn-warning btn-sm" onclick="edit('.$row->id_karyawan.')" title = "Ubah Data '.$row->nama_karyawan.'" alt = "Ubah Data '.$row->nama_karyawan.'">Edit</a>
+	<a href="javascript:void(0)" class="btn btn-warning btn-sm btn-flat btn-block" onclick="edit('.$row->id_karyawan.')" title = "Ubah Data '.$row->nama_karyawan.'" alt = "Ubah Data '.$row->nama_karyawan.'">Edit</a>
 	
-	<a class="confirm-btn btn btn-danger btn-sm" href="'.base_url().'admin-karyawan-kecamatan-hapus/'.$row->id_karyawan.'" title = "Hapus Data '.$row->nama_karyawan.'" alt = "Hapus Data '.$row->nama_karyawan.'">Hapus</a>
+	';
 	
-	</td>';
+	if($row->user == '')
+	{
+		echo'
+			<a class="confirm-btn btn btn-danger btn-sm btn-flat btn-block" href="'.base_url().'admin-karyawan-kecamatan-hapus/'.$row->id_karyawan.'" title = "Hapus Data '.$row->nama_karyawan.'" alt = "Hapus Data '.$row->nama_karyawan.'">Hapus</a>
+			';
+	}
+	
+	
+	echo'</td>';
 												
 											echo'</tr>';
 											$no++;
@@ -449,6 +609,38 @@
     		
 		
 <script type='text/javascript'>
+	function update_hirarki(no)
+	{
+		var id_karyawan = $("#id_karyawan_"+no).val(); 
+		var idx_jabatan = $("#idx_jabatan_"+no).val();
+		
+		$.ajax(
+			{
+				type: "POST"
+				, url: "<?php echo base_url();?>C_admin_karyawan/update_idx_jabatan"
+				, 
+					data: 
+					{
+						id_karyawan:id_karyawan
+						,idx_jabatan:idx_jabatan
+					}
+				, cache: false
+				, success:function(data)
+		{
+			if(data!=0)
+			{
+				$("#idx_jabatan_"+no).css('background-color','green');
+				$("#idx_jabatan_"+no).css('color','white');
+			} 
+			else
+			{
+				//$("#tb_cari_produk").html("Tidak Ada Data Yang Ditampilkan");
+				alert("GAGAL UPDATE HIRARKI HARGA");
+			}
+		}
+		});	
+	}
+
 	function view(id)
 	{
         $("#img2").html("<img style='border:1px solid #C8C8C8; padding:5px; float:left; margin-right:20px;' src='"+$('#avatar_url_'+id).val()+"' width='100px' height='100px'>");
@@ -478,6 +670,11 @@
 		$('input[name=pnd]').val($('#pnd_'+id).val());
 		$('input[name=tlp]').val($('#tlp_'+id).val());
 		$('input[name=email]').val($('#email_'+id).val());
+		
+		
+		
+		
+		
 		document.getElementById("alamat").value = $('#alamat_'+id).val();
 		document.getElementById("keterangan").value = $('#keterangan_'+id).val();
 		
@@ -490,25 +687,134 @@
 		document.getElementById("jabatan").options.item(0).text = $('#nama_jabatan_'+id).val();
 		document.getElementById("jabatan").options.item(0).value = $('#id_jabatan_'+id).val();
 		
+		//$('input[name=jenis_kelamin]').val($('#jenis_kelamin_'+id).val());
+		document.getElementById("jenis_kelamin").options.item(0).text = $('#jenis_kelamin_'+id).val();
+		document.getElementById("jenis_kelamin").options.item(0).value = $('#jenis_kelamin_'+id).val();
+		
+		$('input[name=tempat_lahir]').val($('#tempat_lahir_'+id).val());
+		$('input[name=tgl_lahir]').val($('#tgl_lahir_'+id).val());
+		$('input[name=nip]').val($('#nip_'+id).val());
+		$('input[name=pangkat_gol]').val($('#pangkat_gol_'+id).val());
+		$('input[name=tmt_gol_ruang]').val($('#tmt_gol_ruang_'+id).val());
+		$('input[name=jabatan]').val($('#jabatan_'+id).val());
+		$('input[name=unit_kerja]').val($('#unit_kerja_'+id).val());
+		$('input[name=status_kepeg]').val($('#status_kepeg_'+id).val());
+		$('input[name=kelompok_jabatan]').val($('#kelompok_jabatan_'+id).val());
+
+		
 		$('#box-form').attr('class', 'box box-warning ellapsed-box box-solid');
 	}
-	function isNumberKey(evt)
+	
+	function FormatCurrency(objNum)
 	{
-    	var charCode = (evt.which) ? evt.which : event.keyCode
-    	if (charCode > 31 && (charCode < 48 || charCode > 57))
-    	
-    	return false;
-    	return true;
+	   var num = objNum.value
+	   var ent, dec;
+	   if (num != '' && num != objNum.oldvalue)
+	   {
+		 num = HapusTitik(num);
+		 if (isNaN(num))
+		 {
+		   objNum.value = (objNum.oldvalue)?objNum.oldvalue:'';
+		 } else {
+		   var ev = (navigator.appName.indexOf('Netscape') != -1)?Event:event;
+		   if (ev.keyCode == 190 || !isNaN(num.split('.')[1]))
+		   {
+			 alert(num.split('.')[1]);
+			 objNum.value = TambahTitik(num.split('.')[0])+'.'+num.split('.')[1];
+		   }
+		   else
+		   {
+			 objNum.value = TambahTitik(num.split('.')[0]);
+		   }
+		   objNum.oldvalue = objNum.value;
+		 }
+	   }
+	}
+	function HapusTitik(num)
+	{
+	   return (num.replace(/\./g, ''));
+	}
+
+	function TambahTitik(num)
+	{
+	   numArr=new String(num).split('').reverse();
+	   for (i=3;i<numArr.length;i+=3)
+	   {
+		 numArr[i]+='.';
+	   }
+	   return numArr.reverse().join('');
+	} 
+			
+	function formatCurrency(num) {
+	   num = num.toString().replace(/\$|\./g,'');
+	   if(isNaN(num))
+	   num = "0";
+	   sign = (num == (num = Math.abs(num)));
+	   num = Math.floor(num*100+0.50000000001);
+	   cents = num0;
+	   num = Math.floor(num/100).toString();
+	   for (var i = 0; i < Math.floor((num.length-(1+i))/3); i++)
+	   num = num.substring(0,num.length-(4*i+3))+'.'+
+	   num.substring(num.length-(4*i+3));
+	   return (((sign)?'':'-') + num);
 	}
 </script>
       
     <!-- Bootstrap 3.3.4 -->
-    <script src="<?=base_url();?>assets/adminlte/bootstrap/js/bootstrap.min.js"></script>
-    <!-- Slimscroll -->
-    <script src="<?=base_url();?>assets/adminlte/plugins/slimScroll/jquery.slimscroll.min.js"></script>
-    <!-- FastClick -->
-    <script src="<?=base_url();?>assets/adminlte/plugins/fastclick/fastclick.min.js"></script>
-    <!-- AdminLTE App -->
-    <script src="<?=base_url();?>assets/adminlte/dist/js/app.min.js"></script>
-    <!-- Page script -->
+	<script src="<?=base_url();?>assets/adminlte/bootstrap/js/bootstrap.min.js"></script>
+	<!-- Slimscroll -->
+	<script src="<?=base_url();?>assets/adminlte/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+	<!-- FastClick -->
+	<script src="<?=base_url();?>assets/adminlte/plugins/fastclick/fastclick.min.js"></script>
+	<!-- AdminLTE App -->
+	<script src="<?=base_url();?>assets/adminlte/dist/js/app.min.js"></script>
+	<!-- Page script -->
+    <!-- InputMask -->
+    <script src="<?=base_url();?>/assets/adminlte/plugins/input-mask/jquery.inputmask.js"></script>
+    <script src="<?=base_url();?>/assets/adminlte/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+    <script src="<?=base_url();?>/assets/adminlte/plugins/input-mask/jquery.inputmask.extensions.js"></script>
+    
+    <script>
+      $(function () {
+        //Initialize Select2 Elements
+        //$(".select2").select2();
+
+        //Datemask yyyy-mm-dd
+		$(".datemask_mysql").inputmask("yyyy-mm-dd", {"placeholder": "yyyy-mm-dd"});
+        //Datemask dd/mm/yyyy
+        //$("#datemask").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});
+        //Datemask2 mm/dd/yyyy
+        //$("#datemask2").inputmask("mm/dd/yyyy", {"placeholder": "mm/dd/yyyy"});
+        //TimeMask hh:mm:ss
+        $(".time_mysql").inputmask("hh:mm:ss", {"placeholder": "hh:mm:ss"});
+        //Money Euro
+        //$("[data-mask]").inputmask();
+
+        //iCheck for checkbox and radio inputs
+        $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+          checkboxClass: 'icheckbox_minimal-blue',
+          radioClass: 'iradio_minimal-blue'
+        });
+        //Red color scheme for iCheck
+        $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
+          checkboxClass: 'icheckbox_minimal-red',
+          radioClass: 'iradio_minimal-red'
+        });
+        //Flat red color scheme for iCheck
+        $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+          checkboxClass: 'icheckbox_flat-green',
+          radioClass: 'iradio_flat-green'
+        });
+
+        //Colorpicker
+        $(".my-colorpicker1").colorpicker();
+        //color picker with addon
+        $(".my-colorpicker2").colorpicker();
+
+        //Timepicker
+        $(".timepicker").timepicker({
+          showInputs: false
+        });
+      });
+    </script>
     

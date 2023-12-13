@@ -6,7 +6,7 @@ class C_admin_karyawan extends CI_Controller {
 	{
 		parent::__construct();
 		// Your own constructor code
-		$this->load->model(array('M_karyawan','M_jabatan','M_kec'));
+		$this->load->model(array('M_karyawan','M_jabatan','M_kec','M_gl_pengaturan'));
 	}
 	
 	public function index()
@@ -97,11 +97,28 @@ class C_admin_karyawan extends CI_Controller {
 			
 			if(!empty($cek_ses_login))
 			{
+				if((!empty($_GET['source'])) && ($_GET['source']!= "")  )
+				{
+					if($_GET['source'] == 'nom_peg_kec')
+					{
+						$source = "AND kelompok_jabatan IN ('','nom_peg_kec')";
+					}
+					else
+					{
+						$source = "AND kelompok_jabatan = '".$_GET['source']."'";
+					}
+				}
+				else
+				{
+					$source = "AND kelompok_jabatan IN ('','nom_peg_kec')";
+				}
+				
 				if((!empty($_GET['cari'])) && ($_GET['cari']!= "")  )
 				{
 					$cari = "WHERE 
 							A.status_kantor = 'KEC' 
 							AND A.KEC_ID = '".$this->session->userdata('ses_KEC_ID')."'
+							".$source."
 							AND 
 							(
 								A.nama_karyawan LIKE '%".str_replace("'","",$_GET['cari'])."%'
@@ -110,7 +127,11 @@ class C_admin_karyawan extends CI_Controller {
 				}
 				else
 				{
-					$cari = "WHERE A.status_kantor = 'KEC' AND A.KEC_ID = '".$this->session->userdata('ses_KEC_ID')."'";
+					$cari = "
+								WHERE A.status_kantor = 'KEC' 
+								AND A.KEC_ID = '".$this->session->userdata('ses_KEC_ID')."'
+								".$source."
+							";
 				}
 				
 				$this->load->library('pagination');
@@ -256,6 +277,12 @@ class C_admin_karyawan extends CI_Controller {
 		
 	}
 	
+	
+	function simpan_nom_perangkat_kecamatan_test()
+	{
+		echo $_POST['no_karyawan'];
+	}
+	
 	public function simpan_nom_perangkat_kecamatan()
 	{
 		if($_POST['no_karyawan'] == "")
@@ -268,49 +295,34 @@ class C_admin_karyawan extends CI_Controller {
 		}
 			if (!empty($_POST['stat_edit']))
 			{
-				if (empty($_FILES['foto']['name']))
-				{
-					$this->M_karyawan->edit_no_image
-					(
-						$_POST['stat_edit']
-						,$_POST['jabatan']
-						,$no_karyawan
-						,$_POST['nik']
-						,$_POST['nama']
-						,$_POST['pnd']
-						,$_POST['tlp']
-						,$_POST['email']
-						,$_POST['alamat']
-						,$_POST['status_kantor']
-						,$_POST['KEC_ID']
-						,$_POST['keterangan']
-						,$this->session->userdata('ses_id_karyawan')
-					);
-				}
-				else
-				{
-					$data_karyawan = $this->M_karyawan->get_karyawan_id($_POST['stat_edit']);
-					$this->do_upload($_FILES['foto']['name'],$data_karyawan->avatar);
-					$foto = $_FILES['foto']['name'];
-					$this->M_karyawan->edit_with_image
-					(
-						$_POST['stat_edit']
-						,$_POST['jabatan']
-						,$no_karyawan
-						,$_POST['nik']
-						,$_POST['nama']
-						,$_POST['pnd']
-						,$_POST['tlp']
-						,$_POST['email']
-						,$foto
-						,base_url().'assets/global/karyawan/'.$foto
-						,$_POST['alamat']
-						,$_POST['status_kantor']
-						,$this->session->userdata('ses_KEC_ID') //,$_POST['KEC_ID']
-						,$_POST['keterangan']
-						,$this->session->userdata('ses_id_karyawan')
-					);
-				}
+				
+				$this->M_karyawan->edit_saja
+				(
+					$_POST['stat_edit']
+					,$_POST['jabatan']
+					,$no_karyawan
+					,$_POST['nik']
+					,$_POST['nama']
+					,$_POST['pnd']
+					,$_POST['tlp']
+					,$_POST['email']
+					,$_POST['alamat']
+					,$_POST['status_kantor']
+					,$_POST['KEC_ID']
+					,$_POST['keterangan']
+					,$this->session->userdata('ses_id_karyawan')
+					
+					,$_POST['jenis_kelamin']
+					,$_POST['tempat_lahir']
+					,$_POST['tgl_lahir']
+					,$_POST['nip']
+					,$_POST['pangkat_gol']
+					,$_POST['tmt_gol_ruang']
+					,$_POST['jabatan']
+					,$_POST['unit_kerja']
+					,$_POST['status_kepeg']
+					,$_POST['kelompok_jabatan_simpan']
+				);
 				
 				header('Location: '.base_url().'admin-karyawan-kecamatan');
 			}
@@ -342,6 +354,19 @@ class C_admin_karyawan extends CI_Controller {
 					,$_POST['keterangan']
 					,'KAB'
 					,$this->session->userdata('ses_id_karyawan')
+					
+					
+					,$_POST['jenis_kelamin']
+					,$_POST['tempat_lahir']
+					,$_POST['tgl_lahir']
+					,$_POST['nip']
+					,$_POST['pangkat_gol']
+					,$_POST['tmt_gol_ruang']
+					,$_POST['jabatan']
+					,$_POST['unit_kerja']
+					,$_POST['status_kepeg']
+					,$_POST['kelompok_jabatan_simpan']
+					
 				);
 				header('Location: '.base_url().'admin-karyawan-kecamatan');
 			}
@@ -407,6 +432,20 @@ class C_admin_karyawan extends CI_Controller {
 			$this->M_karyawan->hapus($id);
 		}
 		header('Location: '.base_url().'admin-karyawan-kecamatan');
+	}
+	
+	function update_idx_jabatan()
+	{
+		$id_karyawan = htmlentities($_POST['id_karyawan'], ENT_QUOTES, 'UTF-8'); //$_POST['id_karyawan'];
+		$idx_jabatan = htmlentities($_POST['idx_jabatan'], ENT_QUOTES, 'UTF-8'); //$_POST['idx_jabatan'];
+		
+		echo $id_karyawan;
+		echo'<br/>';
+		echo $idx_jabatan;
+		
+		$query = "UPDATE tb_karyawan SET idx_jabatan = '".$idx_jabatan."' WHERE id_karyawan = '".$id_karyawan."';";
+		$this->M_gl_pengaturan->exec_query_general($query);
+		echo'BERHASIL';
 	}
 }
 

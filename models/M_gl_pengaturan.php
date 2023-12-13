@@ -31,7 +31,8 @@ class M_gl_pengaturan extends CI_Model
 	function exec_query_general($query)
 	{
 		/*SIMPAN DAN CATAT QUERY*/
-			$this->M_gl_log->simpan_query($query);
+			//$this->M_gl_log->simpan_query($query);
+			$this->db->query($query);
 		/*SIMPAN DAN CATAT QUERY*/
 	}
 	

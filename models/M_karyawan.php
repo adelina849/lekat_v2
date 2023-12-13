@@ -45,11 +45,32 @@
 			$query = $this->db->query("
 										SELECT A.*
 											,COALESCE(B.nama_jabatan,'') AS nama_jabatan  
-											,COALESCE(C.KEC_NAMA,'') AS KEC_NAMA  
+											,COALESCE(C.KEC_NAMA,'') AS KEC_NAMA
+											,COALESCE(D.user,'') AS user
+											
+											,COALESCE(E.img_url,'') AS img_url
+											,COALESCE(E.img_file,'') AS img_file
+											
 										FROM tb_karyawan AS A
 										LEFT JOIN tb_jabatan AS B ON A.id_jabatan = B.id_jabatan
 										LEFT JOIN tb_kec AS C ON A.KEC_ID = C.KEC_ID
-										".$cari." ORDER BY nama_karyawan ASC LIMIT ".$offset.",".$limit);
+										LEFT JOIN tb_akun AS D ON A.id_karyawan = D.id_karyawan
+										
+										LEFT JOIN
+										(
+											SELECT 
+												id
+												,group_by
+												,img_url
+												,MAX(img_file) AS img_file
+											FROM tb_images
+											GROUP BY
+												id
+												,group_by
+												,img_url
+										) AS E ON A.id_karyawan = E.id AND E.group_by = 'karyawan_kec'
+										
+										".$cari." ORDER BY A.tgl_ins DESC LIMIT ".$offset.",".$limit);
 			if($query->num_rows() > 0)
 			{
 				return $query;
@@ -95,29 +116,117 @@
 			,$keterangan
 			,$kode_kantor
 			,$user_updt
+			
+			,$jenis_kelamin
+			,$tempat_lahir
+			,$tgl_lahir
+			,$nip
+			,$pangkat_gol
+			,$tmt_gol_ruang
+			,$jabatan
+			,$unit_kerja
+			,$status_kepeg
+			,$kelompok_jabatan
 		)
 		{
 			//Tidak ditambah tgl_ins dan tgl_updt karena sudah current stamp di databasenya
 			$data = array
 			(
+				'id_jabatan' => $id_jabatan,
+				'no_karyawan' => $no_karyawan,
+				'nik_karyawan' => $nik_karyawan,
+				'nama_karyawan' => $nama_karyawan,
+				'pnd' => $pnd,
+				'tlp' => $tlp,
+				'email' => $email,
+				'avatar' => $avatar,
+				'avatar_url' => $avatar_url,
+				'alamat' => $alamat,
+				'status_kantor' => $status_kantor,
+				'KEC_ID' => $KEC_ID,
+				'ket_karyawan' => $keterangan,
+				'kode_kantor' => $kode_kantor,
+				'user_updt' => $user_updt
+			   
+				,'jenis_kelamin' => $jenis_kelamin
+				,'tempat_lahir' => $tempat_lahir
+				,'tgl_lahir' => $tgl_lahir
+				,'nip' => $nip
+				,'pangkat_gol' => $pangkat_gol
+				,'tmt_gol_ruang' => $tmt_gol_ruang
+				,'jabatan' => $jabatan
+				,'unit_kerja' => $unit_kerja
+				,'status_kepeg' => $status_kepeg
+				,'kelompok_jabatan' => $kelompok_jabatan
+			   
+			);
+
+			$this->db->insert('tb_karyawan', $data); 
+		}
+		
+		function edit_saja(
+			$id_karyawan
+			,$id_jabatan
+			,$no_karyawan
+			,$nik_karyawan
+			,$nama_karyawan
+			,$pnd
+			,$tlp
+			,$email
+			,$alamat
+			,$status_kantor
+			,$KEC_ID
+			,$keterangan
+			,$user_updt
+			
+			,$jenis_kelamin
+			,$tempat_lahir
+			,$tgl_lahir
+			,$nip
+			,$pangkat_gol
+			,$tmt_gol_ruang
+			,$jabatan
+			,$unit_kerja
+			,$status_kepeg
+			,$kelompok_jabatan
+		)
+		{
+			
+			$id = date('ymdHis'); 
+			$date = date('Y-m-d'); 
+			$jam = date('Y-m-d H:i:s'); 
+			$data = array
+			(
 			   'id_jabatan' => $id_jabatan,
-			   'no_karyawan' => $no_karyawan,
+			   //'no_karyawan' => $no_karyawan,
 			   'nik_karyawan' => $nik_karyawan,
 			   'nama_karyawan' => $nama_karyawan,
 			   'pnd' => $pnd,
 			   'tlp' => $tlp,
 			   'email' => $email,
-			   'avatar' => $avatar,
-			   'avatar_url' => $avatar_url,
 			   'alamat' => $alamat,
 			   'status_kantor' => $status_kantor,
 			   'KEC_ID' => $KEC_ID,
 			   'ket_karyawan' => $keterangan,
-			   'kode_kantor' => $kode_kantor,
+			   'tgl_updt' => $jam,
 			   'user_updt' => $user_updt
+			   
+				,'jenis_kelamin' => $jenis_kelamin
+				,'tempat_lahir' => $tempat_lahir
+				,'tgl_lahir' => $tgl_lahir
+				,'nip' => $nip
+				,'pangkat_gol' => $pangkat_gol
+				,'tmt_gol_ruang' => $tmt_gol_ruang
+				,'jabatan' => $jabatan
+				,'unit_kerja' => $unit_kerja
+				,'status_kepeg' => $status_kepeg
+				,'kelompok_jabatan' => $kelompok_jabatan
+			   
 			);
-
-			$this->db->insert('tb_karyawan', $data); 
+			
+			$this->db->where('id_karyawan', $id_karyawan);
+			$this->db->update('tb_karyawan', $data);
+			
 		}
 		
 		function edit_with_image
@@ -223,5 +332,6 @@
                 return false;
             }
         }
+		
 	}
 ?>

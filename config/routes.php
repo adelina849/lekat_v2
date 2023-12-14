@@ -98,6 +98,9 @@ $route['translate_uri_dashes'] = FALSE;
 
 	$route['admin-karyawan-kecamatan-hapus'] = "C_admin_karyawan/hapus_nom_perangkat_kecamatan";
 	$route['admin-karyawan-kecamatan-hapus/(:any)'] = 'C_admin_karyawan/hapus_nom_perangkat_kecamatan';
+	
+	$route['admin-karyawan-kecamatan-excel'] = "C_admin_karyawan/excel_nom_perangkat_kecamatan";
+	$route['admin-karyawan-kecamatan-excel/(:any)'] = 'C_admin_karyawan/excel_nom_perangkat_kecamatan';
 //KARYAWAN
 
 //AKUN

@@ -1,0 +1,106 @@
+ <title>Laporan Karyawan</title>
+ 
+ <?php
+ 
+ $title = "DataLaporanStockSupplier";
+ header("Content-type: application/vnd-ms-excel");
+ header("Content-Disposition: attachment; filename=$title.xls");
+ header("Pragma: no-cache");
+ header("Expires: 0");
+ 
+ ?>
+
+<?php
+	//TABLE
+	if(!empty($list_karyawan))
+	{
+		//$sum_laporan_h_penjualan = $sum_laporan_h_penjualan->row();
+		
+		echo'<table width="100%" id="example2" class="table table-hover hoverTable">';
+			/*
+			echo '
+				<tr>
+					<td colspan="11" style="text-align:center;">
+						<b>LAPORAN STOCK PRODUKSI</b>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="11" style="text-align:center;">
+						<b>'.$this->session->userdata('ses_nama_kantor').'</b>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="11" style="text-align:center;">
+						'.$this->session->userdata('ses_alamat_kantor').'
+					</td>
+				</tr>
+				<tr>
+					<td colspan="11" style="text-align:center;">
+						<b>Per '.$dari.' Sampai '.$sampai.'</b>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="11" style="text-align:center;">
+						<br/>
+					</td>
+				</tr>
+			
+			';
+			*/
+			echo'
+				<tr>
+					<td style="text-align:center;font-weight:bold;color:black;">NO</td>
+					<td style="text-align:left;font-weight:bold;color:black;">NAMA</td>
+					<td style="text-align:center;font-weight:bold;color:black;">JENIS KELAMIN</td>
+					<td style="text-align:center;font-weight:bold;color:black;">TEMPAT/TGL.LAHIR</td>
+					<td style="text-align:center;font-weight:bold;color:black;">NIP</td>
+					<td style="text-align:right;font-weight:bold;color:black;">PANGKAT/GOL</td>
+					<td style="text-align:right;font-weight:bold;color:black;">TMT GOL/RUANG</td>
+					<td style="text-align:right;font-weight:bold;color:black;">JABATAN</td>
+					<td style="text-align:right;font-weight:bold;color:black;">UNIT KERJA</td>
+					<td style="text-align:right;font-weight:bold;color:black;">PENDIDIKAN</td>
+					<td style="text-align:right;font-weight:bold;color:black;">STATUS KEPEG</td>
+					<td style="text-align:right;font-weight:bold;color:black;">NOMOR TLP/HP</td>
+					<td style="text-align:right;font-weight:bold;color:black;">KETERANGAN</td>
+				</tr>
+			';
+			$list_result = $list_karyawan->result();
+			//$no =$this->uri->segment(2,0)+1;
+			$no = 1;
+			foreach($list_result as $row)
+			{
+				//GROUP NO FAKTUR
+				
+					echo'
+						<tr>
+							<td class="mailbox-name" style="text-align:left;">'.$no.'</td>
+							<td class="mailbox-name" style="text-align:left;">'.$row->nama_karyawan.'</td>
+							<td class="mailbox-name" style="text-align:left;">'.$row->jenis_kelamin.'</td>
+							<td class="mailbox-name" style="text-align:left;">'.$row->tempat_lahir.', '.$row->tgl_lahir.'</td>
+							<td class="mailbox-name" style="text-align:center;">'.$row->nip.'</td>
+							<td class="mailbox-name" style="text-align:center;">'.$row->pangkat_gol.'</td>
+							<td class="mailbox-name" style="text-align:center;">'.$row->tmt_gol_ruang.'</td>
+							<td class="mailbox-name" style="text-align:center;">'.$row->jabatan.'</td>
+							<td class="mailbox-name" style="text-align:center;">'.$row->unit_kerja.'</td>
+							<td class="mailbox-name" style="text-align:center;">'.$row->pnd.'</td>
+							<td class="mailbox-name" style="text-align:center;">'.$row->status_kepeg.'</td>
+							<td class="mailbox-name" style="text-align:center;">'.$row->tlp.'</td>
+							<td class="mailbox-name" style="text-align:center;">'.$row->ket_karyawan.'</td>
+						</tr>
+					';
+					
+				$no++;
+			}
+
+				
+			echo '</tbody>';
+		echo'</table>';
+	}
+	else
+	{
+		echo'<center>';
+		echo'Tidak Ada Data Yang Ditampilkan !';
+		echo'</center>';
+	}
+	//TABLE
+?>

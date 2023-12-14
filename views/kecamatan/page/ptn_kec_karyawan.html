@@ -343,7 +343,7 @@
 											<td>
 												<!-- <input type="text" name="cari"  maxlength="35" class="text form-control" size="35" alt="tlp" title="Cari data" placeholder="...Cari" value="<?php if (!empty($_GET['berdasarkan'])){echo $_GET['cari'];} ?>"/> -->
 												
-												<input type="hidden" name="kelompok_jabatan" id="kelompok_jabatan" value="<?php if (!empty($_GET['source'])){echo $_GET['source'];} ?>"/>
+												<input type="hidden" name="source" id="source" value="<?php if (!empty($_GET['source'])){echo $_GET['source'];} ?>"/>
 												
 												<div class="form-group">
 													<label for="nama_satuan"></label>
@@ -366,7 +366,7 @@
 													
 													<!-- <button type="button" id="btnsimpan" onclick="cari_col_active()" class="btn btn-success btn-block btn-flat" title="Pencarian Data <?php echo $msgbox_title;?> ?">CARI</button> -->
 													
-													<a class="btn btn-warning btn-block btn-flat" target="_blank" href="<?php echo base_url();?>gl-admin-laporan-transaksi-excel?dari=<?php if (!empty($_GET['dari'])){echo $_GET['dari'];} ?>&sampai=<?php if (!empty($_GET['sampai'])){echo $_GET['sampai'];} ?>&cari=<?php if (!empty($_GET['cari'])){echo $_GET['cari'];} ?>" title = "Print Excel Stock" alt = "Print Excel Stock">EXCEL</a>
+													<a class="btn btn-warning btn-block btn-flat" target="_blank" href="<?php echo base_url();?>admin-karyawan-kecamatan-excel?source=<?php if (!empty($_GET['source'])){echo $_GET['source'];} ?>&cari=<?php if (!empty($_GET['cari'])){echo $_GET['cari'];} ?>&kec_id=<?php echo $this->session->userdata('ses_KEC_ID'); ?>" title = "Print Excel Stock" alt = "Print Excel Stock">EXCEL</a>
 													
 													
 												</div>

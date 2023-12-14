@@ -447,6 +447,81 @@ class C_admin_karyawan extends CI_Controller {
 		$this->M_gl_pengaturan->exec_query_general($query);
 		echo'BERHASIL';
 	}
+	
+	
+	public function excel_nom_perangkat_kecamatan()
+	{
+		if(($this->session->userdata('ses_user_admin') == null) or ($this->session->userdata('ses_pass_admin') == null))
+		{
+			header('Location: '.base_url().'admin-login');
+		}
+		else
+		{
+			$cek_ses_login = $this->M_akun->get_cek_login($this->session->userdata('ses_user_admin'),md5(base64_decode($this->session->userdata('ses_pass_admin'))));
+			
+			if(!empty($cek_ses_login))
+			{
+				if((!empty($_GET['source'])) && ($_GET['source']!= "")  )
+				{
+					if($_GET['source'] == 'nom_peg_kec')
+					{
+						$source = "AND kelompok_jabatan IN ('','nom_peg_kec')";
+					}
+					else
+					{
+						$source = "AND kelompok_jabatan = '".$_GET['source']."'";
+					}
+				}
+				else
+				{
+					$source = "AND kelompok_jabatan IN ('','nom_peg_kec')";
+				}
+				
+				
+				if((!empty($_GET['kec_id'])) && ($_GET['kec_id']!= "")  )
+				{
+					$kec_id = $_GET['kec_id'];
+				}
+				else
+				{
+					$kec_id = "";
+				}
+				
+				
+				if((!empty($_GET['cari'])) && ($_GET['cari']!= "")  )
+				{
+					$cari = "WHERE 
+							A.status_kantor = 'KEC' 
+							AND A.KEC_ID = '".$kec_id."'
+							".$source."
+							AND 
+							(
+								A.nama_karyawan LIKE '%".str_replace("'","",$_GET['cari'])."%'
+							)
+							";
+				}
+				else
+				{
+					$cari = "
+								WHERE A.status_kantor = 'KEC' 
+								AND A.KEC_ID = '".$kec_id."'
+								".$source."
+							";
+				}
+				
+				
+				$list_karyawan = $this->M_karyawan->list_karyawan_limit($cari,999,0);
+				
+				$data = array('list_karyawan'=>$list_karyawan);
+				//$this->load->view('kecamatan/container',$data);
+				$this->load->view('kecamatan/page/excel_nom_perangkat_kecamatan.html',$data);
+			}
+			else
+			{
+				header('Location: '.base_url().'admin-login');
+			}
+		}
+	}
 }
 
 /* End of file welcome.php */

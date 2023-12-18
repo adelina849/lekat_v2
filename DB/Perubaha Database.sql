@@ -36,3 +36,6 @@
 	ALTER TABLE `tb_karyawan` CHANGE `tgl_lahir` `tgl_lahir` DATE NULL DEFAULT NULL;
 	
 	ALTER TABLE `tb_karyawan` ADD `kelompok_jabatan` VARCHAR(20) NOT NULL AFTER `keterangan`, ADD `idx_jabatan` INT NOT NULL AFTER `kelompok_jabatan`;
+
+-- 2023-12-18 (LEKAT V2)
+	ALTER TABLE `tb_laporan` ADD `URL_LAP` TEXT NOT NULL COMMENT 'Jika URL di isi makalaporan akan mengarah ke URL tertentu' AFTER `LAP_ISAKTIF`;

@@ -157,6 +157,51 @@
                 });
             </script>
 			
+			<!-- GET LONGI DAN LATI -->
+			<script type="text/javascript">
+				$(document).ready(function() {
+					navigator.geolocation.getCurrentPosition(function (position) {
+						 tampilLokasi(position);
+					}, function (e) {
+						alert('Geolocation Tidak Mendukung Pada Browser Anda');
+					}, {
+						enableHighAccuracy: true
+					});
+				});
+				function tampilLokasi(posisi) {
+					//console.log(posisi);
+					var latitude 	= posisi.coords.latitude;
+					var longitude 	= posisi.coords.longitude;
+					
+					
+					//LINTANG = LATITUDE
+					//BUJUR = LONGITUDE
+					//alert(latitude);
+					//$('#longi').val(longitude);
+					//$('#lati').val(latitude);
+					$("#TITIKKOORDINATLINTANG").val(latitude);
+					$("#TITIKKOORDINATBUJUR").val(longitude);
+					
+					/*
+					$.ajax({
+						type 	: 'POST',
+						url		: "<?php echo base_url();?>C_gl_login/get_lokasi_gps/",
+						data 	: 'latitude='+latitude+'&longitude='+longitude,
+						success	: function (e) {
+							if (e) {
+								//$('#lokasi').html(e);
+								var val = e;
+								var arrKode = val.split("|");
+							}else{
+								//$('#lokasi').html('Tidak Tersedia');
+							}
+						}
+					})
+					*/
+				}
+			</script>
+			<!-- GET LONGI DAN LATI -->
+			
 			<!-- Load Tiny MCE -->
 				<!--<script src="<?=base_url();?>assets/js/jquery-1.11.1.min.js"></script>-->
 				<script type="text/javascript" src="<?=base_url();?>assets/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
@@ -286,9 +331,16 @@
 										
 										IF($row->ILAP_TYPE == "SHORT TEXT")
 										{
+											/*
 											echo '<div class="form-group">
 												  <label for="'.$row->ILAP_ID.'">'.$row->ILAP_NAMA.'</label>
 												  <input type="text" id="'.$row->ILAP_ID.'" name="'.$no.'"  maxlength="250" class="required form-control" size="35" alt="'.$row->ILAP_KET.'" title="'.$row->ILAP_KET.'" placeholder="*'.$row->ILAP_NAMA.'"/>
+												</div>';
+											*/
+											
+											echo '<div class="form-group">
+												  <label for="'.$row->ILAP_ID.'">'.$row->ILAP_NAMA.'</label>
+												  <input type="text" id="'.str_replace('|','',str_replace(' ', '', $row->ILAP_NAMA)).'" name="'.$no.'"  maxlength="250" class="required form-control" size="35" alt="'.$row->ILAP_KET.'" title="'.$row->ILAP_KET.'" placeholder="*'.$row->ILAP_NAMA.'"/>
 												</div>';
 										}
 										elseif($row->ILAP_TYPE == "NUMBER")
@@ -534,7 +586,9 @@
 												//if(($temp[$no2]*1) > -1)
 												if($temp[$no2] > 1)
 												{
-													echo'<td style="border:1px solid black;text-align:center;">'.$temp[$no2].'</td>';
+													echo'<td style="border:1px solid black;text-align:center;">
+													'.$temp[$no2].'
+													</td>';
 												}
 												else
 												{

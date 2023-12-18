@@ -77,6 +77,7 @@
 					,A.LAP_NAMA
 					,A.LAP_PERIODE
 					,A.LAP_KET
+					,A.URL_LAP
 					,A.LAP_DTINS
 					,COUNT(B.BLAP_ID) AS JUMLAH
 				FROM tb_laporan AS A 
@@ -110,6 +111,7 @@
 					,$LAP_PJ
 					,$LAP_KET
 					,$LAP_ISPERDESA
+					,$URL_LAP
 					,$LAP_USER
 					,$LAP_KKANTOR
 					,$LAP_SKANTOR)
@@ -127,6 +129,7 @@
 					,LAP_PJ
 					,LAP_KET
 					,LAP_ISPERDESA
+					,URL_LAP
 					,LAP_DTINS
 					,LAP_DTUPDT
 					,LAP_USER
@@ -170,6 +173,7 @@
 					,'".$LAP_PJ."'
 					,'".$LAP_KET."'
 					,'".$LAP_ISPERDESA."'
+					,'".$URL_LAP."'
 					,NOW()
 					,NOW()
 					,'".$LAP_USER."'
@@ -191,6 +195,7 @@
 					,$LAP_PJ
 					,$LAP_KET
 					,$LAP_ISPERDESA
+					,$URL_LAP
 					,$LAP_USER
 					)
 		{
@@ -205,6 +210,7 @@
 					,LAP_PJ = '".$LAP_PJ."'
 					,LAP_KET = '".$LAP_KET."'
 					,LAP_ISPERDESA = '".$LAP_ISPERDESA."'
+					,URL_LAP = '".$URL_LAP."'
 					,LAP_DTUPDT = NOW()
 					,LAP_USER = '".$LAP_USER."'
 					WHERE LAP_ID = '".$LAP_ID."'
@@ -313,7 +319,7 @@
 						,COALESCE(C.BLAP_PERIODE,'') AS BLAP_PERIODE
 						,COALESCE(C.BLAP_USER_CATATAN,'') AS BLAP_USER_CATATAN
 					FROM tb_periode AS A 
-					LEFT JOIN tb_laporan AS B ON A.PER_KATEGORI = B.LAP_PERIODE
+					LEFT JOIN tb_laporan AS B ON A.PER_KATEGORI = B.LAP_PERIODE AND B.URL_LAP = ''
 					
 					LEFT JOIN tb_buat_laporan AS C 
 						ON CONCAT(A.PER_KODE,COALESCE(B.LAP_ID) ) = CONCAT(COALESCE(C.BLAP_PERIODE,''),COALESCE(C.LAP_ID,''))

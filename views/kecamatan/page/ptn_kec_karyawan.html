@@ -141,7 +141,7 @@
                   
                   
                   <!-- ISI FORM -->
-                        <form role="form" action="<?=base_url();?>admin-karyawan-kecamatan-simpan" method="post" class="frm-input" enctype="multipart/form-data">
+                        <form role="form" action="<?=base_url();?>admin-karyawan-kecamatan-simpan?cari=<?php if (!empty($_GET['cari'])){echo $_GET['cari'];} ?>" method="post" class="frm-input" enctype="multipart/form-data">
 						  <input type="hidden" name="stat_edit" id="stat_edit"/>
 						  <input type="hidden" name="kelompok_jabatan_simpan" id="kelompok_jabatan_simpan" value="<?php if (!empty($_GET['source'])){echo $_GET['source'];} ?>"/>
 						  
@@ -206,7 +206,7 @@
                               <input type="text" id="status_kepeg" name="status_kepeg"  maxlength="35" class="form-control" size="35" alt="Status Kepegawaian" title="Status Kepegawaian" placeholder="*Status Kepegawaian"/>
                             </div>
 							
-							
+							<!--
 							<div class="form-group" style="display:none;">
                               <label for="jabatan">Jabatan</label>
                               <select name="jabatan" id="jabatan" class="required form-control select2" title="jabatan">
@@ -225,6 +225,7 @@
                                  ?>
                                 </select>
                             </div>
+							-->
 							
 							
 							
@@ -647,7 +648,8 @@
 		$('#no_karyawan2').html($('#no_karyawan_'+id).val());
         $('#nik2').html($('#nik_'+id).val());
         $('#nama2').html($('#nama_'+id).val());
-        $('#jabatan2').html($('#nama_jabatan_'+id).val());
+        //$('#jabatan2').html($('#nama_jabatan_'+id).val());
+		$('#jabatan2').html($('#jabatan_'+id).val());
         $('#pnd2').html($('#pnd_'+id).val());
         $('#tlp2').html($('#tlp_'+id).val());
 		$('#status_kantor2').html($('#status_kantor_'+id).val());
@@ -684,8 +686,8 @@
 		document.getElementById("KEC_ID").options.item(0).text = $('#KEC_NAMA_'+id).val();
 		document.getElementById("KEC_ID").options.item(0).value = $('#KEC_ID_'+id).val();
 		
-		document.getElementById("jabatan").options.item(0).text = $('#nama_jabatan_'+id).val();
-		document.getElementById("jabatan").options.item(0).value = $('#id_jabatan_'+id).val();
+		//document.getElementById("jabatan").options.item(0).text = $('#nama_jabatan_'+id).val();
+		//document.getElementById("jabatan").options.item(0).value = $('#id_jabatan_'+id).val();
 		
 		//$('input[name=jenis_kelamin]').val($('#jenis_kelamin_'+id).val());
 		document.getElementById("jenis_kelamin").options.item(0).text = $('#jenis_kelamin_'+id).val();

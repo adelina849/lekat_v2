@@ -299,7 +299,7 @@ class C_admin_karyawan extends CI_Controller {
 				$this->M_karyawan->edit_saja
 				(
 					$_POST['stat_edit']
-					,$_POST['jabatan']
+					,'' //,$_POST['jabatan']
 					,$no_karyawan
 					,$_POST['nik']
 					,$_POST['nama']
@@ -324,7 +324,7 @@ class C_admin_karyawan extends CI_Controller {
 					,$_POST['kelompok_jabatan_simpan']
 				);
 				
-				header('Location: '.base_url().'admin-karyawan-kecamatan');
+				header('Location: '.base_url().'admin-karyawan-kecamatan?source='.$_POST['kelompok_jabatan_simpan'].'&cari='.$_GET['cari']);
 			}
 			else
 			{
@@ -339,7 +339,7 @@ class C_admin_karyawan extends CI_Controller {
 				}
 				$this->M_karyawan->simpan
 				(
-					$_POST['jabatan']
+					'' //$_POST['jabatan']
 					,$no_karyawan
 					,$_POST['nik']
 					,$_POST['nama']
@@ -368,7 +368,7 @@ class C_admin_karyawan extends CI_Controller {
 					,$_POST['kelompok_jabatan_simpan']
 					
 				);
-				header('Location: '.base_url().'admin-karyawan-kecamatan');
+				header('Location: '.base_url().'admin-karyawan-kecamatan?source='.$_POST['kelompok_jabatan_simpan'].'&cari='.$_GET['cari']);
 			}
 	}
 	
@@ -511,8 +511,11 @@ class C_admin_karyawan extends CI_Controller {
 				
 				
 				$list_karyawan = $this->M_karyawan->list_karyawan_limit($cari,999,0);
+				$get_info_kecamatan = $this->M_karyawan->get_info_kecamatan($kec_id);
 				
-				$data = array('list_karyawan'=>$list_karyawan);
+				$str_tgl = $this->tanggal(date('Y-m-d'));
+				
+				$data = array('list_karyawan'=>$list_karyawan,'get_info_kecamatan' => $get_info_kecamatan,'str_tgl'=>$str_tgl);
 				//$this->load->view('kecamatan/container',$data);
 				$this->load->view('kecamatan/page/excel_nom_perangkat_kecamatan.html',$data);
 			}
@@ -521,6 +524,13 @@ class C_admin_karyawan extends CI_Controller {
 				header('Location: '.base_url().'admin-login');
 			}
 		}
+	}
+	
+	function tanggal($var = '')
+	{
+	$tgl = array("Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember");
+	$pecah = explode("-", $var);
+	return $pecah[2]." ".$tgl[$pecah[1] - 1]." ".$pecah[0];
 	}
 }
 

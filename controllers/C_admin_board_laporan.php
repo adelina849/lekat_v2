@@ -24,7 +24,9 @@ class C_admin_board_laporan extends CI_Controller {
 			{
 				if((!empty($_GET['cari'])) && ($_GET['cari']!= "")  )
 				{
-					$cari = " WHERE KLAP_ISAKTIF = '0' AND (LAP_KODE LIKE '%".str_replace("'","",$_GET['cari'])."%' OR LAP_NAMA LIKE '%".str_replace("'","",$_GET['cari'])."%')";
+					$cari = " WHERE KLAP_ISAKTIF = '0' 
+									AND (KLAP_KODE LIKE '%".str_replace("'","",$_GET['cari'])."%' 
+										OR KLAP_NAMA LIKE '%".str_replace("'","",$_GET['cari'])."%')";
 				}
 				else
 				{

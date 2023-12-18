@@ -286,13 +286,14 @@
 									echo'<table width="100%" id="example2" class="table table-bordered table-hover">';
 										echo '<thead>
 	<tr>';
-													echo '<th width="5%">No</th>';
-													echo '<th width="10%">Avatar</th>';
-													echo '<th width="15%">No ID Karyawan</th>';
+													echo '<th width="5%" style="text-align:center;background-color:#A9A9A9;border-bottom:1px solid black;">NO</th>';
+													echo '<th width="10%" style="text-align:center;background-color:#A9A9A9;border-bottom:1px solid black;">FOTO/ID</th>';
+													//echo '<th width="15%">No ID Karyawan</th>';
 													//echo '<th width="15%">NIK</th>';
-													echo '<th width="20%">Nama Karyawan</th>';
-													echo '<th width="15%">Jabatan</th>';
-													echo '<th width="20%">Aksi</th>';
+													echo '<th width="25%" style="text-align:center;background-color:#A9A9A9;border-bottom:1px solid black;">BIODATA</th>';
+													echo '<th width="40%" style="text-align:center;background-color:#A9A9A9;border-bottom:1px solid black;">ALAMAT</th>';
+													
+													echo '<th width="5%" style="text-align:center;background-color:#A9A9A9;border-bottom:1px solid black;">AKSI</th>';
 										echo '</tr>
 	</thead>';
 										$list_result = $list_karyawan->result();
@@ -301,28 +302,71 @@
 										foreach($list_result as $row)
 										{
 											echo'<tr>';
-												echo'<td><input type="hidden" id="no_'.$row->id_karyawan.'" value="'.$row->id_karyawan.'" />'.$no.'</td>';
-												if ($row->avatar == "")
+												echo'<td style="border-bottom:1px solid black;"><input type="hidden" id="no_'.$row->id_karyawan.'" value="'.$row->id_karyawan.'" />'.$no.'</td>';
+												if ($row->img_file == "")
 												{
-													$src = base_url().'assets/global/karyawan/loading.gif';
-													echo '<td><img id="img_'.$row->id_karyawan.'"  width="100px" height="100px" style="border:1px solid #C8C8C8; padding:5px; float:left; margin-right:20px;" src="'.$src.'" /></td>';
+													//$src = base_url().'assets/global/karyawan/loading.gif';
+													
+													$src = 'https://cdn.vectorstock.com/i/preview-1x/82/99/no-image-available-like-missing-picture-vector-43938299.jpg';
+													echo '<td style="text-align:center;border-bottom:1px solid black;">
+																<a href="'.$src.'" target="_blank">
+																<img id="img_'.$row->id_karyawan.'"  width="100%" height="120px" style="border:1px solid #C8C8C8; padding:5px; float:left; margin-right:20px;" src="'.$src.'" />
+																</a>
+																<br/>
+																<a href="'.base_url().'gl-admin-images/karyawan_kec/'.$row->id_karyawan.'">ATUR GAMBAR</a>
+																<br/>
+																'.$row->no_karyawan.'
+															</td>';
 													
 													echo'<input type="hidden" id="avatar_url_'.$row->id_karyawan.'" value="'.$src.'" />';
 												}
 												else
 												{
-													$src = base_url().'assets/global/karyawan/'.$row->avatar;
-													echo '<td><img id="img_'.$row->id_karyawan.'"  width="100px" height="100px" style="border:1px solid #C8C8C8; padding:5px; float:left; margin-right:20px;" src="'.$src.'" /></td>';
+													//$src = base_url().'assets/global/karyawan/'.$row->avatar;
+													$src = base_url().$row->img_url.''.$row->img_file;
+													echo '<td style="text-align:center;border-bottom:1px solid black;">
+																<a href="'.$src.'" target="_blank">
+																	<img id="img_'.$row->id_karyawan.'"  width="100%" height="120px" style="border:1px solid #C8C8C8; padding:5px; float:left; margin-right:20px;" src="'.$src.'" />
+																</a>
+																<br/>
+																<a href="'.base_url().'gl-admin-images/karyawan_kec/'.$row->id_karyawan.'">ATUR GAMBAR</a>
+																<br/>
+																'.$row->no_karyawan.'
+															</td>';
 													
 													echo'<input type="hidden" id="avatar_url_'.$row->id_karyawan.'" value="'.$src.'" />';
 												}
 												
-												echo'<td><input type="hidden" id="no_karyawan_'.$row->id_karyawan.'" value="'.$row->no_karyawan.'" />'.$row->no_karyawan.'</td>';
+												echo'
+														<input type="hidden" id="no_karyawan_'.$row->id_karyawan.'" value="'.$row->no_karyawan.'" />
+													';
 												//echo'<td><input type="hidden" id="nik_'.$row->id_karyawan.'" value="'.$row->nik_karyawan.'" />'.$row->nik_karyawan.'</td>';
 												echo'<input type="hidden" id="nik_'.$row->id_karyawan.'" value="'.$row->nik_karyawan.'" />';
-												echo'<td><input type="hidden" id="nama_'.$row->id_karyawan.'" value="'.$row->nama_karyawan.'" />'.$row->nama_karyawan.'</td>';
+												echo'<td style="border-bottom:1px solid black;">
+															<input type="hidden" id="nama_'.$row->id_karyawan.'" value="'.$row->nama_karyawan.'" />
+															
+															<b>NIK : </b>'.$row->nik_karyawan.'
+															<br/><b>NIP : </b>'.$row->nip.'
+															<br/><b>NAMA : </b>'.$row->nama_karyawan.'
+															<br/><b>KELAMIN : </b>'.$row->jenis_kelamin.'
+															<br/><b>PANGKAT/GOL : </b>'.$row->pangkat_gol.'
+															<br/><b>TMT GOL/RUANG : </b>'.$row->tmt_gol_ruang.'
+															<br/><b>JABATAN : </b>'.$row->jabatan.'
+															<br/><b>UNIT KERJA : </b>'.$row->unit_kerja.'
+													</td>';
 												
-												echo'<td><input type="hidden" id="nama_jabatan_'.$row->id_karyawan.'" value="'.$row->nama_jabatan.'" />'.$row->nama_jabatan.'</td>';
+												echo'<td style="border-bottom:1px solid black;">
+													<input type="hidden" id="nama_jabatan_'.$row->id_karyawan.'" value="'.$row->nama_jabatan.'" />
+													
+													<b>TEMPAT/TGL LAHIR : </b>'.$row->tempat_lahir.','.$row->tgl_lahir.'
+													<br/><b>KECAMATAN :</b> '.$row->KEC_NAMA.'
+													<br/><b>ALAMAT :</b> '.$row->alamat.'
+													
+													
+												</td>';
+												
+												
+												echo'<input type="hidden" id="id_karyawan_'.$row->id_karyawan.'" value="'.$row->id_karyawan.'" />';
 												echo'<input type="hidden" id="id_jabatan_'.$row->id_karyawan.'" value="'.$row->id_jabatan.'" />';
 												
 												echo'<input type="hidden" id="pnd_'.$row->id_karyawan.'" value="'.$row->pnd.'" />';
@@ -335,17 +379,40 @@
 												echo'<input type="hidden" id="KEC_ID_'.$row->id_karyawan.'" value="'.$row->KEC_ID.'" />';
 												echo'<input type="hidden" id="KEC_NAMA_'.$row->id_karyawan.'" value="'.$row->KEC_NAMA.'" />';
 												
-												echo'<td>
 												
-	<button type="button" onclick="view('.$row->id_karyawan.')" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">
+												echo'<input type="hidden" id="jenis_kelamin_'.$row->id_karyawan.'" value="'.$row->jenis_kelamin.'" />';
+												echo'<input type="hidden" id="tempat_lahir_'.$row->id_karyawan.'" value="'.$row->tempat_lahir.'" />';
+												echo'<input type="hidden" id="tgl_lahir_'.$row->id_karyawan.'" value="'.$row->tgl_lahir.'" />';
+												echo'<input type="hidden" id="nip_'.$row->id_karyawan.'" value="'.$row->nip.'" />';
+												echo'<input type="hidden" id="pangkat_gol_'.$row->id_karyawan.'" value="'.$row->pangkat_gol.'" />';
+												echo'<input type="hidden" id="tmt_gol_ruang_'.$row->id_karyawan.'" value="'.$row->tmt_gol_ruang.'" />';
+												echo'<input type="hidden" id="jabatan_'.$row->id_karyawan.'" value="'.$row->jabatan.'" />';
+												echo'<input type="hidden" id="unit_kerja_'.$row->id_karyawan.'" value="'.$row->unit_kerja.'" />';
+												echo'<input type="hidden" id="status_kepeg_'.$row->id_karyawan.'" value="'.$row->status_kepeg.'" />';
+												echo'<input type="hidden" id="kelompok_jabatan_'.$row->id_karyawan.'" value="'.$row->kelompok_jabatan.'" />';
+
+												
+												
+												
+												echo'<td style="border-bottom:1px solid black;">
+												
+	<button type="button" onclick="view('.$row->id_karyawan.')" class="btn btn-primary btn-sm btn-flat btn-block" data-toggle="modal" data-target="#myModal">
 		view
 	</button>
 	
-	<a href="javascript:void(0)" class="btn btn-warning btn-sm" onclick="edit('.$row->id_karyawan.')" title = "Ubah Data '.$row->nama_karyawan.'" alt = "Ubah Data '.$row->nama_karyawan.'">Edit</a>
+	<a href="javascript:void(0)" class="btn btn-warning btn-sm btn-flat btn-block" onclick="edit('.$row->id_karyawan.')" title = "Ubah Data '.$row->nama_karyawan.'" alt = "Ubah Data '.$row->nama_karyawan.'">Edit</a>
 	
-	<a class="confirm-btn btn btn-danger btn-sm" href="'.base_url().'admin-karyawan-hapus/'.$row->id_karyawan.'" title = "Hapus Data '.$row->nama_karyawan.'" alt = "Hapus Data '.$row->nama_karyawan.'">Hapus</a>
+	';
 	
-	</td>';
+	if($row->user == '')
+	{
+		echo'
+			<a class="confirm-btn btn btn-danger btn-sm btn-flat btn-block" href="'.base_url().'admin-karyawan-kecamatan-hapus/'.$row->id_karyawan.'" title = "Hapus Data '.$row->nama_karyawan.'" alt = "Hapus Data '.$row->nama_karyawan.'">Hapus</a>
+			';
+	}
+	
+	
+	echo'</td>';
 												
 											echo'</tr>';
 											$no++;
@@ -442,7 +509,8 @@
 		$('#no_karyawan2').html($('#no_karyawan_'+id).val());
         $('#nik2').html($('#nik_'+id).val());
         $('#nama2').html($('#nama_'+id).val());
-        $('#jabatan2').html($('#nama_jabatan_'+id).val());
+        //$('#jabatan2').html($('#nama_jabatan_'+id).val());
+		$('#jabatan2').html($('#jabatan_'+id).val());
         $('#pnd2').html($('#pnd_'+id).val());
         $('#tlp2').html($('#tlp_'+id).val());
 		$('#status_kantor2').html($('#status_kantor_'+id).val());

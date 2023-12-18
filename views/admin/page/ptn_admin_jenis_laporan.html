@@ -220,6 +220,11 @@
 							<textarea name="LAP_KET" id="LAP_KET" class="required form-control" title="Keterangan" placeholder="*Keterangan"></textarea>
 							</div>
 							
+							<div class="form-group">
+							<label for="URL_LAP">URL Laporan (Isikan tanpa base_url())</label>
+							<textarea name="URL_LAP" id="URL_LAP" class="form-control" title="URL Laporan (Isikan tanpa base_url())" placeholder="*URL Laporan (Isikan tanpa base_url())"></textarea>
+							</div>
+							
 							<div class="form-group" style="display:none;">
                               <label for="LAP_ISPERDESA">Apakah laporan dibuat perdesa ?</label>
 								<select name="LAP_ISPERDESA" id="LAP_ISPERDESA" class="required form-control select2" title="Apakah laporan dibuat perdesa ?">
@@ -311,6 +316,8 @@
 											echo'<input type="hidden" name="KLAP_ID_'.$no.'" id="KLAP_ID_'.$no.'" value="'.$row->KLAP_ID.'" />';
 											echo'<input type="hidden" name="KLAP_NAMA_'.$no.'" id="KLAP_NAMA_'.$no.'" value="'.$row->KLAP_NAMA.'" />';
 											
+											echo'<input type="hidden" name="URL_LAP_'.$no.'" id="URL_LAP_'.$no.'" value="'.$row->URL_LAP.'" />';
+											
 											
 											
 											echo'
@@ -324,6 +331,8 @@
 														<b>Keterangan : </b><br/>'.$row->LAP_KET.'
 														<br/>
 														<br/><b>PIC : </b><br/>'.$row->NAMA_PIC.'
+														<br/>
+														<br/><b>URL : </b><br/>'.$row->URL_LAP.'
 													</td>
 													<td>
 														<a class="confirm-btn btn btn-success btn-sm" href="'.base_url().'item-jenis-laporan/'.$row->LAP_ID.'" title = "Pengaturan Item Laporan '.$row->LAP_NAMA.'" alt = "Pengaturan Item Laporan '.$row->LAP_NAMA.'">Item ('.$row->JUMLAH.')</a>
@@ -376,6 +385,9 @@
 		$('input[name=LAP_NAMA]').val($('#LAP_NAMA_'+id).val());
 		$('input[name=LAP_DASAR_HUKUM]').val($('#LAP_DASAR_HUKUM_'+id).val());
 		$('input[name=LAP_JUMROW]').val($('#LAP_JUMROW_'+id).val());
+		
+		
+		document.getElementById("URL_LAP").value = $('#URL_LAP_'+id).val();
 		document.getElementById("LAP_KET").value = $('#LAP_KET_'+id).val();
 		
 		document.getElementById("LAP_ISPERDESA").options.item(0).text = $('#LAP_ISPERDESA_'+id).val();

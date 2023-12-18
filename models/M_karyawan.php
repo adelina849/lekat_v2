@@ -70,7 +70,7 @@
 												,img_url
 										) AS E ON A.id_karyawan = E.id AND E.group_by = 'karyawan_kec'
 										
-										".$cari." ORDER BY A.tgl_ins DESC LIMIT ".$offset.",".$limit);
+										".$cari." ORDER BY A.idx_jabatan ASC, A.tgl_ins DESC LIMIT ".$offset.",".$limit);
 			if($query->num_rows() > 0)
 			{
 				return $query;
@@ -332,6 +332,22 @@
                 return false;
             }
         }
+		
+		function get_info_kecamatan($KEC_ID)
+		{
+			$query = "SELECT * FROM tb_kec WHERE KEC_ID = '".$KEC_ID."'; ";
+			
+			$query = $this->db->query($query);
+			if($query->num_rows() > 0)
+			{
+				return $query;
+			}
+			else
+			{
+				return false;
+			}
+			
+		}
 		
 	}
 ?>

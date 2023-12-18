@@ -11,7 +11,7 @@ BEGIN
 									,B.LAP_ID,B.LAP_KODE,B.LAP_NAMA
 									,COUNT(*) AS JUMENTRY
 								FROM tb_periode AS A 
-								LEFT JOIN tb_laporan AS B ON A.PER_KATEGORI = B.LAP_PERIODE 
+								LEFT JOIN tb_laporan AS B ON A.PER_KATEGORI = B.LAP_PERIODE AND B.URL_LAP = ''
 									
                                     AND (
 										
@@ -21,7 +21,6 @@ BEGIN
 										AND B.LAP_KODE <> 'PTN_UNGGUL'
 										
                                         )
-									AND B.LAP_ISAKTIF = 0
 								WHERE CONCAT(A.PER_KODE,COALESCE(B.LAP_ID) ) IS NOT NULL
                                 AND NOW() >= A.PER_DARI  AND NOW() <= A.PER_SAMPAI
 								GROUP BY

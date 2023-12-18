@@ -126,6 +126,7 @@ class C_admin_laporan extends CI_Controller {
 							,$_POST['LAP_PJ']
 							,$_POST['LAP_KET']
 							,$_POST['LAP_ISPERDESA']
+							,$_POST['URL_LAP']
 							,$this->session->userdata('ses_id_karyawan')
 							);
 					header('Location: '.base_url().'jenis-laporan/'.$_POST['KLAP_ID']);
@@ -142,6 +143,7 @@ class C_admin_laporan extends CI_Controller {
 							,$_POST['LAP_PJ']
 							,$_POST['LAP_KET']
 							,$_POST['LAP_ISPERDESA']
+							,$_POST['URL_LAP']
 							,$this->session->userdata('ses_id_karyawan')
 							,$this->session->userdata('ses_kode_kantor')
 							,"KEC"

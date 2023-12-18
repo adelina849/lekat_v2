@@ -254,12 +254,29 @@
 															echo'</tr>';
 															foreach($list_result2 as $row2)
 															{
-																echo'<tr>';
-																	echo'<td></td> <td>'.$no2.'</td> <td>'.$row2->LAP_KODE.'</td> 
-																	<td>'.$row2->LAP_NAMA.'</td>
-																	<td>'.$row2->LAP_PERIODE.'</td>
-																	<td>'.$row2->LAP_KET.'</td>
-																	';
+																	//APAKAH LAPORAN BARU
+																		$datetime1 = new DateTime($row2->LAP_DTINS);
+																		$datetime2 = new DateTime();
+																		$difference = $datetime1->diff($datetime2);
+																		//echo $difference->days;
+																		
+																		if($difference->days < 10)
+																		{
+																			echo'<tr style="text-align:left;font-weight:bold;background-color:yellow;">';
+																			echo'<td style="text-align:left;font-weight:bold;color:red;">BARU</td>'; 
+																		}
+																		else
+																		{
+																			echo'<tr>';
+																			echo'<td></td> ';
+																		}
+																	//APAKAH LAPORAN BARU
+																	
+																		echo'<td>'.$no2.'</td> <td>'.$row2->LAP_KODE.'</td> 
+																		<td>'.$row2->LAP_NAMA.'</td>
+																		<td>'.$row2->LAP_PERIODE.'</td>
+																		<td>'.$row2->LAP_KET.'</td>
+																		';
 																	
 																	if($row2->URL_LAP == '')
 																	{

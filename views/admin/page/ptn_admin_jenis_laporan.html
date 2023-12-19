@@ -256,7 +256,7 @@
 						<h3 class="box-title">Table Laporan</h3>
 							<div class="pull-right">
 								<!-- <form action="<?=base_url();?>admin/pendaftaran-klinik-cari" method="post" class="frm-cari"> -->
-								<form action="<?=base_url();?>jenis-laporan" method="get" class="frm-cari">
+								<form action="<?=base_url();?>jenis-laporan/<?php echo $this->uri->segment(2,0);?>" method="get" class="frm-cari">
 									<table>
 										<tr>
 											<!-- <td>Berdasarkan</td><td>:</td> -->
@@ -323,7 +323,7 @@
 											echo'
 												<tr>
 													<td>'.$no.'</td>
-													<td>'.$row->KLAP_NAMA.'</td>
+													<td>'.$row->LAP_KODE.'</td>
 													<td>'.$row->LAP_NAMA.'</td>
 													<td>'.$row->LAP_PERIODE.'</td>
 													<td style="text-align:center;">'.$row->LAP_JUMROW.'</td>

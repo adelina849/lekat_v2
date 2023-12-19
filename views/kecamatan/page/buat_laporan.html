@@ -190,7 +190,7 @@
 								<h3 class="box-title">Table Laporan</h3>
 									<div class="pull-right">
 										<!-- <form action="<?=base_url();?>admin/pendaftaran-klinik-cari" method="post" class="frm-cari"> -->
-										<form action="<?=base_url();?>kecamatan-admin-dashboard" method="get" class="frm-cari">
+										<form action="<?=base_url();?>kecamatan-buat-laporan-dashboard" method="get" class="frm-cari">
 											<table>
 												<tr>
 													<!-- <td>Berdasarkan</td><td>:</td> -->
@@ -242,7 +242,22 @@
 													';
 													
 													//DETAIL JENIS LAPORAN
+														
+														if((!empty($_GET['cari'])) && ($_GET['cari']!= "")  )
+														{
+															$cari_laporan = str_replace("'","",$_GET['cari']);
+														}
+														else
+														{
+															$cari_laporan = "";
+														}
+												
+														/*
 														$jenis_laporan = $this->M_laporan->list_laporan_limit_perkecamatan($this->session->userdata("ses_KEC_ID")," WHERE A.KLAP_ID = '".$row->KLAP_ID."' ".$cari,100,0);
+														*/
+														
+														$jenis_laporan = $this->M_laporan->list_laporan_limit_perkecamatan($this->session->userdata("ses_KEC_ID")," WHERE A.KLAP_ID = '".$row->KLAP_ID."' AND (A.LAP_KODE LIKE '%".$cari_laporan."%' OR A.LAP_NAMA LIKE '%".$cari_laporan."%')",100,0);
+														
 														if(!empty($jenis_laporan))
 														{
 															$list_result2 = $jenis_laporan->result();

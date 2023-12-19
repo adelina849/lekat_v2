@@ -39,7 +39,7 @@
 				) AS C ON A.LAP_ID = C.LAP_ID
 				LEFT JOIN tb_karyawan AS D ON A.LAP_PJ = D.id_karyawan
 				
-				".$cari." ORDER BY COALESCE(B.KLAP_KODE,'') ASC, A.LAP_KODE ASC, A.LAP_NAMA ASC LIMIT ".$offset.",".$limit);
+				".$cari." ORDER BY A.LAP_DTINS DESC,COALESCE(B.KLAP_KODE,'') ASC, A.LAP_KODE ASC, A.LAP_NAMA ASC LIMIT ".$offset.",".$limit);
 			if($query->num_rows() > 0)
 			{
 				return $query;

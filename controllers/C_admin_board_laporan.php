@@ -22,6 +22,7 @@ class C_admin_board_laporan extends CI_Controller {
 			
 			if(!empty($cek_ses_login))
 			{
+				/*
 				if((!empty($_GET['cari'])) && ($_GET['cari']!= "")  )
 				{
 					$cari = " WHERE KLAP_ISAKTIF = '0' 
@@ -32,6 +33,9 @@ class C_admin_board_laporan extends CI_Controller {
 				{
 					$cari = " WHERE KLAP_ISAKTIF = '0'";
 				}
+				*/
+				$cari = " WHERE KLAP_ISAKTIF = '0'";
+				
 				$list_klaporan = $this->M_klaporan->list_klaporan_limit($cari,100,0);
 				$data = array('page_content'=>'ptn_admin_board_laporan','list_klaporan'=>$list_klaporan,'cari' => $cari);
 				$this->load->view('admin/container',$data);

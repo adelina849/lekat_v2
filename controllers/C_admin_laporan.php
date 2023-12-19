@@ -28,7 +28,13 @@ class C_admin_laporan extends CI_Controller {
 				{
 					if((!empty($_GET['cari'])) && ($_GET['cari']!= "")  )
 					{
-						$cari = "WHERE A.KLAP_ID = '".$this->uri->segment(2,0)."' AND (KLAP_KODE LIKE '%".str_replace("'","",$_GET['cari'])."%' OR KLAP_NAMA LIKE '%".str_replace("'","",$_GET['cari'])."%' OR LAP_KODE LIKE '%".str_replace("'","",$_GET['cari'])."%' OR LAP_NAMA LIKE '%".str_replace("'","",$_GET['cari'])."%')";
+						$cari = "WHERE A.KLAP_ID = '".$this->uri->segment(2,0)."' AND 
+								(
+									KLAP_KODE LIKE '%".str_replace("'","",$_GET['cari'])."%' 
+									OR KLAP_NAMA LIKE '%".str_replace("'","",$_GET['cari'])."%' 
+									OR LAP_KODE LIKE '%".str_replace("'","",$_GET['cari'])."%' 
+									OR LAP_NAMA LIKE '%".str_replace("'","",$_GET['cari'])."%'
+								)";
 					}
 					else
 					{

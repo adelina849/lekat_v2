@@ -185,7 +185,17 @@
 											';
 											
 											//DETAIL JENIS LAPORAN
-												$jenis_laporan = $this->M_laporan->list_laporan_limit(" WHERE A.KLAP_ID = '".$row->KLAP_ID."' AND KLAP_ISAKTIF = '0'",100,0);
+												
+												if((!empty($_GET['cari'])) && ($_GET['cari']!= "")  )
+												{
+													$cari = str_replace("'","",$_GET['cari']);
+												}
+												else
+												{
+													$cari = "";
+												}
+											
+												$jenis_laporan = $this->M_laporan->list_laporan_limit(" WHERE A.KLAP_ID = '".$row->KLAP_ID."' AND COALESCE(B.KLAP_ISAKTIF,'') = '0' AND (A.LAP_KODE LIKE '%".$cari."%' OR A.LAP_NAMA LIKE '%".$cari."%') ",100,0);
 												if(!empty($jenis_laporan))
 												{
 													$list_result2 = $jenis_laporan->result();
